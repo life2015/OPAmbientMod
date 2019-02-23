@@ -1,5 +1,7 @@
 package com.retrox.aodmod.hooks
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.os.Build
 import android.support.annotation.RequiresApi
@@ -19,8 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object AodLayoutSourceHook : IXposedHookLoadPackage {
-    var isImportant = false
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName != MainHook.PACKAGE_AOD) return
 
@@ -34,7 +35,7 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
             override fun afterHookedMethod(param: MethodHookParam) {
                 super.afterHookedMethod(param)
 
-                val layout = param.thisObject as LinearLayout
+                val layout = param.thisObject as LinearLayout // 息屏通知的Layout
 
                 val notificationDefaultContainerId = layout.getId("notification_default")
                 val notificationDefaultContainer: LinearLayout = layout.findViewById(notificationDefaultContainerId)
@@ -71,11 +72,55 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
                         removeViewAt(0)
                     }
                     addView(textView, 0)
-                    MainHook.logD("SingleLayout Hook Finish")
+                }
+
+                MainHook.logD("SingleLayout Hook Finish")
+
+                // Animate! 检查状态避免重复动画
+                val state = AodState.getDisplayState()
+                MainHook.logD("Check Layout Hook State: Old -> new: ${AodState.getDisplayState()}")
+                if (state == 0) {
+                    layout.apply {
+                        translationY = -500f
+                        val animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, -300f, 0f).apply {
+                            duration = 1000L
+                        }
+                        animator.start()
+                    }
+                } else {
+                    layout.apply {
+                        val animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, 0f, 100f).apply {
+                            duration = 200L
+                        }
+                        val animator2 = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, 100f, 0f).apply {
+                            duration = 200L
+                        }
+                        val animatorSet = AnimatorSet().apply {
+                            playSequentially(animator, animator2)
+                        }
+                        animatorSet.start()
+                    }
                 }
 
             }
         })
+
+        XposedHelpers.findAndHookMethod(
+            singleNotificationView,
+            "setNewPosted",
+            "android.service.notification.StatusBarNotification",
+            Boolean::class.java,
+            object : XC_MethodHook() {
+                override fun afterHookedMethod(param: MethodHookParam) {
+                    val thisObj = param.thisObject
+                    val newPostNoti = XposedHelpers.getObjectField(thisObj, "mNewPostedNotification")
+                    val isUpdate = XposedHelpers.getObjectField(thisObj, "mIsUpdate")
+                    val mIsTheFirstNotification = XposedHelpers.getBooleanField(thisObj, "mIsTheFirstNotification")
+
+                    MainHook.logD("newPostNoti: $newPostNoti isUpdate: $isUpdate isTheFirst: $mIsTheFirstNotification")
+                }
+            }
+        )
 
         XposedHelpers.findAndHookMethod(singleNotificationView, "onAttachedToWindow", object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
@@ -113,6 +158,8 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
                         }
                     }
                 }
+
+                MainHook.logD("SingleLayout Hook AttachWindow")
             }
         })
     }
