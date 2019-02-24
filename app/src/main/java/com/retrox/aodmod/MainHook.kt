@@ -2,10 +2,7 @@ package com.retrox.aodmod
 
 import android.util.Log
 import com.retrox.aodmod.BuildConfig.DEBUG
-import com.retrox.aodmod.hooks.AodAlwaysOnHook
-import com.retrox.aodmod.hooks.AodDurationHook
-import com.retrox.aodmod.hooks.AodLayoutSourceHook
-import com.retrox.aodmod.hooks.DisplayStateHook
+import com.retrox.aodmod.hooks.*
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
@@ -32,6 +29,8 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         AodLayoutSourceHook.handleLoadPackage(lpparam)
         AodDurationHook.handleLoadPackage(lpparam)
         DisplayStateHook.handleLoadPackage(lpparam)
+        MediaControl.handleLoadPackage(lpparam)
+        AodMainMediaHook.handleLoadPackage(lpparam)
 //        AodAlwaysOnHook.handleLoadPackage(lpparam)
     }
 

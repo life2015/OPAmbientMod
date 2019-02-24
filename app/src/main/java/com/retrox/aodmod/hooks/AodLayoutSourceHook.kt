@@ -3,8 +3,6 @@ package com.retrox.aodmod.hooks
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.Color
-import android.os.Build
-import android.support.annotation.RequiresApi
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -45,14 +43,14 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
 
                 val notificationHeader: TextView = layout.findViewById(layout.getId("single_notification_header"))
 
-                val textView = TextView(headerContainer.context).apply {
-                    textSize = 20f
+                val timeTextView = TextView(headerContainer.context).apply {
+                    textSize = 22f
                     textColor = Color.WHITE
                     text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
                     gravity = Gravity.CENTER_HORIZONTAL
                     setGoogleSans()
                     layoutParams = LinearLayout.LayoutParams(matchParent, wrapContent).apply {
-                        verticalMargin = dip(20)
+                        verticalMargin = dip(26)
                     }
                 }
 
@@ -71,7 +69,12 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
                     if (getChildAt(0) is TextView) {
                         removeViewAt(0)
                     }
-                    addView(textView, 0)
+                    addView(timeTextView, 0)
+                }
+
+                val singleNotificationTitle : TextView = layout.findViewById(layout.getId("single_notification_title"))
+                if (singleNotificationTitle.text.contains("西西")) { // 动态化
+                    AodState.isImportantMessage = true
                 }
 
                 MainHook.logD("SingleLayout Hook Finish")
@@ -81,7 +84,7 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
                 MainHook.logD("Check Layout Hook State: Old -> new: ${AodState.getDisplayState()}")
                 if (state == 0) {
                     layout.apply {
-                        translationY = -500f
+                        translationY = -300f
                         val animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_Y, -300f, 0f).apply {
                             duration = 1000L
                         }
@@ -141,11 +144,6 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
                     layoutParams = LinearLayout.LayoutParams(layoutParams).apply {
                         bottomMargin = dip(12)
                         topMargin = dip(16)
-                    }
-
-                    val titleContent = text.toString()
-                    if (titleContent.contains("西西")) {
-                        AodState.isImportantMessage = true
                     }
                 }
                 repeat(notificationDefaultContainer.childCount) { index ->

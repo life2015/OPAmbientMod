@@ -1,5 +1,8 @@
 package com.retrox.aodmod.state
 
+import android.media.MediaMetadata
+import com.retrox.aodmod.data.NowPlayingMediaData
+
 object AodState {
     var isImportantMessage = false
 
@@ -9,5 +12,7 @@ object AodState {
         currentDisplayState = state
     }
     fun getDisplayState() = currentDisplayState
+
+    var mediaMetadata: NowPlayingMediaData? = null
 
 }
