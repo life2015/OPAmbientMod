@@ -3,6 +3,7 @@ package com.retrox.aodmod
 import android.util.Log
 import com.retrox.aodmod.BuildConfig.DEBUG
 import com.retrox.aodmod.hooks.*
+import com.retrox.aodmod.proxy.DreamProxyHook
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
@@ -32,6 +33,7 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         MediaControl.handleLoadPackage(lpparam)
         AodMainMediaHook.handleLoadPackage(lpparam)
 //        AodAlwaysOnHook.handleLoadPackage(lpparam)
+//        DreamProxyHook.handleLoadPackage(lpparam)
     }
 
     override fun handleInitPackageResources(resparam: XC_InitPackageResources.InitPackageResourcesParam) {

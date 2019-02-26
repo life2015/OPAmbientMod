@@ -38,6 +38,9 @@ object MediaControl : IXposedHookLoadPackage {
                     val intent = Intent("com.retrox.aodmod.NEW_MEDIA_META")
                     intent.putExtra("mediaMetaData", nowPlayingMediaData)
                     application.applicationContext.sendBroadcast(intent)
+
+                    val intentPulsing = Intent("com.oneplus.aod.doze.pulse")
+                    application.applicationContext.sendBroadcast(intentPulsing)
                 }
             })
 

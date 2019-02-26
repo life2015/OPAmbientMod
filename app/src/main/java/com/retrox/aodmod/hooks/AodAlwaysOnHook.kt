@@ -1,6 +1,7 @@
 package com.retrox.aodmod.hooks
 
 import android.content.Context
+import android.view.Display
 import com.retrox.aodmod.MainHook
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
@@ -68,6 +69,7 @@ object AodAlwaysOnHook : IXposedHookLoadPackage {
         val dozeServiceClass = XposedHelpers.findClass("com.oneplus.doze.DozeService", classLoader)
         XposedHelpers.findAndHookMethod(dozeServiceClass, "turnDisplayOff", object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
+                XposedHelpers.callMethod(param.thisObject, "setDozeScreenState", Display.STATE_DOZE)
                 param.result = null
             }
         })
