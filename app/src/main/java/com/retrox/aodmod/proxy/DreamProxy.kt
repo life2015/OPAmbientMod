@@ -1,30 +1,49 @@
 package com.retrox.aodmod.proxy
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.app.AndroidAppHelper
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LifecycleRegistry
 import android.content.Context
-import android.graphics.Color
-import android.os.Build
-import android.os.Handler
 import android.service.dreams.DreamService
+import android.support.constraint.ConstraintLayout
+import android.transition.TransitionManager
+import android.util.DisplayMetrics
 import android.view.Display
-import android.view.WindowManager
-import com.retrox.aodmod.MainHook
-import de.robv.android.xposed.XposedHelpers
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.textColor
-import org.jetbrains.anko.textView
-import org.jetbrains.anko.verticalLayout
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.FrameLayout
+import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.proxy.view.Ids
+import com.retrox.aodmod.proxy.view.aodMainView
+import com.retrox.aodmod.receiver.ReceiverManager
+import com.retrox.aodmod.service.notification.NotificationCollectorService
+import com.retrox.aodmod.state.AodClockTick
+import com.retrox.aodmod.state.AodState
+import de.robv.android.xposed.XposedHelpers
+import java.util.*
 
-class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface {
+class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
+    private val lifecycleRegistry = LifecycleRegistry(this)
+    override fun getLifecycle(): Lifecycle = lifecycleRegistry
 
     val context: Context = dreamService
     val windowManager by lazy {
         context.getSystemService(Context.WINDOW_SERVICE) as WindowManager;
     }
+    val lazyInitBlock by lazy {
+        ReceiverManager.register()
+        NotificationCollectorService(AndroidAppHelper.currentApplication().applicationContext)
+        "OK"
+    }
     var mainView: View? = null
     override fun onCreate() {
         XposedHelpers.callMethod(dreamService, "setWindowless", true)
         MainHook.logD("DreamProxy -> OnCreate")
+        lazyInitBlock.length
     }
 
     override fun onAttachedToWindow() {
@@ -33,23 +52,47 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface 
     }
 
     override fun onDreamingStarted() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        AodState.dreamState.postValue(AodState.DreamState.ACTIVE)
         MainHook.logD("DreamProxy -> onDreamingStarted")
-        val view = context.verticalLayout {
-            textView {
-                text = "Hello Hook"
-                textSize = 30f
-                textColor = Color.WHITE
-            }
-            backgroundColor = Color.BLACK
-        }
-        mainView = view
 
-        windowManager.addView(view, getAodViewLayoutParams())
+        val layout = context.aodMainView(this) as ViewGroup
+        val aodMainLayout = layout.findViewById<ConstraintLayout>(Ids.ly_main)
+        mainView = layout
+
+        windowManager.addView(mainView, getAodViewLayoutParams())
+        ObjectAnimator.ofFloat(aodMainLayout, View.ALPHA, 0f, 1f).apply {
+            duration = 800L
+        }.start()
+
+        // 防烧屏
+        AodClockTick.tickLiveData.observe(this, android.arch.lifecycle.Observer {
+            val vertical = Random().nextInt(80)
+            val horizontal = Random().nextInt(20) - 10
+
+            TransitionManager.beginDelayedTransition(layout)
+            aodMainLayout.apply {
+                translationX = horizontal.toFloat()
+                translationY = -vertical.toFloat()
+            }
+
+            MainHook.logD("防烧屏: x offset:$horizontal y offset:$vertical")
+        })
+
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         XposedHelpers.callMethod(dreamService, "startDozing")
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
+        XposedHelpers.callMethod(dreamService, "setInteractive", true)
+    }
+
+    fun repositionAodMain() {
+
+
     }
 
     override fun onDreamingStopped() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        AodState.dreamState.postValue(AodState.DreamState.STOP)
         MainHook.logD("DreamProxy -> onDreamingStopped")
         windowManager.removeViewImmediate(mainView)
     }

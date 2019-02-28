@@ -14,9 +14,20 @@ object DreamProxyHook : IXposedHookLoadPackage {
         var dreamProxy: DreamProxy? = null
         val dozeServiceClass = XposedHelpers.findClass("com.oneplus.doze.DozeService", classLoader)
 
+        XposedHelpers.findAndHookConstructor(dozeServiceClass, object : XC_MethodHook() {
+            override fun beforeHookedMethod(param: MethodHookParam) {
+                if (dreamProxy == null) {
+                    dreamProxy = DreamProxy(param.thisObject as DreamService)
+                } else {
+                    XposedHelpers.setObjectField(dreamProxy, "dreamService", param.thisObject)
+                    // do the trick 避免重复初始化占内存 我真他妈是个聪明鬼
+                }
+            }
+        })
+
         XposedHelpers.findAndHookMethod(dozeServiceClass, "onCreate", object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
-                dreamProxy = DreamProxy(param.thisObject as DreamService)
+//                dreamProxy = DreamProxy(param.thisObject as DreamService)
                 dreamProxy?.onCreate()
                 param.result = null
             }

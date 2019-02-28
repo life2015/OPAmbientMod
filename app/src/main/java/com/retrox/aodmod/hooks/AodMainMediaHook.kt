@@ -12,6 +12,7 @@ import com.retrox.aodmod.R
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.receiver.MediaMessageReceiver
+import com.retrox.aodmod.state.AodMedia
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
@@ -73,6 +74,11 @@ object AodMainMediaHook : IXposedHookLoadPackage {
                         textColor = Color.WHITE
                         setGoogleSans()
                         text = "$musicName - $artist"
+                        AodMedia.aodMediaLiveData.observeForever {
+                            it?.let {
+                                text = "${it.name} - ${it.artist}"
+                            }
+                        }
                         gravity = Gravity.CENTER_HORIZONTAL
                     }.lparams(wrapContent, wrapContent) {
                         horizontalMargin = dip(24)

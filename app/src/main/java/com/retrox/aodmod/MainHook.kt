@@ -4,6 +4,8 @@ import android.util.Log
 import com.retrox.aodmod.BuildConfig.DEBUG
 import com.retrox.aodmod.hooks.*
 import com.retrox.aodmod.proxy.DreamProxyHook
+import com.retrox.aodmod.proxy.ProxyInitHook
+import com.retrox.aodmod.receiver.ReceiverManager
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
@@ -27,13 +29,15 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
 
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         Log.d("AODMOD", "package: ${lpparam.packageName}")
+        ProxyInitHook.handleLoadPackage(lpparam)
         AodLayoutSourceHook.handleLoadPackage(lpparam)
         AodDurationHook.handleLoadPackage(lpparam)
         DisplayStateHook.handleLoadPackage(lpparam)
         MediaControl.handleLoadPackage(lpparam)
         AodMainMediaHook.handleLoadPackage(lpparam)
 //        AodAlwaysOnHook.handleLoadPackage(lpparam)
-//        DreamProxyHook.handleLoadPackage(lpparam)
+        DreamProxyHook.handleLoadPackage(lpparam)
+
     }
 
     override fun handleInitPackageResources(resparam: XC_InitPackageResources.InitPackageResourcesParam) {
@@ -47,24 +51,24 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
     fun logE(msg: String, tag: String = TAG, t: Throwable? = null) {
         XposedBridge.log(String.format(LOG_FORMAT, "[ERROR]", tag, msg))
         t?.let { XposedBridge.log(it) }
-        Log.e(tag, msg, t)
+//        Log.e(tag, msg, t)
     }
 
     fun logW(msg: String, tag: String = TAG) {
         XposedBridge.log(String.format(LOG_FORMAT, "[WARNING]", tag, msg))
-        Log.w(tag, msg)
+//        Log.w(tag, msg)
 
     }
 
     fun logI(msg: String, tag: String = TAG) {
         XposedBridge.log(String.format(LOG_FORMAT, "[INFO]", tag, msg))
-        Log.i(tag, msg)
+//        Log.i(tag, msg)
 
     }
 
     fun logD(msg: String, tag: String = TAG) {
         if (DEBUG) XposedBridge.log(String.format(LOG_FORMAT, "[DEBUG]", tag, msg))
-        Log.d(tag, msg)
+//        Log.d(tag, msg)
     }
 
 }
