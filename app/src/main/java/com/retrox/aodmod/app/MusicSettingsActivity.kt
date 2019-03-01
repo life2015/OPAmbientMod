@@ -10,6 +10,8 @@ import org.jetbrains.anko.*
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.support.v4.content.ContextCompat
+import com.retrox.aodmod.R
 
 
 class MusicSettingsActivity : AppCompatActivity() {
@@ -19,7 +21,7 @@ class MusicSettingsActivity : AppCompatActivity() {
         verticalLayout {
             textView {
                 text = "这是什么功能？"
-                textColor = Color.parseColor("#F5A623")
+                textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 textSize = 18f
                 gravity = Gravity.START
             }.lparams(width = matchParent, height = wrapContent) {
@@ -40,7 +42,7 @@ class MusicSettingsActivity : AppCompatActivity() {
 
             textView {
                 text = "支持什么APP？"
-                textColor = Color.parseColor("#F5A623")
+                textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 textSize = 18f
                 gravity = Gravity.START
             }.lparams(width = matchParent, height = wrapContent) {
@@ -81,7 +83,7 @@ class MusicSettingsActivity : AppCompatActivity() {
 
             textView {
                 text = "这些是已经在太极中的APP"
-                textColor = Color.parseColor("#F5A623")
+                textColor = ContextCompat.getColor(context, R.color.colorOrange)
                 textSize = 18f
                 gravity = Gravity.START
             }.lparams(width = matchParent, height = wrapContent) {

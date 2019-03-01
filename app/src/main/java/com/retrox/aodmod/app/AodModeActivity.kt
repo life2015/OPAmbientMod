@@ -5,8 +5,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
+import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
 import org.jetbrains.anko.*
 
@@ -16,7 +18,7 @@ class AodModeActivity : AppCompatActivity() {
         verticalLayout {
             textView {
                 text = "这是什么功能？"
-                textColor = Color.parseColor("#F5A623")
+                textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 textSize = 18f
                 gravity = Gravity.START
             }.lparams(width = matchParent, height = wrapContent) {
@@ -37,7 +39,7 @@ class AodModeActivity : AppCompatActivity() {
 
             textView {
                 text = "系统增强模式"
-                textColor = Color.parseColor("#F5A623")
+                textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 textSize = 18f
                 gravity = Gravity.START
             }.lparams(width = matchParent, height = wrapContent) {
@@ -70,7 +72,7 @@ class AodModeActivity : AppCompatActivity() {
 
             textView {
                 text = "Always On Display 常亮模式"
-                textColor = Color.parseColor("#F5A623")
+                textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 textSize = 18f
                 gravity = Gravity.START
             }.lparams(width = matchParent, height = wrapContent) {

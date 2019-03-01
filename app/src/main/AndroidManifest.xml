@@ -31,6 +31,7 @@
         </activity>
         <activity android:name=".app.MusicSettingsActivity"/>
         <activity android:name=".app.AodModeActivity"/>
+        <activity android:name=".app.SleepModeActivity"/>
 
     </application>
 
