@@ -1,4 +1,4 @@
-package com.retrox.aodmod
+package com.retrox.aodmod.app
 
 import android.app.Application
 import android.content.SharedPreferences

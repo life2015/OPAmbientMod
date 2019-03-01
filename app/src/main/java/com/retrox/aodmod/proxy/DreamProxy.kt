@@ -7,6 +7,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.content.Context
+import android.os.Handler
 import android.service.dreams.DreamService
 import android.support.constraint.ConstraintLayout
 import android.transition.TransitionManager
@@ -44,15 +45,14 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         XposedHelpers.callMethod(dreamService, "setWindowless", true)
         MainHook.logD("DreamProxy -> OnCreate")
         lazyInitBlock.length
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
     }
 
     override fun onAttachedToWindow() {
         MainHook.logD("DreamProxy -> onAttachedToWindow")
-
     }
 
     override fun onDreamingStarted() {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
         AodState.dreamState.postValue(AodState.DreamState.ACTIVE)
         MainHook.logD("DreamProxy -> onDreamingStarted")
 
@@ -83,15 +83,19 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         XposedHelpers.callMethod(dreamService, "startDozing")
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
         XposedHelpers.callMethod(dreamService, "setInteractive", true)
+
+        if (AodState.sleepMode) {
+            Handler().postDelayed({
+                if (AodState.DreamState.STOP != AodState.dreamState.value) {
+                    XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
+                }
+            }, 7000L)
+        }
     }
 
-    fun repositionAodMain() {
-
-
-    }
 
     override fun onDreamingStopped() {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         AodState.dreamState.postValue(AodState.DreamState.STOP)
         MainHook.logD("DreamProxy -> onDreamingStopped")
         windowManager.removeViewImmediate(mainView)

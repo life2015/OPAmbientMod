@@ -56,7 +56,7 @@ fun Notification.getNotificationData(): NotificationData {
     val appName = XposedHelpers.callMethod(builder, "loadHeaderAppName") as String
 
     val title = extras.getString(Notification.EXTRA_TITLE) ?: ""
-    val content = extras.getString(Notification.EXTRA_TEXT) ?: ""
+    val content = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: "" // 不能直接取String Spannable的时候会CastException
     val isOnGoing = flags and Notification.FLAG_ONGOING_EVENT
 
     return NotificationData(appName, title, content, isOnGoing > 0)

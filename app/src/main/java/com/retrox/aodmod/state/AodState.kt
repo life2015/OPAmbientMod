@@ -1,8 +1,8 @@
 package com.retrox.aodmod.state
 
 import android.arch.lifecycle.MutableLiveData
-import android.media.MediaMetadata
 import com.retrox.aodmod.data.NowPlayingMediaData
+import com.retrox.aodmod.receiver.PowerData
 
 object AodState {
     var isImportantMessage = false
@@ -23,6 +23,10 @@ object AodState {
         const val STOP = "STOP"
     }
 
+    var sleepMode = false // todo 优化传感器相关内容
+
     // DOZE OFF ON
     val screenState = MutableLiveData<String>()
+
+    val powerState = MutableLiveData<PowerData>()
 }

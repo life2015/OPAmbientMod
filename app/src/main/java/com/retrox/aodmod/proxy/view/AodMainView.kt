@@ -11,6 +11,7 @@ import android.view.View
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
+import com.retrox.aodmod.state.AodState
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
@@ -64,10 +65,21 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             }
             addView(notificationView)
 
-            textView("90%") {
+            textView("") {
                 id = Ids.tv_battery
                 textColor = Color.WHITE
                 setGoogleSans()
+                letterSpacing = 0.02f
+
+                AodState.powerState.observe(lifecycleOwner, Observer {
+                    it?.let {
+                        var statusText = if (it.plugged) "Charging" else ""
+                        if (it.fastCharge) statusText = "Dash Charging"
+                        if (it.charged) statusText = "Charged"
+                        if (AodState.sleepMode) statusText += " SleepMode"
+                        text = "${it.level}%  $statusText"
+                    }
+                })
             }.lparams(width = wrapContent, height = wrapContent) {
                 bottomToBottom = PARENT_ID
                 startToStart = PARENT_ID
@@ -78,6 +90,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             // state animate below
             NotificationManager.notificationStatusLiveData.observeNew(lifecycleOwner, Observer {
                 it?.let {
+                    if (it.second == NotificationManager.REMOVED) return@let
                     if (it.first.notification.getNotificationData().isOnGoing) return@let
 
                     findViewById<View>(Ids.ly_important_message).visibility = View.INVISIBLE

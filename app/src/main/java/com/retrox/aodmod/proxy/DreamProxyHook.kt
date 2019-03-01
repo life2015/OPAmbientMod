@@ -27,7 +27,6 @@ object DreamProxyHook : IXposedHookLoadPackage {
 
         XposedHelpers.findAndHookMethod(dozeServiceClass, "onCreate", object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
-//                dreamProxy = DreamProxy(param.thisObject as DreamService)
                 dreamProxy?.onCreate()
                 param.result = null
             }
