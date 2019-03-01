@@ -221,11 +221,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 setOnClickListener {
-                    setOnClickListener {
-                        val intent = Intent("com.retrox.aod.killmyself")
-                        sendBroadcast(intent)
-                        Toast.makeText(context, "已发送重启请求", Toast.LENGTH_SHORT).show()
-                    }
+                    val intent = Intent("com.retrox.aod.killmyself")
+                    sendBroadcast(intent)
+                    Toast.makeText(context, "已发送重启请求", Toast.LENGTH_SHORT).show()
+
                 }
 
             }.lparams(matchParent, dip(60)) {
