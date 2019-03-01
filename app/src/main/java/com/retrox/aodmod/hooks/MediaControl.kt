@@ -13,8 +13,8 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage
 object MediaControl : IXposedHookLoadPackage {
     var metadata: MediaMetadata? = null
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
-        if (!lpparam.packageName.contains("com.netease.cloudmusic")) return
-        MainHook.logD("Hook -> In NeteaseCouldMusic")
+//        if (!(lpparam.packageName.contains("com.netease.cloudmusic") || lpparam.packageName.contains("com.tencent.qqmusic"))) return
+        MainHook.logD("Hook -> Try MediaControl Hook in ${lpparam.packageName}")
 
         val classLoader: ClassLoader = lpparam.classLoader
         val mediaSessionClass = XposedHelpers.findClass("android.media.session.MediaSession", classLoader)

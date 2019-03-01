@@ -29,12 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".app.MusicSettingsActivity"/>
+        <activity android:name=".app.AodModeActivity"/>
 
-        <receiver android:name=".receiver.MediaMessageReceiver">
-            <intent-filter>
-                <action android:name="com.retrox.aodmod.NEW_MEDIA_META"/>
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

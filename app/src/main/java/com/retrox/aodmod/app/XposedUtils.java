@@ -46,5 +46,21 @@ public class XposedUtils {
         return isExp;
     }
 
+    public static List<String> getExpApps(Context context) {
+        Bundle result;
+        try {
+            result = context.getContentResolver().call(Uri.parse("content://me.weishu.exposed.CP/"), "apps", null, null);
+        } catch (Throwable e) {
+            return Collections.emptyList();
+        }
 
+        if (result == null) {
+            return Collections.emptyList();
+        }
+        List<String> list = result.getStringArrayList("apps");
+        if (list == null) {
+            return Collections.emptyList();
+        }
+        return list;
+    }
 }

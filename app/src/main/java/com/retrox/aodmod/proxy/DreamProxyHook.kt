@@ -1,11 +1,18 @@
 package com.retrox.aodmod.proxy
 
+import android.app.AndroidAppHelper
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.service.dreams.DreamService
 import com.retrox.aodmod.MainHook
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
+import android.os.Process
+import com.retrox.aodmod.pref.XPref
 
 object DreamProxyHook : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
@@ -13,6 +20,22 @@ object DreamProxyHook : IXposedHookLoadPackage {
         val classLoader = lpparam.classLoader
         var dreamProxy: DreamProxy? = null
         val dozeServiceClass = XposedHelpers.findClass("com.oneplus.doze.DozeService", classLoader)
+
+        val killReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                Process.killProcess(Process.myPid())
+            }
+        }
+
+        XposedHelpers.findAndHookConstructor(dozeServiceClass, object : XC_MethodHook() {
+            override fun beforeHookedMethod(param: MethodHookParam) {
+                AndroidAppHelper.currentApplication().applicationContext.registerReceiver(killReceiver, IntentFilter("com.retrox.aod.killmyself"))
+            }
+        })
+
+        if (XPref.getDisplayMode() == "SYSTEM") {
+            return
+        }
 
         XposedHelpers.findAndHookConstructor(dozeServiceClass, object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {

@@ -71,6 +71,7 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
                         try {
                             it.smallIcon.loadDrawable(context)
                         } catch (e: Exception) {
+                            e.printStackTrace()
                             return@map null
                         }
                     }

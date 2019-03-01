@@ -50,7 +50,7 @@ public class NotificationCollectorService {
             Log.d("NotificationCollectorService", "onNotificationPosted");
             if (sbn != null) {
                 NotificationManager.INSTANCE.onNotificationPosted(sbn, rankingMap);
-                if (!sbn.getNotification().getChannelId().equals( "后台服务图标")) {
+                if (!"后台服务图标".equals(sbn.getNotification().getChannelId())) {
 //                    sbn.getNotification().getSmallIcon()
 //                    MainHook.INSTANCE.logD("Posted 收到通知" + sbn.toString(), MainHook.TAG);
                 }
