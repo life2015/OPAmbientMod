@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
 import android.transition.TransitionManager
 import android.view.View
 import com.retrox.aodmod.extensions.setGoogleSans
+import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
 import com.retrox.aodmod.state.AodState
@@ -50,6 +51,11 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                 startToStart = PARENT_ID
                 bottomToTop = Ids.tv_battery
                 bottomMargin = dip(24)
+            }
+            if (!XPref.getMusicAodEnabled()) {
+                musicView.visibility = View.INVISIBLE
+            } else {
+                musicView.visibility = View.VISIBLE
             }
             addView(musicView)
 

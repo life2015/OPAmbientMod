@@ -21,5 +21,6 @@ object XPref {
         return preferences
     }
 
-    fun getDisplayMode() = XPref.getPref().getString("AODMODE", "SYSTEM") ?: ""
+    fun getDisplayMode() = XPref.getPref().getString("AODMODE", "") ?: ""
+    fun getMusicAodEnabled() = XPref.getPref().getBoolean("MUSICSHOWONAOD",true)
 }

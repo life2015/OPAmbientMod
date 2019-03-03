@@ -89,7 +89,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
                 if (AodState.DreamState.STOP != AodState.dreamState.value) {
                     XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
                 }
-            }, 7000L)
+            }, 10000L)
         }
     }
 

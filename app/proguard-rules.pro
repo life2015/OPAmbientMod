@@ -24,6 +24,8 @@
     public *;
 }
 
+-keep class com.retrox.aodmod.data.NowPlayingMediaData{*;}
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable

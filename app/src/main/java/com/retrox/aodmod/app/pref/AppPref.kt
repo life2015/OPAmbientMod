@@ -7,7 +7,8 @@ import java.io.File
 
 
 object AppPref {
-    var aodMode by shared("AODMODE","SYSTEM") // or ALWAYS_ON
+    var aodMode by shared("AODMODE","ALWAYS_ON") // or ALWAYS_ON
+    var musicShowOnAod by shared("MUSICSHOWONAOD", true)
 
     @SuppressLint("SetWorldReadable")
     fun setWorldReadable() {

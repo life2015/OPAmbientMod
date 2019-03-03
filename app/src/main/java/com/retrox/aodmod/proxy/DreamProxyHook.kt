@@ -33,6 +33,7 @@ object DreamProxyHook : IXposedHookLoadPackage {
             }
         })
 
+        MainHook.logD("DisplayMode: ${XPref.getDisplayMode()}")
         if (XPref.getDisplayMode() == "SYSTEM") {
             return
         }
