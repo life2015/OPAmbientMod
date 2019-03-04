@@ -10,6 +10,7 @@ class PowerReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action ?: ""
         if (action == "android.intent.action.BATTERY_CHANGED") {
+//            MainHook.logD("BATTERY_CHANGED Intent Received")
             val level = (100.0f * intent.getIntExtra("level", 0) / intent.getIntExtra("scale", 100)).toInt()
             val plugged = intent.getIntExtra("plugged", 0) != 0
             val status = intent.getIntExtra("status", 1)

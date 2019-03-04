@@ -8,7 +8,7 @@ object XPref {
 
     private var xSharedPreferences: WeakReference<XSharedPreferences?> = WeakReference(null)
 
-    fun getPref(): XSharedPreferences {
+    private fun getPref(): XSharedPreferences {
         var preferences = xSharedPreferences.get()
         if (preferences == null) {
             preferences = XSharedPreferences(BuildConfig.APPLICATION_ID)
@@ -23,4 +23,8 @@ object XPref {
 
     fun getDisplayMode() = XPref.getPref().getString("AODMODE", "") ?: ""
     fun getMusicAodEnabled() = XPref.getPref().getBoolean("MUSICSHOWONAOD",true)
+    fun getFilpOffMode() = XPref.getPref().getBoolean("FILPOFFSCREEN", true)
+    fun getAodShowSensitiveContent() = XPref.getPref().getBoolean("AODSHOWSENSITIVECONTENT", true)
+    fun getFontWithSystem() = XPref.getPref().getBoolean("FONTWITHSYSTEM", false)
+
 }

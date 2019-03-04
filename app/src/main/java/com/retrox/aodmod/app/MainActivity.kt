@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.Toast
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                     textView {
                         textColor = Color.WHITE
                         textSize = 16f
-                        text = "##上车提示 -> 太极·Magisk运行环境需求：\n严格要求 太极App -> 5.0.2 及以上  太极Magisk插件版本 4.7.5(可加群下载) 及以上 "
+                        text = "##上车提示 -> 太极·Magisk运行环境需求：\n严格要求 太极App -> 5.0.2 及以上  太极Magisk插件版本 4.7.5(可加群下载) 及以上\nEdXposed也可以上车\n上车前确保自己系统开着抬手显示 "
                         horizontalPadding = dip(16)
                         gravity = Gravity.CENTER_HORIZONTAL
                     }.lparams {
@@ -125,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                         expApps.observe(this@MainActivity, Observer {
                             it?.let { list ->
                                 if (list.contains("com.oneplus.aod")) {
-                                    text = "主动显示APP已添加 \n 首次添加需要重启系统"
+                                    text = "主动显示APP已添加 \n 首次添加需要点击下方强制重启"
                                     this@cardView.setCardBackgroundColor(
                                         ContextCompat.getColor(
                                             context,
@@ -220,14 +221,14 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 cardView {
-                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorOrange))
+                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorPixelBlue))
                     radius = dip(12).toFloat()
                     verticalPadding = dip(12)
 
                     textView {
                         textColor = Color.WHITE
                         textSize = 16f
-                        text = "设置睡眠模式\n仅Always On模式需要"
+                        text = "Always ON 常亮模式自定义设置\n 翻转亮屏，敏感消息隐藏等设置"
                         horizontalPadding = dip(16)
                         gravity = Gravity.CENTER_HORIZONTAL
                     }.lparams {
@@ -235,7 +236,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     setOnClickListener {
-                        startActivity<SleepModeActivity>()
+                        startActivity<AlwaysOnSettings>()
                     }
 
                 }.lparams(matchParent, dip(60)) {
@@ -319,6 +320,7 @@ class MainActivity : AppCompatActivity() {
                     setCardBackgroundColor(Color.parseColor("#8B572A"))
                     radius = dip(12).toFloat()
                     verticalPadding = dip(12)
+                    visibility = View.GONE
 
                     textView {
                         textColor = Color.WHITE
@@ -359,6 +361,31 @@ class MainActivity : AppCompatActivity() {
 
                     setOnClickListener {
                         joinQQGroup("GeuMQLnKNWcIQ-Hmy9H98m3HO62dogGp")
+
+                    }
+
+                }.lparams(matchParent, dip(60)) {
+                    horizontalMargin = dip(8)
+                    verticalMargin = dip(8)
+                }
+
+                cardView {
+                    setCardBackgroundColor(Color.parseColor("#8B572A"))
+                    radius = dip(12).toFloat()
+                    verticalPadding = dip(12)
+
+                    textView {
+                        textColor = Color.WHITE
+                        textSize = 16f
+                        text = "上面群满了 再加备用交流群\n（否则不同意）"
+                        horizontalPadding = dip(16)
+                        gravity = Gravity.CENTER_HORIZONTAL
+                    }.lparams {
+                        gravity = Gravity.CENTER
+                    }
+
+                    setOnClickListener {
+                        joinQQGroup("20ARgc7Mzn0TNIKYJAiCXmfWg2FkPEog")
 
                     }
 

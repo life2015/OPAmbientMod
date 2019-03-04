@@ -3,6 +3,7 @@ package com.retrox.aodmod.proxy.view
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
 import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
@@ -16,6 +17,10 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import java.text.SimpleDateFormat
 import java.util.*
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.ColorMatrix
+
+
 
 fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
     return constraintLayout {
@@ -80,10 +85,16 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
 
                 MainHook.logD("icons: $icons")
 
+                val cm = ColorMatrix()
+                cm.setSaturation(0f) // 设置饱和度
+                val grayColorFilter = ColorMatrixColorFilter(cm)
+
                 removeAllViews()
                 icons.take(6).forEach {
                     imageView {
                         setImageDrawable(it)
+//                        colorFilter = grayColorFilter
+                        imageTintList = ColorStateList.valueOf(Color.WHITE)
                     }.lparams(width = dip(24), height = dip(24)) {
                         horizontalMargin = dip(4)
                     }

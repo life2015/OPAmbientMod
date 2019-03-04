@@ -7,6 +7,10 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Handler
 import android.service.dreams.DreamService
 import android.support.constraint.ConstraintLayout
@@ -18,6 +22,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodMainView
 import com.retrox.aodmod.receiver.ReceiverManager
@@ -65,6 +71,18 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             duration = 800L
         }.start()
 
+        if (XPref.getFilpOffMode()) {
+            FlipOffSensor.flipSensorLiveData.observe(this, android.arch.lifecycle.Observer {
+                it?.let {
+                    MainHook.logD("Flip State: $it")
+                    when(it.suggestState) {
+                        FlipOffSensor.Flip_ON -> setScreenDoze()
+                        FlipOffSensor.Flip_OFF -> setScreenOff()
+                    }
+                }
+            })
+        }
+
         // 防烧屏
         AodClockTick.tickLiveData.observe(this, android.arch.lifecycle.Observer {
             val vertical = Random().nextInt(80)
@@ -81,16 +99,24 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         XposedHelpers.callMethod(dreamService, "startDozing")
-        XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
-        XposedHelpers.callMethod(dreamService, "setInteractive", true)
+        setScreenDoze()
+//        XposedHelpers.callMethod(dreamService, "setInteractive", true)
 
         if (AodState.sleepMode) {
             Handler().postDelayed({
                 if (AodState.DreamState.STOP != AodState.dreamState.value) {
-                    XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
+                    setScreenOff()
                 }
             }, 10000L)
         }
+    }
+
+    fun setScreenDoze() {
+        XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
+    }
+
+    fun setScreenOff() {
+        XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
     }
 
 

@@ -9,6 +9,10 @@ import java.io.File
 object AppPref {
     var aodMode by shared("AODMODE","ALWAYS_ON") // or ALWAYS_ON
     var musicShowOnAod by shared("MUSICSHOWONAOD", true)
+    var filpOffScreen by shared("FILPOFFSCREEN", true)
+    var aodShowSensitiveContent by shared("AODSHOWSENSITIVECONTENT", true)
+    var fontWithSystem by shared("FONTWITHSYSTEM", false)
+
 
     @SuppressLint("SetWorldReadable")
     fun setWorldReadable() {
