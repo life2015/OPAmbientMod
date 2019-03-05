@@ -44,6 +44,31 @@ object MediaControl : IXposedHookLoadPackage {
                 }
             })
 
+
+        XposedHelpers.findAndHookMethod(
+            mediaSessionClass,
+            "setActive",
+            Boolean::class.java,
+            object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    val active = param.args[0] as Boolean
+
+                    MainHook.logD("Media set Active Status: $active")
+
+                }
+            })
+
+        XposedHelpers.findAndHookMethod(
+            mediaSessionClass,
+            "release",
+            object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+
+                    MainHook.logD("Media Session Release")
+
+                }
+            })
+
     }
 
     fun saveMetaData(data: MediaMetadata) {

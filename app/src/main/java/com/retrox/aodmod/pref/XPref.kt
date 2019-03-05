@@ -26,5 +26,6 @@ object XPref {
     fun getFilpOffMode() = XPref.getPref().getBoolean("FILPOFFSCREEN", true)
     fun getAodShowSensitiveContent() = XPref.getPref().getBoolean("AODSHOWSENSITIVECONTENT", true)
     fun getFontWithSystem() = XPref.getPref().getBoolean("FONTWITHSYSTEM", false)
+    fun getMusicOffsetEnabled() = XPref.getPref().getBoolean("MUSICDISPLAYOFFSET", false)
 
 }

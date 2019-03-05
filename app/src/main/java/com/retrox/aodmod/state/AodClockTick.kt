@@ -1,7 +1,9 @@
 package com.retrox.aodmod.state
 
+import android.app.AndroidAppHelper
 import android.arch.lifecycle.MutableLiveData
 import android.os.Handler
+import android.os.SystemClock
 import com.retrox.aodmod.MainHook
 
 /**
@@ -25,15 +27,15 @@ object AodClockTick {
     private val delay = 40 * 1000L
     private val runnable = object : Runnable {
         override fun run() {
-            /* do what you need to do */
             AodClockTick.tickLiveData.postValue("Tick!")
             MainHook.logD("Tick By Handler Ticker")
-            /* and here comes the "trick" */
-            handler.postDelayed(this, delay)
+            val now = SystemClock.uptimeMillis()
+            val time = (1000 - (now % 1000)) + now + 30*1000L
+            handler.postAtTime(this, time)
         }
     }
 
-    private val handler = Handler()
+    private val handler = Handler(AndroidAppHelper.currentApplication().mainLooper)
 
     private fun startTick() {
         handler.postDelayed(runnable, delay)

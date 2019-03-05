@@ -65,6 +65,21 @@ class AlwaysOnSettings : AppCompatActivity() {
                     verticalMargin = dip(12)
                     horizontalMargin = dip(8)
                 }
+
+                title("一加6T 专属音乐显示偏移")
+                content("蛋疼的一加6T音乐和屏幕指纹位置冲突了 开启后音乐显示向上偏移到一个合适位置")
+                toggleButton {
+                    textOn = "已开启音乐向上偏移"
+                    textOff = "不偏移 打扰了"
+                    isChecked = AppPref.musicDisplayOffset
+                    onCheckedChange { _, isChecked ->
+                        AppPref.musicDisplayOffset = isChecked
+                        Toast.makeText(context, "音乐向上偏移:${AppPref.musicDisplayOffset}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
             }
         }
 

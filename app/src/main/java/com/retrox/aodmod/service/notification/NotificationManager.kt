@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.state.AodMedia
 import de.robv.android.xposed.XposedHelpers
 
 object NotificationManager {
@@ -43,12 +44,22 @@ object NotificationManager {
 
     fun notifyRefresh() {
         notificationStatusLiveData.postValue(null)
+
+        // todo 按理说不应该放在这里 但是也没啥办法
+        val musicActive = notificationMap.values.any {
+            val hasMediaSession = XposedHelpers.callMethod(it.notification, "hasMediaSession") as Boolean
+            hasMediaSession
+        }
+        if (!musicActive) {
+            AodMedia.aodMediaLiveData.postValue(null)
+        }
     }
 }
 
 fun Notification.debugMessage(type: String = "Posted") {
     val (appName, title, content, isOnGoing) = getNotificationData()
-    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing ")
+    val hasMediaSession = XposedHelpers.callMethod(this, "hasMediaSession") as Boolean
+    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing hasMeidaSession: $hasMediaSession")
 }
 
 fun Notification.getNotificationData(): NotificationData {

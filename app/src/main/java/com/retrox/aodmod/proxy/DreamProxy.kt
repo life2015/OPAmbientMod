@@ -61,6 +61,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     override fun onDreamingStarted() {
         AodState.dreamState.postValue(AodState.DreamState.ACTIVE)
         MainHook.logD("DreamProxy -> onDreamingStarted")
+        MainHook.logD("DreamProxy -> Can Doze ${XposedHelpers.callMethod(dreamService, "canDoze") as Boolean}")
 
         val layout = context.aodMainView(this) as ViewGroup
         val aodMainLayout = layout.findViewById<ConstraintLayout>(Ids.ly_main)
@@ -127,8 +128,11 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         windowManager.removeViewImmediate(mainView)
     }
 
-    override fun onWakingUp() {
-        MainHook.logD("DreamProxy -> onWakingUp")
+    override fun onWakingUp(reason: String) {
+        MainHook.logD("DreamProxy -> onWakingUp reason-> $reason")
+        if (reason == "android.server.wm:TURN_ON") {
+            setScreenOff()
+        }
 
     }
 

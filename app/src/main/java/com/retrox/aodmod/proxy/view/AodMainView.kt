@@ -45,12 +45,16 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
 
             val musicView = aodMusicView(lifecycleOwner).apply {
                 id = Ids.ly_music_control
-
             }.lparams(width = matchParent, height = wrapContent) {
                 endToEnd = PARENT_ID
                 startToStart = PARENT_ID
-                bottomToTop = Ids.tv_battery
-                bottomMargin = dip(24)
+                if (XPref.getMusicOffsetEnabled()) {
+                    bottomToBottom = PARENT_ID
+                    bottomMargin = dip(200)
+                } else {
+                    bottomToTop = Ids.tv_battery
+                    bottomMargin = dip(24)
+                }
             }
             if (!XPref.getMusicAodEnabled()) {
                 musicView.visibility = View.INVISIBLE

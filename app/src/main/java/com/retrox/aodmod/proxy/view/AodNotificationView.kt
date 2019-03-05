@@ -6,8 +6,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.graphics.Color
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.widget.TextView
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
@@ -29,6 +31,7 @@ fun Context.aodNotification(lifecycleOwner: LifecycleOwner): View {
         }.lparams(width = matchParent, height = wrapContent) {
             gravity = Gravity.CENTER_HORIZONTAL
             topMargin = dip(16)
+            horizontalMargin = dip(16)
         }
 
         val title = textView {
@@ -39,6 +42,8 @@ fun Context.aodNotification(lifecycleOwner: LifecycleOwner): View {
         }.lparams(width = matchParent, height = wrapContent) {
             gravity = Gravity.CENTER_HORIZONTAL
             topMargin = dip(46)
+            horizontalMargin = dip(16)
+
         }
 
         val content = textView {
@@ -46,9 +51,13 @@ fun Context.aodNotification(lifecycleOwner: LifecycleOwner): View {
             textSize = 16f
             setGoogleSans()
             gravity = Gravity.CENTER_HORIZONTAL
-        }.lparams(width = matchParent, height = wrapContent) {
+//            setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+            setAutoSizeTextTypeUniformWithConfiguration(12,18,1,TypedValue.COMPLEX_UNIT_SP)
+
+        }.lparams(width = matchParent, height = dip(200)) {
             gravity = Gravity.CENTER_HORIZONTAL
             topMargin = dip(26)
+            horizontalMargin = dip(16)
         }
 
 

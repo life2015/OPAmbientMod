@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import com.retrox.aodmod.MainHook
@@ -14,10 +15,7 @@ import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
 import de.robv.android.xposed.XposedHelpers
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.textColor
-import org.jetbrains.anko.textView
-import org.jetbrains.anko.verticalLayout
+import org.jetbrains.anko.*
 
 fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
     return verticalLayout {
@@ -29,6 +27,8 @@ fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
             setGoogleSans()
             gravity = Gravity.CENTER_HORIZONTAL
             text = ""
+        }.lparams(matchParent, wrapContent) {
+            horizontalMargin = dip(16)
         }
 
         val content = textView {
@@ -37,11 +37,18 @@ fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
             setGoogleSans()
             gravity = Gravity.CENTER_HORIZONTAL
             text = ""
-        }.lparams {
+            setAutoSizeTextTypeUniformWithConfiguration(12,16,1, TypedValue.COMPLEX_UNIT_SP)
+
+        }.lparams(matchParent, dip(200)) {
             topMargin = dip(8)
+            horizontalMargin = dip(16)
         }
 
         NotificationManager.notificationStatusLiveData.observe(lifecycleOwner, Observer {
+            if (it == null) { // 就是 REFRESHED 状态 因为Sbn无法为空 就这样子吧先
+                title.text = ""
+                content.text = ""
+            }
             it?.let { (sbn, status) ->
                 if (status == NotificationManager.POSTED) {
                     val realNotification = NotificationManager.notificationMap[sbn.key]?.notification

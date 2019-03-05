@@ -18,7 +18,8 @@ object FlipOffSensor {
     const val Flip_OFF = "Flip_OFF"
 
     private const val z_divider = 0.3f
-    private const val farDivider = 80
+    private var farDivider = 80
+    private var proximityMaxRange = 5.0f
 
     @Volatile
     private var flipStateInner = true // 为了避免读写冲突
@@ -39,7 +40,7 @@ object FlipOffSensor {
         }
     }
 
-    // 测试翻转
+    // 测试翻转 暂时不检测这个
     private val rotationVectorListener = object : SensorEventListener {
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
 
@@ -71,15 +72,22 @@ object FlipOffSensor {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
                 MainHook.logD("proximity ${event.values.toList()}")
-                val farVariable = it.values[1] // 远距离大概是 0 - 80 口袋里或者扣着是 80 - 300 大概
-                if (farVariable <= farDivider && !flipStateInner) { // 距离变大 farVariable变小 发送开屏信号
+
+                val near = it.values[0] < proximityMaxRange // 第一个值小于 maxrange(一加6上是 5.0f) 说明太近(0f) 反之亦然
+                if (!near && !flipStateInner) { // 距离变大 farVariable变小 发送开屏信号
                     flipStateInner = true
                     flipSensorLiveData.postValue(FlipSensorData(Flip_ON, event.values.toList()))
                 }
-                if (farVariable > farDivider && flipStateInner) {
+                if (near && flipStateInner) {
                     flipStateInner = false
-                    flipSensorLiveData.postValue(FlipSensorData(Flip_OFF, event.values.toList())) // 距离变小 farVariable变大 关屏
+                    flipSensorLiveData.postValue(
+                        FlipSensorData(
+                            Flip_OFF,
+                            event.values.toList()
+                        )
+                    ) // 距离变小 farVariable变大 关屏
                 }
+
             }
         }
 
@@ -92,9 +100,12 @@ object FlipOffSensor {
 //            sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR/*, true*/),
 //            SensorManager.SENSOR_DELAY_NORMAL
 //        )
+
+        val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY, false)
+        proximityMaxRange = sensor.maximumRange
         sensorManager.registerListener(
             proximityListener,
-            sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY, false),
+            sensor,
             SensorManager.SENSOR_DELAY_NORMAL
         )
     }

@@ -3,6 +3,7 @@ package com.retrox.aodmod
 import android.util.Log
 import com.retrox.aodmod.BuildConfig.DEBUG
 import com.retrox.aodmod.hooks.*
+import com.retrox.aodmod.proxy.DreamLifeCycleHook
 import com.retrox.aodmod.proxy.DreamProxyHook
 import com.retrox.aodmod.proxy.ProxyInitHook
 import com.retrox.aodmod.receiver.ReceiverManager
@@ -37,6 +38,7 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         AodMainMediaHook.handleLoadPackage(lpparam)
 //        AodAlwaysOnHook.handleLoadPackage(lpparam)
         DreamProxyHook.handleLoadPackage(lpparam)
+//        DreamLifeCycleHook.handleLoadPackage(lpparam)
 
     }
 

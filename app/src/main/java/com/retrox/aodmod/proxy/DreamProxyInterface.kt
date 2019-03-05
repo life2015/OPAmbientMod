@@ -11,7 +11,7 @@ interface DreamProxyInterface {
     fun onAttachedToWindow()
     fun onDreamingStarted()
     fun onDreamingStopped()
-    fun onWakingUp()
+    fun onWakingUp(reason: String)
     fun onSingleTap()
 }
 

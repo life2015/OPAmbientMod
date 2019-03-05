@@ -18,14 +18,14 @@ import org.jetbrains.anko.constraint.layout.constraintLayout
 fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
     return verticalLayout {
 
-        imageView {
+        val imageIcon = imageView {
             setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_music))
         }.lparams(width = dip(24), height = dip(24)) {
             gravity = Gravity.CENTER_HORIZONTAL
             bottomMargin = dip(16)
         }
 
-        textView("无最近播放") {
+        val musicText = textView("无最近播放") {
             //            gravity = Gravity.CENTER
             id = Ids.tv_music
             textColor = Color.WHITE
@@ -34,22 +34,24 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
             gravity = Gravity.CENTER_HORIZONTAL
             setGoogleSans()
 
-            AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
-                MainHook.logD("Receive Media Data $it")
-                it?.let {
-                    this.text = "${it.name} - ${it.artist}"
-                }
-            })
+        }.lparams(width = matchParent, height = wrapContent)
 
-            AodMedia.aodMediaLiveData.observeForever {
-                MainHook.logD("Forever Receive Media Data $it")
+        visibility = View.INVISIBLE
+
+
+        AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
+            MainHook.logD("Receive Media Data $it")
+            if (it == null) {
+                visibility = View.INVISIBLE
             }
 
-        }.lparams(width = matchParent, height = wrapContent) {
-//            endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-//            startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-//            topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-        }
+            it?.let {
+                visibility = View.VISIBLE
+                musicText.text = "${it.name} - ${it.artist}"
+            }
+        })
+
+
         val controlPanel = constraintLayout {
             id = Ids.cl_media_control
 
@@ -85,7 +87,7 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
 
             visibility = View.GONE // todo 控制音乐播放能不能用的状态
         }.lparams(width = dip(200), height = wrapContent) {
-//            endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+            //            endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
 //            startToStart = ConstraintLayout.LayoutParams.PARENT_ID
 //            topToBottom = Ids.tv_music
             topMargin = dip(12)

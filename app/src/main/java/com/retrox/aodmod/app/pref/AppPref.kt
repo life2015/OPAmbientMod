@@ -12,6 +12,7 @@ object AppPref {
     var filpOffScreen by shared("FILPOFFSCREEN", true)
     var aodShowSensitiveContent by shared("AODSHOWSENSITIVECONTENT", true)
     var fontWithSystem by shared("FONTWITHSYSTEM", false)
+    var musicDisplayOffset by shared("MUSICDISPLAYOFFSET", false)
 
 
     @SuppressLint("SetWorldReadable")
