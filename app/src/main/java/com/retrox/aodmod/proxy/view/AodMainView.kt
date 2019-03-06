@@ -50,7 +50,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                 startToStart = PARENT_ID
                 if (XPref.getMusicOffsetEnabled()) {
                     bottomToBottom = PARENT_ID
-                    bottomMargin = dip(200)
+                    bottomMargin = dip(180)
                 } else {
                     bottomToTop = Ids.tv_battery
                     bottomMargin = dip(24)
@@ -131,6 +131,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                             scaleX = 1.0f
                             scaleY = 1.0f
                         }
+                        findViewById<View>(Ids.ly_notification).visibility = View.INVISIBLE
                         findViewById<View>(Ids.view_divider).visibility = View.VISIBLE
                         findViewById<View>(Ids.ll_icons).visibility = View.VISIBLE
                         findViewById<View>(Ids.tv_today).visibility = View.VISIBLE

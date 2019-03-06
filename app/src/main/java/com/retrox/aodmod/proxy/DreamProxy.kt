@@ -36,6 +36,7 @@ import java.util.*
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
     private val lifecycleRegistry = LifecycleRegistry(this)
     override fun getLifecycle(): Lifecycle = lifecycleRegistry
+    var lastScreenOnTime = 0L
 
     val context: Context = dreamService
     val windowManager by lazy {
@@ -62,6 +63,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         AodState.dreamState.postValue(AodState.DreamState.ACTIVE)
         MainHook.logD("DreamProxy -> onDreamingStarted")
         MainHook.logD("DreamProxy -> Can Doze ${XposedHelpers.callMethod(dreamService, "canDoze") as Boolean}")
+        lastScreenOnTime = System.currentTimeMillis()
 
         val layout = context.aodMainView(this) as ViewGroup
         val aodMainLayout = layout.findViewById<ConstraintLayout>(Ids.ly_main)
@@ -76,7 +78,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             FlipOffSensor.flipSensorLiveData.observe(this, android.arch.lifecycle.Observer {
                 it?.let {
                     MainHook.logD("Flip State: $it")
-                    when(it.suggestState) {
+                    when (it.suggestState) {
                         FlipOffSensor.Flip_ON -> setScreenDoze()
                         FlipOffSensor.Flip_OFF -> setScreenOff()
                     }
@@ -93,6 +95,10 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             aodMainLayout.apply {
                 translationX = horizontal.toFloat()
                 translationY = -vertical.toFloat()
+            }
+
+            if ((System.currentTimeMillis() - lastScreenOnTime) > 60 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled()) {
+                setScreenOff() // 一小时自动息屏
             }
 
             MainHook.logD("防烧屏: x offset:$horizontal y offset:$vertical")

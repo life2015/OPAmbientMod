@@ -36,7 +36,7 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
 
         }.lparams(width = matchParent, height = wrapContent)
 
-        visibility = View.INVISIBLE
+        visibility = View.INVISIBLE // todo 这里可能会让一部分人有bug 但是我他妈不想修啊
 
 
         AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {

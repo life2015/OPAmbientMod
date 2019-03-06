@@ -13,6 +13,7 @@ object AppPref {
     var aodShowSensitiveContent by shared("AODSHOWSENSITIVECONTENT", true)
     var fontWithSystem by shared("FONTWITHSYSTEM", false)
     var musicDisplayOffset by shared("MUSICDISPLAYOFFSET", false)
+    var autoCloseAfterHour by shared("AUTOCLOSEAFTERHOUR", true)
 
 
     @SuppressLint("SetWorldReadable")

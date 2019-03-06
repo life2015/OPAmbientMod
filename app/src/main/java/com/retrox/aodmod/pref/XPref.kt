@@ -27,5 +27,6 @@ object XPref {
     fun getAodShowSensitiveContent() = XPref.getPref().getBoolean("AODSHOWSENSITIVECONTENT", true)
     fun getFontWithSystem() = XPref.getPref().getBoolean("FONTWITHSYSTEM", false)
     fun getMusicOffsetEnabled() = XPref.getPref().getBoolean("MUSICDISPLAYOFFSET", false)
+    fun getAutoScreenOffAfterHourEnabled() = XPref.getPref().getBoolean("AUTOCLOSEAFTERHOUR", true)
 
 }

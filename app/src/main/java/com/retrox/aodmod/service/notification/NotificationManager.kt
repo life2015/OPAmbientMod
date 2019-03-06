@@ -59,7 +59,26 @@ object NotificationManager {
 fun Notification.debugMessage(type: String = "Posted") {
     val (appName, title, content, isOnGoing) = getNotificationData()
     val hasMediaSession = XposedHelpers.callMethod(this, "hasMediaSession") as Boolean
-    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing hasMeidaSession: $hasMediaSession")
+    val extras = extras
+    val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
+    val histMessages = extras.getParcelableArray(Notification.EXTRA_HISTORIC_MESSAGES)
+
+    try {
+        val newMessages = XposedHelpers.callStaticMethod(Notification.MessagingStyle.Message::class.java, "getMessagesFromBundleArray", messages) as List<Notification.MessagingStyle.Message>
+        val newHistoricMessages = XposedHelpers.callStaticMethod(Notification.MessagingStyle.Message::class.java, "getMessagesFromBundleArray", histMessages) as List<Notification.MessagingStyle.Message>
+        newMessages.forEach {
+            MainHook.logD("new message : ${it.text}")
+        }
+        newHistoricMessages.forEach {
+            MainHook.logD("newHistroy message : ${it.text}")
+
+        }
+    } catch (e: Exception) {
+
+    }
+
+
+    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing hasMeidaSession: $hasMediaSession \n bundle $extras")
 }
 
 fun Notification.getNotificationData(): NotificationData {

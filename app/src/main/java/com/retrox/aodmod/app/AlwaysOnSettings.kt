@@ -80,6 +80,21 @@ class AlwaysOnSettings : AppCompatActivity() {
                     verticalMargin = dip(12)
                     horizontalMargin = dip(8)
                 }
+
+                title("常亮一小时后自动关屏")
+                content("...有需求就做吧")
+                toggleButton {
+                    textOn = "常亮一小时自动关屏"
+                    textOff = "常亮一小时不自动关屏"
+                    isChecked = AppPref.autoCloseAfterHour
+                    onCheckedChange { _, isChecked ->
+                        AppPref.autoCloseAfterHour = isChecked
+                        Toast.makeText(context, "常亮一小时自动关屏:${AppPref.autoCloseAfterHour}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
             }
         }
 
