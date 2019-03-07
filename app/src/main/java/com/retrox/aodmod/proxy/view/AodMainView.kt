@@ -63,6 +63,15 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             }
             addView(musicView)
 
+            val threeKeyView = aodThreeKeyView(lifecycleOwner).apply {
+                id = Ids.ly_three_key
+            }.lparams(width = wrapContent, height = wrapContent) {
+                endToEnd = PARENT_ID
+                topToTop = PARENT_ID
+                topMargin = dip(130)
+            }
+            addView(threeKeyView)
+
 
             val notificationView = aodNotification(lifecycleOwner).apply {
                 id = Ids.ly_notification
@@ -75,7 +84,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             }
             addView(notificationView)
 
-            textView("") {
+            textView {
                 id = Ids.tv_battery
                 textColor = Color.WHITE
                 setGoogleSans()

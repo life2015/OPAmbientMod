@@ -19,28 +19,29 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.ColorMatrix
-
+import de.robv.android.xposed.XposedHelpers
 
 
 fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
     return constraintLayout {
-        textView {
+        textClock {
             id = Ids.tv_clock
             textColor = Color.WHITE
             textSize = 50f
             letterSpacing = 0.1f
             setGoogleSans()
 
-            text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
+            format12Hour = "HH:mm"
+//            text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
+                XposedHelpers.callMethod(this@textClock, "refresh")
             })
         }.lparams(width = wrapContent, height = wrapContent) {
             endToEnd = PARENT_ID
             startToStart = PARENT_ID
             topToTop = PARENT_ID
         }
-        textView("Wed  Nov. 28") {
+        textView {
             id = Ids.tv_today
             textColor = Color.WHITE
             textSize = 18f
@@ -58,6 +59,7 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
         view {
             backgroundColor = Color.WHITE
             id = Ids.view_divider
+//            visibility = View.INVISIBLE
         }.lparams(width = dip(12), height = dip(2)) {
             endToEnd = PARENT_ID
             startToStart = PARENT_ID
@@ -71,6 +73,7 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
             val refreshBlock = {
                 val icons = NotificationManager.notificationMap.values.asSequence()
                     .map { it.notification }
+                    .filterNot { it.priority < 0 } // 过滤掉不重要通知
 //                    .filter { it. }
                     .map {
                         try {

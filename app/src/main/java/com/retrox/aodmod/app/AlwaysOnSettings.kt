@@ -33,6 +33,21 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
+                title("息屏光感调整亮度")
+                content("息屏之后通过光线传感器来调整亮度，节省电量")
+                toggleButton {
+                    textOn = "息屏自动亮度开"
+                    textOff = "息屏关闭自动亮度"
+                    isChecked = AppPref.autoBrightness
+                    onCheckedChange { _, isChecked ->
+                        AppPref.autoBrightness = isChecked
+                        Toast.makeText(context, "息屏自动亮度:${AppPref.autoBrightness}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
+
                 title("息屏消息驻留敏感消息内容设置")
                 content("部分人不希望息屏的时候，自己最近的信息不要一直出现在息屏上，避免造成不必要的尴尬。\n关闭之后，电话信息，短信，QQ，微信信息具体内容不会显示在息屏上，仅显示标题作为提醒")
                 toggleButton {

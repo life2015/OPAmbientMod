@@ -50,7 +50,10 @@ object NotificationManager {
             val hasMediaSession = XposedHelpers.callMethod(it.notification, "hasMediaSession") as Boolean
             hasMediaSession
         }
-        if (!musicActive) {
+        val musicNotification = notificationMap.values.any { // 避免一部分人不开系统通知栏
+            it.packageName == "com.tencent.qqmusic" || it.packageName == "com.netease.cloudmusic" || it.packageName == "code.name.monkey.retromusic"
+        }
+        if (!musicActive && !musicNotification) {
             AodMedia.aodMediaLiveData.postValue(null)
         }
     }
@@ -63,29 +66,30 @@ fun Notification.debugMessage(type: String = "Posted") {
     val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
     val histMessages = extras.getParcelableArray(Notification.EXTRA_HISTORIC_MESSAGES)
 
-    try {
-        val newMessages = XposedHelpers.callStaticMethod(Notification.MessagingStyle.Message::class.java, "getMessagesFromBundleArray", messages) as List<Notification.MessagingStyle.Message>
-        val newHistoricMessages = XposedHelpers.callStaticMethod(Notification.MessagingStyle.Message::class.java, "getMessagesFromBundleArray", histMessages) as List<Notification.MessagingStyle.Message>
-        newMessages.forEach {
-            MainHook.logD("new message : ${it.text}")
-        }
-        newHistoricMessages.forEach {
-            MainHook.logD("newHistroy message : ${it.text}")
+// todo 兼容Nevo增强的通知
+//    try {
+//        val newMessages = XposedHelpers.callStaticMethod(Notification.MessagingStyle.Message::class.java, "getMessagesFromBundleArray", messages) as List<Notification.MessagingStyle.Message>
+//        val newHistoricMessages = XposedHelpers.callStaticMethod(Notification.MessagingStyle.Message::class.java, "getMessagesFromBundleArray", histMessages) as List<Notification.MessagingStyle.Message>
+//        newMessages.forEach {
+//            MainHook.logD("new message : ${it.text}")
+//        }
+//        newHistoricMessages.forEach {
+//            MainHook.logD("newHistroy message : ${it.text}")
+//
+//        }
+//    } catch (e: Exception) {
+//
+//    }
 
-        }
-    } catch (e: Exception) {
 
-    }
-
-
-    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing hasMeidaSession: $hasMediaSession \n bundle $extras")
+    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing hasMeidaSession: $hasMediaSession visbility: $visibility  priority: $priority")
 }
 
 fun Notification.getNotificationData(): NotificationData {
     val builder = Notification.Builder.recoverBuilder(AndroidAppHelper.currentApplication().applicationContext, this)
     val appName = XposedHelpers.callMethod(builder, "loadHeaderAppName") as String
 
-    val title = extras.getString(Notification.EXTRA_TITLE) ?: ""
+    val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
     val content = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: "" // 不能直接取String Spannable的时候会CastException
     val isOnGoing = flags and Notification.FLAG_ONGOING_EVENT
 

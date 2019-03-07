@@ -24,13 +24,13 @@ object AodClockTick {
         }
     }
 
-    private val delay = 40 * 1000L
+    private val delay = 60 * 1000L
     private val runnable = object : Runnable {
         override fun run() {
             AodClockTick.tickLiveData.postValue("Tick!")
             MainHook.logD("Tick By Handler Ticker")
             val now = SystemClock.uptimeMillis()
-            val time = (1000 - (now % 1000)) + now + 30*1000L
+            val time = (1000 - (now % 1000)) + now + 60*1000L
             handler.postAtTime(this, time)
         }
     }

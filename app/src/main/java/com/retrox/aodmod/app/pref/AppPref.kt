@@ -14,6 +14,7 @@ object AppPref {
     var fontWithSystem by shared("FONTWITHSYSTEM", false)
     var musicDisplayOffset by shared("MUSICDISPLAYOFFSET", false)
     var autoCloseAfterHour by shared("AUTOCLOSEAFTERHOUR", true)
+    var autoBrightness by shared("AUTOBRIGHTNESS", true)
 
 
     @SuppressLint("SetWorldReadable")

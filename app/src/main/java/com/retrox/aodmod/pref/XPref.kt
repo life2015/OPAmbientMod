@@ -28,5 +28,6 @@ object XPref {
     fun getFontWithSystem() = XPref.getPref().getBoolean("FONTWITHSYSTEM", false)
     fun getMusicOffsetEnabled() = XPref.getPref().getBoolean("MUSICDISPLAYOFFSET", false)
     fun getAutoScreenOffAfterHourEnabled() = XPref.getPref().getBoolean("AUTOCLOSEAFTERHOUR", true)
+    fun getAutoBrightnessEnabled() = XPref.getPref().getBoolean("AUTOBRIGHTNESS", true)
 
 }

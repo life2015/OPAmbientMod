@@ -33,6 +33,14 @@ object ReceiverManager {
 
         kotlin.run {
             val intentFilter = IntentFilter()
+            intentFilter.addAction("com.oem.intent.action.THREE_KEY_MODE")
+            val receiver = ZenModeReceiver()
+            AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter)
+            MainHook.logD("Receiver:: THREE_KEY_MODE Receiver registered ")
+        }
+
+        kotlin.run {
+            val intentFilter = IntentFilter()
             intentFilter.addAction("com.aodmod.sleep.on")
             intentFilter.addAction("com.aodmod.sleep.off")
             val receiver = SleepModeReceiver()

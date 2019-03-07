@@ -306,6 +306,7 @@ class MainActivity : AppCompatActivity() {
 
                         } catch (ex: Exception) {
                             ex.printStackTrace()
+                            Toast.makeText(context, "出现错误，可能是无法获取Root权限", Toast.LENGTH_SHORT).show()
                         }
                     }
 

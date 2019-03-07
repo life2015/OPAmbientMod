@@ -25,7 +25,7 @@ object MediaControl : IXposedHookLoadPackage {
             MediaMetadata::class.java,
             object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                    val mediaMetadata = param.args[0] as MediaMetadata
+                    val mediaMetadata = param.args[0] as? MediaMetadata ?: return
 
                     val albumName = mediaMetadata.getString(MediaMetadata.METADATA_KEY_ALBUM)
                     val artist = mediaMetadata.getString(MediaMetadata.METADATA_KEY_ARTIST)

@@ -1,29 +1,23 @@
 package com.retrox.aodmod.proxy
 
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.AndroidAppHelper
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.os.Handler
 import android.service.dreams.DreamService
 import android.support.constraint.ConstraintLayout
 import android.transition.TransitionManager
-import android.util.DisplayMetrics
 import android.view.Display
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.FrameLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
+import com.retrox.aodmod.proxy.sensor.LightSensor
 import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodMainView
 import com.retrox.aodmod.receiver.ReceiverManager
@@ -31,6 +25,7 @@ import com.retrox.aodmod.service.notification.NotificationCollectorService
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
+import android.arch.lifecycle.Observer
 import java.util.*
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
@@ -74,10 +69,13 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             duration = 800L
         }.start()
 
+        // 翻转 口袋
         if (XPref.getFilpOffMode()) {
-            FlipOffSensor.flipSensorLiveData.observe(this, android.arch.lifecycle.Observer {
+            FlipOffSensor.flipSensorLiveData.observe(this, Observer {
                 it?.let {
                     MainHook.logD("Flip State: $it")
+                    AodClockTick.tickLiveData.postValue("Tick from Light Sensor")
+
                     when (it.suggestState) {
                         FlipOffSensor.Flip_ON -> setScreenDoze()
                         FlipOffSensor.Flip_OFF -> setScreenOff()
@@ -86,8 +84,24 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             })
         }
 
+        if (XPref.getAutoBrightnessEnabled()) {
+            LightSensor.lightSensorLiveData.observe(this, Observer {
+                it?.let { (suggestAlpha, _)  ->
+                    MainHook.logD("Light Sensor Alpha: $suggestAlpha")
+                    AodClockTick.tickLiveData.postValue("Tick from Light Sensor")
+                    TransitionManager.beginDelayedTransition(layout)
+                    aodMainLayout.alpha = suggestAlpha
+                }
+            })
+        }
+
+        var lastScreenBurnUpdate = System.currentTimeMillis()
         // 防烧屏
-        AodClockTick.tickLiveData.observe(this, android.arch.lifecycle.Observer {
+        AodClockTick.tickLiveData.observe(this, Observer {
+
+            if (System.currentTimeMillis() - lastScreenBurnUpdate < 1000L * 30L) return@Observer // 避免太能挪动了...
+
+            lastScreenBurnUpdate = System.currentTimeMillis()
             val vertical = Random().nextInt(80)
             val horizontal = Random().nextInt(20) - 10
 

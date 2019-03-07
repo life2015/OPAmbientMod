@@ -23,4 +23,6 @@ object Ids {
     val ly_notification = View.generateViewId()
 
     val ly_important_message = View.generateViewId()
+
+    val ly_three_key = View.generateViewId()
 }
