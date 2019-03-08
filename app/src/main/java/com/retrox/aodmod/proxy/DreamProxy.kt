@@ -26,6 +26,7 @@ import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
 import android.arch.lifecycle.Observer
+import android.os.Looper
 import java.util.*
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
@@ -57,17 +58,23 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     override fun onDreamingStarted() {
         AodState.dreamState.postValue(AodState.DreamState.ACTIVE)
         MainHook.logD("DreamProxy -> onDreamingStarted")
-        MainHook.logD("DreamProxy -> Can Doze ${XposedHelpers.callMethod(dreamService, "canDoze") as Boolean}")
         lastScreenOnTime = System.currentTimeMillis()
 
         val layout = context.aodMainView(this) as ViewGroup
         val aodMainLayout = layout.findViewById<ConstraintLayout>(Ids.ly_main)
         mainView = layout
-
         windowManager.addView(mainView, getAodViewLayoutParams())
-        ObjectAnimator.ofFloat(aodMainLayout, View.ALPHA, 0f, 1f).apply {
-            duration = 800L
-        }.start()
+
+        aodMainLayout.visibility = View.INVISIBLE
+        setScreenDoze()
+
+        Handler(Looper.getMainLooper()).post {
+            XposedHelpers.callMethod(dreamService, "startDozing")
+            aodMainLayout.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(aodMainLayout, View.ALPHA, 0f, 1f).apply {
+                duration = 800L
+            }.start()
+        }
 
         // 翻转 口袋
         if (XPref.getFilpOffMode()) {
@@ -86,10 +93,9 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
         if (XPref.getAutoBrightnessEnabled()) {
             LightSensor.lightSensorLiveData.observe(this, Observer {
-                it?.let { (suggestAlpha, _)  ->
+                it?.let { (suggestAlpha, _) ->
                     MainHook.logD("Light Sensor Alpha: $suggestAlpha")
                     AodClockTick.tickLiveData.postValue("Tick from Light Sensor")
-                    TransitionManager.beginDelayedTransition(layout)
                     aodMainLayout.alpha = suggestAlpha
                 }
             })
@@ -119,8 +125,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         })
 
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        XposedHelpers.callMethod(dreamService, "startDozing")
-        setScreenDoze()
+
 //        XposedHelpers.callMethod(dreamService, "setInteractive", true)
 
         if (AodState.sleepMode) {
