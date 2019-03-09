@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
+import android.os.Looper
 import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
 import android.transition.TransitionManager
 import android.view.View
@@ -66,9 +67,13 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             val threeKeyView = aodThreeKeyView(lifecycleOwner).apply {
                 id = Ids.ly_three_key
             }.lparams(width = wrapContent, height = wrapContent) {
+//                endToEnd = PARENT_ID
+//                topToTop = PARENT_ID
+//                topMargin = dip(130)
+                startToStart = PARENT_ID
                 endToEnd = PARENT_ID
-                topToTop = PARENT_ID
-                topMargin = dip(130)
+                bottomToTop = Ids.ly_clock
+                bottomMargin = dip(6)
             }
             addView(threeKeyView)
 
@@ -128,7 +133,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
 //                    setMargin(Ids.ly_notification, 3, dip(12))
                     }
 
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         TransitionManager.beginDelayedTransition(this)
                         this.applyConstraintSet {
                             setVisibility(Ids.ly_important_message, View.VISIBLE)

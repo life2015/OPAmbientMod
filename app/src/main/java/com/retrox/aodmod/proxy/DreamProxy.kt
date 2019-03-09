@@ -108,7 +108,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             if (System.currentTimeMillis() - lastScreenBurnUpdate < 1000L * 30L) return@Observer // 避免太能挪动了...
 
             lastScreenBurnUpdate = System.currentTimeMillis()
-            val vertical = Random().nextInt(80)
+            val vertical = Random().nextInt(50)
             val horizontal = Random().nextInt(20) - 10
 
             TransitionManager.beginDelayedTransition(layout)

@@ -2,6 +2,7 @@ package com.retrox.aodmod.state
 
 import android.arch.lifecycle.MutableLiveData
 import com.retrox.aodmod.data.NowPlayingMediaData
+import com.retrox.aodmod.extensions.LiveEvent
 import com.retrox.aodmod.receiver.PowerData
 
 object AodState {
@@ -32,5 +33,5 @@ object AodState {
 
     val powerState = MutableLiveData<PowerData>()
 
-    val aodThreeKeyState = MutableLiveData<Int>() // 0 -> changing 1 -> mute 2 -> vibrate 3 -> ring
+    val aodThreeKeyState = LiveEvent<Int>() // 0 -> changing 1 -> mute 2 -> vibrate 3 -> ring
 }

@@ -1,6 +1,5 @@
 package com.retrox.aodmod.proxy.view
 
-import android.app.Notification
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
@@ -9,7 +8,6 @@ import android.graphics.Color
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
-import android.widget.TextView
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
@@ -81,6 +79,11 @@ fun Context.aodNotification(lifecycleOwner: LifecycleOwner): View {
     }
 }
 
+/**
+ * 有bug 在三段式的时候 如果说observeNew的时候 传入的obj很容易被equals
+ * 就会烂掉
+ * todo 修复
+ */
 fun<T> LiveData<T>.observeNew(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
     val prevValue = value
     observe(lifecycleOwner, Observer {

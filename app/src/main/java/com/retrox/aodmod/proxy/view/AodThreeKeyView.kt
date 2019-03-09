@@ -3,8 +3,10 @@ package com.retrox.aodmod.proxy.view
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.content.Context
+import android.transition.TransitionManager
 import android.view.View
 import android.widget.FrameLayout
+import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.state.AodState
@@ -17,9 +19,12 @@ fun Context.aodThreeKeyView(lifecycleOwner: LifecycleOwner): FrameLayout {
         imageView {
             visibility = View.INVISIBLE
 
-            val runnable = Runnable { this@imageView.visibility = View.INVISIBLE }
+            val runnable = Runnable {
+                TransitionManager.beginDelayedTransition(this@frameLayout)
+                this@imageView.visibility = View.INVISIBLE
+            }
 
-            AodState.aodThreeKeyState.observeNew(lifecycleOwner, Observer {
+            AodState.aodThreeKeyState.observeNewOnly(lifecycleOwner, Observer {
                 it?.let { state ->
                     val resourceUtils = ResourceUtils.getInstance(this)
                     val drawable = when (state) {
@@ -31,15 +36,15 @@ fun Context.aodThreeKeyView(lifecycleOwner: LifecycleOwner): FrameLayout {
 
                     drawable?.let {
                         removeCallbacks(runnable)
+                        TransitionManager.beginDelayedTransition(this@frameLayout)
                         this.visibility = View.VISIBLE
                         this.setImageDrawable(it)
 
-                        postDelayed(runnable, 4000L)
+                        postDelayed(runnable, 3000L)
                     }
                 }
             })
-        }.lparams(dip(36), dip(36)) {
-            rightMargin = dip(16)
+        }.lparams(dip(28), dip(28)) {
         }
     }
 }
