@@ -65,6 +65,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         mainView = layout
         windowManager.addView(mainView, getAodViewLayoutParams())
 
+        updateRunStatus()
+
         aodMainLayout.visibility = View.INVISIBLE
         setScreenDoze()
 
@@ -135,6 +137,14 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
                 }
             }, 10000L)
         }
+    }
+
+    /**
+     * 和模块通信展示HookTimes
+     * todo 修改通信模式
+     */
+    fun updateRunStatus() {
+
     }
 
     fun setScreenDoze() {

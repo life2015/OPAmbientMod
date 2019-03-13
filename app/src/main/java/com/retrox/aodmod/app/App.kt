@@ -18,6 +18,7 @@ class App : Application() {
             application.packageManager.getPackageInfo(application.packageName, 0).versionName
         }
 
+        // context.getPackageName() + "_preferences"
         val defaultSharedPreferences: SharedPreferences by lazy { application.defaultSharedPreferences }
     }
 

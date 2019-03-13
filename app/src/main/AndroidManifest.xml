@@ -14,13 +14,13 @@
 
         <meta-data
                 android:name="xposedmodule"
-                android:value="true" />
+                android:value="true"/>
         <meta-data
                 android:name="xposeddescription"
-                android:value="OnePlusOS AOD MOD" />
+                android:value="OnePlusOS AOD MOD"/>
         <meta-data
                 android:name="xposedminversion"
-                android:value="90" />
+                android:value="90"/>
 
         <activity android:name=".app.MainActivity">
             <intent-filter>
@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".app.view.NewMainActivity" android:exported="true"/>
         <activity android:name=".app.MusicSettingsActivity"/>
         <activity android:name=".app.AodModeActivity"/>
         <activity android:name=".app.SleepModeActivity"/>

@@ -43,4 +43,5 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation "org.jetbrains.anko:anko-cardview-v7:$anko_version"
     implementation 'com.oasisfeng.nevo:sdk:1.1.1'
+//    implementation 'com.crossbowffs.remotepreferences:remotepreferences:0.7'
 }
