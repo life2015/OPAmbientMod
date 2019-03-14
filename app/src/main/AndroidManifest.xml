@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.retrox.aodmod">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.retrox.aodmod">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
             android:allowBackup="true"
@@ -10,7 +13,8 @@
             android:name=".app.App"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data
                 android:name="xposedmodule"
@@ -23,13 +27,17 @@
                 android:value="90"/>
 
         <activity android:name=".app.MainActivity">
+
+        </activity>
+        <activity
+                android:name=".app.view.NewMainActivity"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".app.view.NewMainActivity" android:exported="true"/>
         <activity android:name=".app.MusicSettingsActivity"/>
         <activity android:name=".app.AodModeActivity"/>
         <activity android:name=".app.SleepModeActivity"/>

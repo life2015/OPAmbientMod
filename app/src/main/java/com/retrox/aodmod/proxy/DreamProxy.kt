@@ -27,6 +27,7 @@ import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
 import android.arch.lifecycle.Observer
 import android.os.Looper
+import com.retrox.aodmod.extensions.UserInfoUtils
 import java.util.*
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
@@ -64,8 +65,6 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         val aodMainLayout = layout.findViewById<ConstraintLayout>(Ids.ly_main)
         mainView = layout
         windowManager.addView(mainView, getAodViewLayoutParams())
-
-        updateRunStatus()
 
         aodMainLayout.visibility = View.INVISIBLE
         setScreenDoze()
@@ -139,13 +138,6 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         }
     }
 
-    /**
-     * 和模块通信展示HookTimes
-     * todo 修改通信模式
-     */
-    fun updateRunStatus() {
-
-    }
 
     fun setScreenDoze() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)

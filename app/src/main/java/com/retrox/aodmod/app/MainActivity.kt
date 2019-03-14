@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         scrollView {
             verticalLayout {
                 cardView {
-                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorPixelBlue))
                     radius = dip(12).toFloat()
 
                     textView {
@@ -260,54 +260,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     setOnClickListener {
-                        try {
-                            var line: String
-                            val process = Runtime.getRuntime().exec("su")
-                            val stdin = process.outputStream
-                            val stderr = process.errorStream
-                            val stdout = process.inputStream
-
-                            stdin.write("ps -e \n".toByteArray())
-                            stdin.flush()
-                            stdin.write("exit\n".toByteArray())
-                            stdin.close()
-
-                            var br = BufferedReader(InputStreamReader(stdout))
-                            br.lineSequence().forEach {
-                                if (it.contains("com.oneplus.aod")) {
-                                    val strings = it.split(" ".toRegex()).filterNot { it == "" || it == " " }
-                                    Log.d("[PidTEST]", strings.toString())
-
-                                    if (strings.isNotEmpty()) {
-                                        runOnUiThread {
-                                            Toast.makeText(
-                                                context,
-                                                "查询成功：Pid:${strings[1]} 已重启息屏程序 点击按钮可以再次重启",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                        pid = strings[1]
-                                    }
-                                }
-                            }
-
-                            br.close()
-                            br = BufferedReader(InputStreamReader(stderr))
-                            br.lineSequence().forEach {
-                                Log.e("[Error]", it)
-                            }
-
-                            br.close()
-
-                            process.waitFor()
-                            process.destroy()
-
-                            kill() // kill aod
-
-                        } catch (ex: Exception) {
-                            ex.printStackTrace()
-                            Toast.makeText(context, "出现错误，可能是无法获取Root权限", Toast.LENGTH_SHORT).show()
-                        }
+                        findProcessAndKill()
                     }
 
 
@@ -413,6 +366,57 @@ class MainActivity : AppCompatActivity() {
             false
         }
 
+    }
+
+    fun findProcessAndKill() {
+        try {
+            var line: String
+            val process = Runtime.getRuntime().exec("su")
+            val stdin = process.outputStream
+            val stderr = process.errorStream
+            val stdout = process.inputStream
+
+            stdin.write("ps -e \n".toByteArray())
+            stdin.flush()
+            stdin.write("exit\n".toByteArray())
+            stdin.close()
+
+            var br = BufferedReader(InputStreamReader(stdout))
+            br.lineSequence().forEach {
+                if (it.contains("com.oneplus.aod")) {
+                    val strings = it.split(" ".toRegex()).filterNot { it == "" || it == " " }
+                    Log.d("[PidTEST]", strings.toString())
+
+                    if (strings.isNotEmpty()) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                this,
+                                "查询成功：Pid:${strings[1]} 已重启息屏程序 点击按钮可以再次重启",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        pid = strings[1]
+                    }
+                }
+            }
+
+            br.close()
+            br = BufferedReader(InputStreamReader(stderr))
+            br.lineSequence().forEach {
+                Log.e("[Error]", it)
+            }
+
+            br.close()
+
+            process.waitFor()
+            process.destroy()
+
+            kill() // kill aod
+
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            Toast.makeText(this, "出现错误，可能是无法获取Root权限", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun kill() {

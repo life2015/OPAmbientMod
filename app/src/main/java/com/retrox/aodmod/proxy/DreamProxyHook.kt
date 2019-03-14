@@ -13,6 +13,7 @@ import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import android.os.Process
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.shared.SharedContentManager
 
 object DreamProxyHook : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
@@ -30,13 +31,17 @@ object DreamProxyHook : IXposedHookLoadPackage {
         XposedHelpers.findAndHookConstructor(dozeServiceClass, object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
                 AndroidAppHelper.currentApplication().applicationContext.registerReceiver(killReceiver, IntentFilter("com.retrox.aod.killmyself"))
+                SharedContentManager.addAodTimes() // 选择构造函数的的Hook点 作为判断 基本上Hook成功就可以上车
             }
         })
 
         MainHook.logD("DisplayMode: ${XPref.getDisplayMode()}")
         if (XPref.getDisplayMode() == "SYSTEM") {
+            SharedContentManager.setWorkMode("系统增强")
             return
         }
+        SharedContentManager.setWorkMode("常亮模式")
+
 
         XposedHelpers.findAndHookConstructor(dozeServiceClass, object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {

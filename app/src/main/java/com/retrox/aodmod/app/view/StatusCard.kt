@@ -3,18 +3,25 @@ package com.retrox.aodmod.app.view
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.TextView
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.XposedUtils
 import com.retrox.aodmod.app.pref.AppStatusPref
 import com.retrox.aodmod.app.state.AppState
+import com.retrox.aodmod.shared.SharedContentManager
 import org.jetbrains.anko.*
+import android.util.TypedValue
+import android.widget.*
+import com.retrox.aodmod.app.MainActivity
+import com.retrox.aodmod.app.util.Utils
+
 
 open class StatusCard(val context: Context, lifecycleOwner: LifecycleOwner) {
     val title = MutableLiveData<String>()
@@ -33,6 +40,10 @@ open class StatusCard(val context: Context, lifecycleOwner: LifecycleOwner) {
         status.observe(lifecycleOwner, Observer {
             it?.let { statusView.text = it }
         })
+
+        rootView.layoutParams = LinearLayout.LayoutParams(matchParent, wrapContent).apply {
+            bottomMargin = context.dip(8)
+        }
     }
     fun attachView(view: View) {
         contentView.removeAllViews()
@@ -65,6 +76,17 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                         text = if (isActive) "模块已激活" else "模块尚未激活"
                     }
                 })
+                setOnClickListener {
+                    val t = Intent("me.weishu.exp.ACTION_MODULE_MANAGE")
+                    t.data = Uri.parse("package:" + "com.retrox.aodmod")
+                    t.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    try {
+                        context.startActivity(t)
+                    } catch (e: ActivityNotFoundException) {
+                        // TaiChi not installed.
+                        Toast.makeText(context, "太极尚未安装", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }.lparams(matchParent, wrapContent) {
                 verticalMargin = dip(8)
                 horizontalMargin = dip(16)
@@ -74,9 +96,20 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 textColor = Color.BLACK
                 activeState.observe(lifecycleOwner, Observer {
                     it?.let { (_, isAppInList) ->
-                        text = if (isAppInList) "主动显示已添加" else "主动显示未添加"
+                        text = if (isAppInList) "主动显示已添加" else "主动显示未添加(需要太极Magisk)"
                     }
                 })
+                setOnClickListener {
+                    val t = Intent("me.weishu.exp.ACTION_ADD_APP")
+                    t.data = Uri.parse("package:" + "com.oneplus.aod")
+                    t.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    try {
+                        context.startActivity(t)
+                    } catch (e: ActivityNotFoundException) {
+                        // TaiChi not installed or version below 4.3.4.
+                        Toast.makeText(context, "太极尚未安装或版本低于4.3.4", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }.lparams(matchParent, wrapContent) {
                 verticalMargin = dip(8)
                 horizontalMargin = dip(16)
@@ -122,31 +155,100 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
             verticalMargin = dip(8)
             horizontalMargin = dip(16)
         })
-        button {
-            text = "刷新"
-            setOnClickListener {
-                refresh()
-            }
+        textView("留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块。") {
+            textColor = Color.parseColor("#9B9B9B")
+            textSize = 14f
+        }.lparams(matchParent, wrapContent) {
+            horizontalMargin = dip(8)
+            verticalMargin = dip(4)
         }
+        linearLayout {
+            orientation = LinearLayout.HORIZONTAL
+            button {
+                text = "点击刷新"
+                setBorderlessStyle()
+                textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+                setOnClickListener {
+                    refresh()
+                }
+            }.lparams(wrapContent, wrapContent)
+
+            button {
+                text = "重新打钩"
+                setBorderlessStyle()
+                textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+                setOnClickListener {
+                    val t = Intent("me.weishu.exp.ACTION_MODULE_MANAGE")
+                    t.data = Uri.parse("package:" + "com.retrox.aodmod")
+                    t.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    try {
+                        context.startActivity(t)
+                    } catch (e: ActivityNotFoundException) {
+                        // TaiChi not installed.
+                        Toast.makeText(context, "太极尚未安装", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }.lparams(wrapContent, wrapContent)
+        }.lparams(matchParent, wrapContent)
+
     }
 
     init {
         attachView(layout)
         title.value = "工作状态"
+        AppState.needRefreshStatus.observe(lifecycleOwner, Observer {
+            refresh()
+        })
         refresh()
     }
 
     fun refresh() {
-        val times = AppStatusPref.alwaysOnHookTimes
+        val sharedState = SharedContentManager.getSharedState()
+
+        val times = sharedState.aodTimes.toInt()
         val text = if (times > 0) {
-            status.value = "正常"
+            status.value = "正常 ${sharedState.workMode}"
             titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
-            "本次插件介入息屏的次数为 $times"
+            "本次插件介入息屏的次数为 $times \n上次息屏时间：${sharedState.lastTime}"
         } else {
-            status.value = "异常"
+            status.value = "异常 ${sharedState.workMode}"
             titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
-            "本次插件介入息屏的次数为0 \n如果这不是刚刚重启了息屏 那也许出了问题"
+            "本次插件介入息屏的次数为0 \n上次息屏时间：${sharedState.lastTime} \n如果这不是刚刚重启了息屏 那也许出了问题"
         }
         textView.text = text
     }
+}
+
+class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
+    val layout = context.verticalLayout {
+        button {
+            text = "强力重启息屏 需要Root"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                Utils.findProcessAndKill(context)
+            }
+        }.lparams(wrapContent, wrapContent)
+        button {
+            text = "回到老设置界面"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                context.startActivity<MainActivity>()
+            }
+        }.lparams(wrapContent, wrapContent)
+        leftPadding = dip(8)
+    }
+
+    init {
+        attachView(layout)
+        title.value = "工具箱"
+        titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+    }
+}
+
+fun Button.setBorderlessStyle() {
+    val outValue = TypedValue()
+    context.theme.resolveAttribute(R.attr.selectableItemBackground, outValue, true)
+    setBackgroundResource(outValue.resourceId)
 }

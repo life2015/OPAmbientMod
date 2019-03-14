@@ -7,6 +7,7 @@ import com.retrox.aodmod.app.XposedUtils
 object AppState {
     val isActive = MutableLiveData<Boolean>()
     val expApps = MutableLiveData<List<String>>()
+    val needRefreshStatus = MutableLiveData<String>()
     val sleepModeState = MutableLiveData<Boolean>()
     val aodModeState = MutableLiveData<String>()
 
@@ -15,5 +16,9 @@ object AppState {
     }
     fun refreshActiveState(context: Context) {
         isActive.postValue(XposedUtils.isExpModuleActive(context))
+    }
+
+    fun refreshStatus(reason: String = "") {
+        needRefreshStatus.postValue(reason)
     }
 }
