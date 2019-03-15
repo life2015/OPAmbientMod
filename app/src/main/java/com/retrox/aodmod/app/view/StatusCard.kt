@@ -10,17 +10,16 @@ import android.graphics.Color
 import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
+import android.util.TypedValue
 import android.view.View
+import android.widget.*
 import com.retrox.aodmod.R
+import com.retrox.aodmod.app.MainActivity
 import com.retrox.aodmod.app.XposedUtils
-import com.retrox.aodmod.app.pref.AppStatusPref
 import com.retrox.aodmod.app.state.AppState
+import com.retrox.aodmod.app.util.Utils
 import com.retrox.aodmod.shared.SharedContentManager
 import org.jetbrains.anko.*
-import android.util.TypedValue
-import android.widget.*
-import com.retrox.aodmod.app.MainActivity
-import com.retrox.aodmod.app.util.Utils
 
 
 open class StatusCard(val context: Context, lifecycleOwner: LifecycleOwner) {
@@ -203,6 +202,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
     }
 
     fun refresh() {
+        // todo IO性能优化
         val sharedState = SharedContentManager.getSharedState()
 
         val times = sharedState.aodTimes.toInt()
