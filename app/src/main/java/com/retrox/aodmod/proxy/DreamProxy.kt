@@ -2,6 +2,7 @@ package com.retrox.aodmod.proxy
 
 import android.animation.ObjectAnimator
 import android.app.AndroidAppHelper
+import android.app.Service
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
@@ -26,6 +27,10 @@ import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
 import android.arch.lifecycle.Observer
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import android.os.Looper
 import com.retrox.aodmod.extensions.UserInfoUtils
 import java.util.*
@@ -45,6 +50,17 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         "OK"
     }
     var mainView: View? = null
+
+    val serviceConnection = object : ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+            MainHook.logD("Service Disconnected ${name.toString()}")
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            MainHook.logD("Service Connected ${name.toString()}")
+        }
+
+    }
     override fun onCreate() {
         XposedHelpers.callMethod(dreamService, "setWindowless", true)
         MainHook.logD("DreamProxy -> OnCreate")
@@ -68,6 +84,16 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
         aodMainLayout.visibility = View.INVISIBLE
         setScreenDoze()
+
+        val intent = Intent().apply {
+            action = "com.retrox.aodplugin.plugin.service"
+            setPackage("com.retrox.aodmod.plugin")
+        }
+        try {
+            context.bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         Handler(Looper.getMainLooper()).post {
             XposedHelpers.callMethod(dreamService, "startDozing")
@@ -149,6 +175,11 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
 
     override fun onDreamingStopped() {
+        try {
+            context.unbindService(serviceConnection)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         AodState.dreamState.postValue(AodState.DreamState.STOP)
         MainHook.logD("DreamProxy -> onDreamingStopped")

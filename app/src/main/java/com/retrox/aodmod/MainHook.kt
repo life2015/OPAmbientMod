@@ -7,6 +7,7 @@ import com.retrox.aodmod.proxy.DreamLifeCycleHook
 import com.retrox.aodmod.proxy.DreamProxyHook
 import com.retrox.aodmod.proxy.ProxyInitHook
 import com.retrox.aodmod.receiver.ReceiverManager
+import com.retrox.aodmod.shared.SharedLogger
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
@@ -53,6 +54,7 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
     fun logE(msg: String, tag: String = TAG, t: Throwable? = null) {
         XposedBridge.log(String.format(LOG_FORMAT, "[ERROR]", tag, msg))
         t?.let { XposedBridge.log(it) }
+        SharedLogger.writeLog(String.format(LOG_FORMAT, "[ERROR]", tag, msg) + t?.message)
 //        Log.e(tag, msg, t)
     }
 
@@ -69,7 +71,9 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
     }
 
     fun logD(msg: String, tag: String = TAG) {
-        if (DEBUG) XposedBridge.log(String.format(LOG_FORMAT, "[DEBUG]", tag, msg))
+        val message = String.format(LOG_FORMAT, "[DEBUG]", tag, msg)
+        SharedLogger.writeLog(message)
+        if (DEBUG) XposedBridge.log(message)
 //        Log.d(tag, msg)
     }
 

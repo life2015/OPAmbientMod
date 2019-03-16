@@ -14,7 +14,9 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.*
 import com.retrox.aodmod.R
+import com.retrox.aodmod.app.AlwaysOnSettings
 import com.retrox.aodmod.app.MainActivity
+import com.retrox.aodmod.app.MusicSettingsActivity
 import com.retrox.aodmod.app.XposedUtils
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.app.util.Utils
@@ -44,6 +46,7 @@ open class StatusCard(val context: Context, lifecycleOwner: LifecycleOwner) {
             bottomMargin = context.dip(8)
         }
     }
+
     fun attachView(view: View) {
         contentView.removeAllViews()
         contentView.addView(view)
@@ -53,7 +56,7 @@ open class StatusCard(val context: Context, lifecycleOwner: LifecycleOwner) {
 
 class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
 
-    val activeState = MutableLiveData<Pair<Boolean,Boolean>>()
+    val activeState = MutableLiveData<Pair<Boolean, Boolean>>()
 
     init {
         val callback: (Boolean, Boolean) -> Unit = { isActive, appInList ->
@@ -114,6 +117,14 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 horizontalMargin = dip(16)
             }
 
+            textView("提示：太极Magisk模块版本需要4.7.5+。EdXposed自己弄好的话，请忽略以上提示") {
+                textColor = Color.parseColor("#9B9B9B")
+                textSize = 14f
+            }.lparams(matchParent, wrapContent) {
+                horizontalMargin = dip(8)
+                verticalMargin = dip(4)
+            }
+
             layoutParams = FrameLayout.LayoutParams(matchParent, wrapContent)
         }
 
@@ -150,11 +161,11 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
     }
 
     val layout = context.verticalLayout {
-        addView(textView.lparams(wrapContent, wrapContent){
+        addView(textView.lparams(wrapContent, wrapContent) {
             verticalMargin = dip(8)
             horizontalMargin = dip(16)
         })
-        textView("留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块。") {
+        textView("留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块，然后重启息屏。") {
             textColor = Color.parseColor("#9B9B9B")
             textSize = 14f
         }.lparams(matchParent, wrapContent) {
@@ -188,6 +199,16 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
                     }
                 }
             }.lparams(wrapContent, wrapContent)
+
+            button {
+                text = "重启息屏"
+                setBorderlessStyle()
+                textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+                setOnClickListener {
+                    Utils.findProcessAndKill(context)
+                }
+            }.lparams(wrapContent, wrapContent)
+
         }.lparams(matchParent, wrapContent)
 
     }
@@ -230,6 +251,24 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
             }
         }.lparams(wrapContent, wrapContent)
         button {
+            text = "加群交流一下？"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                val key = "8bW_c8foZfXB1NFZILBsupRDWblY3Lhl"
+                context.joinQQGroup(key)
+            }
+        }.lparams(wrapContent, wrapContent)
+        button {
+            text = "加入中转备用群"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                val key = "20ARgc7Mzn0TNIKYJAiCXmfWg2FkPEog"
+                context.joinQQGroup(key)
+            }
+        }.lparams(wrapContent, wrapContent)
+        button {
             text = "回到老设置界面"
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
@@ -237,7 +276,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
                 context.startActivity<MainActivity>()
             }
         }.lparams(wrapContent, wrapContent)
-        leftPadding = dip(8)
+        leftPadding = dip(16)
     }
 
     init {
@@ -245,10 +284,59 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
         title.value = "工具箱"
         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
     }
+
+
+}
+
+class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
+    val layout = context.verticalLayout {
+        button {
+            text = "息屏音乐提醒设置"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                context.startActivity<MusicSettingsActivity>()
+            }
+        }.lparams(wrapContent, wrapContent)
+        button {
+            text = "常亮模式自定义设置"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                context.startActivity<AlwaysOnSettings>()
+            }
+        }.lparams(wrapContent, wrapContent)
+        leftPadding = dip(16)
+    }
+
+    init {
+        attachView(layout)
+        title.value = "设置"
+        titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+    }
+
+
 }
 
 fun Button.setBorderlessStyle() {
     val outValue = TypedValue()
     context.theme.resolveAttribute(R.attr.selectableItemBackground, outValue, true)
     setBackgroundResource(outValue.resourceId)
+}
+
+fun Context.joinQQGroup(key: String): Boolean {
+    val intent = Intent()
+    intent.data =
+        Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D$key")
+    // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    return try {
+        startActivity(intent)
+        true
+    } catch (e: Exception) {
+        // 未安装手Q或安装的版本不支持
+        Toast.makeText(this, "未安装手Q或安装的版本不支持", Toast.LENGTH_SHORT).show()
+        false
+    }
+
 }
