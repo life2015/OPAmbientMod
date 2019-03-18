@@ -17,10 +17,15 @@
 -dontwarn android.support.annotation.Keep
 #保留注解，如果不添加改行会导致我们的@Keep注解失效
 -keepattributes *Annotation*
--keep @android.support.annotation.Keep class **
+-keep @android.support.annotation.Keep class **{
+@android.support.annotation.Keep <fields>;
+@android.support.annotation.Keep <methods>;
+}
 
--keep class * implements Android.os.Parcelable { # 保持Parcelable不被混淆
-    public static final Android.os.Parcelable$Creator *;
+-dontwarn com.retrox.aodmod.app.util.Utils
+
+-keep class * implements android.os.Parcelable { # 保持Parcelable不被混淆
+    public static final android.os.Parcelable$Creator *;
 }
 
 -keep class com.retrox.aodmod.proxy.DreamProxy {
@@ -30,6 +35,13 @@
 }
 
 -keep class com.retrox.aodmod.data.NowPlayingMediaData{*;}
+-keep class com.retrox.aodmod.shared.data.SharedState{*;}
+-keep class com.retrox.aodmod.app.util.Utils{*;}
+
+# Kotlin
+-keep class kotlin.Metadata { *; }
+-dontnote kotlin.internal.PlatformImplementationsKt
+-dontnote kotlin.reflect.jvm.internal.**
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
@@ -38,3 +50,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }

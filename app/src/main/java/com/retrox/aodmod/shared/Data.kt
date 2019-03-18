@@ -17,18 +17,3 @@ interface SharedFile {
 
 val gson = Gson()
 
-@Keep
-data class SharedState(val workMode: String, val aodTimes: String, val lastTime: String) : SharedFile {
-    override fun writeToFile() {
-        val jsonString = gson.toJson(this)
-        FileUtils.writeFileWithContent(fileName, jsonString)
-    }
-
-    companion object obj : SharedFileReader<SharedState> {
-        override fun readFromFile(): SharedState {
-            return gson.fromJson(FileUtils.readFile(fileName), SharedState::class.java)
-        }
-
-        override val fileName: String = "SharedState"
-    }
-}

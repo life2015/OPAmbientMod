@@ -17,6 +17,22 @@ class AlwaysOnSettings : AppCompatActivity() {
 
         scrollView {
             verticalLayout {
+
+                title("强力时间矫正")
+                content("尝试使用AlarmManager的定时唤醒来提醒息屏更新时间，时间不准的手机可以尝试。\n注意：尚未实际测试耗电影响。")
+                toggleButton {
+                    textOn = "强力时间矫正开"
+                    textOff = "强力时间矫正关"
+                    isChecked = AppPref.alarmTimeCorrection
+                    onCheckedChange { _, isChecked ->
+                        AppPref.alarmTimeCorrection = isChecked
+                        Toast.makeText(context, "强力时间矫正:${AppPref.alarmTimeCorrection}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
+
                 title("倒扣手机 放入口袋自动灭屏")
                 content("替代之前的睡眠模式。在手机翻扣或者放入口袋后，自动关闭常亮状态的息屏，手机翻回来或者拿出口袋即可恢复。避免不必要的屏幕常亮。\n亲测好用，建议开启。")
                 toggleButton {
@@ -96,11 +112,11 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
-                title("常亮一小时后自动关屏")
+                title("常亮半小时后自动关屏")
                 content("...有需求就做吧")
                 toggleButton {
-                    textOn = "常亮一小时自动关屏"
-                    textOff = "常亮一小时不自动关屏"
+                    textOn = "常亮半小时自动关屏"
+                    textOff = "常亮半小时不自动关屏"
                     isChecked = AppPref.autoCloseAfterHour
                     onCheckedChange { _, isChecked ->
                         AppPref.autoCloseAfterHour = isChecked

@@ -75,7 +75,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 textColor = Color.BLACK
                 activeState.observe(lifecycleOwner, Observer {
                     it?.let { (isActive, _) ->
-                        text = if (isActive) "模块已激活" else "模块尚未激活"
+                        text = if (isActive) "模块已激活" else "模块尚未激活 点击激活"
                     }
                 })
                 setOnClickListener {
@@ -98,7 +98,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 textColor = Color.BLACK
                 activeState.observe(lifecycleOwner, Observer {
                     it?.let { (_, isAppInList) ->
-                        text = if (isAppInList) "主动显示已添加" else "主动显示未添加(需要太极Magisk)"
+                        text = if (isAppInList) "主动显示已添加" else "主动显示未添加 点击添加(需要太极Magisk)"
                     }
                 })
                 setOnClickListener {
@@ -260,7 +260,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
             }
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "加入中转备用群"
+            text = "群满可加入中转备用群"
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {

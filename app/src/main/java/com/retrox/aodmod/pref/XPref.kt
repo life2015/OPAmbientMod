@@ -29,5 +29,6 @@ object XPref {
     fun getMusicOffsetEnabled() = XPref.getPref().getBoolean("MUSICDISPLAYOFFSET", false)
     fun getAutoScreenOffAfterHourEnabled() = XPref.getPref().getBoolean("AUTOCLOSEAFTERHOUR", true)
     fun getAutoBrightnessEnabled() = XPref.getPref().getBoolean("AUTOBRIGHTNESS", true)
+    fun getAlarmTimeCorrection() = XPref.getPref().getBoolean("ALARMTIMECORRECTION", true)
 
 }

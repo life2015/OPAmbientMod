@@ -18,6 +18,7 @@ object ReceiverManager {
         kotlin.run {
             val intentFilter = IntentFilter()
             intentFilter.addAction(Intent.ACTION_TIME_TICK)
+            intentFilter.addAction(ClockTickReceiver.CUSTOM_PING)
             val receiver = ClockTickReceiver()
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter)
             MainHook.logD("Receiver:: ClockTick registered ")

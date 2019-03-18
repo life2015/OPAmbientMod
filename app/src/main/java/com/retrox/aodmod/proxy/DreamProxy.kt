@@ -32,7 +32,9 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Looper
+import android.support.annotation.Keep
 import com.retrox.aodmod.extensions.UserInfoUtils
+import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import java.util.*
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
@@ -66,6 +68,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         MainHook.logD("DreamProxy -> OnCreate")
         lazyInitBlock.length
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        LocalAlarmManager.initService(context)
     }
 
     override fun onAttachedToWindow() {
@@ -144,8 +147,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
                 translationY = -vertical.toFloat()
             }
 
-            if ((System.currentTimeMillis() - lastScreenOnTime) > 60 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled()) {
-                setScreenOff() // 一小时自动息屏
+            if ((System.currentTimeMillis() - lastScreenOnTime) > 30 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled()) {
+                setScreenOff() // 半小时自动息屏
             }
 
             MainHook.logD("防烧屏: x offset:$horizontal y offset:$vertical")
@@ -165,12 +168,16 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     }
 
 
+    // Screen ON
     fun setScreenDoze() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
+        LocalAlarmManager.setUpAlarm()
     }
 
+    // Screen OFF
     fun setScreenOff() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
+        LocalAlarmManager.cancelAlarm()
     }
 
 
@@ -180,6 +187,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        LocalAlarmManager.cancelAlarm()
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         AodState.dreamState.postValue(AodState.DreamState.STOP)
         MainHook.logD("DreamProxy -> onDreamingStopped")

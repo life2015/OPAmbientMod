@@ -15,6 +15,7 @@ object AppPref {
     var musicDisplayOffset by shared("MUSICDISPLAYOFFSET", false)
     var autoCloseAfterHour by shared("AUTOCLOSEAFTERHOUR", true)
     var autoBrightness by shared("AUTOBRIGHTNESS", true)
+    var alarmTimeCorrection by shared("ALARMTIMECORRECTION", true)
 
 
     @SuppressLint("SetWorldReadable")

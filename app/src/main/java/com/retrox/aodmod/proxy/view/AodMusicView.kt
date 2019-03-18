@@ -11,6 +11,7 @@ import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.setGoogleSans
+import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.state.AodMedia
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
@@ -41,6 +42,9 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
 
         AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
             MainHook.logD("Receive Media Data $it")
+            if (!XPref.getMusicAodEnabled()) { // 修复音乐显示关不掉的bug
+                return@Observer
+            }
             if (it == null) {
                 visibility = View.INVISIBLE
             }

@@ -12,9 +12,12 @@ import com.retrox.aodmod.state.AodClockTick
  * 但是为了保险 还是开着它吧
  */
 class ClockTickReceiver : BroadcastReceiver() {
+    companion object {
+        const val CUSTOM_PING = "CLOCKTICK_CUSTOM_PING"
+    }
     override fun onReceive(context: Context, intent: Intent) {
-        AodClockTick.tickLiveData.postValue("Tick!")
-        MainHook.logD("Tick Intent Received")
+        AodClockTick.tickLiveData.postValue("Tick! action -> ${intent.action} ")
+        MainHook.logD("Tick Intent Received. Action: ${intent.action} ")
     }
 
 }
