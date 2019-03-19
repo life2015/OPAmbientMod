@@ -51,7 +51,7 @@ object NotificationManager {
             hasMediaSession
         }
         val musicNotification = notificationMap.values.any { // 避免一部分人不开系统通知栏
-            it.packageName == "com.tencent.qqmusic" || it.packageName == "com.netease.cloudmusic" || it.packageName == "code.name.monkey.retromusic"
+            it.packageName == "com.tencent.qqmusic" || it.packageName == "com.netease.cloudmusic" || it.packageName == "code.name.monkey.retromusic" || it.packageName == "tv.danmaku.bili"
         }
         if (!musicActive && !musicNotification) {
             AodMedia.aodMediaLiveData.postValue(null)

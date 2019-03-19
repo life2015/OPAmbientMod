@@ -1,8 +1,11 @@
 package com.retrox.aodmod.app.view
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import com.retrox.aodmod.app.state.AppState
 import org.jetbrains.anko.*
@@ -22,12 +25,12 @@ class NewMainActivity : AppCompatActivity() {
             }
 
             checkAndroidVersion()
-
+            checkPermission()
         }
 
     }
 
-    fun checkAndroidVersion() {
+    private fun checkAndroidVersion() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             val dialog = alert {
                 title = "系统版本太低"
@@ -41,6 +44,24 @@ class NewMainActivity : AppCompatActivity() {
                 }
             }.show()
         }
+    }
+
+    private fun checkPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 66
+            );
+        }
+
     }
 
     override fun onResume() {

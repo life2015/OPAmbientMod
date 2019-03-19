@@ -24,17 +24,16 @@ import de.robv.android.xposed.XposedHelpers
 
 fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
     return constraintLayout {
-        textClock {
+        textView {
             id = Ids.tv_clock
             textColor = Color.WHITE
             textSize = 50f
             letterSpacing = 0.1f
             setGoogleSans()
 
-            format12Hour = "HH:mm"
-//            text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
+            text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                XposedHelpers.callMethod(this@textClock, "refresh")
+                text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
             })
         }.lparams(width = wrapContent, height = wrapContent) {
             endToEnd = PARENT_ID

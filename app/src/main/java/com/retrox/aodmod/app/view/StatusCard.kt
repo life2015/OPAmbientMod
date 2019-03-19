@@ -165,7 +165,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
             verticalMargin = dip(8)
             horizontalMargin = dip(16)
         })
-        textView("留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块，然后重启息屏。") {
+        textView("留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块，然后重启息屏。或检查是否授予储存权限") {
             textColor = Color.parseColor("#9B9B9B")
             textSize = 14f
         }.lparams(matchParent, wrapContent) {
