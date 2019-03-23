@@ -1,7 +1,11 @@
 package com.retrox.aodmod.pref
 
 import com.retrox.aodmod.BuildConfig
+import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.shared.FileUtils
 import de.robv.android.xposed.XSharedPreferences
+import java.io.File
 import java.lang.ref.WeakReference
 
 object XPref {
@@ -12,7 +16,14 @@ object XPref {
         var preferences = xSharedPreferences.get()
         if (preferences == null) {
             preferences = XSharedPreferences(BuildConfig.APPLICATION_ID)
-            preferences.makeWorldReadable()
+            val result = preferences.makeWorldReadable()
+            MainHook.logD("SELinux Pref Status: $result")
+
+            if (!result) {
+                // 从外置读取XSP
+                preferences = XSharedPreferences(File(FileUtils.sharedDir, AppPref.externalPrefName))
+            }
+
             preferences.reload()
             xSharedPreferences = WeakReference(preferences)
         } else {
@@ -30,5 +41,6 @@ object XPref {
     fun getAutoScreenOffAfterHourEnabled() = XPref.getPref().getBoolean("AUTOCLOSEAFTERHOUR", true)
     fun getAutoBrightnessEnabled() = XPref.getPref().getBoolean("AUTOBRIGHTNESS", true)
     fun getAlarmTimeCorrection() = XPref.getPref().getBoolean("ALARMTIMECORRECTION", true)
+    fun getAodShowWeather() = XPref.getPref().getBoolean("AODSHOWWEATHER", true)
 
 }

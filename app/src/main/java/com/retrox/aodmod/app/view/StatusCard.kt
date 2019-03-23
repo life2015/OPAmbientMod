@@ -1,5 +1,7 @@
 package com.retrox.aodmod.app.view
 
+import android.Manifest
+import android.app.Activity
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
@@ -9,6 +11,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.support.constraint.ConstraintLayout
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.TypedValue
 import android.view.View
@@ -18,9 +21,14 @@ import com.retrox.aodmod.app.AlwaysOnSettings
 import com.retrox.aodmod.app.MainActivity
 import com.retrox.aodmod.app.MusicSettingsActivity
 import com.retrox.aodmod.app.XposedUtils
+import com.retrox.aodmod.app.alipay.AlipayZeroSdk
+import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.app.util.Utils
+import com.retrox.aodmod.extensions.LiveEvent
+import com.retrox.aodmod.extensions.checkPermission
 import com.retrox.aodmod.shared.SharedContentManager
+import com.retrox.aodmod.weather.WeatherProvider
 import org.jetbrains.anko.*
 
 
@@ -165,7 +173,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
             verticalMargin = dip(8)
             horizontalMargin = dip(16)
         })
-        textView("留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块，然后重启息屏。或检查是否授予储存权限") {
+        textView("留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块，然后重启息屏。或检查是否授予储存权限，系统抬手亮屏是否打开。") {
             textColor = Color.parseColor("#9B9B9B")
             textSize = 14f
         }.lparams(matchParent, wrapContent) {
@@ -276,6 +284,18 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
                 context.startActivity<MainActivity>()
             }
         }.lparams(wrapContent, wrapContent)
+        button {
+            text = "觉得好用？捐赠开发者"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                if (AlipayZeroSdk.hasInstalledAlipayClient(context) && context is Activity) {
+                    AlipayZeroSdk.startAlipayClient(context, "fkx08744aqofnhxpvkgd6d0")
+                } else {
+                    Toast.makeText(context, "支付宝未安装！", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }.lparams(wrapContent, wrapContent)
         leftPadding = dip(16)
     }
 
@@ -316,6 +336,103 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
     }
 
 
+}
+
+class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
+    val weatherData = WeatherProvider.queryWeatherInformation(context)
+    val layout = context.verticalLayout {
+        val content = if (weatherData != null) {
+            with(weatherData) {
+                titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+                status.value = "天气服务正常"
+                val result = "当前天气数据：$cityName $weatherName $temperature$temperatureUnit \n今日温度范围：$temperatureLow/$temperatureHigh$temperatureUnit"
+                if (AppPref.aodShowWeather) {
+                    result
+                } else {
+                    "$result\n您的息屏未开启天气显示，可以在常亮自定义设置中打开"
+                }
+            }
+        } else {
+            status.value = "天气服务异常"
+            titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
+            AppPref.aodShowWeather = false
+            "获取天气数据失败 检查系统天气APP是否可用\n已自动关闭天气显示"
+        }
+
+        textView {
+            textColor = Color.BLACK
+            text = content
+        }.lparams(wrapContent, wrapContent) {
+            verticalMargin = dip(8)
+            horizontalMargin = dip(16)
+        }
+    }
+
+    init {
+        title.value = "天气数据"
+        attachView(layout)
+    }
+}
+
+class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
+    val checkStat = MutableLiveData<Boolean>().apply{
+        value = context.checkPermission {}
+    }
+    val activity = context as? Activity
+
+    val layout = context.verticalLayout {
+        textView {
+            textColor = Color.BLACK
+            checkStat.observe(lifecycleOwner, Observer {
+                it?.let {
+                    if (it) {
+                        text = "存储权限已授予"
+                    } else {
+                        text = "存储权限未授予 大量功能将会出现错误！"
+                    }
+                }
+            })
+        }.lparams(wrapContent, wrapContent) {
+            topMargin = dip(8)
+            horizontalMargin = dip(16)
+        }
+
+        button {
+            text = "检查权限授予"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                activity?.let {
+                    val result = it.checkPermission {
+                        ActivityCompat.requestPermissions(
+                            it,
+                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 66
+                        );
+                    }
+                    checkStat.value = result
+                }
+            }
+        }.lparams(wrapContent, wrapContent) {
+            leftMargin = dip(16)
+        }
+
+    }
+
+    init {
+        title.value = "权限状态"
+        checkStat.observe(lifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+                    status.value = "权限授予正常"
+                } else {
+                    titleBar.backgroundColor = Color.RED
+                    status.value = "请授予储存权限"
+                }
+            }
+        })
+        attachView(layout)
+    }
 }
 
 fun Button.setBorderlessStyle() {

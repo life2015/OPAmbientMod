@@ -5,21 +5,22 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.VectorDrawable
 import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
 import android.view.View
 import android.widget.LinearLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.setGoogleSans
+import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.state.AodClockTick
+import com.retrox.aodmod.weather.WeatherProvider
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import java.text.SimpleDateFormat
 import java.util.*
-import android.graphics.ColorMatrixColorFilter
-import android.graphics.ColorMatrix
-import de.robv.android.xposed.XposedHelpers
 
 
 fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
@@ -45,9 +46,22 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
             textColor = Color.WHITE
             textSize = 18f
             setGoogleSans()
-            text = SimpleDateFormat("EEEE MM. dd", Locale.ENGLISH).format(Date())
+            fun generateDateBrief(weatherData: WeatherProvider.WeatherData?): String {
+                if (XPref.getAodShowWeather()) {
+                    return SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date()) + "  " + (weatherData?.toBriefString() ?: "No Weather Available")
+                } else {
+                    return SimpleDateFormat("EEEE MM. dd", Locale.ENGLISH).format(Date())
+                }
+            }
+//            text = SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date())
+            text = generateDateBrief(WeatherProvider.queryWeatherInformation(context))
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = SimpleDateFormat("EEEE MM. dd", Locale.ENGLISH).format(Date())
+                text = generateDateBrief(WeatherProvider.queryWeatherInformation(context))
+            })
+            WeatherProvider.weatherLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+                it?.let {
+                    text = generateDateBrief(it)
+                }
             })
         }.lparams(width = wrapContent, height = wrapContent) {
             endToEnd = PARENT_ID

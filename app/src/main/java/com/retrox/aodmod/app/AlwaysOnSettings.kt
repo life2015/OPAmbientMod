@@ -33,6 +33,21 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
+                title("息屏显示天气")
+                content("通过CP获取一加系统天气APP的数据，展示在息屏上，数据跟随系统天气App。")
+                toggleButton {
+                    textOn = "开启息屏天气显示"
+                    textOff = "息屏不显示天气"
+                    isChecked = AppPref.aodShowWeather
+                    onCheckedChange { _, isChecked ->
+                        AppPref.aodShowWeather = isChecked
+                        Toast.makeText(context, "息屏天气:${AppPref.aodShowWeather}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
+
                 title("倒扣手机 放入口袋自动灭屏")
                 content("替代之前的睡眠模式。在手机翻扣或者放入口袋后，自动关闭常亮状态的息屏，手机翻回来或者拿出口袋即可恢复。避免不必要的屏幕常亮。\n亲测好用，建议开启。")
                 toggleButton {

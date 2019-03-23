@@ -65,6 +65,27 @@ class MusicSettingsActivity : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
+                textView {
+                    text = "注意事项？"
+                    textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+                    textSize = 18f
+                    gravity = Gravity.START
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(8)
+                    horizontalMargin = dip(12)
+                }
+
+                textView {
+                    text = "网易云音乐中要开启音乐锁屏里面的系统锁屏模式，其他软件不能用也同理设置。"
+                    gravity = Gravity.START
+                    textColor = Color.BLACK
+                    textSize = 16f
+
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
+
                 toggleButton {
                     textOn = "音乐显示开"
                     textOff = "音乐显示关"

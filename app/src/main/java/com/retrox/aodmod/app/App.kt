@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.retrox.aodmod.app.pref.AppPref
 import org.jetbrains.anko.defaultSharedPreferences
 import java.lang.ref.WeakReference
+import kotlin.concurrent.thread
 
 class App : Application() {
     companion object {
@@ -26,5 +27,14 @@ class App : Application() {
         super.onCreate()
         applicationReference = WeakReference(this)
         AppPref.setWorldReadable()
+        defaultSharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+            thread {
+                // 强制等待一下apply写操作完成
+                val queueWorkClazz = Class.forName("android.app.QueuedWork")
+                val method = queueWorkClazz.getMethod("waitToFinish")
+                method.invoke(null)
+                AppPref.flushPrefChangeToSDcard()
+            }
+        }
     }
 }
