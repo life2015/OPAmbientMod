@@ -21,6 +21,21 @@ fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
     return verticalLayout {
         gravity = Gravity.CENTER_HORIZONTAL
 
+        val note = textView {
+            textColor = Color.WHITE
+            textSize = 16f
+            setGoogleSans()
+            gravity = Gravity.CENTER_HORIZONTAL
+            visibility = View.GONE
+            if (XPref.getAodShowNote() && !XPref.getAodNoteContent().isNullOrBlank()) {
+                visibility = View.VISIBLE
+                text = XPref.getAodNoteContent()
+            }
+        }.lparams(matchParent, wrapContent) {
+            horizontalMargin = dip(16)
+            bottomMargin = dip(12)
+        }
+
         val title = textView {
             textColor = Color.WHITE
             textSize = 16f

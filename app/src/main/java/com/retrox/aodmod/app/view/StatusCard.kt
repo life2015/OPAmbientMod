@@ -339,7 +339,7 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
 }
 
 class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
-    val weatherData = WeatherProvider.queryWeatherInformation(context)
+    val weatherData = WeatherProvider.queryWeatherInformationSync(context)
     val layout = context.verticalLayout {
         val content = if (weatherData != null) {
             with(weatherData) {

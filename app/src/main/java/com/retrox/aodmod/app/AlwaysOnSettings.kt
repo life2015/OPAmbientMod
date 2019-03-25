@@ -33,6 +33,34 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
+                title("息屏备忘")
+                content("会在常驻通知区域显示一条备忘录")
+                toggleButton {
+                    textOn = "息屏备忘开"
+                    textOff = "息屏备忘关"
+                    isChecked = AppPref.aodShowNote
+                    onCheckedChange { _, isChecked ->
+                        AppPref.aodShowNote = isChecked
+                        Toast.makeText(context, "息屏备忘显示:${AppPref.aodShowNote}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    topMargin = dip(12)
+                    bottomMargin = dip(6)
+                    horizontalMargin = dip(8)
+                }
+                val editNote = editText {
+                    hint = "备忘记录写在这里"
+                    if (!AppPref.aodNoteContent.isNullOrBlank()) {
+                        setText(AppPref.aodNoteContent)
+                    }
+                }
+                button {
+                    text = "保存备忘"
+                    setOnClickListener {
+                        AppPref.aodNoteContent = editNote.text.toString()
+                    }
+                }
+
                 title("息屏显示天气")
                 content("通过CP获取一加系统天气APP的数据，展示在息屏上，数据跟随系统天气App。")
                 toggleButton {

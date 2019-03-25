@@ -34,7 +34,7 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
 
             text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
+                text = " " + SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + " " // 玄学空格？
             })
         }.lparams(width = wrapContent, height = wrapContent) {
             endToEnd = PARENT_ID
@@ -47,8 +47,8 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
             textSize = 18f
             setGoogleSans()
             fun generateDateBrief(weatherData: WeatherProvider.WeatherData?): String {
-                if (XPref.getAodShowWeather()) {
-                    return SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date()) + "  " + (weatherData?.toBriefString() ?: "No Weather Available")
+                if (XPref.getAodShowWeather() && weatherData != null) { // 这里变更一下逻辑 没有天气就不显示了
+                    return SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date()) + "  " + (weatherData.toBriefString())
                 } else {
                     return SimpleDateFormat("EEEE MM. dd", Locale.ENGLISH).format(Date())
                 }
@@ -58,8 +58,9 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
                 text = generateDateBrief(WeatherProvider.queryWeatherInformation(context))
             })
-            WeatherProvider.weatherLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+            WeatherProvider.weatherLiveEvent.observe(lifecycleOwner, Observer {
                 it?.let {
+                    // 有数据再更新
                     text = generateDateBrief(it)
                 }
             })

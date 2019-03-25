@@ -1,7 +1,6 @@
 package com.retrox.aodmod.weather
 
 import android.app.AndroidAppHelper
-import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.database.ContentObserver
@@ -11,10 +10,10 @@ import android.os.Handler
 import android.util.Log
 import com.retrox.aodmod.app.App
 import com.retrox.aodmod.extensions.LiveEvent
-
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
+import kotlin.concurrent.thread
 
 /**
  * 里面有一部分代码是反编译转化的
@@ -56,12 +55,25 @@ object WeatherProvider {
 
     fun queryWeatherInformation(context: Context): WeatherData? {
         if (isPackageInstalled(context, "net.oneplus.weather")) {
-            processWeatherInformation(context.contentResolver.query(this.WEATHER_CONTENT_URI, null, null, null, null))
+            thread { // 妈的 同步调用给我搞出个ANR来
+                val data = processWeatherInformation(context.contentResolver.query(this.WEATHER_CONTENT_URI, null, null, null, null))
+                data?.let { weatherData -> weatherLiveEvent.postValue(weatherData) }
+            }
         } else {
             Log.w(TAG, "the weather application is not installed, stop querying...")
             return null // 没这个软件 FUCK
         }
-        return weatherLiveEvent.value
+        return weatherLiveEvent.value // 先要给她点数据 不能空了 反正后续会有新的数据通过LiveData
+    }
+
+    fun queryWeatherInformationSync(context: Context) : WeatherData? {
+        return if (isPackageInstalled(context, "net.oneplus.weather")) {
+            val data = processWeatherInformation(context.contentResolver.query(this.WEATHER_CONTENT_URI, null, null, null, null))
+            data
+        } else {
+            Log.w(TAG, "the weather application is not installed, stop querying...")
+            null // 没这个软件 FUCK
+        }
     }
 
     fun registerContentObserver(context: Context) {
@@ -99,7 +111,7 @@ object WeatherProvider {
         TEMP_UNIT(7)
     }
 
-    private fun processWeatherInformation(cursor: Cursor?) {
+    private fun processWeatherInformation(cursor: Cursor?): WeatherData? {
         val stringBuilder: StringBuilder
         if (cursor == null) {
             Log.e(TAG, "cannot get weather information by querying content resolver")
@@ -146,15 +158,15 @@ object WeatherProvider {
                 Log.d(str2, stringBuilder3.toString())
                 weatherData.timestamp = SimpleDateFormat("yyyyMMddkkmm", Locale.getDefault()).parse(string2).time / 1000
                 weatherData.cityName = string
-                weatherData.weatherCode = 0
+                weatherData.weatherCode = 0 // fake code 本来是对应图标的
                 weatherData.weatherName = string4
                 weatherData.temperature = Integer.parseInt(string5)
                 weatherData.temperatureHigh = Integer.parseInt(string6)
                 weatherData.temperatureLow = Integer.parseInt(string7)
                 weatherData.temperatureUnit = string8
 
-                // post weather data to LiveEvent
-                weatherLiveEvent.value = weatherData
+                cursor.close()
+                return weatherData
             } catch (e: IllegalStateException) {
                 string = TAG
                 stringBuilder = StringBuilder()
@@ -192,6 +204,8 @@ object WeatherProvider {
             Log.e(TAG, "cannot move the cursor point to the first row, is the cursor empty?")
             cursor.close()
         }
+
+        return null
     }
 
     class WeatherData {

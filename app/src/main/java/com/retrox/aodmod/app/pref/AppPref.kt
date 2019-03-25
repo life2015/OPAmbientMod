@@ -20,6 +20,8 @@ object AppPref {
     var autoBrightness by shared("AUTOBRIGHTNESS", true)
     var alarmTimeCorrection by shared("ALARMTIMECORRECTION", true)
     var aodShowWeather by shared("AODSHOWWEATHER", true)
+    var aodShowNote by shared("AODSHOWNOTE", false)
+    var aodNoteContent by shared("AODNOTECONTENT", "")
 
 
     val externalPrefName = "${BuildConfig.APPLICATION_ID}_external_pref.xml"

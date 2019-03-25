@@ -36,6 +36,7 @@ import android.support.annotation.Keep
 import com.retrox.aodmod.extensions.UserInfoUtils
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import java.util.*
+import kotlin.math.roundToInt
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
     private val lifecycleRegistry = LifecycleRegistry(this)
@@ -125,8 +126,12 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             LightSensor.lightSensorLiveData.observe(this, Observer {
                 it?.let { (suggestAlpha, _) ->
                     MainHook.logD("Light Sensor Alpha: $suggestAlpha")
-                    AodClockTick.tickLiveData.postValue("Tick from Light Sensor")
-                    aodMainLayout.alpha = suggestAlpha
+//                    AodClockTick.tickLiveData.postValue("Tick from Light Sensor")
+//                    aodMainLayout.alpha = suggestAlpha
+
+                    val brightness = (suggestAlpha * 255).roundToInt()
+                    MainHook.logD("Light Sensor Brightness : $brightness")
+                    XposedHelpers.callMethod(dreamService, "setDozeScreenBrightness", brightness)
                 }
             })
         }

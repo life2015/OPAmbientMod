@@ -42,5 +42,7 @@ object XPref {
     fun getAutoBrightnessEnabled() = XPref.getPref().getBoolean("AUTOBRIGHTNESS", true)
     fun getAlarmTimeCorrection() = XPref.getPref().getBoolean("ALARMTIMECORRECTION", true)
     fun getAodShowWeather() = XPref.getPref().getBoolean("AODSHOWWEATHER", true)
+    fun getAodShowNote() = XPref.getPref().getBoolean("AODSHOWNOTE", false)
+    fun getAodNoteContent() = XPref.getPref().getString("AODNOTECONTENT", "")
 
 }
