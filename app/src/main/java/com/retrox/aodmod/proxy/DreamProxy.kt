@@ -11,10 +11,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
-import android.os.PowerManager
+import android.media.session.MediaController
+import android.media.session.MediaSessionManager
+import android.os.*
 import android.service.dreams.DreamService
 import android.support.constraint.ConstraintLayout
 import android.transition.TransitionManager
@@ -100,23 +99,42 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             e.printStackTrace()
         }
 
+//          音乐架构重构尝试
+//        val mediaSessionManager = context.getSystemService(MediaSessionManager::class.java)
+//        mediaSessionManager.getActiveSessions(null).forEach {
+//            MainHook.logD(it.packageName + "2222")
+//            it.registerCallback()
+//        }
+//        mediaSessionManager.addOnActiveSessionsChangedListener(object : MediaSessionManager.OnActiveSessionsChangedListener {
+//            override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
+//                MainHook.logD("MediaSession Changed")
+//            }
+//        }, null, object : Handler() {
+//            override fun handleMessage(msg: Message?) {
+//                super.handleMessage(msg)
+//                MainHook.logD("MediaSession handle Message : $msg")
+//            }
+//        })
+
         /**
          * setScreenOff -> startDozing -> setScreenDoze(delayed)
          * do the magic
          * 修复电话时候无法息屏的问题 @SCREEN_ON_FLAG
          */
+        val dozeWakeLock = context.getSystemService(PowerManager::class.java)
+            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:ScreenDoze")
+        dozeWakeLock.acquire(10000L)
         Handler(Looper.getMainLooper()).post {
             setScreenOff()
             XposedHelpers.callMethod(dreamService, "startDozing")
             Handler(Looper.getMainLooper()).postDelayed({
-                context.wakeLockWrap("AODMOD:${this.javaClass.simpleName}") {
-                    setScreenDoze()
-                    aodMainLayout.visibility = View.VISIBLE
-                    ObjectAnimator.ofFloat(aodMainLayout, View.ALPHA, 0f, 1f).apply {
-                        duration = 800L
-                    }.start()
-                }
-            }, 200L)
+                setScreenDoze()
+                aodMainLayout.visibility = View.VISIBLE
+                ObjectAnimator.ofFloat(aodMainLayout, View.ALPHA, 0f, 1f).apply {
+                    duration = 800L
+                }.start()
+                dozeWakeLock.release()
+            }, 400L)
         }
 
         // 翻转 口袋

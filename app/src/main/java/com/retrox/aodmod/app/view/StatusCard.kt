@@ -17,10 +17,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.*
 import com.retrox.aodmod.R
-import com.retrox.aodmod.app.AlwaysOnSettings
-import com.retrox.aodmod.app.MainActivity
-import com.retrox.aodmod.app.MusicSettingsActivity
-import com.retrox.aodmod.app.XposedUtils
+import com.retrox.aodmod.app.*
 import com.retrox.aodmod.app.alipay.AlipayZeroSdk
 import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.state.AppState
@@ -250,6 +247,14 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
 
 class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
     val layout = context.verticalLayout {
+        button {
+            text = "学习一点必要的英语"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                context.startActivity<EnglishLearnActivity>()
+            }
+        }.lparams(wrapContent, wrapContent)
         button {
             text = "强力重启息屏 需要Root"
             setBorderlessStyle()

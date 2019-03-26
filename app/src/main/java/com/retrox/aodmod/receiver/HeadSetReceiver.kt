@@ -1,7 +1,6 @@
 package com.retrox.aodmod.receiver
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothHeadset
 import android.bluetooth.BluetoothProfile
@@ -11,8 +10,6 @@ import android.content.Intent
 import android.media.AudioManager
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.LiveEvent
-import android.support.v4.content.ContextCompat.getSystemService
-
 
 
 class HeadSetReceiver : BroadcastReceiver() {
@@ -43,7 +40,6 @@ class HeadSetReceiver : BroadcastReceiver() {
     @SuppressLint("MissingPermission")
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action
-        MainHook.logD("音乐连接状态: $action")
         if (BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED == action) {
             val prev = intent.getIntExtra(BluetoothProfile.EXTRA_PREVIOUS_STATE, -1)
             val current = intent.getIntExtra(BluetoothProfile.EXTRA_STATE, -1)
@@ -80,6 +76,7 @@ class HeadSetReceiver : BroadcastReceiver() {
             if (streamType == AudioManager.STREAM_MUSIC) {
                 val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
                 val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) // 0 min - 30 max
+                MainHook.logD("Vol $currentVolume")
                 headSetConnectLiveEvent.postValue(ConnectionState.VolumeChange(currentVolume))
             }
         }

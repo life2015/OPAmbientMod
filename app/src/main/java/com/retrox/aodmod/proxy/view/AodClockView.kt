@@ -35,9 +35,7 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
 
             text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                context.wakeLockWrap("AODMOD:ClockView") { // WakeLock避免休眠
-                    text = " " + SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + " " // 玄学空格？
-                }
+                text = " " + SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + " " // 玄学空格？
             })
         }.lparams(width = wrapContent, height = wrapContent) {
             endToEnd = PARENT_ID

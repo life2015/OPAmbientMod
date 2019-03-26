@@ -15,6 +15,7 @@ import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.receiver.HeadSetReceiver
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
+import com.retrox.aodmod.state.AodMedia
 import com.retrox.aodmod.state.AodState
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
@@ -136,7 +137,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                 val musicViewEnabled = XPref.getMusicAodEnabled()
                 TransitionManager.beginDelayedTransition(this)
                 findViewById<View>(Ids.ly_headset_status).visibility = View.INVISIBLE
-                if (musicViewEnabled) {
+                if (musicViewEnabled && AodMedia.aodMediaLiveData.value != null) { // 避免音乐显示关闭的状态被冲走
                     findViewById<View>(Ids.ly_music_control).visibility = View.VISIBLE
                 }
                 if (animWakeLock.isHeld) animWakeLock.release()
