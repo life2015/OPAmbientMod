@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Typeface
+import android.os.PowerManager
 import android.support.v4.app.ActivityCompat
 import android.widget.TextView
 import com.retrox.aodmod.pref.XPref
@@ -27,4 +28,15 @@ fun Context.checkPermission(callback: () -> Unit): Boolean {
         callback()
         return false
     } else return true
+}
+
+/**
+ * 使用WakeLock来保证一些操作的正确执行
+ */
+fun Context.wakeLockWrap(tag: String, block: () -> Unit) {
+    val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+    val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag)
+    wakeLock.acquire(2000L)
+    block()
+    wakeLock.release()
 }

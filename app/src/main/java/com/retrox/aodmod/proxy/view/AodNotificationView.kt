@@ -82,7 +82,7 @@ fun Context.aodNotification(lifecycleOwner: LifecycleOwner): View {
 /**
  * 有bug 在三段式的时候 如果说observeNew的时候 传入的obj很容易被equals
  * 就会烂掉
- * todo 修复
+ * todo 修复 见LiveEvent
  */
 fun<T> LiveData<T>.observeNew(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
     val prevValue = value

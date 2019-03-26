@@ -6,11 +6,13 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
+import android.os.PowerManager
 import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
 import android.transition.TransitionManager
 import android.view.View
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.receiver.HeadSetReceiver
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
 import com.retrox.aodmod.state.AodState
@@ -67,7 +69,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             val threeKeyView = aodThreeKeyView(lifecycleOwner).apply {
                 id = Ids.ly_three_key
             }.lparams(width = wrapContent, height = wrapContent) {
-//                endToEnd = PARENT_ID
+                //                endToEnd = PARENT_ID
 //                topToTop = PARENT_ID
 //                topMargin = dip(130)
                 startToStart = PARENT_ID
@@ -88,6 +90,22 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                 topMargin = dip(0)
             }
             addView(notificationView)
+
+            val headSetStatusView = aodHeadSetView(lifecycleOwner).apply {
+                id = Ids.ly_headset_status
+                visibility = View.INVISIBLE
+            }.lparams(width = matchParent, height = wrapContent) {
+                endToEnd = PARENT_ID
+                startToStart = PARENT_ID
+                if (XPref.getMusicOffsetEnabled()) {
+                    bottomToBottom = PARENT_ID
+                    bottomMargin = dip(180)
+                } else {
+                    bottomToTop = Ids.tv_battery
+                    bottomMargin = dip(24)
+                }
+            }
+            addView(headSetStatusView)
 
             textView {
                 id = Ids.tv_battery
@@ -111,11 +129,71 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                 bottomMargin = dip(24)
             }
 
+            // 使用WakeLock来保证Handler计时的准确以及避免休眠
+            val animWakeLock = context.getSystemService(PowerManager::class.java).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:MainViewAnim")
+
+            val headSetViewReset = Runnable {
+                val musicViewEnabled = XPref.getMusicAodEnabled()
+                TransitionManager.beginDelayedTransition(this)
+                findViewById<View>(Ids.ly_headset_status).visibility = View.INVISIBLE
+                if (musicViewEnabled) {
+                    findViewById<View>(Ids.ly_music_control).visibility = View.VISIBLE
+                }
+                if (animWakeLock.isHeld) animWakeLock.release()
+            }
+            HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+                it?.let {
+                    // do Animation now
+                    removeCallbacks(headSetViewReset)
+                    if (animWakeLock.isHeld){
+                        animWakeLock.release()
+                    }
+                    animWakeLock.acquire(10000L)
+
+                    val delay = when (it) {
+                        is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
+                        is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
+                        is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
+                    }
+
+                    TransitionManager.beginDelayedTransition(this)
+                    findViewById<View>(Ids.ly_music_control).visibility = View.INVISIBLE
+                    findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
+
+                    postDelayed(headSetViewReset, delay)
+                }
+            })
+
+            val notificationAnimReset = Runnable {
+                TransitionManager.beginDelayedTransition(this)
+                this.applyConstraintSet {
+                    setVisibility(Ids.ly_important_message, View.VISIBLE)
+                    setVisibility(Ids.ly_notification, View.INVISIBLE)
+                    setMargin(Ids.ly_clock, 3, dip(120))
+//                        setMargin(Ids.ly_notification, 3, dip(46))
+                }
+                findViewById<View>(Ids.tv_clock).apply {
+                    scaleX = 1.0f
+                    scaleY = 1.0f
+                }
+                findViewById<View>(Ids.ly_notification).visibility = View.INVISIBLE
+                findViewById<View>(Ids.view_divider).visibility = View.VISIBLE
+                findViewById<View>(Ids.ll_icons).visibility = View.VISIBLE
+                findViewById<View>(Ids.tv_today).visibility = View.VISIBLE
+
+                if (animWakeLock.isHeld) animWakeLock.release()
+            }
             // state animate below
             NotificationManager.notificationStatusLiveData.observeNew(lifecycleOwner, Observer {
                 it?.let {
                     if (it.second == NotificationManager.REMOVED) return@let
                     if (it.first.notification.getNotificationData().isOnGoing) return@let
+
+                    removeCallbacks(notificationAnimReset) // 尝试修复通知动画的状态问题
+                    if (animWakeLock.isHeld){
+                        animWakeLock.release()
+                    }
+                    animWakeLock.acquire(10000L)
 
                     findViewById<View>(Ids.ly_important_message).visibility = View.INVISIBLE
                     TransitionManager.beginDelayedTransition(this)
@@ -133,23 +211,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
 //                    setMargin(Ids.ly_notification, 3, dip(12))
                     }
 
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        TransitionManager.beginDelayedTransition(this)
-                        this.applyConstraintSet {
-                            setVisibility(Ids.ly_important_message, View.VISIBLE)
-                            setVisibility(Ids.ly_notification, View.INVISIBLE)
-                            setMargin(Ids.ly_clock, 3, dip(120))
-//                        setMargin(Ids.ly_notification, 3, dip(46))
-                        }
-                        findViewById<View>(Ids.tv_clock).apply {
-                            scaleX = 1.0f
-                            scaleY = 1.0f
-                        }
-                        findViewById<View>(Ids.ly_notification).visibility = View.INVISIBLE
-                        findViewById<View>(Ids.view_divider).visibility = View.VISIBLE
-                        findViewById<View>(Ids.ll_icons).visibility = View.VISIBLE
-                        findViewById<View>(Ids.tv_today).visibility = View.VISIBLE
-                    }, 5000L)
+                    postDelayed(notificationAnimReset, 5000L)
                 }
             })
         }.lparams(width = matchParent, height = matchParent)

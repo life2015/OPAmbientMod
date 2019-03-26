@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.LinearLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.setGoogleSans
+import com.retrox.aodmod.extensions.wakeLockWrap
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.state.AodClockTick
@@ -34,7 +35,9 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
 
             text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = " " + SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + " " // 玄学空格？
+                context.wakeLockWrap("AODMOD:ClockView") { // WakeLock避免休眠
+                    text = " " + SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + " " // 玄学空格？
+                }
             })
         }.lparams(width = wrapContent, height = wrapContent) {
             endToEnd = PARENT_ID

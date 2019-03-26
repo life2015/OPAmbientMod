@@ -6,8 +6,15 @@ import android.app.Service
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
+import android.arch.lifecycle.Observer
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
+import android.os.PowerManager
 import android.service.dreams.DreamService
 import android.support.constraint.ConstraintLayout
 import android.transition.TransitionManager
@@ -16,27 +23,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.extensions.wakeLockWrap
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.sensor.LightSensor
 import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodMainView
 import com.retrox.aodmod.receiver.ReceiverManager
+import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import com.retrox.aodmod.service.notification.NotificationCollectorService
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
-import android.arch.lifecycle.Observer
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
-import android.os.Looper
-import android.support.annotation.Keep
-import com.retrox.aodmod.extensions.UserInfoUtils
-import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import java.util.*
-import kotlin.math.roundToInt
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
     private val lifecycleRegistry = LifecycleRegistry(this)
@@ -44,9 +43,9 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     var lastScreenOnTime = 0L
 
     val context: Context = dreamService
-    val windowManager by lazy {
-        context.getSystemService(Context.WINDOW_SERVICE) as WindowManager;
-    }
+    val windowManager
+        get() = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager;
+
     val lazyInitBlock by lazy {
         ReceiverManager.register()
         NotificationCollectorService(AndroidAppHelper.currentApplication().applicationContext)
@@ -64,6 +63,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         }
 
     }
+
     override fun onCreate() {
         XposedHelpers.callMethod(dreamService, "setWindowless", true)
         MainHook.logD("DreamProxy -> OnCreate")
@@ -84,10 +84,11 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         val layout = context.aodMainView(this) as ViewGroup
         val aodMainLayout = layout.findViewById<ConstraintLayout>(Ids.ly_main)
         mainView = layout
-        windowManager.addView(mainView, getAodViewLayoutParams())
+        windowManager.addView(mainView, LayoutParamHelper.getAodViewLayoutParams())
 
         aodMainLayout.visibility = View.INVISIBLE
-        setScreenDoze()
+//        setScreenDoze()
+        setScreenOff()
 
         val intent = Intent().apply {
             action = "com.retrox.aodplugin.plugin.service"
@@ -99,12 +100,23 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             e.printStackTrace()
         }
 
+        /**
+         * setScreenOff -> startDozing -> setScreenDoze(delayed)
+         * do the magic
+         * 修复电话时候无法息屏的问题 @SCREEN_ON_FLAG
+         */
         Handler(Looper.getMainLooper()).post {
+            setScreenOff()
             XposedHelpers.callMethod(dreamService, "startDozing")
-            aodMainLayout.visibility = View.VISIBLE
-            ObjectAnimator.ofFloat(aodMainLayout, View.ALPHA, 0f, 1f).apply {
-                duration = 800L
-            }.start()
+            Handler(Looper.getMainLooper()).postDelayed({
+                context.wakeLockWrap("AODMOD:${this.javaClass.simpleName}") {
+                    setScreenDoze()
+                    aodMainLayout.visibility = View.VISIBLE
+                    ObjectAnimator.ofFloat(aodMainLayout, View.ALPHA, 0f, 1f).apply {
+                        duration = 800L
+                    }.start()
+                }
+            }, 200L)
         }
 
         // 翻转 口袋
@@ -127,11 +139,11 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
                 it?.let { (suggestAlpha, _) ->
                     MainHook.logD("Light Sensor Alpha: $suggestAlpha")
 //                    AodClockTick.tickLiveData.postValue("Tick from Light Sensor")
-//                    aodMainLayout.alpha = suggestAlpha
+                    aodMainLayout.alpha = suggestAlpha
 
-                    val brightness = (suggestAlpha * 255).roundToInt()
-                    MainHook.logD("Light Sensor Brightness : $brightness")
-                    XposedHelpers.callMethod(dreamService, "setDozeScreenBrightness", brightness)
+//                    val brightness = (suggestAlpha * 255).roundToInt()
+//                    MainHook.logD("Light Sensor Brightness : $brightness")
+//                    XposedHelpers.callMethod(dreamService, "setDozeScreenBrightness", brightness)
                 }
             })
         }

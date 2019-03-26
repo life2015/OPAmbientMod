@@ -25,4 +25,6 @@ object Ids {
     val ly_important_message = View.generateViewId()
 
     val ly_three_key = View.generateViewId()
+
+    val ly_headset_status = View.generateViewId()
 }

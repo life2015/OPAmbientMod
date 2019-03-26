@@ -1,6 +1,7 @@
 package com.retrox.aodmod.receiver
 
 import android.app.AndroidAppHelper
+import android.bluetooth.BluetoothHeadset
 import android.content.Intent
 import android.content.IntentFilter
 import com.retrox.aodmod.MainHook
@@ -47,6 +48,17 @@ object ReceiverManager {
             val receiver = SleepModeReceiver()
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter)
             MainHook.logD("Receiver:: SleepModeReceiver registered ")
+        }
+
+        kotlin.run {
+            val intentFilter = IntentFilter()
+            intentFilter.addAction(Intent.ACTION_HEADSET_PLUG)
+            intentFilter.addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED)
+            intentFilter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)
+            intentFilter.addAction("android.media.VOLUME_CHANGED_ACTION")
+            val receiver = HeadSetReceiver()
+            AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter)
+            MainHook.logD("Receiver:: HeadSet registered ")
         }
     }
 }

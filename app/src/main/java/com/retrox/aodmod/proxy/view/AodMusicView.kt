@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.view.Gravity
 import android.view.View
+import android.widget.LinearLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
 import com.retrox.aodmod.extensions.ResourceUtils

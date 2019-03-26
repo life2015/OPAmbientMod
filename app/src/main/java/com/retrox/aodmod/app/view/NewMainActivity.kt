@@ -17,6 +17,8 @@ class NewMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+//        setTurnScreenOn(true) 测试电话亮屏复现
+
         scrollView {
             backgroundColor = Color.parseColor("#F5F5F5")
 

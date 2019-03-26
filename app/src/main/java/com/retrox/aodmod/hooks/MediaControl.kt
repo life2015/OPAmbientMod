@@ -30,12 +30,12 @@ object MediaControl : IXposedHookLoadPackage {
                     val albumName = mediaMetadata.getString(MediaMetadata.METADATA_KEY_ALBUM) ?: ""
                     val artist = mediaMetadata.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
                     val name = mediaMetadata.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
-                    MainHook.logD("media: $albumName $artist $name")
+                    MainHook.logD("media: $albumName $artist $name ${lpparam.packageName}")
 
                     // SB B站 专辑和名字都是混的
                     val nowPlayingMediaData = if (lpparam.packageName == "tv.danmaku.bili" && name == "") {
                         NowPlayingMediaData(album = artist, name = name, artist = albumName)
-                    } else NowPlayingMediaData(album = albumName, name = name, artist = artist)
+                    } else NowPlayingMediaData(album = albumName, name = name, artist = artist, app = lpparam.packageName)
 
                     val application = AndroidAppHelper.currentApplication()
                     val intent = Intent("com.retrox.aodmod.NEW_MEDIA_META")
