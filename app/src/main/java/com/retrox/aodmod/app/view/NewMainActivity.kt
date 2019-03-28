@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Debug
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import com.retrox.aodmod.app.state.AppState

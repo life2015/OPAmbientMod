@@ -3,14 +3,16 @@ package com.retrox.aodmod.proxy.view
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Handler
-import android.os.Looper
 import android.os.PowerManager
 import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
 import android.transition.TransitionManager
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import com.retrox.aodmod.extensions.setGoogleSans
+import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.receiver.HeadSetReceiver
 import com.retrox.aodmod.service.notification.NotificationManager
@@ -185,7 +187,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                 if (animWakeLock.isHeld) animWakeLock.release()
             }
             // state animate below
-            NotificationManager.notificationStatusLiveData.observeNew(lifecycleOwner, Observer {
+            NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
                 it?.let {
                     if (it.second == NotificationManager.REMOVED) return@let
                     if (it.first.notification.getNotificationData().isOnGoing) return@let
@@ -215,6 +217,19 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                     postDelayed(notificationAnimReset, 5000L)
                 }
             })
+
+            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                applyRecursively {
+                    when(it) {
+                        is TextView -> it.setGradientTest()
+                        is ImageView -> it.imageTintList = ColorStateList.valueOf(Color.parseColor("#DFCCC0"))
+                    }
+                    if (it.id == Ids.view_divider) {
+                        it.backgroundColor = Color.parseColor("#DFCCC0")
+                    }
+                }
+            }
+
         }.lparams(width = matchParent, height = matchParent)
     }
 

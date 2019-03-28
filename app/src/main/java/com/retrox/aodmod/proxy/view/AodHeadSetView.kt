@@ -22,8 +22,8 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner) : FrameLayout {
             val image = imageView {
                 setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_headset))
             }.lparams(width = dip(24), height = dip(24)) {
-                gravity = Gravity.CENTER_VERTICAL
-                horizontalMargin = dip(4)
+                gravity = Gravity.BOTTOM
+                rightMargin = dip(4)
             }
 
             val headSetTextView = textView() {
@@ -31,11 +31,11 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner) : FrameLayout {
                 id = Ids.tv_music
                 textColor = Color.WHITE
                 textSize = 16f
-                gravity = Gravity.CENTER_VERTICAL
+                gravity = Gravity.BOTTOM
                 setGoogleSans()
 
             }.lparams(width = wrapContent, height = wrapContent) {
-                horizontalMargin = dip(4)
+                leftMargin = dip(4)
                 gravity = Gravity.CENTER_VERTICAL
             }
 

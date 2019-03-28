@@ -25,12 +25,11 @@ object WeatherProvider {
     private val WEATHER_NAME_NONE = "N/A"
     private val TAG = "AODMOD WeatherProvider"
     private val context: Context by lazy {
-        try {
-            AndroidAppHelper.currentApplication().applicationContext
-        } catch (e: Exception) {
-            e.printStackTrace()
-            App.application.applicationContext
-        }
+        val contextRef = App.applicationReference?.get()?.applicationContext
+        if (contextRef != null) {
+            contextRef
+        } else AndroidAppHelper.currentApplication().applicationContext
+
     }
 
     val weatherLiveEvent = object : LiveEvent<WeatherData>() {
@@ -55,8 +54,17 @@ object WeatherProvider {
 
     fun queryWeatherInformation(context: Context): WeatherData? {
         if (isPackageInstalled(context, "net.oneplus.weather")) {
-            thread { // 妈的 同步调用给我搞出个ANR来
-                val data = processWeatherInformation(context.contentResolver.query(this.WEATHER_CONTENT_URI, null, null, null, null))
+            thread {
+                // 妈的 同步调用给我搞出个ANR来
+                val data = processWeatherInformation(
+                    context.contentResolver.query(
+                        this.WEATHER_CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        null
+                    )
+                )
                 data?.let { weatherData -> weatherLiveEvent.postValue(weatherData) }
             }
         } else {
@@ -66,9 +74,17 @@ object WeatherProvider {
         return weatherLiveEvent.value // 先要给她点数据 不能空了 反正后续会有新的数据通过LiveData
     }
 
-    fun queryWeatherInformationSync(context: Context) : WeatherData? {
+    fun queryWeatherInformationSync(context: Context): WeatherData? {
         return if (isPackageInstalled(context, "net.oneplus.weather")) {
-            val data = processWeatherInformation(context.contentResolver.query(this.WEATHER_CONTENT_URI, null, null, null, null))
+            val data = processWeatherInformation(
+                context.contentResolver.query(
+                    this.WEATHER_CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            )
             data
         } else {
             Log.w(TAG, "the weather application is not installed, stop querying...")

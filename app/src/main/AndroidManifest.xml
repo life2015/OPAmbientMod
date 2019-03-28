@@ -43,6 +43,7 @@
         <activity android:name=".app.SleepModeActivity"/>
         <activity android:name=".app.AlwaysOnSettings"/>
         <activity android:name=".app.EnglishLearnActivity"/>
+        <activity android:name=".app.CustomActivity"/>
 
     </application>
 

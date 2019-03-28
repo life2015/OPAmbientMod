@@ -9,7 +9,7 @@ import kotlin.concurrent.thread
 
 class App : Application() {
     companion object {
-        private var applicationReference: WeakReference<Application>? = null
+        var applicationReference: WeakReference<Application>? = null
 
         val application: Application
             get() = applicationReference?.get()

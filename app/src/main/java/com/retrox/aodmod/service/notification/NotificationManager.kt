@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.extensions.LiveEvent
 import com.retrox.aodmod.state.AodMedia
 import de.robv.android.xposed.XposedHelpers
 
@@ -15,7 +16,7 @@ object NotificationManager {
     const val REMOVED = "Removed"
     const val REFRESHED = "Refreshed"
 
-    val notificationStatusLiveData = MutableLiveData<Pair<StatusBarNotification, String>>() // 建议拿到后从Map二次查表确认
+    val notificationStatusLiveData = LiveEvent<Pair<StatusBarNotification, String>>() // 建议拿到后从Map二次查表确认
 
     val notificationMap = mutableMapOf<String, StatusBarNotification>()
 

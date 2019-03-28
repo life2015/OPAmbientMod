@@ -3,11 +3,15 @@ package com.retrox.aodmod.extensions
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.PowerManager
 import android.support.v4.app.ActivityCompat
 import android.widget.TextView
 import com.retrox.aodmod.pref.XPref
+import android.graphics.Shader
+import android.graphics.LinearGradient
+import com.retrox.aodmod.MainHook
 
 fun TextView.setGoogleSans(style: String = "Regular"): Boolean {
     if (XPref.getFontWithSystem()) return false // 跟随系统字体
@@ -39,4 +43,11 @@ fun Context.wakeLockWrap(tag: String, block: () -> Unit) {
     wakeLock.acquire(2000L)
     block()
     wakeLock.release()
+}
+
+fun TextView.setGradientTest() {
+    val shader = LinearGradient(
+        0f, 0f, width.toFloat() * 1.2f, height.toFloat() * 1.2f, Color.parseColor("#F6CDB0"),Color.parseColor("#93C4EF"),Shader.TileMode.CLAMP)
+    paint.shader = shader
+//    MainHook.logD("Debug Gradient -> text: $text width: $width height: $height")
 }

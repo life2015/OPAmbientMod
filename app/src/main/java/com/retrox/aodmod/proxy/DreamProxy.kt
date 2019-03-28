@@ -11,23 +11,21 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.media.session.MediaController
-import android.media.session.MediaSessionManager
 import android.os.*
 import android.service.dreams.DreamService
 import android.support.constraint.ConstraintLayout
-import android.transition.TransitionManager
 import android.view.Display
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import com.retrox.aodmod.MainHook
-import com.retrox.aodmod.extensions.wakeLockWrap
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.sensor.LightSensor
 import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodMainView
+import com.retrox.aodmod.proxy.view.custom.dvd.dvdAodMainView
+import com.retrox.aodmod.proxy.view.custom.flat.sumSungAodMainView
 import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import com.retrox.aodmod.service.notification.NotificationCollectorService
@@ -80,8 +78,16 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         MainHook.logD("DreamProxy -> onDreamingStarted")
         lastScreenOnTime = System.currentTimeMillis()
 
-        val layout = context.aodMainView(this) as ViewGroup
-        val aodMainLayout = layout.findViewById<ConstraintLayout>(Ids.ly_main)
+//        val layout = context.dvdAodMainView(this) as ViewGroup
+//        if (XPref.getAodLayoutTheme() == "Flat")
+
+        val layout = when (XPref.getAodLayoutTheme()) {
+            "Flat" -> context.sumSungAodMainView(this) as ViewGroup
+            "Default" -> context.aodMainView(this) as ViewGroup
+            else -> context.aodMainView(this) as ViewGroup
+        }
+
+        val aodMainLayout = layout.findViewById<View>(Ids.ly_main)
         mainView = layout
         windowManager.addView(mainView, LayoutParamHelper.getAodViewLayoutParams())
 
@@ -99,22 +105,22 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             e.printStackTrace()
         }
 
-//          音乐架构重构尝试
-//        val mediaSessionManager = context.getSystemService(MediaSessionManager::class.java)
-//        mediaSessionManager.getActiveSessions(null).forEach {
-//            MainHook.logD(it.packageName + "2222")
-//            it.registerCallback()
-//        }
-//        mediaSessionManager.addOnActiveSessionsChangedListener(object : MediaSessionManager.OnActiveSessionsChangedListener {
-//            override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
-//                MainHook.logD("MediaSession Changed")
-//            }
-//        }, null, object : Handler() {
-//            override fun handleMessage(msg: Message?) {
-//                super.handleMessage(msg)
-//                MainHook.logD("MediaSession handle Message : $msg")
-//            }
-//        })
+/*          音乐架构重构尝试
+        val mediaSessionManager = context.getSystemService(MediaSessionManager::class.java)
+        mediaSessionManager.getActiveSessions(null).forEach {
+            MainHook.logD(it.packageName + "2222")
+            it.registerCallback()
+        }
+        mediaSessionManager.addOnActiveSessionsChangedListener(object : MediaSessionManager.OnActiveSessionsChangedListener {
+            override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
+                MainHook.logD("MediaSession Changed")
+            }
+        }, null, object : Handler() {
+            override fun handleMessage(msg: Message?) {
+                super.handleMessage(msg)
+                MainHook.logD("MediaSession handle Message : $msg")
+            }
+        })*/
 
         /**
          * setScreenOff -> startDozing -> setScreenDoze(delayed)
@@ -173,14 +179,24 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             if (System.currentTimeMillis() - lastScreenBurnUpdate < 1000L * 30L) return@Observer // 避免太能挪动了...
 
             lastScreenBurnUpdate = System.currentTimeMillis()
-            val vertical = Random().nextInt(50)
-            val horizontal = Random().nextInt(20) - 10
+            var vertical = Random().nextInt(50)
+            var horizontal = Random().nextInt(20) - 10
 
-            TransitionManager.beginDelayedTransition(layout)
-            aodMainLayout.apply {
-                translationX = horizontal.toFloat()
-                translationY = -vertical.toFloat()
+            if (XPref.getAodLayoutTheme() == "Flat") { // Flat Mode
+                vertical = Random().nextInt(20) - 250
+                horizontal = Random().nextInt(100) - 20
             }
+
+//            TransitionManager.beginDelayedTransition(layout)
+//            aodMainLayout.apply {
+//                translationX = horizontal.toFloat()
+//                translationY = -vertical.toFloat()
+//            }
+            aodMainLayout.animate()
+                .translationX(horizontal.toFloat())
+                .translationY(-vertical.toFloat())
+                .setDuration(800L)
+                .start()
 
             if ((System.currentTimeMillis() - lastScreenOnTime) > 30 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled()) {
                 setScreenOff() // 半小时自动息屏

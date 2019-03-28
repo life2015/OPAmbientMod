@@ -13,6 +13,7 @@ import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.*
@@ -27,6 +28,7 @@ import com.retrox.aodmod.extensions.checkPermission
 import com.retrox.aodmod.shared.SharedContentManager
 import com.retrox.aodmod.weather.WeatherProvider
 import org.jetbrains.anko.*
+import kotlin.concurrent.thread
 
 
 open class StatusCard(val context: Context, lifecycleOwner: LifecycleOwner) {
@@ -331,6 +333,14 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
                 context.startActivity<AlwaysOnSettings>()
             }
         }.lparams(wrapContent, wrapContent)
+        button {
+            text = "息屏风格设置"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                context.startActivity<CustomActivity>()
+            }
+        }.lparams(wrapContent, wrapContent)
         leftPadding = dip(16)
     }
 
@@ -344,29 +354,34 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
 }
 
 class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
-    val weatherData = WeatherProvider.queryWeatherInformationSync(context)
+
+    val weatherLiveData = WeatherProvider.weatherLiveEvent
     val layout = context.verticalLayout {
-        val content = if (weatherData != null) {
-            with(weatherData) {
-                titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
-                status.value = "天气服务正常"
-                val result = "当前天气数据：$cityName $weatherName $temperature$temperatureUnit \n今日温度范围：$temperatureLow/$temperatureHigh$temperatureUnit"
-                if (AppPref.aodShowWeather) {
-                    result
-                } else {
-                    "$result\n您的息屏未开启天气显示，可以在常亮自定义设置中打开"
-                }
-            }
-        } else {
-            status.value = "天气服务异常"
-            titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
-            AppPref.aodShowWeather = false
-            "获取天气数据失败 检查系统天气APP是否可用\n已自动关闭天气显示"
-        }
 
         textView {
             textColor = Color.BLACK
-            text = content
+
+            weatherLiveData.observe(lifecycleOwner, Observer { weatherData ->
+                val content = if (weatherData != null) {
+                    with(weatherData) {
+                        titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+                        status.value = "天气服务正常"
+                        val result = "当前天气数据：$cityName $weatherName $temperature$temperatureUnit \n今日温度范围：$temperatureLow/$temperatureHigh$temperatureUnit"
+                        if (AppPref.aodShowWeather) {
+                            result
+                        } else {
+                            "$result\n您的息屏未开启天气显示，可以在常亮自定义设置中打开"
+                        }
+                    }
+                } else {
+                    status.value = "天气服务异常"
+                    titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
+                    AppPref.aodShowWeather = false
+                    "获取天气数据失败 检查系统天气APP是否可用\n已自动关闭天气显示"
+                }
+
+                text = content
+            })
         }.lparams(wrapContent, wrapContent) {
             verticalMargin = dip(8)
             horizontalMargin = dip(16)

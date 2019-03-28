@@ -22,6 +22,7 @@ object AppPref {
     var aodShowWeather by shared("AODSHOWWEATHER", true)
     var aodShowNote by shared("AODSHOWNOTE", false)
     var aodNoteContent by shared("AODNOTECONTENT", "")
+    var aodLayoutTheme by shared("AODLAYOUTTHEME", "Default")
 
 
     val externalPrefName = "${BuildConfig.APPLICATION_ID}_external_pref.xml"

@@ -103,10 +103,6 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
 
                 MainHook.logD("icons: $icons")
 
-                val cm = ColorMatrix()
-                cm.setSaturation(0f) // 设置饱和度
-                val grayColorFilter = ColorMatrixColorFilter(cm)
-
                 removeAllViews()
                 icons.take(6).forEach {
                     imageView {
