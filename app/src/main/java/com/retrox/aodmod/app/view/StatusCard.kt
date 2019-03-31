@@ -9,12 +9,14 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.widget.*
 import com.retrox.aodmod.R
@@ -333,14 +335,6 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
                 context.startActivity<AlwaysOnSettings>()
             }
         }.lparams(wrapContent, wrapContent)
-        button {
-            text = "息屏风格设置"
-            setBorderlessStyle()
-            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
-            setOnClickListener {
-                context.startActivity<CustomActivity>()
-            }
-        }.lparams(wrapContent, wrapContent)
         leftPadding = dip(16)
     }
 
@@ -366,7 +360,8 @@ class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard
                     with(weatherData) {
                         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                         status.value = "天气服务正常"
-                        val result = "当前天气数据：$cityName $weatherName $temperature$temperatureUnit \n今日温度范围：$temperatureLow/$temperatureHigh$temperatureUnit"
+                        val result =
+                            "当前天气数据：$cityName $weatherName $temperature$temperatureUnit \n今日温度范围：$temperatureLow/$temperatureHigh$temperatureUnit"
                         if (AppPref.aodShowWeather) {
                             result
                         } else {
@@ -391,11 +386,12 @@ class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard
     init {
         title.value = "天气数据"
         attachView(layout)
+
     }
 }
 
 class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
-    val checkStat = MutableLiveData<Boolean>().apply{
+    val checkStat = MutableLiveData<Boolean>().apply {
         value = context.checkPermission {}
     }
     val activity = context as? Activity
@@ -426,7 +422,10 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
                     val result = it.checkPermission {
                         ActivityCompat.requestPermissions(
                             it,
-                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 66
+                            arrayOf(
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            ), 66
                         );
                     }
                     checkStat.value = result
@@ -451,6 +450,52 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
                 }
             }
         })
+        attachView(layout)
+    }
+}
+
+class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
+    val themeLayoutList = listOf("Default", "Flat", "DVD")
+    val layout = context.linearLayout {
+        orientation = LinearLayout.VERTICAL
+        frameLayout {
+            textView("显示风格"){
+                textColor = Color.BLACK
+            }.lparams(wrapContent, wrapContent) {
+                gravity = Gravity.START or Gravity.CENTER_VERTICAL
+            }
+            spinner {
+                background.setColorFilter(Color.parseColor("#568FFF"), PorterDuff.Mode.SRC_ATOP)
+                adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, themeLayoutList)
+                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        val style = themeLayoutList[position]
+                        AppPref.aodLayoutTheme = style
+                        Toast.makeText(context, "主题已设置 $style", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                setSelection(themeLayoutList.indexOf(AppPref.aodLayoutTheme), true)
+            }.lparams(wrapContent, wrapContent) {
+                gravity = Gravity.END
+            }
+        }.lparams(matchParent, wrapContent)
+
+        button {
+            text = "其他自定义风格设置"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                context.startActivity<CustomActivity>()
+            }
+        }.lparams(wrapContent, wrapContent)
+        leftPadding = dip(16)
+    }
+
+    init {
+        title.value = "息屏风格自定义"
+        titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
         attachView(layout)
     }
 }

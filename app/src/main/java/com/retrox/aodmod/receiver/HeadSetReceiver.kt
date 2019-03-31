@@ -29,6 +29,7 @@ class HeadSetReceiver : BroadcastReceiver() {
             val device: BluetoothDevice
         ) : ConnectionState()
         data class VolumeChange(val volValue : Int) : ConnectionState()
+        data class ZenModeChange(val newMode: Int) : ConnectionState()
     }
 
 
@@ -79,6 +80,9 @@ class HeadSetReceiver : BroadcastReceiver() {
                 MainHook.logD("Vol $currentVolume")
                 headSetConnectLiveEvent.postValue(ConnectionState.VolumeChange(currentVolume))
             }
+        } else if ("com.oem.intent.action.THREE_KEY_MODE" == action) {
+            val zen = intent.getIntExtra("switch_state", 0)  // 0 -> changing 1 -> mute 2 -> vibrate 3 -> ring
+            headSetConnectLiveEvent.postValue(ConnectionState.ZenModeChange(zen))
         }
     }
 }

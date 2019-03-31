@@ -36,6 +36,7 @@
 
 -keep class com.retrox.aodmod.data.NowPlayingMediaData{*;}
 -keep class com.retrox.aodmod.shared.data.SharedState{*;}
+-keep class com.retrox.aodmod.proxy.view.theme.ThemeClockPack{*;}
 -keep class com.retrox.aodmod.app.util.Utils{*;}
 
 # Kotlin

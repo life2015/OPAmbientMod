@@ -65,10 +65,12 @@ object WeatherProvider {
                         null
                     )
                 )
-                data?.let { weatherData -> weatherLiveEvent.postValue(weatherData) }
+                weatherLiveEvent.postValue(data) // null 也要post
+//                data?.let { weatherData -> weatherLiveEvent.postValue(weatherData) }
             }
         } else {
             Log.w(TAG, "the weather application is not installed, stop querying...")
+            weatherLiveEvent.postValue(null)
             return null // 没这个软件 FUCK
         }
         return weatherLiveEvent.value // 先要给她点数据 不能空了 反正后续会有新的数据通过LiveData

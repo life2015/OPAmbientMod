@@ -2,52 +2,57 @@ package com.retrox.aodmod.app
 
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.hardware.camera2.params.ColorSpaceTransform
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.proxy.view.custom.dvd.BallView
+import com.retrox.aodmod.proxy.view.theme.ThemeClockPack
+import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import org.jetbrains.anko.*
 
 class CustomActivity : AppCompatActivity() {
-    val themeLayoutList = listOf("Default", "Flat")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         scrollView {
+            backgroundColor = Color.BLACK
             verticalLayout {
-                linearLayout {
-                    orientation = LinearLayout.HORIZONTAL
-                    textView("显示风格")
-                    spinner {
-                        background.setColorFilter(Color.parseColor("#568FFF"), PorterDuff.Mode.SRC_ATOP)
-                        adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, themeLayoutList)
-                        onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                            override fun onNothingSelected(parent: AdapterView<*>?) {}
+                ThemeManager.getPresetThemes().forEach {
+                    textView {
+                        textColor = Color.WHITE
+                        text = "${it.themeName} 点击使用"
+                        setGradientTest(it)
+                        textSize = 30f
+                        tag = it
 
-                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                val style = themeLayoutList[position]
-                                AppPref.aodLayoutTheme = style
-                                Toast.makeText(context, "主题已设置 $style", Toast.LENGTH_SHORT).show()
-                            }
+                        setOnClickListener {
+                            val pack = tag as ThemeClockPack
+                            ThemeManager.setThemePackSync(pack)
+                            Toast.makeText(context, "主题已应用 ${pack.themeName}", Toast.LENGTH_SHORT).show()
                         }
-                        setSelection(themeLayoutList.indexOf(AppPref.aodLayoutTheme), true)
-                    }
+                    }.lparams(wrapContent, wrapContent)
                 }
 
-                val view  = BallView(context)
-                view.lparams(dip(300), dip(300))
-                addView(view)
+                addOnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+                    applyRecursively {
+                        if (it is TextView) {
+                            if (it.tag is ThemeClockPack) {
+                                it.setGradientTest(it.tag as ThemeClockPack)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+
 
     fun _LinearLayout.title(title: String) = textView {
         text = title
@@ -69,4 +74,5 @@ class CustomActivity : AppCompatActivity() {
         verticalMargin = dip(8)
         horizontalMargin = dip(12)
     }
+
 }

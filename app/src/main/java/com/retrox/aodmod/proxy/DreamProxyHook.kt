@@ -12,6 +12,7 @@ import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import android.os.Process
+import android.view.Choreographer
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.shared.SharedContentManager
 

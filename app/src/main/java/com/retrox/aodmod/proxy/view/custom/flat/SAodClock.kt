@@ -7,8 +7,8 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
 import android.os.PowerManager
+import android.text.TextUtils
 import android.transition.TransitionManager
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +32,8 @@ import org.jetbrains.anko.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+// 给跑马灯用的效果 但是也可以用来约束TextView宽度
+val maxTextViewWidth = 260
 
 fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
     return verticalLayout {
@@ -79,6 +81,22 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
             bottomMargin = dip(6)
         }
 
+        textView {// 备忘
+            textColor = Color.WHITE
+            setGoogleSans()
+            letterSpacing = 0.02f
+            textSize = 16f
+
+            maxWidth = dip(maxTextViewWidth)
+            visibility = View.GONE
+            if (XPref.getAodShowNote() && !XPref.getAodNoteContent().isNullOrBlank()) {
+                visibility = View.VISIBLE
+                text = XPref.getAodNoteContent()
+            }
+        }.lparams(wrapContent, wrapContent) {
+            bottomMargin = dip(6)
+        }
+
         textView {
             id = Ids.tv_battery
             textColor = Color.WHITE
@@ -100,6 +118,55 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
         // 使用WakeLock来保证Handler计时的准确以及避免休眠
         val animWakeLock = context.getSystemService(PowerManager::class.java)
             .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:FlatClockViewAnim")
+
+
+        val musicView = flatMusicInClock(lifecycleOwner).apply {
+            id = Ids.ly_music_control
+        }.lparams(wrapContent, wrapContent) {
+            topMargin = dip(8)
+        }
+        addView(musicView)
+
+        val headSetStatusView = aodHeadSetView(lifecycleOwner).apply {
+            id = Ids.ly_headset_status
+            visibility = View.GONE
+        }.lparams(wrapContent, wrapContent) {
+            topMargin = dip(8)
+        }
+        addView(headSetStatusView)
+
+        val headSetViewReset = Runnable {
+            val musicViewEnabled = XPref.getMusicAodEnabled()
+            TransitionManager.beginDelayedTransition(this)
+            findViewById<View>(Ids.ly_headset_status).visibility = View.GONE
+            if (musicViewEnabled && AodMedia.aodMediaLiveData.value != null) { // 避免音乐显示关闭的状态被冲走
+                findViewById<View>(Ids.ly_music_control).visibility = View.VISIBLE
+            }
+            if (animWakeLock.isHeld) animWakeLock.release()
+        }
+        HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+            it?.let {
+                // do Animation now
+                removeCallbacks(headSetViewReset)
+                if (animWakeLock.isHeld) {
+                    animWakeLock.release()
+                }
+                animWakeLock.acquire(10000L)
+
+                val delay = when (it) {
+                    is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
+                    is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
+                    is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
+                    is HeadSetReceiver.ConnectionState.ZenModeChange -> 4000L
+                }
+
+                TransitionManager.beginDelayedTransition(this)
+                findViewById<View>(Ids.ly_music_control).visibility = View.GONE
+                findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
+
+                postDelayed(headSetViewReset, delay)
+            }
+        })
 
         val flatNotificationView = flatNotificationInClock(lifecycleOwner).apply {
             id = Ids.ly_flat_clock_notification
@@ -132,54 +199,6 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
             }
         })
 
-        val musicView = flatMusicInClock(lifecycleOwner).apply {
-            id = Ids.ly_music_control
-        }.lparams(wrapContent, wrapContent) {
-            topMargin = dip(12)
-        }
-        addView(musicView)
-
-        val headSetStatusView = aodHeadSetView(lifecycleOwner).apply {
-            id = Ids.ly_headset_status
-            visibility = View.GONE
-        }.lparams(wrapContent, wrapContent) {
-            topMargin = dip(12)
-        }
-        addView(headSetStatusView)
-
-
-        val headSetViewReset = Runnable {
-            val musicViewEnabled = XPref.getMusicAodEnabled()
-            TransitionManager.beginDelayedTransition(this)
-            findViewById<View>(Ids.ly_headset_status).visibility = View.GONE
-            if (musicViewEnabled && AodMedia.aodMediaLiveData.value != null) { // 避免音乐显示关闭的状态被冲走
-                findViewById<View>(Ids.ly_music_control).visibility = View.VISIBLE
-            }
-            if (animWakeLock.isHeld) animWakeLock.release()
-        }
-        HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
-            it?.let {
-                // do Animation now
-                removeCallbacks(headSetViewReset)
-                if (animWakeLock.isHeld) {
-                    animWakeLock.release()
-                }
-                animWakeLock.acquire(10000L)
-
-                val delay = when (it) {
-                    is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
-                    is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
-                    is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
-                }
-
-                TransitionManager.beginDelayedTransition(this)
-                findViewById<View>(Ids.ly_music_control).visibility = View.GONE
-                findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
-
-                postDelayed(headSetViewReset, delay)
-            }
-        })
-
         flatNotificationLayout(lifecycleOwner)
     }
 }
@@ -196,7 +215,7 @@ private fun Context.flatMusicInClock(lifecycleOwner: LifecycleOwner): View {
             rightMargin = dip(4)
         }
 
-        val musicText = textView {
+        val musicText = marqueTextView {
             //            gravity = Gravity.CENTER
             id = Ids.tv_music
             textColor = Color.WHITE
@@ -204,7 +223,7 @@ private fun Context.flatMusicInClock(lifecycleOwner: LifecycleOwner): View {
             gravity = Gravity.BOTTOM
             setGoogleSans()
 
-        }.lparams(width = wrapContent, height = wrapContent) {
+        }.lparams(width = dip(maxTextViewWidth), height = wrapContent) {
             //            horizontalMargin = dip(4)
             gravity = Gravity.BOTTOM
         }
@@ -223,6 +242,8 @@ private fun Context.flatMusicInClock(lifecycleOwner: LifecycleOwner): View {
             it?.let {
                 visibility = View.VISIBLE
                 musicText.text = "${it.name} - ${it.artist}"
+//                musicText.stopScroll()
+//                musicText.startScroll()
             }
         })
     }
@@ -244,6 +265,10 @@ private fun Context.flatNotificationInClock(lifecycleOwner: LifecycleOwner): Vie
             textColor = Color.WHITE
             setGoogleSans()
             textSize = 15f
+            maxLines = 10
+            ellipsize = TextUtils.TruncateAt.END
+            maxWidth = dip(maxTextViewWidth + 30)
+
 //            setAutoSizeTextTypeUniformWithConfiguration(12,16,1, TypedValue.COMPLEX_UNIT_SP)
         }.lparams(wrapContent, wrapContent) {
             topMargin = dip(4)
@@ -276,7 +301,13 @@ private fun Context.flatNotificationInClock(lifecycleOwner: LifecycleOwner): Vie
                     notificationData = it
 
                     title.text = "${it.appName} · now"
-                    content.text = it.title + "\n"+ it.content
+                    val contentText = it.title + "\n" + it.content
+                    if (contentText.length > 100) {
+                        content.textSize = 14f
+                    }
+                    content.text = contentText
+
+                    MainHook.logD("AOD Noti Size ${content.text.toString().length}")
                 }
 
 //                val icon = notification.smallIcon.loadDrawable(context)
@@ -292,7 +323,7 @@ private fun _LinearLayout.flatNotificationLayout(lifecycleOwner: LifecycleOwner)
         id = Ids.ll_icons
         orientation = LinearLayout.HORIZONTAL
 
-        val refreshBlock = {
+        val refreshBlock = Runnable {
             val icons = NotificationManager.notificationMap.values.asSequence()
                 .map { it.notification }
                 .filterNot { it.priority < 0 } // 过滤掉不重要通知
@@ -316,15 +347,16 @@ private fun _LinearLayout.flatNotificationLayout(lifecycleOwner: LifecycleOwner)
                     setImageDrawable(it)
 //                        colorFilter = grayColorFilter
                     imageTintList = ColorStateList.valueOf(Color.WHITE)
-                }.lparams(width = dip(24), height = dip(24)) {
+                }.lparams(width = dip(20), height = dip(20)) {
                     rightMargin = dip(6)
                     gravity = Gravity.CENTER_VERTICAL
                 }
             }
         }
-        refreshBlock.invoke()
+        refreshBlock.run()
         NotificationManager.notificationStatusLiveData.observe(lifecycleOwner, Observer {
-            refreshBlock.invoke()
+            removeCallbacks(refreshBlock)
+            postDelayed(refreshBlock, 500L)
         })
 
     }.lparams(width = wrapContent, height = wrapContent) {

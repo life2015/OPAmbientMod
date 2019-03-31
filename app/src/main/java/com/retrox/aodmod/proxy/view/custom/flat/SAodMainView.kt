@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.proxy.view.Ids
+import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
 
@@ -25,8 +26,8 @@ fun Context.sumSungAodMainView(lifecycleOwner: LifecycleOwner): View {
             }.lparams(width = matchParent, height = wrapContent) {
                 startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                 topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-                topMargin = dip(120)
-                leftMargin = dip(32)
+                topMargin = dip(140)
+                leftMargin = dip(36)
             }
             addView(clockView)
 
@@ -34,7 +35,7 @@ fun Context.sumSungAodMainView(lifecycleOwner: LifecycleOwner): View {
                 applyRecursively {
                     when(it) {
                         is TextView -> it.setGradientTest()
-                        is ImageView -> it.imageTintList = ColorStateList.valueOf(Color.parseColor("#DFCCC0"))
+                        is ImageView -> it.imageTintList = ColorStateList.valueOf(Color.parseColor(ThemeManager.getCurrentColorPack().tintColor))
                     }
                 }
             }

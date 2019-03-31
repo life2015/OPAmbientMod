@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.HeadSetReceiver
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
@@ -69,18 +70,15 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             }
             addView(musicView)
 
-            val threeKeyView = aodThreeKeyView(lifecycleOwner).apply {
-                id = Ids.ly_three_key
-            }.lparams(width = wrapContent, height = wrapContent) {
-                //                endToEnd = PARENT_ID
-//                topToTop = PARENT_ID
-//                topMargin = dip(130)
-                startToStart = PARENT_ID
-                endToEnd = PARENT_ID
-                bottomToTop = Ids.ly_clock
-                bottomMargin = dip(6)
-            }
-            addView(threeKeyView)
+//            val threeKeyView = aodThreeKeyView(lifecycleOwner).apply {
+//                id = Ids.ly_three_key
+//            }.lparams(width = wrapContent, height = wrapContent) {
+//                startToStart = PARENT_ID
+//                endToEnd = PARENT_ID
+//                bottomToTop = Ids.ly_clock
+//                bottomMargin = dip(6)
+//            }
+//            addView(threeKeyView)
 
 
             val notificationView = aodNotification(lifecycleOwner).apply {
@@ -157,6 +155,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                         is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
                         is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
                         is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
+                        is HeadSetReceiver.ConnectionState.ZenModeChange -> 4000L
                     }
 
                     TransitionManager.beginDelayedTransition(this)
@@ -220,12 +219,13 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
 
             addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
                 applyRecursively {
+                    val pack = ThemeManager.getCurrentColorPack()
                     when(it) {
                         is TextView -> it.setGradientTest()
-                        is ImageView -> it.imageTintList = ColorStateList.valueOf(Color.parseColor("#DFCCC0"))
+                        is ImageView -> it.imageTintList = ColorStateList.valueOf(Color.parseColor(pack.tintColor))
                     }
                     if (it.id == Ids.view_divider) {
-                        it.backgroundColor = Color.parseColor("#DFCCC0")
+                        it.backgroundColor = Color.parseColor(pack.tintColor)
                     }
                 }
             }

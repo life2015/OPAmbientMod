@@ -1,17 +1,14 @@
 package com.retrox.aodmod.app.view
 
 import android.Manifest
-import android.app.AndroidAppHelper
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Debug
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.Gravity
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.extensions.checkPermission
-import com.retrox.aodmod.weather.WeatherProvider
 import org.jetbrains.anko.*
 
 class NewMainActivity : AppCompatActivity() {
@@ -27,6 +24,7 @@ class NewMainActivity : AppCompatActivity() {
                 addView(ActiveStatusCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(PermissionCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(RunStatusCard(this@NewMainActivity, this@NewMainActivity).rootView)
+                addView(ThemeCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(WeatherCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(SettingsCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(ToolCard(this@NewMainActivity, this@NewMainActivity).rootView)

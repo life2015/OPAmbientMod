@@ -13,7 +13,7 @@ import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.receiver.HeadSetReceiver
 import org.jetbrains.anko.*
 
-fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner) : FrameLayout {
+fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner): FrameLayout {
     return frameLayout {
 
         linearLayout {
@@ -46,7 +46,7 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner) : FrameLayout {
                     if (it is HeadSetReceiver.ConnectionState.HeadSetConnection) {
                         val connection = it.connection
                         image.setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_headset))
-                        when(connection) {
+                        when (connection) {
                             HeadSetReceiver.Connection.DISCONNECTED -> headSetTextView.text = "Headset Unplugged"
                             HeadSetReceiver.Connection.CONNECTED -> headSetTextView.text = "Headset Plugged"
                         }
@@ -56,7 +56,7 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner) : FrameLayout {
                         val device = it.device
 
                         image.setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_bluetooth))
-                        when(connection) {
+                        when (connection) {
                             HeadSetReceiver.Connection.CONNECTING -> headSetTextView.text = "$name Connecting"
                             HeadSetReceiver.Connection.CONNECTED -> headSetTextView.text = "$name Connected"
                             HeadSetReceiver.Connection.DISCONNECTING -> headSetTextView.text = "$name Disconnecting"
@@ -78,6 +78,20 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner) : FrameLayout {
                             prevVol = vol
                         }
 
+                    } else if (it is HeadSetReceiver.ConnectionState.ZenModeChange) {
+                        val zenMode = it.newMode
+                        val resourceUtils = ResourceUtils.getInstance(this)
+                        val zenStatePair = when (zenMode) {
+                            1 -> resourceUtils.getDrawable(R.drawable.ic_notifications_off) to "Silent"
+                            2 -> resourceUtils.getDrawable(R.drawable.ic_vibration) to "Vibrate"
+                            3 -> resourceUtils.getDrawable(R.drawable.ic_notifications_active) to "Ring"
+                            else -> null
+                        }
+
+                        zenStatePair?.let { (drawable, text) ->
+                            image.setImageDrawable(drawable)
+                            headSetTextView.text = text
+                        }
                     }
                 }
 

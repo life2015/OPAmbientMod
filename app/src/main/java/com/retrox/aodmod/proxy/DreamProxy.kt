@@ -26,6 +26,7 @@ import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodMainView
 import com.retrox.aodmod.proxy.view.custom.dvd.dvdAodMainView
 import com.retrox.aodmod.proxy.view.custom.flat.sumSungAodMainView
+import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import com.retrox.aodmod.service.notification.NotificationCollectorService
@@ -81,9 +82,12 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 //        val layout = context.dvdAodMainView(this) as ViewGroup
 //        if (XPref.getAodLayoutTheme() == "Flat")
 
+        ThemeManager.loadThemePackFromDisk()
+
         val layout = when (XPref.getAodLayoutTheme()) {
             "Flat" -> context.sumSungAodMainView(this) as ViewGroup
             "Default" -> context.aodMainView(this) as ViewGroup
+            "DVD" -> context.dvdAodMainView(this) as ViewGroup
             else -> context.aodMainView(this) as ViewGroup
         }
 
@@ -207,6 +211,17 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
+        // 保险起见
+        AodClockTick.tickLiveData.observe(this, Observer {
+            val screenState = AodState.screenState.value
+            screenState?.let {
+                when(it) {
+//                    AodState.DreamState.SCREENDOZE -> LocalAlarmManager.setUpAlarm()
+                    AodState.DreamState.SCREENOFF -> LocalAlarmManager.cancelAlarm()
+                }
+            }
+        })
+
 //        XposedHelpers.callMethod(dreamService, "setInteractive", true)
 
         if (AodState.sleepMode) {
@@ -222,12 +237,14 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     // Screen ON
     fun setScreenDoze() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
+        AodState.screenState.setValue(AodState.DreamState.SCREENDOZE)
         LocalAlarmManager.setUpAlarm()
     }
 
     // Screen OFF
     fun setScreenOff() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
+        AodState.screenState.setValue(AodState.DreamState.SCREENOFF)
         LocalAlarmManager.cancelAlarm()
     }
 

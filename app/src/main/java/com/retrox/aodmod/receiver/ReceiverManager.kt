@@ -19,7 +19,8 @@ object ReceiverManager {
         kotlin.run {
             val intentFilter = IntentFilter()
             intentFilter.addAction(Intent.ACTION_TIME_TICK)
-            intentFilter.addAction(ClockTickReceiver.CUSTOM_PING)
+            intentFilter.addAction(ClockTickReceiver.CUSTOM_PING_RTC)
+            intentFilter.addAction(ClockTickReceiver.CUSTOM_PING_RTC_WAKEUP)
             val receiver = ClockTickReceiver()
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter)
             MainHook.logD("Receiver:: ClockTick registered ")
@@ -56,6 +57,7 @@ object ReceiverManager {
             intentFilter.addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED)
             intentFilter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)
             intentFilter.addAction("android.media.VOLUME_CHANGED_ACTION")
+            intentFilter.addAction("com.oem.intent.action.THREE_KEY_MODE")
             val receiver = HeadSetReceiver()
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter)
             MainHook.logD("Receiver:: HeadSet registered ")

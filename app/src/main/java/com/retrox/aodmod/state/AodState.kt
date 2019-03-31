@@ -21,7 +21,7 @@ object AodState {
     val dreamState = MutableLiveData<String>()
     object DreamState {
         const val ACTIVE = "ACTIVE"
-        const val DOZE = "DOZE"
+        const val SCREENDOZE = "SCREENDOZE"
         const val SCREENOFF = "SCREENOFF"
         const val STOP = "STOP"
     }
