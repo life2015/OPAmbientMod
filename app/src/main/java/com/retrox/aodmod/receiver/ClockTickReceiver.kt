@@ -13,6 +13,7 @@ import com.retrox.aodmod.state.AodClockTick
  */
 class ClockTickReceiver : BroadcastReceiver() {
     companion object {
+        const val CUSTOM_PING = "CLOCKTICK_CUSTOM_PING"
         const val CUSTOM_PING_RTC = "CLOCKTICK_CUSTOM_PING_RTC"
         const val CUSTOM_PING_RTC_WAKEUP = "CLOCKTICK_CUSTOM_PING_RTC_WAKEUP"
     }

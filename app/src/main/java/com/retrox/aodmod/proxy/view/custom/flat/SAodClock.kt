@@ -286,11 +286,13 @@ private fun Context.flatNotificationInClock(lifecycleOwner: LifecycleOwner): Vie
             } else {
                 title.text = "${notificationData?.appName} · ${min.toInt()} min"
             }
+
+            MainHook.logD("SAod Log tick")
         })
 
 
-
-        NotificationManager.notificationStatusLiveData.observe(lifecycleOwner, Observer {
+        MainHook.logD("observe noti !")// 这里 liveevent本身observe会烂
+        NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
             it?.let { (sbn, status) ->
                 if (status == "Removed") return@let
                 if (it.first.notification.getNotificationData().isOnGoing) return@let

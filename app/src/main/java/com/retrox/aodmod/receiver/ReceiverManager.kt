@@ -19,6 +19,7 @@ object ReceiverManager {
         kotlin.run {
             val intentFilter = IntentFilter()
             intentFilter.addAction(Intent.ACTION_TIME_TICK)
+            intentFilter.addAction(ClockTickReceiver.CUSTOM_PING)
             intentFilter.addAction(ClockTickReceiver.CUSTOM_PING_RTC)
             intentFilter.addAction(ClockTickReceiver.CUSTOM_PING_RTC_WAKEUP)
             val receiver = ClockTickReceiver()

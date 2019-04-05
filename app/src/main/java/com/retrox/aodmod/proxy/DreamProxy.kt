@@ -67,6 +67,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         MainHook.logD("DreamProxy -> OnCreate")
         lazyInitBlock.length
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         LocalAlarmManager.initService(context)
     }
 
@@ -207,18 +209,12 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             }
 
             MainHook.logD("防烧屏: x offset:$horizontal y offset:$vertical")
-        })
 
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-
-        // 保险起见
-        AodClockTick.tickLiveData.observe(this, Observer {
-            val screenState = AodState.screenState.value
-            screenState?.let {
-                when(it) {
-//                    AodState.DreamState.SCREENDOZE -> LocalAlarmManager.setUpAlarm()
-                    AodState.DreamState.SCREENOFF -> LocalAlarmManager.cancelAlarm()
-                }
+            // 检测唤醒状态 关屏不继续唤醒
+            val state = XposedHelpers.callMethod(dreamService, "getDozeScreenState")
+            if (state == Display.STATE_OFF ) { // 如果关屏了
+                LocalAlarmManager.cancelAlarm()
+                MainHook.logD("屏幕关闭状态，取消唤醒")
             }
         })
 
@@ -237,14 +233,12 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     // Screen ON
     fun setScreenDoze() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
-        AodState.screenState.setValue(AodState.DreamState.SCREENDOZE)
         LocalAlarmManager.setUpAlarm()
     }
 
     // Screen OFF
     fun setScreenOff() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
-        AodState.screenState.setValue(AodState.DreamState.SCREENOFF)
         LocalAlarmManager.cancelAlarm()
     }
 
@@ -256,6 +250,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             e.printStackTrace()
         }
         LocalAlarmManager.cancelAlarm()
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         AodState.dreamState.postValue(AodState.DreamState.STOP)
         MainHook.logD("DreamProxy -> onDreamingStopped")
@@ -275,20 +271,5 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
     }
 
-
-    private fun getAodViewLayoutParams(): WindowManager.LayoutParams {
-        val params = WindowManager.LayoutParams()
-        params.type = 2303
-        params.layoutInDisplayCutoutMode = 1
-        params.flags = 1280
-        params.format = -2
-        params.width = -1
-        params.height = -1
-        params.gravity = 17
-        params.screenOrientation = 1
-        params.title = "OPAod"
-        params.softInputMode = 3
-        return params
-    }
 
 }
