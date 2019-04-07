@@ -258,5 +258,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         AppState.refreshActiveState(this)
         AppState.refreshExpApps(this)
+
     }
 }

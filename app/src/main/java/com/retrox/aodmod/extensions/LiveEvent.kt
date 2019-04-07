@@ -3,6 +3,7 @@ package com.retrox.aodmod.extensions
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Observer
+import android.util.Log
 
 open class LiveEvent<T>() : MediatorLiveData<T>() {
 
@@ -44,7 +45,11 @@ open class LiveEvent<T>() : MediatorLiveData<T>() {
         // we update our current observer state and pass the wrapped observer to the
         // super.
         val originalObserver = wrappedObservers.remove(observer) ?: observer
-        val wrapped = observers.remove(originalObserver) ?: return
+        val wrapped = observers.remove(originalObserver)
+        if (wrapped == null) { // 修复使用LiveData标准observe方式最后无法撤销观察的bug
+            super.removeObserver(observer)
+            return
+        }
         if (observer == originalObserver) wrappedObservers.remove(wrapped)
         super.removeObserver(wrapped)
     }

@@ -6,6 +6,7 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -158,6 +159,53 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
     fun refresh() {
         AppState.isActive.value = XposedUtils.isExpModuleActive(context)
         AppState.expApps.value = XposedUtils.getExpApps(context)
+    }
+}
+
+class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner): StatusCard(context, lifecycleOwner) {
+    val layout = context.verticalLayout {
+        horizontalPadding = dip(16)
+        topPadding = dip(8)
+        textView {
+            textColor = Color.BLACK
+            AppState.isMotionAwakeEnabled.observe(lifecycleOwner, Observer {
+                it?.let {
+                    text = if (it) {
+                        titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+                        status.value = "已打开"
+                        "息屏抬手显示已打开"
+                    } else {
+                        titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
+                        status.value = "请打开抬手显示"
+                        "抬手显示未打开，请到系统设置里面打开抬手显示"
+                    }
+                }
+            })
+        }.lparams {
+            bottomMargin = dip(8)
+        }
+
+        textView {
+            textColor = Color.parseColor("#9B9B9B")
+            textSize = 14f
+            text = "虽然这个模块的功能不是抬手显示，但是系统设置的这个选项必须打开，否则功能无法正常运转"
+        }
+
+        button {
+            setBorderlessStyle()
+            text = "开启抬手显示"
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                val intent = Intent()
+                intent.component = ComponentName("com.oneplus.aod", "com.oneplus.settings.SettingsActivity")
+                context.startActivity(intent)
+            }
+        }.lparams(wrapContent, wrapContent)
+    }
+
+    init {
+        attachView(layout)
+        title.value = "抬手显示设置状态"
     }
 }
 

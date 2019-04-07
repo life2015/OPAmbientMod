@@ -41,7 +41,7 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner): FrameLayout {
 
             var prevVol = -1 // 上一次音乐音量
 
-            HeadSetReceiver.headSetConnectLiveEvent.observe(lifecycleOwner, Observer {
+            HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
                 it?.let {
                     if (it is HeadSetReceiver.ConnectionState.HeadSetConnection) {
                         val connection = it.connection

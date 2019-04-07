@@ -140,7 +140,11 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             setScreenOff()
             XposedHelpers.callMethod(dreamService, "startDozing")
             Handler(Looper.getMainLooper()).postDelayed({
-                setScreenDoze()
+                if (FlipOffSensor.Flip_ON == FlipOffSensor.flipSensorLiveData.value?.suggestState) { // 修复距离传感太近的时候息屏依然亮着的bug
+                    setScreenDoze()
+                } else {
+                    setScreenOff()
+                }
                 aodMainLayout.visibility = View.VISIBLE
                 ObjectAnimator.ofFloat(aodMainLayout, View.ALPHA, 0f, 1f).apply {
                     duration = 800L
