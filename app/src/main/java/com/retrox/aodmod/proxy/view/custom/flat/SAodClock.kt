@@ -67,9 +67,9 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
                 }
             }
 //            text = SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date())
-            text = generateDateBrief(WeatherProvider.queryWeatherInformation(context))
+            text = generateDateBrief(WeatherProvider.queryWeatherInformation(context, forceRefresh = true))
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = generateDateBrief(WeatherProvider.queryWeatherInformation(context))
+                text = generateDateBrief(WeatherProvider.queryWeatherInformation(context, forceRefresh = false))
             })
             WeatherProvider.weatherLiveEvent.observe(lifecycleOwner, Observer {
                 it?.let {

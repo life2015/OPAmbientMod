@@ -5,15 +5,12 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.VectorDrawable
 import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
 import android.view.View
 import android.widget.LinearLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.setGoogleSans
-import com.retrox.aodmod.extensions.wakeLockWrap
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.state.AodClockTick
@@ -55,9 +52,9 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
                 }
             }
 //            text = SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date())
-            text = generateDateBrief(WeatherProvider.queryWeatherInformation(context))
+            text = generateDateBrief(WeatherProvider.queryWeatherInformation(context, forceRefresh = true))
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = generateDateBrief(WeatherProvider.queryWeatherInformation(context))
+                text = generateDateBrief(WeatherProvider.queryWeatherInformation(context, forceRefresh = false))
             })
             WeatherProvider.weatherLiveEvent.observe(lifecycleOwner, Observer {
                 it?.let {

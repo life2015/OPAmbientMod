@@ -44,6 +44,7 @@
         <activity android:name=".app.AlwaysOnSettings"/>
         <activity android:name=".app.EnglishLearnActivity"/>
         <activity android:name=".app.CustomActivity"/>
+        <activity android:name=".app.AlarmSettingsActivity"/>
 
     </application>
 

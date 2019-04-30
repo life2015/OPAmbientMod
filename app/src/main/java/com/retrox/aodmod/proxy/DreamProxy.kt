@@ -2,7 +2,6 @@ package com.retrox.aodmod.proxy
 
 import android.animation.ObjectAnimator
 import android.app.AndroidAppHelper
-import android.app.Service
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
@@ -11,13 +10,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.*
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
+import android.os.PowerManager
 import android.service.dreams.DreamService
-import android.support.constraint.ConstraintLayout
-import android.view.Display
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
@@ -29,6 +27,8 @@ import com.retrox.aodmod.proxy.view.custom.flat.sumSungAodMainView
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
+import com.retrox.aodmod.service.alarm.LocalChoreManager
+import com.retrox.aodmod.service.alarm.proxy.LocalAlarmProxy
 import com.retrox.aodmod.service.notification.NotificationCollectorService
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
@@ -81,7 +81,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         MainHook.logD("DreamProxy -> onDreamingStarted")
         lastScreenOnTime = System.currentTimeMillis()
 
-//        val layout = context.dvdAodMainView(this) as ViewGroup
+//        val layout = context.sumSungAodMainViewActive(this) as ViewGroup
 //        if (XPref.getAodLayoutTheme() == "Flat")
 
         ThemeManager.loadThemePackFromDisk()
@@ -106,27 +106,13 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             setPackage("com.retrox.aodmod.plugin")
         }
         try {
-            context.bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE)
+//            context.bindService(intent, serviceConnection, Service.BIND_AUTO_CREATE)
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-/*          音乐架构重构尝试
-        val mediaSessionManager = context.getSystemService(MediaSessionManager::class.java)
-        mediaSessionManager.getActiveSessions(null).forEach {
-            MainHook.logD(it.packageName + "2222")
-            it.registerCallback()
-        }
-        mediaSessionManager.addOnActiveSessionsChangedListener(object : MediaSessionManager.OnActiveSessionsChangedListener {
-            override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
-                MainHook.logD("MediaSession Changed")
-            }
-        }, null, object : Handler() {
-            override fun handleMessage(msg: Message?) {
-                super.handleMessage(msg)
-                MainHook.logD("MediaSession handle Message : $msg")
-            }
-        })*/
+//        MediaServiceLocal.getActiveSessions()
+
 
         /**
          * setScreenOff -> startDozing -> setScreenDoze(delayed)
@@ -136,7 +122,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         val dozeWakeLock = context.getSystemService(PowerManager::class.java)
             .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:ScreenDoze")
         dozeWakeLock.acquire(10000L)
-        Handler(Looper.getMainLooper()).post {
+        val handler = Handler(Looper.getMainLooper())
+        handler.post {
             setScreenOff()
             XposedHelpers.callMethod(dreamService, "startDozing")
             Handler(Looper.getMainLooper()).postDelayed({
@@ -193,7 +180,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             var horizontal = Random().nextInt(20) - 10
 
             if (XPref.getAodLayoutTheme() == "Flat") { // Flat Mode
-                vertical = Random().nextInt(20) - 250
+                vertical = Random().nextInt(350) - 400 // 更大的移动范围
                 horizontal = Random().nextInt(100) - 20
             }
 
@@ -216,8 +203,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
             // 检测唤醒状态 关屏不继续唤醒
             val state = XposedHelpers.callMethod(dreamService, "getDozeScreenState")
-            if (state == Display.STATE_OFF ) { // 如果关屏了
-                LocalAlarmManager.cancelAlarm()
+            if (state == Display.STATE_OFF) { // 如果关屏了
+                LocalAlarmProxy.stopTick()
                 MainHook.logD("屏幕关闭状态，取消唤醒")
             }
         })
@@ -237,23 +224,28 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     // Screen ON
     fun setScreenDoze() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
-        LocalAlarmManager.setUpAlarm()
+        AodState.screenState.value = Display.STATE_DOZE
+//        LocalAlarmManager.setUpAlarm()
+        LocalAlarmProxy.startTick()
     }
 
     // Screen OFF
     fun setScreenOff() {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
-        LocalAlarmManager.cancelAlarm()
+        AodState.screenState.value = Display.STATE_OFF
+//        LocalAlarmManager.cancelAlarm()
+        LocalAlarmProxy.stopTick()
     }
 
 
     override fun onDreamingStopped() {
         try {
-            context.unbindService(serviceConnection)
+//            context.unbindService(serviceConnection)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        LocalAlarmManager.cancelAlarm()
+//        LocalAlarmManager.cancelAlarm()
+        LocalAlarmProxy.stopTick()
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
@@ -264,9 +256,6 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
     override fun onWakingUp(reason: String) {
         MainHook.logD("DreamProxy -> onWakingUp reason-> $reason")
-        if (reason == "android.server.wm:TURN_ON") {
-            setScreenOff()
-        }
 
     }
 

@@ -7,6 +7,7 @@ import android.content.Intent
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.receiver.ClockTickReceiver
+import com.retrox.aodmod.service.alarm.proxy.TickAlarm
 import java.lang.Exception
 
 /**

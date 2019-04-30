@@ -383,6 +383,14 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
                 context.startActivity<AlwaysOnSettings>()
             }
         }.lparams(wrapContent, wrapContent)
+        button {
+            text = "时钟对齐设置"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                context.startActivity<AlarmSettingsActivity>()
+            }
+        }.lparams(wrapContent, wrapContent)
         leftPadding = dip(16)
     }
 

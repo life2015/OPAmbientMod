@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
+import android.view.View
 import android.widget.Toast
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
@@ -14,24 +15,24 @@ import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 class AlwaysOnSettings : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        title = "常亮模式设置"
         scrollView {
             verticalLayout {
 
-                title("强力时间矫正")
-                content("尝试使用AlarmManager的定时唤醒来提醒息屏更新时间，时间不准的手机可以尝试。\n注意：尚未实际测试耗电影响。")
-                toggleButton {
-                    textOn = "强力时间矫正开"
-                    textOff = "强力时间矫正关"
-                    isChecked = AppPref.alarmTimeCorrection
-                    onCheckedChange { _, isChecked ->
-                        AppPref.alarmTimeCorrection = isChecked
-                        Toast.makeText(context, "强力时间矫正:${AppPref.alarmTimeCorrection}", Toast.LENGTH_SHORT).show()
-                    }
-                }.lparams(width = matchParent, height = wrapContent) {
-                    verticalMargin = dip(12)
-                    horizontalMargin = dip(8)
-                }
+//                title("强力时间矫正")
+//                content("尝试使用AlarmManager的定时唤醒来提醒息屏更新时间，时间不准的手机可以尝试。\n注意：尚未实际测试耗电影响。")
+//                toggleButton {
+//                    textOn = "强力时间矫正开"
+//                    textOff = "强力时间矫正关"
+//                    isChecked = AppPref.alarmTimeCorrection
+//                    onCheckedChange { _, isChecked ->
+//                        AppPref.alarmTimeCorrection = isChecked
+//                        Toast.makeText(context, "强力时间矫正:${AppPref.alarmTimeCorrection}", Toast.LENGTH_SHORT).show()
+//                    }
+//                }.lparams(width = matchParent, height = wrapContent) {
+//                    verticalMargin = dip(12)
+//                    horizontalMargin = dip(8)
+//                }
 
                 title("息屏备忘")
                 content("会在常驻通知区域显示一条备忘录")
@@ -48,6 +49,9 @@ class AlwaysOnSettings : AppCompatActivity() {
                     bottomMargin = dip(6)
                     horizontalMargin = dip(8)
                 }
+                focusable = View.FOCUSABLE
+                isFocusableInTouchMode = true
+
                 val editNote = editText {
                     hint = "备忘记录写在这里"
                     if (!AppPref.aodNoteContent.isNullOrBlank()) {

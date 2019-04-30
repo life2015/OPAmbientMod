@@ -4,6 +4,7 @@ import android.app.AndroidAppHelper
 import android.arch.lifecycle.MutableLiveData
 import android.os.Handler
 import android.os.SystemClock
+import android.view.Choreographer
 import com.retrox.aodmod.MainHook
 
 /**

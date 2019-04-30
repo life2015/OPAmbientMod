@@ -1,6 +1,7 @@
 package com.retrox.aodmod.weather
 
 import android.app.AndroidAppHelper
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.pm.PackageManager
 import android.database.ContentObserver
@@ -9,7 +10,6 @@ import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import com.retrox.aodmod.app.App
-import com.retrox.aodmod.extensions.LiveEvent
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,10 +32,10 @@ object WeatherProvider {
 
     }
 
-    val weatherLiveEvent = object : LiveEvent<WeatherData>() {
+    val weatherLiveEvent = object : MutableLiveData<WeatherData>() {
         override fun onActive() {
             super.onActive()
-            queryWeatherInformation(context)
+            queryWeatherInformation(context, forceRefresh = true)
             registerContentObserver(context)
         }
 
@@ -52,7 +52,13 @@ object WeatherProvider {
         }
     }
 
-    fun queryWeatherInformation(context: Context): WeatherData? {
+    private var lastQueryTime = 0L
+    fun queryWeatherInformation(context: Context, forceRefresh: Boolean = false): WeatherData? {
+        val needQueryNew = ((System.currentTimeMillis() - lastQueryTime) < 1000L * 60 * 20) || forceRefresh
+        if (!needQueryNew) {
+            return weatherLiveEvent.value
+        }
+        lastQueryTime = System.currentTimeMillis()
         if (isPackageInstalled(context, "net.oneplus.weather")) {
             thread {
                 // 妈的 同步调用给我搞出个ANR来
@@ -173,7 +179,7 @@ object WeatherProvider {
                 stringBuilder3.append(string7)
                 stringBuilder3.append(", unit: ")
                 stringBuilder3.append(string8)
-                Log.d(str2, stringBuilder3.toString())
+//                Log.d(str2, stringBuilder3.toString())
                 weatherData.timestamp = SimpleDateFormat("yyyyMMddkkmm", Locale.getDefault()).parse(string2).time / 1000
                 weatherData.cityName = string
                 weatherData.weatherCode = 0 // fake code 本来是对应图标的

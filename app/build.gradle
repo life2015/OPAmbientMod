@@ -10,15 +10,15 @@ android {
         applicationId "com.retrox.aodmod"
         minSdkVersion 26
         targetSdkVersion 27 //为了XSP不能上28 淦
-        versionCode 14
-        versionName "2.1.0"
+        versionCode 15
+        versionName "2.3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-//        debug {
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

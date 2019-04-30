@@ -7,9 +7,20 @@ import android.content.Intent
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.receiver.ClockTickReceiver
+import com.retrox.aodmod.service.alarm.proxy.TickAlarm
 import java.lang.Exception
 
-object LocalAlarmManager {
+/**
+ * 一分钟一次的唤醒
+ */
+object LocalAlarmManager : TickAlarm {
+    override fun startTick() {
+        setUpAlarm()
+    }
+
+    override fun stopTick() {
+        cancelAlarm()
+    }
 
     private lateinit var alarmManager: AlarmManager
     private lateinit var pendingIntent: PendingIntent
@@ -21,7 +32,7 @@ object LocalAlarmManager {
         pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    fun setUpAlarm() {
+    private fun setUpAlarm() {
 
         cancelAlarm()
 
@@ -34,7 +45,7 @@ object LocalAlarmManager {
         }
     }
 
-    fun cancelAlarm() {
+    private fun cancelAlarm() {
         try {
             MainHook.logD("Local AlarmManager cancel")
             alarmManager.cancel(pendingIntent)

@@ -21,6 +21,7 @@ class CustomActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        title = "主题色彩"
         scrollView {
             backgroundColor = Color.BLACK
             verticalLayout {

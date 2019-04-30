@@ -28,8 +28,8 @@ object AodState {
 
     var sleepMode = false // todo 优化传感器相关内容
 
-    // DOZE OFF ON
-    val screenState = MutableLiveData<String>()
+    // DOZE OFF ON 来自Display的参数
+    val screenState = MutableLiveData<Int>()
 
     val powerState = MutableLiveData<PowerData>()
 
