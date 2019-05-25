@@ -8,6 +8,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.retrox.aodmod.MainHook
+import de.robv.android.xposed.XposedHelpers
 
 /**
  * 翻转息屏Sensor管理
@@ -95,13 +96,12 @@ object FlipOffSensor {
 
     private fun registerListener(context: Context) {
         val sensorManager = context.getSystemService(SensorManager::class.java)
-//        sensorManager.registerListener(
-//            rotationVectorListener,
-//            sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR/*, true*/),
-//            SensorManager.SENSOR_DELAY_NORMAL
-//        )
 
-        val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY, false)
+        val op7proximityList = sensorManager.getSensorList(Sensor.TYPE_PROXIMITY)
+        val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY, false) ?: op7proximityList.firstOrNull()
+
+        if (sensor == null) return
+
         proximityMaxRange = sensor.maximumRange
         sensorManager.registerListener(
             proximityListener,

@@ -227,6 +227,13 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         AodState.screenState.value = Display.STATE_DOZE
 //        LocalAlarmManager.setUpAlarm()
         LocalAlarmProxy.startTick()
+        AodClockTick.tickLiveData.postValue("Tick from Screen ON")
+
+        Handler().postDelayed({
+            if (AodState.DreamState.STOP != AodState.dreamState.value) {
+                setScreenOff()
+            }
+        }, 10000L)
     }
 
     // Screen OFF
@@ -261,7 +268,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
     override fun onSingleTap() {
         MainHook.logD("DreamProxy -> onSingleTap")
-
+        setScreenDoze()
     }
 
 

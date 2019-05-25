@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         container.setOnClickListener {
             val attr = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION).build()
-            val effect = VibrationEffect.createWaveform(longArrayOf(0L, 50L), intArrayOf(0, -1), -1)
+            val effect = VibrationEffect.createWaveform(longArrayOf(120, 16, 100, 16), intArrayOf(0, 255, 0, 255), -1)
             vibrator.vibrate(effect, attr)
         }
     }

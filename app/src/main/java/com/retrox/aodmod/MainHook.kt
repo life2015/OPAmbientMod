@@ -5,6 +5,7 @@ import com.retrox.aodmod.BuildConfig.DEBUG
 import com.retrox.aodmod.apple.AppleMusicHook
 import com.retrox.aodmod.hooks.*
 import com.retrox.aodmod.proxy.DreamProxyHook
+import com.retrox.aodmod.proxy.OP7DreamProxyHook
 import com.retrox.aodmod.proxy.ProxyInitHook
 import com.retrox.aodmod.shared.SharedLogger
 import de.robv.android.xposed.IXposedHookInitPackageResources
@@ -37,7 +38,8 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         MediaControl.handleLoadPackage(lpparam)
         AodMainMediaHook.handleLoadPackage(lpparam)
 //        AodAlwaysOnHook.handleLoadPackage(lpparam)
-        DreamProxyHook.handleLoadPackage(lpparam)
+//        DreamProxyHook.handleLoadPackage(lpparam)
+        OP7DreamProxyHook.handleLoadPackage(lpparam)
         AppleMusicHook.handleLoadPackage(lpparam)
 //        DreamLifeCycleHook.handleLoadPackage(lpparam)
 
