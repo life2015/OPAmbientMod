@@ -46,6 +46,19 @@
         <activity android:name=".app.CustomActivity"/>
         <activity android:name=".app.AlarmSettingsActivity"/>
 
+        <service
+                android:name=".app.quick.AodModeQuickService"
+                android:label="快速设定"
+                android:icon="@drawable/ic_notifications_active"
+                android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.service.quicksettings.ACTIVE_TILE"
+                    android:value="true" />
+        </service>
+
     </application>
 
 </manifest>

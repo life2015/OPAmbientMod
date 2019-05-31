@@ -9,9 +9,12 @@ import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Process
 import android.service.dreams.DreamService
+import android.view.View
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.shared.SharedContentManager
+import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
@@ -27,12 +30,6 @@ object OP7DreamProxyHook : IXposedHookLoadPackage {
         val dozeServiceClass = XposedHelpers.findClass("com.android.systemui.doze.DozeService", classLoader)
         val dozeMachineClass = XposedHelpers.findClass("com.android.systemui.doze.DozeMachine", classLoader)
 
-        val statusBarClass = XposedHelpers.findClass("com.android.systemui.statusbar.phone.StatusBar", classLoader)
-        XposedHelpers.findAndHookMethod(statusBarClass, "onSingleTap", object : XC_MethodHook() {
-            override fun beforeHookedMethod(param: MethodHookParam?) {
-                MainHook.logD("Three Key Changed : $param")
-            }
-        })
 
         // 让DozeMachine内容失效 避免不必要的资源消耗
 
@@ -55,10 +52,10 @@ object OP7DreamProxyHook : IXposedHookLoadPackage {
 
         MainHook.logD("DisplayMode: ${XPref.getDisplayMode()}")
         if (XPref.getDisplayMode() == "SYSTEM") {
-            SharedContentManager.setWorkMode("系统增强")
+            SharedContentManager.setWorkMode("系统增强 - 不支持7Pro")
             return
         }
-        SharedContentManager.setWorkMode("常亮模式")
+        SharedContentManager.setWorkMode("常亮模式 - 7Pro")
 
 
         XposedHelpers.findAndHookConstructor(dozeServiceClass, object : XC_MethodHook() {

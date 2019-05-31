@@ -291,7 +291,7 @@ private fun Context.flatNotificationInClock(lifecycleOwner: LifecycleOwner): Vie
         })
 
 
-        MainHook.logD("observe noti !")// 这里 liveevent本身observe会烂
+        MainHook.logD("observe noti !")// 这里 liveevent本身observe会烂 -> 后来修复了
         NotificationManager.notificationStatusLiveData.observe(lifecycleOwner, Observer {
             it?.let { (sbn, status) ->
                 if (status == "Removed") return@let
@@ -341,7 +341,7 @@ private fun _LinearLayout.flatNotificationLayout(lifecycleOwner: LifecycleOwner)
                 .filterNot { it == null || it is VectorDrawable }
                 .toList()
 
-            MainHook.logD("icons: $icons")
+//            MainHook.logD("icons: $icons")
 
             removeAllViews()
             icons.take(6).forEach {

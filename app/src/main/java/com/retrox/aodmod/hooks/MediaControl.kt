@@ -13,6 +13,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage
 object MediaControl : IXposedHookLoadPackage {
     var metadata: MediaMetadata? = null
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
+        if (lpparam.packageName == "android") return
 //        if (!(lpparam.packageName.contains("com.netease.cloudmusic") || lpparam.packageName.contains("com.tencent.qqmusic"))) return
         MainHook.logD("Hook -> Try MediaControl Hook in ${lpparam.packageName}")
 

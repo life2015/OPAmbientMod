@@ -308,11 +308,19 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
             }
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "强力重启息屏 需要Root"
+            text = "强力重启息屏 需要Root （非一加7Pro）"
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
                 Utils.findProcessAndKill(context)
+            }
+        }.lparams(wrapContent, wrapContent)
+        button {
+            text = "强力重启系统UI和息屏 需要Root（7Pro）"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                Utils.findProcessAndKill(context, "com.android.systemui")
             }
         }.lparams(wrapContent, wrapContent)
         button {
@@ -511,7 +519,7 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
 }
 
 class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
-    val themeLayoutList = listOf("Default", "Flat", "DVD")
+    val themeLayoutList = listOf("Default", "Flat", "DVD", "PureMusic")
     val layout = context.linearLayout {
         orientation = LinearLayout.VERTICAL
         frameLayout {

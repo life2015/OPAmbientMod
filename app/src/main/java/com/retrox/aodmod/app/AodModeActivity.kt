@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.widget.Toast
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.extensions.isOP7Pro
 import org.jetbrains.anko.*
 
 class AodModeActivity : AppCompatActivity() {
@@ -62,6 +63,10 @@ class AodModeActivity : AppCompatActivity() {
 
                 button {
                     text = "点击使用系统增强模式"
+                    if (isOP7Pro()) {
+                        isEnabled = false
+                        text = "7Pro不支持系统增强模式"
+                    }
                     setOnClickListener {
                         AppPref.aodMode = "SYSTEM"
                         Toast.makeText(context, "系统增强模式设置成功 回到主页重启息屏APP生效", Toast.LENGTH_SHORT).show()

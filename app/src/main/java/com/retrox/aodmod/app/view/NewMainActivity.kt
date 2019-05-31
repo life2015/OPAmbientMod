@@ -6,12 +6,10 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
+import com.retrox.aodmod.app.SleepModeActivity
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.extensions.checkPermission
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.scrollView
-import org.jetbrains.anko.verticalLayout
+import org.jetbrains.anko.*
 
 class NewMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +29,14 @@ class NewMainActivity : AppCompatActivity() {
                 addView(WeatherCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(SettingsCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(ToolCard(this@NewMainActivity, this@NewMainActivity).rootView)
+
+                button {
+                    text = "Sleep Mode"
+                    setOnClickListener {
+//                        toast(android.os.Build.MODEL)
+                        startActivity<SleepModeActivity>()
+                    }
+                }
 
 
 //                button {

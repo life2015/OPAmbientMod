@@ -10,30 +10,34 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
-import android.os.PowerManager
+import android.os.*
 import android.service.dreams.DreamService
-import android.view.*
+import android.view.Display
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.extensions.isOP7Pro
+import com.retrox.aodmod.extensions.simpleTap
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.sensor.LightSensor
 import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodMainView
 import com.retrox.aodmod.proxy.view.custom.dvd.dvdAodMainView
 import com.retrox.aodmod.proxy.view.custom.flat.sumSungAodMainView
+import com.retrox.aodmod.proxy.view.custom.music.pureAodMusicMainView
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
-import com.retrox.aodmod.service.alarm.LocalChoreManager
 import com.retrox.aodmod.service.alarm.proxy.LocalAlarmProxy
 import com.retrox.aodmod.service.notification.NotificationCollectorService
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
 import java.util.*
+
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
     private val lifecycleRegistry = LifecycleRegistry(this)
@@ -81,15 +85,13 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         MainHook.logD("DreamProxy -> onDreamingStarted")
         lastScreenOnTime = System.currentTimeMillis()
 
-//        val layout = context.sumSungAodMainViewActive(this) as ViewGroup
-//        if (XPref.getAodLayoutTheme() == "Flat")
-
         ThemeManager.loadThemePackFromDisk()
 
         val layout = when (XPref.getAodLayoutTheme()) {
             "Flat" -> context.sumSungAodMainView(this) as ViewGroup
             "Default" -> context.aodMainView(this) as ViewGroup
             "DVD" -> context.dvdAodMainView(this) as ViewGroup
+            "PureMusic" -> context.pureAodMusicMainView(this) as ViewGroup
             else -> context.aodMainView(this) as ViewGroup
         }
 
@@ -169,40 +171,39 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             })
         }
 
-        var lastScreenBurnUpdate = System.currentTimeMillis()
+        var lastScreenBurnUpdate = 0L
         // 防烧屏
         AodClockTick.tickLiveData.observe(this, Observer {
 
             if (System.currentTimeMillis() - lastScreenBurnUpdate < 1000L * 30L) return@Observer // 避免太能挪动了...
 
-            lastScreenBurnUpdate = System.currentTimeMillis()
             var vertical = Random().nextInt(50)
             var horizontal = Random().nextInt(20) - 10
 
             if (XPref.getAodLayoutTheme() == "Flat") { // Flat Mode
-                vertical = Random().nextInt(350) - 400 // 更大的移动范围
+                vertical = Random().nextInt(350) - 400 // 更大的移动范围 (-400, -50)
                 horizontal = Random().nextInt(100) - 20
+            } else if (XPref.getAodLayoutTheme() == "PureMusic") {
+                horizontal = 0 // 这个模式避免左右移动
+                vertical = Random().nextInt(600) - 400 // 更大的移动范围 (-400, 200)
             }
 
-//            TransitionManager.beginDelayedTransition(layout)
-//            aodMainLayout.apply {
-//                translationX = horizontal.toFloat()
-//                translationY = -vertical.toFloat()
-//            }
             aodMainLayout.animate()
                 .translationX(horizontal.toFloat())
                 .translationY(-vertical.toFloat())
-                .setDuration(800L)
+                .setDuration(if (lastScreenBurnUpdate == 0L) /*加入初始位移 避免烧屏*/ 0L else 800L)
                 .start()
 
-            if ((System.currentTimeMillis() - lastScreenOnTime) > 30 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled()) {
+            lastScreenBurnUpdate = System.currentTimeMillis()
+
+            if ((System.currentTimeMillis() - lastScreenOnTime) > 10 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled()) {
                 setScreenOff() // 半小时自动息屏
             }
 
             MainHook.logD("防烧屏: x offset:$horizontal y offset:$vertical")
 
             // 检测唤醒状态 关屏不继续唤醒
-            val state = XposedHelpers.callMethod(dreamService, "getDozeScreenState")
+            val state = getScreenState()
             if (state == Display.STATE_OFF) { // 如果关屏了
                 LocalAlarmProxy.stopTick()
                 MainHook.logD("屏幕关闭状态，取消唤醒")
@@ -211,15 +212,33 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
 //        XposedHelpers.callMethod(dreamService, "setInteractive", true)
 
-        if (AodState.sleepMode) {
-            Handler().postDelayed({
-                if (AodState.DreamState.STOP != AodState.dreamState.value) {
-                    setScreenOff()
+//        if (AodState.sleepMode) {
+//            Handler().postDelayed({
+//                if (AodState.DreamState.STOP != AodState.dreamState.value) {
+//                    setScreenOff()
+//                }
+//            }, 10000L)
+//        }
+
+
+        DozeSensors.getSensorWakeLiveData().observe(this, Observer {
+            if (it == null) return@Observer
+            when (it) {
+                DozeSensors.DozeSensorMessage.PICK_UP -> setScreenDoze()
+                DozeSensors.DozeSensorMessage.MOTION_UP -> setScreenDoze()
+                DozeSensors.DozeSensorMessage.PICK_DROP -> {
+                    if (true != AodState.powerState.value?.charging) {
+                        setScreenOff()
+                    } else {
+                        MainHook.logD("充电状态 禁用抬手灭屏")
+                    }
                 }
-            }, 10000L)
-        }
+            }
+        })
+
     }
 
+    fun getScreenState() = XposedHelpers.callMethod(dreamService, "getDozeScreenState") as Int
 
     // Screen ON
     fun setScreenDoze() {
@@ -229,11 +248,14 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         LocalAlarmProxy.startTick()
         AodClockTick.tickLiveData.postValue("Tick from Screen ON")
 
-        Handler().postDelayed({
-            if (AodState.DreamState.STOP != AodState.dreamState.value) {
-                setScreenOff()
-            }
-        }, 10000L)
+        if (AodState.sleepMode) {
+//            Handler().postDelayed({
+//                if (AodState.DreamState.STOP != AodState.dreamState.value) {
+//                    setScreenOff()
+//                }
+//                // todo 避免多次关闭屏幕
+//            }, 10000L)
+        }
     }
 
     // Screen OFF
@@ -268,7 +290,15 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
     override fun onSingleTap() {
         MainHook.logD("DreamProxy -> onSingleTap")
-        setScreenDoze()
+        if (isOP7Pro()) {
+            val vibrator = AndroidAppHelper.currentApplication().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            vibrator.simpleTap()
+        }
+        if (getScreenState() == Display.STATE_OFF) {
+            setScreenDoze()
+        } else {
+            setScreenOff()
+        }
     }
 
 

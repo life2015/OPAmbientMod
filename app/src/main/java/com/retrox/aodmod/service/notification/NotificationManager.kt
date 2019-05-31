@@ -55,7 +55,7 @@ object NotificationManager {
             it.packageName == "com.tencent.qqmusic" || it.packageName == "com.netease.cloudmusic" || it.packageName == "code.name.monkey.retromusic" || it.packageName == "tv.danmaku.bili"
         }
         if (!musicActive && !musicNotification) {
-            AodMedia.aodMediaLiveData.postValue(null)
+            AodMedia.aodMediaLiveData.postValue(null) // Media InActive 媒体不活跃
         }
     }
 }
@@ -82,8 +82,8 @@ fun Notification.debugMessage(type: String = "Posted") {
 //
 //    }
 
-
-    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing hasMeidaSession: $hasMediaSession visbility: $visibility  priority: $priority")
+//    Only Use when Debug
+//    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing hasMeidaSession: $hasMediaSession visbility: $visibility  priority: $priority")
 }
 
 fun Notification.getNotificationData(): NotificationData {

@@ -97,7 +97,7 @@ object FlipOffSensor {
     private fun registerListener(context: Context) {
         val sensorManager = context.getSystemService(SensorManager::class.java)
 
-        val op7proximityList = sensorManager.getSensorList(Sensor.TYPE_PROXIMITY)
+        val op7proximityList = sensorManager.getSensorList(Sensor.TYPE_PROXIMITY) // 一加7的距离传感器基本上没法用啊
         val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY, false) ?: op7proximityList.firstOrNull()
 
         if (sensor == null) return

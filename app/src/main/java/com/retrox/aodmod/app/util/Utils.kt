@@ -13,7 +13,7 @@ import kotlin.concurrent.thread
 object Utils {
     private var pid = ""
 
-    fun findProcessAndKill(context: Context) {
+    fun findProcessAndKill(context: Context, processName: String = "com.oneplus.aod") {
         try {
             var line: String
             val process = Runtime.getRuntime().exec("su")
@@ -28,7 +28,7 @@ object Utils {
 
             var br = BufferedReader(InputStreamReader(stdout))
             br.lineSequence().forEach {
-                if (it.contains("com.oneplus.aod")) {
+                if (it.contains(processName)) {
                     killProxy(it, context)
                 }
             }
