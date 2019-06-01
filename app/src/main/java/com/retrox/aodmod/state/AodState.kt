@@ -34,4 +34,6 @@ object AodState {
     val powerState = MutableLiveData<PowerData>()
 
     val aodThreeKeyState = LiveEvent<Int>() // 0 -> changing 1 -> mute 2 -> vibrate 3 -> ring
+
+    val singleTapLiveEvent = LiveEvent<String>()
 }

@@ -18,10 +18,12 @@ import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodHeadSetView
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.HeadSetReceiver
+import com.retrox.aodmod.service.notification.NotificationData
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodMedia
+import com.retrox.aodmod.state.AodState
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import java.text.SimpleDateFormat
@@ -200,6 +202,7 @@ private fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
         }
 
         var currentId = 0
+        var currentNotificationData: NotificationData? = null
 
         NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
             it?.let { (sbn, status) ->
@@ -214,6 +217,8 @@ private fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
                 if (it.first.notification.getNotificationData().isOnGoing) return@let
 
                 val notification = NotificationManager.notificationMap[sbn.key]?.notification ?: return@let
+                currentNotificationData = notification.getNotificationData()
+
                 notification.getNotificationData().let {
                     unReadNotification.visibility = View.VISIBLE
                     unReadNotification.text = "${it.appName} 有未读通知"
@@ -221,6 +226,14 @@ private fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
 
 //                val icon = notification.smallIcon.loadDrawable(context)
 //                notificationImage.setImageDrawable(icon)
+            }
+        })
+
+        AodState.singleTapLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+            if (unReadNotification.text.contains("有未读通知")) {
+                unReadNotification.text = "${currentNotificationData?.appName}: ${currentNotificationData?.content}"
+            } else {
+                unReadNotification.text
             }
         })
 

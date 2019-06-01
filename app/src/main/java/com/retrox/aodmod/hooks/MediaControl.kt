@@ -48,6 +48,12 @@ object MediaControl : IXposedHookLoadPackage {
                 }
             })
 
+        XposedHelpers.findAndHookMethod(mediaSessionClass, "setPlaybackState", "android.media.session.PlaybackState", object : XC_MethodHook() {
+            override fun beforeHookedMethod(param: MethodHookParam) {
+                MainHook.logD(param.args[0].toString())
+            }
+        })
+
 
         XposedHelpers.findAndHookMethod(
             mediaSessionClass,

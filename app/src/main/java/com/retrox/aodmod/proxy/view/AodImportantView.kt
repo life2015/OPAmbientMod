@@ -85,7 +85,7 @@ fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
                         } else return@inner false
                     } ?: false
 
-                    MainHook.logD("package Name: ${sbn.packageName} isSensitive: $sensitive")
+//                    MainHook.logD("package Name: ${sbn.packageName} isSensitive: $sensitive")
 
                     val (appName, messageTitle, messageContent, onGoing) = realNotification.getNotificationData()
                     if (onGoing) return@Observer

@@ -98,7 +98,7 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
                     .filterNot { it == null || it is VectorDrawable }
                     .toList()
 
-                MainHook.logD("icons: $icons")
+//                MainHook.logD("icons: $icons")
 
                 removeAllViews()
                 icons.take(6).forEach {

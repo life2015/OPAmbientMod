@@ -10,11 +10,11 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Color
 import android.os.*
 import android.service.dreams.DreamService
 import android.view.Display
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.isOP7Pro
@@ -23,11 +23,7 @@ import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.sensor.LightSensor
-import com.retrox.aodmod.proxy.view.Ids
-import com.retrox.aodmod.proxy.view.aodMainView
-import com.retrox.aodmod.proxy.view.custom.dvd.dvdAodMainView
-import com.retrox.aodmod.proxy.view.custom.flat.sumSungAodMainView
-import com.retrox.aodmod.proxy.view.custom.music.pureAodMusicMainView
+import com.retrox.aodmod.proxy.view.AodDefaultDream
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
@@ -36,10 +32,14 @@ import com.retrox.aodmod.service.notification.NotificationCollectorService
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.frameLayout
+import org.jetbrains.anko.matchParent
 import java.util.*
 
 
-class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner {
+class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner, DreamProxyController {
+
     private val lifecycleRegistry = LifecycleRegistry(this)
     override fun getLifecycle(): Lifecycle = lifecycleRegistry
     var lastScreenOnTime = 0L
@@ -54,6 +54,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         "OK"
     }
     var mainView: View? = null
+
+    val dreamView: DreamView = AodDefaultDream(this)
 
     val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -74,6 +76,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         LocalAlarmManager.initService(context)
+        dreamView.onCreate()
     }
 
     override fun onAttachedToWindow() {
@@ -87,17 +90,24 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
         ThemeManager.loadThemePackFromDisk()
 
-        val layout = when (XPref.getAodLayoutTheme()) {
-            "Flat" -> context.sumSungAodMainView(this) as ViewGroup
-            "Default" -> context.aodMainView(this) as ViewGroup
-            "DVD" -> context.dvdAodMainView(this) as ViewGroup
-            "PureMusic" -> context.pureAodMusicMainView(this) as ViewGroup
-            else -> context.aodMainView(this) as ViewGroup
-        }
+//        val layout = when (XPref.getAodLayoutTheme()) {
+//            "Flat" -> context.sumSungAodMainView(this) as ViewGroup
+//            "Default" -> context.aodMainView(this) as ViewGroup
+//            "DVD" -> context.dvdAodMainView(this) as ViewGroup
+//            "PureMusic" -> context.pureAodMusicMainView(this) as ViewGroup
+//            else -> context.aodMainView(this) as ViewGroup
+//        }
 
-        val aodMainLayout = layout.findViewById<View>(Ids.ly_main)
-        mainView = layout
-        windowManager.addView(mainView, LayoutParamHelper.getAodViewLayoutParams())
+        val viewInternal = dreamView.onCreateView() // 真正显示的View
+        val realLayout = context.frameLayout {
+            backgroundColor = Color.BLACK
+            val v = viewInternal.lparams(matchParent, matchParent)
+            addView(v)
+        } // 加入黑色背景的 总View
+        mainView = realLayout
+
+        val aodMainLayout = viewInternal
+        windowManager.addView(realLayout, LayoutParamHelper.getAodViewLayoutParams())
 
         aodMainLayout.visibility = View.INVISIBLE
 //        setScreenDoze()
@@ -188,14 +198,11 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
                 vertical = Random().nextInt(600) - 400 // 更大的移动范围 (-400, 200)
             }
 
-            aodMainLayout.animate()
-                .translationX(horizontal.toFloat())
-                .translationY(-vertical.toFloat())
-                .setDuration(if (lastScreenBurnUpdate == 0L) /*加入初始位移 避免烧屏*/ 0L else 800L)
-                .start()
+            dreamView.onAvoidScreenBurnt(aodMainLayout, lastScreenBurnUpdate)
 
             lastScreenBurnUpdate = System.currentTimeMillis()
 
+            // todo 抽离自动息屏逻辑
             if ((System.currentTimeMillis() - lastScreenOnTime) > 10 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled()) {
                 setScreenOff() // 半小时自动息屏
             }
@@ -238,10 +245,9 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
     }
 
-    fun getScreenState() = XposedHelpers.callMethod(dreamService, "getDozeScreenState") as Int
+    override fun getScreenState() = XposedHelpers.callMethod(dreamService, "getDozeScreenState") as Int
 
-    // Screen ON
-    fun setScreenDoze() {
+    override fun setScreenDoze(reason: String) {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
         AodState.screenState.value = Display.STATE_DOZE
 //        LocalAlarmManager.setUpAlarm()
@@ -256,14 +262,27 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 //                // todo 避免多次关闭屏幕
 //            }, 10000L)
         }
+
+        dreamView.onScreenTurnOn(reason)
     }
 
-    // Screen OFF
-    fun setScreenOff() {
+    override fun setScreenOff(reason: String) {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_OFF)
         AodState.screenState.value = Display.STATE_OFF
 //        LocalAlarmManager.cancelAlarm()
         LocalAlarmProxy.stopTick()
+
+        dreamView.onScreenTurnOff(reason)
+    }
+
+
+    override fun setScreenActive(reason: String) {
+        if (getScreenState() != Display.STATE_DOZE) {
+            setScreenDoze()
+        }
+        XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_ON)
+        AodState.screenState.value = Display.STATE_ON
+        dreamView.onScreenActive(reason)
     }
 
 
@@ -274,13 +293,15 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             e.printStackTrace()
         }
 //        LocalAlarmManager.cancelAlarm()
+        MainHook.logD("DreamProxy -> onDreamingStopped")
         LocalAlarmProxy.stopTick()
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         AodState.dreamState.postValue(AodState.DreamState.STOP)
-        MainHook.logD("DreamProxy -> onDreamingStopped")
+        dreamView.onDestroyView()
         windowManager.removeViewImmediate(mainView)
+
     }
 
     override fun onWakingUp(reason: String) {
@@ -290,15 +311,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
     override fun onSingleTap() {
         MainHook.logD("DreamProxy -> onSingleTap")
-        if (isOP7Pro()) {
-            val vibrator = AndroidAppHelper.currentApplication().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            vibrator.simpleTap()
-        }
-        if (getScreenState() == Display.STATE_OFF) {
-            setScreenDoze()
-        } else {
-            setScreenOff()
-        }
+        AodState.singleTapLiveEvent.postValue("onSingleTap")
+        dreamView.onSingleTap()
     }
 
 

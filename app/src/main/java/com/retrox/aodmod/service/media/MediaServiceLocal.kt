@@ -36,6 +36,7 @@ object MediaServiceLocal {
 
 
     fun getActiveSessions() {
+        mediaSessionManager
         mediaSessionManager.getActiveSessions(null).forEach {
             MainHook.logD(it.packageName + "2222")
 
