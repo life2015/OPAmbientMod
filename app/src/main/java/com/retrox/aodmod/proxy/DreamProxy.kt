@@ -24,6 +24,7 @@ import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.sensor.LightSensor
 import com.retrox.aodmod.proxy.view.AodDefaultDream
+import com.retrox.aodmod.proxy.view.custom.music.PureMusicDream
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
@@ -55,7 +56,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     }
     var mainView: View? = null
 
-    val dreamView: DreamView = AodDefaultDream(this)
+    val dreamView: DreamView = PureMusicDream(this)
 
     val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -228,20 +229,20 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 //        }
 
 
-        DozeSensors.getSensorWakeLiveData().observe(this, Observer {
-            if (it == null) return@Observer
-            when (it) {
-                DozeSensors.DozeSensorMessage.PICK_UP -> setScreenDoze()
-                DozeSensors.DozeSensorMessage.MOTION_UP -> setScreenDoze()
-                DozeSensors.DozeSensorMessage.PICK_DROP -> {
-                    if (true != AodState.powerState.value?.charging) {
-                        setScreenOff()
-                    } else {
-                        MainHook.logD("充电状态 禁用抬手灭屏")
-                    }
-                }
-            }
-        })
+//        DozeSensors.getSensorWakeLiveData().observe(this, Observer {
+//            if (it == null) return@Observer
+//            when (it) {
+//                DozeSensors.DozeSensorMessage.PICK_UP -> setScreenDoze()
+//                DozeSensors.DozeSensorMessage.MOTION_UP -> setScreenDoze()
+//                DozeSensors.DozeSensorMessage.PICK_DROP -> {
+//                    if (true != AodState.powerState.value?.charging) {
+//                        setScreenOff()
+//                    } else {
+//                        MainHook.logD("充电状态 禁用抬手灭屏")
+//                    }
+//                }
+//            }
+//        })
 
     }
 

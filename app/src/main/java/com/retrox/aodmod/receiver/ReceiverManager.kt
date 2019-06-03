@@ -11,6 +11,8 @@ object ReceiverManager {
         kotlin.run {
             val intentFilter = IntentFilter()
             intentFilter.addAction("com.retrox.aodmod.NEW_MEDIA_META")
+            intentFilter.addAction("com.retrox.aodmod.NEW_PLAY_STATE")
+            intentFilter.addAction("com.retrox.aodmod.NEW_MEDIA_LRC")
             val receiver = MediaMessageReceiver()
             AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter)
             MainHook.logD("Receiver:: MediaMessageReceiver registered")

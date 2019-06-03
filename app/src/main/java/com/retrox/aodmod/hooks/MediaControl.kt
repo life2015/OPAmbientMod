@@ -3,12 +3,17 @@ package com.retrox.aodmod.hooks
 import android.app.AndroidAppHelper
 import android.content.Intent
 import android.media.MediaMetadata
+import android.media.session.PlaybackState
+import android.os.Environment
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.data.NowPlayingMediaData
+import com.retrox.aodmod.remote.lyric.DefaultLrcBuilder
+import com.retrox.aodmod.remote.lyric.NEMDownloader
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
+import kotlinx.coroutines.*
 
 object MediaControl : IXposedHookLoadPackage {
     var metadata: MediaMetadata? = null
@@ -43,6 +48,10 @@ object MediaControl : IXposedHookLoadPackage {
                     intent.putExtra("mediaMetaData", nowPlayingMediaData)
                     application.applicationContext.sendBroadcast(intent)
 
+                    LyricHelper.queryMusic(artist, name)
+                    val file = AndroidAppHelper.currentApplication().getExternalFilesDir(Environment.MEDIA_MOUNTED)
+                    MainHook.logD(file.toString())
+
                     val intentPulsing = Intent("com.oneplus.aod.doze.pulse")
                     application.applicationContext.sendBroadcast(intentPulsing)
                 }
@@ -51,6 +60,11 @@ object MediaControl : IXposedHookLoadPackage {
         XposedHelpers.findAndHookMethod(mediaSessionClass, "setPlaybackState", "android.media.session.PlaybackState", object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
                 MainHook.logD(param.args[0].toString())
+
+                val application = AndroidAppHelper.currentApplication()
+                val intent = Intent("com.retrox.aodmod.NEW_PLAY_STATE")
+                intent.putExtra("mediaPlayBackState", param.args[0] as PlaybackState)
+                application.applicationContext.sendBroadcast(intent)
             }
         })
 
@@ -86,4 +100,32 @@ object MediaControl : IXposedHookLoadPackage {
         MainHook.logD("mediaMeta: $data")
     }
 
+}
+
+object LyricHelper {
+    fun queryMusic(artist: String, name: String) {
+        GlobalScope.launch(Dispatchers.Main + handler) {
+            val result = withContext(Dispatchers.IO) {
+                val arrayResult = NEMDownloader.query(artist, name)
+                val bestMatch = arrayResult.find {
+                    it.title == name
+                }
+                val first = bestMatch ?: arrayResult.firstOrNull()
+
+                first?.let {
+                    val raw = NEMDownloader.download(first, false)
+
+                    val application = AndroidAppHelper.currentApplication()
+                    val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")
+                    intent.putExtra("mediaLyric", raw)
+                    application.applicationContext.sendBroadcast(intent)
+                    raw
+                }
+            }
+        }
+    }
+
+    val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        MainHook.logE("歌词获取错误", t = throwable)
+    }
 }
