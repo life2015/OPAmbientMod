@@ -4,6 +4,8 @@ import android.arch.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Color
 import android.view.View
+import com.retrox.aodmod.proxy.AbsDreamView
+import com.retrox.aodmod.proxy.DreamProxy
 import com.retrox.aodmod.proxy.view.Ids
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
@@ -23,4 +25,17 @@ fun Context.dvdAodMainView(lifecycleOwner: LifecycleOwner): View {
         addView(view)
 
     }
+}
+
+class AodDVDDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
+    override val layoutTheme: String
+        get() = "DVD"
+
+    override fun onCreateView(): View {
+        return context.dvdAodMainView(this)
+    }
+
+    override fun onAvoidScreenBurnt(mainView: View, lastTime: Long) {
+    }
+
 }

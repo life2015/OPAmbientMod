@@ -11,6 +11,7 @@ import android.os.Process
 import android.service.dreams.DreamService
 import android.view.View
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.extensions.isOP7Pro
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.shared.SharedContentManager
@@ -71,16 +72,6 @@ object OP7DreamProxyHook : IXposedHookLoadPackage {
 
         XposedHelpers.findAndHookMethod(dozeServiceClass, "onCreate", object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
-
-                val Dependency = XposedHelpers.findClass("com.android.systemui.Dependency", classLoader)
-                val asyncSensorManager =
-                    XposedHelpers.findClass("com.android.systemui.util.AsyncSensorManager", classLoader)
-                val sensorManager =
-                    XposedHelpers.callStaticMethod(Dependency, "get", asyncSensorManager) as SensorManager
-                val testSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER, false)
-                val sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL)
-                MainHook.logD("Sensor Test in SystemUI: $testSensor")
-                MainHook.logD("Sensor List in SystemUI: $sensorList")
 
                 dreamProxy?.onCreate()
                 param.result = null

@@ -2,6 +2,7 @@ package com.retrox.aodmod.extensions
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AndroidAppHelper
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -19,7 +20,13 @@ import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.view.theme.ThemeClockPack
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
+import de.robv.android.xposed.XposedHelpers
 import java.lang.reflect.InvocationTargetException
+import java.net.NetworkInterface
+import java.net.NetworkInterface.getNetworkInterfaces
+import java.security.Security
+import java.util.*
+
 
 fun TextView.setGoogleSans(style: String = "Regular"): Boolean {
     if (XPref.getFontWithSystem()) return false // 跟随系统字体
@@ -95,3 +102,24 @@ fun Vibrator.setVibratorEffect(senceId: Int): Long {
         return 1L
     }
 }
+
+fun getDependency(clazz: Class<*>): Any {
+    val Dependency = XposedHelpers.findClass("com.android.systemui.Dependency", AndroidAppHelper.currentApplication().classLoader)
+    return XposedHelpers.callStaticMethod(Dependency, "get", clazz)
+}
+
+fun getVpnStatus() : Boolean{
+    val SecurityController = XposedHelpers.findClass("com.android.systemui.statusbar.policy.SecurityController", AndroidAppHelper.currentApplication().classLoader)
+    val mSecurityController = getDependency(SecurityController)
+    val isVpnEnabled = XposedHelpers.callMethod(mSecurityController, "isVpnEnabled")
+    MainHook.logD("Vpn Stat : $isVpnEnabled")
+    return isVpnEnabled as Boolean
+}
+
+//fun getBlueToothAudioStatus() : Boolean {
+//    val BlueToothControllerClass = XposedHelpers.findClass("com.android.systemui.statusbar.policy.BluetoothController", AndroidAppHelper.currentApplication().classLoader)
+//    val bluetoothController = getDependency(BlueToothControllerClass)
+//    val devices = XposedHelpers.callMethod(bluetoothController, "getConnectedDevices")
+//
+//
+//}

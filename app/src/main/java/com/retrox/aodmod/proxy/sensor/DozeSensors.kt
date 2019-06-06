@@ -15,7 +15,7 @@ object DozeSensors {
         AndroidAppHelper.currentApplication().getSystemService(SensorManager::class.java)
     }
 
-    private val sensorList = listOf<DozeSensor>(CustomProximityCheck(), MotionCheck(), PickupCheck())
+    private val sensorList = listOf<DozeSensor>( MotionCheck(), PickupCheck())
 
     private val sensorWakeLiveData = object : MutableLiveData<DozeSensorMessage>() {
         override fun onActive() {

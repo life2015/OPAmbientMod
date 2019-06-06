@@ -22,16 +22,11 @@ import com.retrox.aodmod.proxy.view.aodHeadSetView
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.HeadSetReceiver
 import com.retrox.aodmod.remote.lyric.LrcSync
-import com.retrox.aodmod.remote.lyric.NEMDownloader
 import com.retrox.aodmod.service.notification.NotificationData
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodMedia
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import java.text.SimpleDateFormat
@@ -40,8 +35,8 @@ import java.util.*
 class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
     companion object {
-        val mainMusicId = View.generateViewId()
-        val musicLrcId = View.generateViewId()
+        private val mainMusicId = View.generateViewId()
+        private val musicLrcId = View.generateViewId()
     }
     override val layoutTheme: String
         get() = "PureMusic"
@@ -98,13 +93,6 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
         }
     }
 
-    override fun onCreate() {
-        LrcSync.currentLrcRowLive.observe(this, Observer {
-            it?.let {
-                MainHook.logD(it.toString())
-            }
-        })
-    }
 
     override fun onAvoidScreenBurnt(mainView: View, lastTime: Long) {
         val horizontal = 0 // 这个模式避免左右移动

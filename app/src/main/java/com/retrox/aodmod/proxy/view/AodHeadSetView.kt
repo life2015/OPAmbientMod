@@ -20,6 +20,7 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner): FrameLayout {
             orientation = LinearLayout.HORIZONTAL
 
             val image = imageView {
+                id = Ids.iv_headSet
                 setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_headset))
             }.lparams(width = dip(24), height = dip(24)) {
                 gravity = Gravity.BOTTOM

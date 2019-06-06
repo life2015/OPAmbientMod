@@ -34,7 +34,12 @@ abstract class AbsDreamView(private val dreamProxy: DreamProxy) : DreamProxyCont
     override val context: Context
         get() = dreamProxy.dreamService
 
+    var lastTapTime = 0L
     override fun onSingleTap() {
+        if (System.currentTimeMillis() - lastTapTime < 300L) { // 防抖动
+            return
+        }
+        lastTapTime = System.currentTimeMillis()
         if (isOP7Pro()) {
             val vibrator = AndroidAppHelper.currentApplication().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             vibrator.simpleTap()
@@ -47,16 +52,3 @@ abstract class AbsDreamView(private val dreamProxy: DreamProxy) : DreamProxyCont
     }
 }
 
-class DemoDreamView(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
-    override val layoutTheme: String
-        get() = "TEST"
-
-    override fun onCreateView(): View {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onAvoidScreenBurnt(mainView: View, lastTime: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-}

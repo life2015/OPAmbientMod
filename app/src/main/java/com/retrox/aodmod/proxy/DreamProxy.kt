@@ -11,19 +11,22 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.Color
-import android.os.*
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
+import android.os.PowerManager
 import android.service.dreams.DreamService
 import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import com.retrox.aodmod.MainHook
-import com.retrox.aodmod.extensions.isOP7Pro
-import com.retrox.aodmod.extensions.simpleTap
 import com.retrox.aodmod.pref.XPref
-import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.sensor.LightSensor
 import com.retrox.aodmod.proxy.view.AodDefaultDream
+import com.retrox.aodmod.proxy.view.custom.dvd.AodDVDDream
+import com.retrox.aodmod.proxy.view.custom.flat.AodFlatDream
+import com.retrox.aodmod.proxy.view.custom.music.ComplexMusicDream
 import com.retrox.aodmod.proxy.view.custom.music.PureMusicDream
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
@@ -36,7 +39,6 @@ import de.robv.android.xposed.XposedHelpers
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.matchParent
-import java.util.*
 
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner, DreamProxyController {
@@ -56,7 +58,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     }
     var mainView: View? = null
 
-    val dreamView: DreamView = PureMusicDream(this)
+    var dreamView: DreamView = AodDefaultDream(this)
 
     val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -91,13 +93,16 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
         ThemeManager.loadThemePackFromDisk()
 
-//        val layout = when (XPref.getAodLayoutTheme()) {
-//            "Flat" -> context.sumSungAodMainView(this) as ViewGroup
-//            "Default" -> context.aodMainView(this) as ViewGroup
-//            "DVD" -> context.dvdAodMainView(this) as ViewGroup
-//            "PureMusic" -> context.pureAodMusicMainView(this) as ViewGroup
-//            else -> context.aodMainView(this) as ViewGroup
-//        }
+        val dream = when (XPref.getAodLayoutTheme()) {
+            "Flat" -> AodFlatDream(this)
+            "Default" -> AodDefaultDream(this)
+            "DVD" -> AodDVDDream(this)
+            "PureMusic" -> PureMusicDream(this)
+            "FlatMusic" -> ComplexMusicDream(this)
+            else -> AodDefaultDream(this)
+        }
+
+        dreamView = dream
 
         val viewInternal = dreamView.onCreateView() // 真正显示的View
         val realLayout = context.frameLayout {
@@ -182,22 +187,16 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             })
         }
 
-        var lastScreenBurnUpdate = 0L
+        var lastScreenBurnUpdate = System.currentTimeMillis()
+        MainHook.logD("防烧屏: 初始偏移")
+        dreamView.onAvoidScreenBurnt(aodMainLayout, 0L)
+
         // 防烧屏
         AodClockTick.tickLiveData.observe(this, Observer {
 
             if (System.currentTimeMillis() - lastScreenBurnUpdate < 1000L * 30L) return@Observer // 避免太能挪动了...
 
-            var vertical = Random().nextInt(50)
-            var horizontal = Random().nextInt(20) - 10
-
-            if (XPref.getAodLayoutTheme() == "Flat") { // Flat Mode
-                vertical = Random().nextInt(350) - 400 // 更大的移动范围 (-400, -50)
-                horizontal = Random().nextInt(100) - 20
-            } else if (XPref.getAodLayoutTheme() == "PureMusic") {
-                horizontal = 0 // 这个模式避免左右移动
-                vertical = Random().nextInt(600) - 400 // 更大的移动范围 (-400, 200)
-            }
+            MainHook.logD("防烧屏: 触发")
 
             dreamView.onAvoidScreenBurnt(aodMainLayout, lastScreenBurnUpdate)
 
@@ -208,7 +207,6 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
                 setScreenOff() // 半小时自动息屏
             }
 
-            MainHook.logD("防烧屏: x offset:$horizontal y offset:$vertical")
 
             // 检测唤醒状态 关屏不继续唤醒
             val state = getScreenState()
@@ -286,6 +284,9 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         dreamView.onScreenActive(reason)
     }
 
+    fun setInteractive(interative: Boolean) {
+        XposedHelpers.callMethod(dreamService, "setInteractive", interative)
+    }
 
     override fun onDreamingStopped() {
         try {

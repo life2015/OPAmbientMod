@@ -14,7 +14,7 @@ import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
 
-fun Context.sumSungAodMainView(lifecycleOwner: LifecycleOwner): View {
+fun Context.flatAodMainView(lifecycleOwner: LifecycleOwner): View {
     return frameLayout {
         backgroundColor = Color.BLACK
 

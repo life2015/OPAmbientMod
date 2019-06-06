@@ -20,7 +20,7 @@ object LrcSync {
             val row = getSuggestRow(currentTime)
             if (currentLrcRowLive.value != row) {
                 currentLrcRowLive.value = row
-                MainHook.logD("LRC Sync $currentTime $row ")
+//                MainHook.logD("LRC Sync $currentTime $row ")
             }
 
             choreographer.postFrameCallbackDelayed(this, 500L)
@@ -41,10 +41,8 @@ object LrcSync {
     }
 
     fun applyRawLrc(rawLrc: String) {
-        MainHook.logD("applyRawLrc $rawLrc")
-
         val temp = DefaultLrcBuilder.getLrcRows(rawLrc)
-        MainHook.logD("applyRawLrc Rows $temp")
+        MainHook.logD("applyRawLrc Rows , size: $temp")
         rows = temp
     }
 

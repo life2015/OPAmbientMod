@@ -49,8 +49,8 @@ object MediaControl : IXposedHookLoadPackage {
                     application.applicationContext.sendBroadcast(intent)
 
                     LyricHelper.queryMusic(artist, name)
-                    val file = AndroidAppHelper.currentApplication().getExternalFilesDir(Environment.MEDIA_MOUNTED)
-                    MainHook.logD(file.toString())
+//                    val file = AndroidAppHelper.currentApplication().getExternalFilesDir(Environment.MEDIA_MOUNTED)
+//                    MainHook.logD(file.toString())
 
                     val intentPulsing = Intent("com.oneplus.aod.doze.pulse")
                     application.applicationContext.sendBroadcast(intentPulsing)
@@ -76,7 +76,6 @@ object MediaControl : IXposedHookLoadPackage {
             object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     val active = param.args[0] as Boolean
-
                     MainHook.logD("Media set Active Status: $active")
 
                 }
@@ -87,7 +86,6 @@ object MediaControl : IXposedHookLoadPackage {
             "release",
             object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-
                     MainHook.logD("Media Session Release")
 
                 }
@@ -113,8 +111,10 @@ object LyricHelper {
                 val first = bestMatch ?: arrayResult.firstOrNull()
 
                 first?.let {
-                    val raw = NEMDownloader.download(first, false)
-
+                    var raw = NEMDownloader.download(first, false)
+                    if (raw.isNullOrBlank()) {
+                        raw = "[00:00.000] 歌词获取错误"
+                    }
                     val application = AndroidAppHelper.currentApplication()
                     val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")
                     intent.putExtra("mediaLyric", raw)

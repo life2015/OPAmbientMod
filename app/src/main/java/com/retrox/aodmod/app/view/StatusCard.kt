@@ -28,6 +28,7 @@ import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.app.util.Utils
 import com.retrox.aodmod.extensions.LiveEvent
 import com.retrox.aodmod.extensions.checkPermission
+import com.retrox.aodmod.extensions.isOP7Pro
 import com.retrox.aodmod.shared.SharedContentManager
 import com.retrox.aodmod.weather.WeatherProvider
 import org.jetbrains.anko.*
@@ -67,6 +68,7 @@ open class StatusCard(val context: Context, lifecycleOwner: LifecycleOwner) {
 class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
 
     val activeState = MutableLiveData<Pair<Boolean, Boolean>>()
+    val aodAppName = if (isOP7Pro()) "com.android.systemui" else "com.oneplus.aod"
 
     init {
         val callback: (Boolean, Boolean) -> Unit = { isActive, appInList ->
@@ -74,10 +76,10 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
         }
 
         AppState.isActive.observe(lifecycleOwner, Observer {
-            callback(it ?: false, AppState.expApps.value?.any { it.contains("com.oneplus.aod") } ?: false)
+            callback(it ?: false, AppState.expApps.value?.any { it.contains(aodAppName) } ?: false)
         })
         AppState.expApps.observe(lifecycleOwner, Observer {
-            callback(AppState.isActive.value ?: false, it?.any { it.contains("com.oneplus.aod") } ?: false)
+            callback(AppState.isActive.value ?: false, it?.any { it.contains(aodAppName) } ?: false)
         })
 
         val view = context.verticalLayout {
@@ -108,12 +110,13 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 textColor = Color.BLACK
                 activeState.observe(lifecycleOwner, Observer {
                     it?.let { (_, isAppInList) ->
-                        text = if (isAppInList) "主动显示已添加" else "主动显示未添加 点击添加(需要太极Magisk)"
+                        text =
+                            if (isAppInList) "主动显示/SystemUI(OP7Pro) 已添加" else "主动显示/SystemUI(OP7Pro) 未添加 点击添加(需要太极Magisk)"
                     }
                 })
                 setOnClickListener {
                     val t = Intent("me.weishu.exp.ACTION_ADD_APP")
-                    t.data = Uri.parse("package:" + "com.oneplus.aod")
+                    t.data = Uri.parse("package:" + aodAppName)
                     t.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     try {
                         context.startActivity(t)
@@ -127,9 +130,20 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 horizontalMargin = dip(16)
             }
 
-            textView("提示：太极Magisk模块版本需要4.7.5+。EdXposed自己弄好的话，请忽略以上提示") {
-                textColor = Color.parseColor("#9B9B9B")
-                textSize = 14f
+            textView("注意：EdXposed自己弄好的话，请忽略以上提示!! 使用太极添加App时，OP7Pro之前是主动显示，OP7Pro是系统界面SystemUI") {
+                activeState.observe(lifecycleOwner, Observer {
+                    it?.let {
+                        if (it.first && it.second) {
+                            textColor = Color.parseColor("#9B9B9B")
+                            textSize = 16f
+                        } else {
+                            textColor = Color.RED
+                            textSize = 18f
+                        }
+                    }
+                })
+
+
             }.lparams(matchParent, wrapContent) {
                 horizontalMargin = dip(8)
                 verticalMargin = dip(4)
@@ -162,7 +176,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
     }
 }
 
-class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner): StatusCard(context, lifecycleOwner) {
+class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
     val layout = context.verticalLayout {
         horizontalPadding = dip(16)
         topPadding = dip(8)
@@ -262,7 +276,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
                 setBorderlessStyle()
                 textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 setOnClickListener {
-                    Utils.findProcessAndKill(context)
+                    Utils.findProcessAndKill(context, if (isOP7Pro()) "com.android.systemui" else "com.oneplus.aod")
                 }
             }.lparams(wrapContent, wrapContent)
 
@@ -519,11 +533,11 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
 }
 
 class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
-    val themeLayoutList = listOf("Default", "Flat", "DVD", "PureMusic")
+    val themeLayoutList = listOf("Default", "Flat", "DVD", "PureMusic", "FlatMusic")
     val layout = context.linearLayout {
         orientation = LinearLayout.VERTICAL
         frameLayout {
-            textView("显示风格"){
+            textView("显示风格") {
                 textColor = Color.BLACK
             }.lparams(wrapContent, wrapContent) {
                 gravity = Gravity.START or Gravity.CENTER_VERTICAL
@@ -545,6 +559,13 @@ class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(c
                 gravity = Gravity.END
             }
         }.lparams(matchParent, wrapContent)
+
+        textView("PureMusic / FlatMusic 模式已测试性支持歌词显示，其他模式不支持") {
+            textColor = Color.parseColor("#9B9B9B")
+            textSize = 14f
+        }.lparams(matchParent, wrapContent) {
+            verticalMargin = dip(4)
+        }
 
         button {
             text = "其他自定义风格设置"

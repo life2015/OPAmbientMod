@@ -29,4 +29,6 @@ object Ids {
     val ly_headset_status = View.generateViewId()
 
     val ly_flat_clock_notification = View.generateViewId()
+
+    val iv_headSet = View.generateViewId()
 }
