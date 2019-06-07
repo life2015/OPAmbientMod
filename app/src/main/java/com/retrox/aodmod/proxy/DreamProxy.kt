@@ -21,6 +21,7 @@ import android.view.View
 import android.view.WindowManager
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.sensor.LightSensor
 import com.retrox.aodmod.proxy.view.AodDefaultDream
@@ -33,6 +34,7 @@ import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import com.retrox.aodmod.service.alarm.proxy.LocalAlarmProxy
 import com.retrox.aodmod.service.notification.NotificationCollectorService
+import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
@@ -227,20 +229,22 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 //        }
 
 
-//        DozeSensors.getSensorWakeLiveData().observe(this, Observer {
-//            if (it == null) return@Observer
-//            when (it) {
-//                DozeSensors.DozeSensorMessage.PICK_UP -> setScreenDoze()
-//                DozeSensors.DozeSensorMessage.MOTION_UP -> setScreenDoze()
-//                DozeSensors.DozeSensorMessage.PICK_DROP -> {
-//                    if (true != AodState.powerState.value?.charging) {
-//                        setScreenOff()
-//                    } else {
-//                        MainHook.logD("充电状态 禁用抬手灭屏")
-//                    }
-//                }
-//            }
-//        })
+        if (XPref.getAodPickCheckEnabled()) {
+            DozeSensors.getSensorWakeLiveData().observe(this, Observer {
+                if (it == null) return@Observer
+                when (it) {
+                    DozeSensors.DozeSensorMessage.PICK_UP -> setScreenDoze()
+                    DozeSensors.DozeSensorMessage.MOTION_UP -> setScreenDoze()
+                    DozeSensors.DozeSensorMessage.PICK_DROP -> {
+                        if (true != AodState.powerState.value?.charging) {
+                            setScreenOff()
+                        } else {
+                            MainHook.logD("充电状态 禁用抬手灭屏")
+                        }
+                    }
+                }
+            })
+        }
 
     }
 

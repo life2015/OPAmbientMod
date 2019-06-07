@@ -137,7 +137,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                             textColor = Color.parseColor("#9B9B9B")
                             textSize = 16f
                         } else {
-                            textColor = Color.RED
+                            textColor = Color.BLACK
                             textSize = 18f
                         }
                     }
@@ -203,6 +203,14 @@ class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner) : St
             textColor = Color.parseColor("#9B9B9B")
             textSize = 14f
             text = "虽然这个模块的功能不是抬手显示，但是系统设置的这个选项必须打开，否则功能无法正常运转"
+        }.lparams {
+            bottomMargin = dip(4)
+        }
+
+        textView {
+            textColor = Color.BLACK
+            textSize = 14f
+            text = "7Pro的用户强烈建议同时打开 “轻触屏幕显示” 获得更好体验（6T也可以试试哈）"
         }
 
         button {
@@ -215,6 +223,8 @@ class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner) : St
                 context.startActivity(intent)
             }
         }.lparams(wrapContent, wrapContent)
+
+
     }
 
     init {
@@ -560,7 +570,7 @@ class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(c
             }
         }.lparams(matchParent, wrapContent)
 
-        textView("PureMusic / FlatMusic 模式已测试性支持歌词显示，其他模式不支持") {
+        textView("PureMusic / FlatMusic 模式已测试性支持歌词显示，其他模式不支持。切记：并不是所有主题都支持全部的设置与功能。") {
             textColor = Color.parseColor("#9B9B9B")
             textSize = 14f
         }.lparams(matchParent, wrapContent) {

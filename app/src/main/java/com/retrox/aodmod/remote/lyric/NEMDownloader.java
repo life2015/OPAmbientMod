@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
+import com.retrox.aodmod.MainHook;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +21,7 @@ import java.util.Objects;
  * Utils for quering and getting lyrics from server.
  */
 public class NEMDownloader {
-    private static final String TAG = "AODMOD/NEMDownloader";
+    private static final String TAG = "AODMOD";
     private static final String SEARCH_URL = "https://music.163.com/api/search/get/web?csrf_token";
     private static final String LYRIC_URL = "https://music.163.com/api/song/lyric";
     private static SharedPreferences mSharedPreferences;

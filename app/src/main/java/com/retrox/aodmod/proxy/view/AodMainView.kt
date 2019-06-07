@@ -115,7 +115,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             AodState.powerState.observe(lifecycleOwner, Observer {
                 it?.let {
                     var statusText = if (it.plugged) "Charging" else ""
-                    if (it.fastCharge) statusText = "Dash Charging"
+                    if (it.fastCharge) statusText = "Quick Charging"
                     if (it.charged) statusText = "Charged"
                     if (AodState.sleepMode) statusText += " SleepMode"
                     text = "${it.level}%  $statusText"

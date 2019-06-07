@@ -24,6 +24,7 @@ object AppPref {
     var aodNoteContent by shared("AODNOTECONTENT", "")
     var aodLayoutTheme by shared("AODLAYOUTTHEME", "Default")
     var aodAlarmMode by shared("AODALARMMODE", "Chore")
+    var aodPickCheck by shared("AODPICKCHECK", false)
 
 
     val externalPrefName = "${BuildConfig.APPLICATION_ID}_external_pref.xml"

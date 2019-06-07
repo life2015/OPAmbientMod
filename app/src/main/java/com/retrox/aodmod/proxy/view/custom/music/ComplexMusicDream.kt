@@ -13,7 +13,9 @@ import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
 import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
@@ -70,7 +72,7 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                 this@root.addView(this)
             }
 
-            context.notiView(this@ComplexMusicDream).lparams(wrapContent, wrapContent) {
+            context.notiView(this@ComplexMusicDream).lparams(matchParent, wrapContent) {
                 startToStart = PARENT_ID
                 topToBottom = musicView
                 topMargin = dip(44)
@@ -164,11 +166,12 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
             textColor = Color.WHITE
             setGoogleSans()
             letterSpacing = 0.02f
+            textSize = 15f
 
             AodState.powerState.observe(lifecycleOwner, Observer {
                 it?.let {
                     var statusText = if (it.plugged) "Charging" else ""
-                    if (it.fastCharge) statusText = "Dash Charging"
+                    if (it.fastCharge) statusText = "Quick Charging"
                     if (it.charged) statusText = "Charged"
                     if (AodState.sleepMode) statusText += " SleepMode"
                     text = "${it.level}%  $statusText"
@@ -184,6 +187,12 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
             visibility = View.INVISIBLE
 
             findViewById<View>(Ids.iv_headSet).visibility = View.GONE
+            findViewById<TextView>(Ids.tv_headSetStatus).apply {
+                gravity = Gravity.END
+                textSize = 15f
+                maxWidth = dip(200)
+            }
+
         }.lparams(wrapContent, wrapContent) {
             endToEnd = PARENT_ID
             bottomToBottom = timeView.id
@@ -288,8 +297,8 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
             textSize = 14f
             letterSpacing = 0.05f
             setGoogleSans()
-            gravity = Gravity.CENTER_HORIZONTAL
-        }.lparams(wrapContent, wrapContent) {
+            gravity = Gravity.START
+        }.lparams(matchParent, wrapContent) {
             bottomMargin = dip(6)
             gravity = Gravity.START
         }
@@ -298,8 +307,8 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
             textSize = 14f
             letterSpacing = 0.05f
             setGoogleSans()
-            gravity = Gravity.CENTER_HORIZONTAL
-        }.lparams(wrapContent, wrapContent) {
+            gravity = Gravity.START
+        }.lparams(matchParent, wrapContent) {
             bottomMargin = dip(12)
             gravity = Gravity.START
         }
@@ -309,11 +318,10 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
         NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
             it?.let { (sbn, status) ->
-                if (currentId == 0) {
-                    currentId = sbn.id
-                } else if (status == "Removed" && currentId == sbn.id) {
+                if (status == "Removed" && currentId == sbn.id) { // cancel noti when it is removed
                     notiView.visibility = View.GONE
                 }
+                currentId = sbn.id // update current id
 
                 if (status == "Removed") return@let
                 if (it.first.notification.getNotificationData().isOnGoing) return@let

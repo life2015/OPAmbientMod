@@ -34,6 +34,22 @@ class AlwaysOnSettings : AppCompatActivity() {
 //                    horizontalMargin = dip(8)
 //                }
 
+                title("常亮模式依然开启抬手检测")
+                content("检测抬手操作，仅做息屏美化。\n测试性功能，仅在7Pro上测试，不保证功能和系统自带息屏一致。")
+                toggleButton {
+                    textOn = "抬手检测开"
+                    textOff = "抬手检测关"
+                    isChecked = AppPref.aodPickCheck
+                    onCheckedChange { _, isChecked ->
+                        AppPref.aodPickCheck = isChecked
+                        Toast.makeText(context, "抬手检测:${AppPref.aodPickCheck}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    topMargin = dip(12)
+                    bottomMargin = dip(6)
+                    horizontalMargin = dip(8)
+                }
+
                 title("息屏备忘")
                 content("会在常驻通知区域显示一条备忘录")
                 toggleButton {
@@ -80,7 +96,7 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
-                title("倒扣手机 放入口袋自动灭屏")
+                title("倒扣手机 放入口袋自动灭屏 （7Pro不支持）")
                 content("替代之前的睡眠模式。在手机翻扣或者放入口袋后，自动关闭常亮状态的息屏，手机翻回来或者拿出口袋即可恢复。避免不必要的屏幕常亮。\n亲测好用，建议开启。")
                 toggleButton {
                     textOn = "倒扣/口袋模式开"
@@ -159,11 +175,11 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
-                title("常亮半小时后自动关屏")
+                title("常亮十分钟后自动关屏")
                 content("...有需求就做吧")
                 toggleButton {
-                    textOn = "常亮半小时自动关屏"
-                    textOff = "常亮半小时不自动关屏"
+                    textOn = "常亮十分钟自动关屏"
+                    textOff = "常亮十分钟不自动关屏"
                     isChecked = AppPref.autoCloseAfterHour
                     onCheckedChange { _, isChecked ->
                         AppPref.autoCloseAfterHour = isChecked

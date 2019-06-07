@@ -9,6 +9,7 @@ import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.data.NowPlayingMediaData
 import com.retrox.aodmod.remote.lyric.DefaultLrcBuilder
 import com.retrox.aodmod.remote.lyric.NEMDownloader
+import com.retrox.aodmod.remote.lyric.QueryResult
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
@@ -101,17 +102,39 @@ object MediaControl : IXposedHookLoadPackage {
 }
 
 object LyricHelper {
+    val cacheMap = mutableMapOf<Pair<String, String>, QueryResult>()
+
     fun queryMusic(artist: String, name: String) {
         GlobalScope.launch(Dispatchers.Main + handler) {
             val result = withContext(Dispatchers.IO) {
-                val arrayResult = NEMDownloader.query(artist, name)
-                val bestMatch = arrayResult.find {
-                    it.title == name
-                }
-                val first = bestMatch ?: arrayResult.firstOrNull()
+                val cache = cacheMap[artist to name]
 
-                first?.let {
-                    var raw = NEMDownloader.download(first, false)
+                val result = if (cache == null) {
+                    val arrayResult = NEMDownloader.query(artist, name)
+                    if (arrayResult.isNullOrEmpty()) {
+                        val raw = "[00:00.000] 歌词获取错误，请尝试更换网络\n[00:10.000] "
+                        val application = AndroidAppHelper.currentApplication()
+                        val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")
+                        intent.putExtra("mediaLyric", raw)
+                        application.applicationContext.sendBroadcast(intent)
+                        return@withContext
+                    }
+                    val bestMatch = arrayResult.find {
+                        it.title == name
+                    }
+                    val first = bestMatch ?: arrayResult.firstOrNull()
+                    first?.let {
+                        cacheMap[artist to name] = it
+                    }
+                    MainHook.logD("Lrc Search From NetWork $artist $name")
+                    first
+                } else {
+                    MainHook.logD("Lrc Search From Cache $artist $name Size: ${cacheMap.size}")
+                    cache
+                }
+
+                result?.let {
+                    var raw = NEMDownloader.download(it, false)
                     if (raw.isNullOrBlank()) {
                         raw = "[00:00.000] 歌词获取错误"
                     }

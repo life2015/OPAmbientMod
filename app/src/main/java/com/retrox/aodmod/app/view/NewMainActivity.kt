@@ -30,13 +30,6 @@ class NewMainActivity : AppCompatActivity() {
                 addView(SettingsCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(ToolCard(this@NewMainActivity, this@NewMainActivity).rootView)
 
-                button {
-                    text = "Sleep Mode"
-                    setOnClickListener {
-//                        toast(android.os.Build.MODEL)
-                        startActivity<SleepModeActivity>()
-                    }
-                }
 
 
 //                button {

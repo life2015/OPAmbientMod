@@ -29,7 +29,7 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner): FrameLayout {
 
             val headSetTextView = textView() {
                 //            gravity = Gravity.CENTER
-                id = Ids.tv_music
+                id = Ids.tv_headSetStatus
                 textColor = Color.WHITE
                 textSize = 16f
                 gravity = Gravity.BOTTOM

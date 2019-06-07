@@ -46,5 +46,7 @@ object XPref {
     fun getAodNoteContent() = XPref.getPref().getString("AODNOTECONTENT", "") ?: ""
     fun getAodLayoutTheme() = XPref.getPref().getString("AODLAYOUTTHEME", "Default") ?: "Default"
     fun getAodAlarmMode() = XPref.getPref().getString("AODALARMMODE", "Chore") ?: "Chore"
+    fun getAodPickCheckEnabled() = XPref.getPref().getBoolean("AODPICKCHECK", false)
+
 
 }

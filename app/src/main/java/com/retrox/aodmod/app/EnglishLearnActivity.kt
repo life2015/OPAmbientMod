@@ -30,7 +30,7 @@ class EnglishLearnActivity : AppCompatActivity() {
 
                 title("电池状态")
                 content("Charging 充电中\n\n" +
-                        "Dash Charging 一加Dash快速充电中")
+                        "Quick Charging 一加Dash快速充电中")
 
                 title("耳机连接")
                 content("Headset Unplugged 耳机拔出\n\n" +
