@@ -52,7 +52,7 @@ fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
             setGoogleSans()
             gravity = Gravity.CENTER_HORIZONTAL
             text = ""
-            setAutoSizeTextTypeUniformWithConfiguration(12,16,1, TypedValue.COMPLEX_UNIT_SP)
+            setAutoSizeTextTypeUniformWithConfiguration(12, 16, 1, TypedValue.COMPLEX_UNIT_SP)
 
         }.lparams(matchParent, dip(200)) {
             topMargin = dip(8)
@@ -72,25 +72,13 @@ fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
                         content.text = ""
                         return@let // return之前还原View的状态
                     }
-                    val sensitive = sbn.packageName?.let inner@{
-                        if (!XPref.getAodShowSensitiveContent()) {
-                            val sensitiveApps = listOf(
-                                "com.android.phone",
-                                "com.tencent.mm",
-                                "com.tencent.tim",
-                                "com.tencent.mobileqq",
-                                "com.android.mms"
-                            )
-                            return@inner (sensitiveApps.contains(it))
-                        } else return@inner false
-                    } ?: false
 
 //                    MainHook.logD("package Name: ${sbn.packageName} isSensitive: $sensitive")
 
                     val (appName, messageTitle, messageContent, onGoing) = realNotification.getNotificationData()
                     if (onGoing) return@Observer
                     title.text = "$appName · $messageTitle"
-                    content.text = if (sensitive) " " else messageContent
+                    content.text = messageContent
                 } else if (status == NotificationManager.REMOVED) {
                     title.text = ""
                     content.text = ""

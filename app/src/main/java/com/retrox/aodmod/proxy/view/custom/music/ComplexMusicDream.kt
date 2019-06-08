@@ -17,6 +17,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.proxy.AbsDreamView
@@ -149,7 +150,7 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
             textSize = 16f
             letterSpacing = 0.1f
             setGoogleSans()
-            val dateFormat = SimpleDateFormat("MM/dd EE", Locale.CHINESE)
+            val dateFormat = SimpleDateFormat("MM/dd EE", Locale.ENGLISH)
             text = dateFormat.format(Date())
 
             AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
@@ -315,6 +316,14 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
         var currentId = 0
         var currentNotificationData: NotificationData? = null
+
+        NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
+            it?.let {
+                if (it.first.notification.getNotificationData().appName == "微信") {
+                    MainHook.logD(it.toString())
+                }
+            }
+        })
 
         NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
             it?.let { (sbn, status) ->

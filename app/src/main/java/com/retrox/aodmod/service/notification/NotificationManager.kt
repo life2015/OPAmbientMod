@@ -7,6 +7,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.LiveEvent
+import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.state.AodMedia
 import de.robv.android.xposed.XposedHelpers
 
@@ -21,10 +22,18 @@ object NotificationManager {
     val notificationMap = mutableMapOf<String, StatusBarNotification>()
 
     fun onNotificationPosted(sbn: StatusBarNotification, rankingMap: NotificationListenerService.RankingMap) {
+        sbn.notification.extras.putString("aodmod_extra_package", sbn.packageName)
+
         notificationMap[sbn.key] = sbn
         val notification = sbn.notification
         notification.debugMessage()
-        if (notification.channelId != "后台服务图标") notificationStatusLiveData.postValue(sbn to "Posted")
+
+        val ranking = getRanking(sbn, rankingMap)
+
+        if (ranking.importance > 1) {
+            notificationStatusLiveData.postValue(sbn to "Posted")
+        }
+
     }
 
     fun removeNotification(sbn: StatusBarNotification, rankingMap: NotificationListenerService.RankingMap) {
@@ -43,6 +52,15 @@ object NotificationManager {
         notificationMap.clear()
     }
 
+    private fun getRanking(
+        sbn: StatusBarNotification,
+        rankingMap: NotificationListenerService.RankingMap
+    ): NotificationListenerService.Ranking {
+        val ranking = NotificationListenerService.Ranking()
+        rankingMap.getRanking(sbn.key, ranking)
+        return ranking
+    }
+
     fun notifyRefresh() {
         notificationStatusLiveData.postValue(null)
 
@@ -51,7 +69,8 @@ object NotificationManager {
             val hasMediaSession = XposedHelpers.callMethod(it.notification, "hasMediaSession") as Boolean
             hasMediaSession
         }
-        val musicNotification = notificationMap.values.any { // 避免一部分人不开系统通知栏
+        val musicNotification = notificationMap.values.any {
+            // 避免一部分人不开系统通知栏
             it.packageName == "com.tencent.qqmusic" || it.packageName == "com.netease.cloudmusic" || it.packageName == "code.name.monkey.retromusic" || it.packageName == "tv.danmaku.bili"
         }
         if (!musicActive && !musicNotification) {
@@ -67,21 +86,6 @@ fun Notification.debugMessage(type: String = "Posted") {
     val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
     val histMessages = extras.getParcelableArray(Notification.EXTRA_HISTORIC_MESSAGES)
 
-// todo 兼容Nevo增强的通知
-//    try {
-//        val newMessages = XposedHelpers.callStaticMethod(Notification.MessagingStyle.Message::class.java, "getMessagesFromBundleArray", messages) as List<Notification.MessagingStyle.Message>
-//        val newHistoricMessages = XposedHelpers.callStaticMethod(Notification.MessagingStyle.Message::class.java, "getMessagesFromBundleArray", histMessages) as List<Notification.MessagingStyle.Message>
-//        newMessages.forEach {
-//            MainHook.logD("new message : ${it.text}")
-//        }
-//        newHistoricMessages.forEach {
-//            MainHook.logD("newHistroy message : ${it.text}")
-//
-//        }
-//    } catch (e: Exception) {
-//
-//    }
-
 //    Only Use when Debug
 //    MainHook.logD("通知调试: type: $type 应用->$appName 标题->$title 内容->$content OnGoing->$isOnGoing hasMeidaSession: $hasMediaSession visbility: $visibility  priority: $priority")
 }
@@ -94,7 +98,24 @@ fun Notification.getNotificationData(): NotificationData {
     val content = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: "" // 不能直接取String Spannable的时候会CastException
     val isOnGoing = flags and Notification.FLAG_ONGOING_EVENT
 
-    return NotificationData(appName, title, content, isOnGoing > 0)
+    val packageName = extras.getString("aodmod_extra_package")
+    val sensitive = packageName?.let inner@{
+        if (!XPref.getAodShowSensitiveContent()) {
+            val sensitiveApps = listOf(
+                "com.android.phone",
+                "com.tencent.mm",
+                "com.tencent.tim",
+                "com.tencent.mobileqq",
+                "com.android.mms"
+            )
+            return@inner (sensitiveApps.contains(it))
+        } else return@inner false
+    } ?: false
+
+    val realContent = if (sensitive) "收到新通知" else content
+
+    return NotificationData(appName, title, realContent, isOnGoing > 0)
 }
+
 
 data class NotificationData(val appName: String, val title: String, val content: String, val isOnGoing: Boolean)
