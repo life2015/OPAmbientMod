@@ -14,7 +14,7 @@ class AodFlatDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
     }
 
     override fun onAvoidScreenBurnt(mainView: View, lastTime: Long) {
-        val vertical = Random().nextInt(350) - 400 // 更大的移动范围 (-400, -50)
+        val vertical = Random().nextInt(450) - 500 // 更大的移动范围 (-500, -50)
         val horizontal = Random().nextInt(100) - 20
 
         mainView.animate()

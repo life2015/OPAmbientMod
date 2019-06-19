@@ -85,7 +85,7 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
             val refreshBlock = {
                 val icons = NotificationManager.notificationMap.values.asSequence()
                     .map { it.notification }
-                    .filterNot { it.priority < 0 } // 过滤掉不重要通知
+                    .filter { it.extras.getInt(NotificationManager.EXTRA_IMPORTANTCE, 2) > 1 } // 过滤掉不重要通知
 //                    .filter { it. }
                     .map {
                         try {

@@ -35,6 +35,7 @@ import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import com.retrox.aodmod.service.alarm.proxy.LocalAlarmProxy
 import com.retrox.aodmod.service.notification.NotificationCollectorService
 import com.retrox.aodmod.service.notification.NotificationManager
+import com.retrox.aodmod.service.notification.getNotificationData
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
@@ -58,6 +59,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         NotificationCollectorService(AndroidAppHelper.currentApplication().applicationContext)
         "OK"
     }
+    val handler = Handler(Looper.getMainLooper())
+
     var mainView: View? = null
 
     var dreamView: DreamView = AodDefaultDream(this)
@@ -72,6 +75,27 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         }
 
     }
+
+    val screenOffRunnable = Runnable {
+        setScreenOff("AutoOffTimeOffset")
+    }
+
+
+    override fun screenPulse(time: Long, block: () -> Unit) {
+        val currentStateOFF = getScreenState() == Display.STATE_OFF
+        handler.removeCallbacks(screenOffRunnable)
+        setScreenDoze("screenPulse")
+        if (currentStateOFF && time != -1L) {
+            handler.postDelayed(screenOffRunnable, time)
+        }
+        block()
+    }
+
+    private fun screenAutoOff() {
+        handler.removeCallbacks(screenOffRunnable)
+        handler.postDelayed(screenOffRunnable, 15 * 1000L)
+    }
+
 
     override fun onCreate() {
         XposedHelpers.callMethod(dreamService, "setWindowless", true)
@@ -91,7 +115,6 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     override fun onDreamingStarted() {
         AodState.dreamState.postValue(AodState.DreamState.ACTIVE)
         MainHook.logD("DreamProxy -> onDreamingStarted")
-        lastScreenOnTime = System.currentTimeMillis()
 
         ThemeManager.loadThemePackFromDisk()
 
@@ -142,11 +165,10 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         val dozeWakeLock = context.getSystemService(PowerManager::class.java)
             .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:ScreenDoze")
         dozeWakeLock.acquire(10000L)
-        val handler = Handler(Looper.getMainLooper())
         handler.post {
             setScreenOff()
             XposedHelpers.callMethod(dreamService, "startDozing")
-            Handler(Looper.getMainLooper()).postDelayed({
+            handler.postDelayed({
                 if (FlipOffSensor.Flip_ON == FlipOffSensor.flipSensorLiveData.value?.suggestState) { // 修复距离传感太近的时候息屏依然亮着的bug
                     setScreenDoze()
                 } else {
@@ -205,7 +227,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             lastScreenBurnUpdate = System.currentTimeMillis()
 
             // todo 抽离自动息屏逻辑
-            if ((System.currentTimeMillis() - lastScreenOnTime) > 10 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled()) {
+            if ((System.currentTimeMillis() - lastScreenOnTime) > 10 * 60 * 1000L && XPref.getAutoScreenOffAfterHourEnabled() && true != AodState.powerState.value?.plugged) {
                 setScreenOff() // 半小时自动息屏
             }
 
@@ -219,14 +241,6 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         })
 
 //        XposedHelpers.callMethod(dreamService, "setInteractive", true)
-
-//        if (AodState.sleepMode) {
-//            Handler().postDelayed({
-//                if (AodState.DreamState.STOP != AodState.dreamState.value) {
-//                    setScreenOff()
-//                }
-//            }, 10000L)
-//        }
 
 
         if (XPref.getAodPickCheckEnabled()) {
@@ -246,24 +260,34 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             })
         }
 
+        NotificationManager.notificationStatusLiveData.observeNewOnly(this, Observer {
+            it?.let { (_, status) ->
+                if (status == "Removed") return@let
+                if (it.first.notification.getNotificationData().isOnGoing) return@let
+
+                if (XPref.getAodAutoCloseBySeconds()) {
+                    screenPulse {}
+                } else {
+                    screenPulse(-1L) {}
+                }
+            }
+        })
+
     }
 
     override fun getScreenState() = XposedHelpers.callMethod(dreamService, "getDozeScreenState") as Int
 
     override fun setScreenDoze(reason: String) {
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
+        lastScreenOnTime = System.currentTimeMillis()
+
         AodState.screenState.value = Display.STATE_DOZE
 //        LocalAlarmManager.setUpAlarm()
         LocalAlarmProxy.startTick()
         AodClockTick.tickLiveData.postValue("Tick from Screen ON")
 
-        if (AodState.sleepMode) {
-//            Handler().postDelayed({
-//                if (AodState.DreamState.STOP != AodState.dreamState.value) {
-//                    setScreenOff()
-//                }
-//                // todo 避免多次关闭屏幕
-//            }, 10000L)
+        if (XPref.getAodAutoCloseBySeconds()) {
+            screenAutoOff()
         }
 
         dreamView.onScreenTurnOn(reason)

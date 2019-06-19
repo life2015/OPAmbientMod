@@ -189,6 +189,21 @@ class AlwaysOnSettings : AppCompatActivity() {
                     verticalMargin = dip(12)
                     horizontalMargin = dip(8)
                 }
+
+                title("亮屏15秒自动关屏")
+                content("一部分人只需要美化，因此提供了此功能，配合最上面的抬手检测功能使用。（此设置优先级高于10分钟的设置，只有在15秒不关屏的时候10分钟才会显现作用）")
+                toggleButton {
+                    textOn = "亮屏15秒自动关屏"
+                    textOff = "15秒不自动关屏"
+                    isChecked = AppPref.autoCloseBySeconds
+                    onCheckedChange { _, isChecked ->
+                        AppPref.autoCloseBySeconds = isChecked
+                        Toast.makeText(context, "亮屏15秒自动关屏:${AppPref.autoCloseBySeconds}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
             }
         }
 

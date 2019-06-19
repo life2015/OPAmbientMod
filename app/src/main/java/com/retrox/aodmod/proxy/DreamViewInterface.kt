@@ -27,6 +27,12 @@ interface DreamProxyController {
     fun setScreenActive(reason: String = "")
     fun setScreenOff(reason: String = "")
     fun getScreenState(): Int
+
+    /**
+     * 用于一些临时唤醒屏幕的操作
+     * 比如说通知来了之类 如果屏幕状态本身是亮的就不会做自动关屏逻辑 或者time == -1L
+     */
+    fun screenPulse(time: Long = 15 * 1000L, block: () -> Unit)
 }
 
 abstract class AbsDreamView(private val dreamProxy: DreamProxy) : DreamProxyController by dreamProxy, LifecycleOwner by dreamProxy,

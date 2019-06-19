@@ -13,6 +13,9 @@ import de.robv.android.xposed.XposedHelpers
 
 object NotificationManager {
 
+    const val EXTRA_PACKAGE = "aodmod_extra_package"
+    const val EXTRA_IMPORTANTCE = "aodmod_extra_importance"
+
     const val POSTED = "Posted"
     const val REMOVED = "Removed"
     const val REFRESHED = "Refreshed"
@@ -22,7 +25,7 @@ object NotificationManager {
     val notificationMap = mutableMapOf<String, StatusBarNotification>()
 
     fun onNotificationPosted(sbn: StatusBarNotification, rankingMap: NotificationListenerService.RankingMap) {
-        sbn.notification.extras.putString("aodmod_extra_package", sbn.packageName)
+        sbn.notification.extras.putString(EXTRA_PACKAGE, sbn.packageName)
 
         notificationMap[sbn.key] = sbn
         val notification = sbn.notification
@@ -30,6 +33,7 @@ object NotificationManager {
 
         val ranking = getRanking(sbn, rankingMap)
 
+        sbn.notification.extras.putInt(EXTRA_IMPORTANTCE, ranking.importance)
         if (ranking.importance > 1) {
             notificationStatusLiveData.postValue(sbn to "Posted")
         }
@@ -43,6 +47,9 @@ object NotificationManager {
     }
 
     fun addNotification(sbn: StatusBarNotification, rankingMap: NotificationListenerService.RankingMap) {
+        val ranking = getRanking(sbn, rankingMap)
+        sbn.notification.extras.putInt(EXTRA_IMPORTANTCE, ranking.importance)
+
         notificationMap[sbn.key] = sbn
         sbn.notification.debugMessage(type = "Added")
     }
@@ -98,7 +105,7 @@ fun Notification.getNotificationData(): NotificationData {
     val content = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: "" // 不能直接取String Spannable的时候会CastException
     val isOnGoing = flags and Notification.FLAG_ONGOING_EVENT
 
-    val packageName = extras.getString("aodmod_extra_package")
+    val packageName = extras.getString(NotificationManager.EXTRA_PACKAGE)
     val sensitive = packageName?.let inner@{
         if (!XPref.getAodShowSensitiveContent()) {
             val sensitiveApps = listOf(

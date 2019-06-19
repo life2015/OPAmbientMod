@@ -47,6 +47,7 @@ object XPref {
     fun getAodLayoutTheme() = XPref.getPref().getString("AODLAYOUTTHEME", "Default") ?: "Default"
     fun getAodAlarmMode() = XPref.getPref().getString("AODALARMMODE", "Chore") ?: "Chore"
     fun getAodPickCheckEnabled() = XPref.getPref().getBoolean("AODPICKCHECK", false)
+    fun getAodAutoCloseBySeconds() = XPref.getPref().getBoolean("AUTOCLOSEBYSECONDS", false)
 
 
 }
