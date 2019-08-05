@@ -46,18 +46,19 @@
         <activity android:name=".app.CustomActivity"/>
         <activity android:name=".app.AlarmSettingsActivity"/>
 
+
         <service
-                android:name=".app.quick.AodModeQuickService"
-                android:label="快速设定"
-                android:icon="@drawable/ic_notifications_active"
-                android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+                android:name=".doze.RetroDream"
+                android:exported="true"
+                android:icon="@drawable/ic_music"
+                android:label="RetroDream"
+                android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <meta-data
-                    android:name="android.service.quicksettings.ACTIVE_TILE"
-                    android:value="true" />
         </service>
+
 
     </application>
 
