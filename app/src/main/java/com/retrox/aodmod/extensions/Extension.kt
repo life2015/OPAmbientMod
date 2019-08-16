@@ -67,7 +67,8 @@ fun TextView.setGradientTest(colorPack: ThemeClockPack = ThemeManager.getCurrent
 //    MainHook.logD("Debug Gradient -> text: $text width: $width height: $height")
 }
 
-fun isOP7Pro() = android.os.Build.MODEL == "GM1910"
+val OP7DeviceModels = listOf<String>("GM1910", "GM1913", "GM1917", "GM1911", "GM1915", "GM1920")
+fun isOP7Pro() = OP7DeviceModels.contains(android.os.Build.MODEL)
 
 /**
  * Only for OP7Pro

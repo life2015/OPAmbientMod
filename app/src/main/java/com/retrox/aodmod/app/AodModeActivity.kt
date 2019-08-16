@@ -79,7 +79,7 @@ class AodModeActivity : AppCompatActivity() {
 
 
                 textView {
-                    text = "Always On Display 常亮模式"
+                    text = "Always On Display 常亮模式 <- Use This"
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     textSize = 18f
                     gravity = Gravity.START

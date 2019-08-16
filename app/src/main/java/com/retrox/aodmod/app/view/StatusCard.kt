@@ -87,7 +87,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 textColor = Color.BLACK
                 activeState.observe(lifecycleOwner, Observer {
                     it?.let { (isActive, _) ->
-                        text = if (isActive) "模块已激活" else "模块尚未激活 点击激活"
+                        text = if (isActive) context.getString(R.string.active_status_already) else context.getString(R.string.active_status_need_active)
                     }
                 })
                 setOnClickListener {
@@ -111,7 +111,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 activeState.observe(lifecycleOwner, Observer {
                     it?.let { (_, isAppInList) ->
                         text =
-                            if (isAppInList) "主动显示/SystemUI(OP7Pro) 已添加" else "主动显示/SystemUI(OP7Pro) 未添加 点击添加(需要太极Magisk)"
+                            if (isAppInList) "主动显示/SystemUI(OP7Pro) 已添加" else context.getString(R.string.need_add_aod)
                     }
                 })
                 setOnClickListener {
@@ -153,16 +153,16 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
         }
 
         attachView(view)
-        title.value = "激活状态"
+        title.value = context.getString(R.string.active_state)
 
         activeState.observe(lifecycleOwner, Observer {
             it?.let {
                 if (it.first && it.second) {
                     titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
-                    status.value = "已激活"
+                    status.value = context.getString(R.string.active_status_already)
                 } else {
                     titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
-                    status.value = "尚未激活"
+                    status.value = context.getString(R.string.active_state_noalready)
                 }
             }
         })
@@ -186,12 +186,12 @@ class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner) : St
                 it?.let {
                     text = if (it) {
                         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
-                        status.value = "已打开"
-                        "息屏抬手显示已打开"
+                        status.value = context.getString(R.string.motion_awake_opened)
+                        context.getString(R.string.pickup_enabled)
                     } else {
                         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
-                        status.value = "请打开抬手显示"
-                        "抬手显示未打开，请到系统设置里面打开抬手显示"
+                        status.value = context.getString(R.string.please_enable_pick)
+                        context.getString(R.string.status_pick_up_not_enabled)
                     }
                 }
             })
@@ -202,7 +202,7 @@ class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner) : St
         textView {
             textColor = Color.parseColor("#9B9B9B")
             textSize = 14f
-            text = "虽然这个模块的功能不是抬手显示，但是系统设置的这个选项必须打开，否则功能无法正常运转"
+            text = context.getString(R.string.top_open_pick_up)
         }.lparams {
             bottomMargin = dip(4)
         }
@@ -210,12 +210,12 @@ class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner) : St
         textView {
             textColor = Color.BLACK
             textSize = 14f
-            text = "7Pro的用户强烈建议同时打开 “轻触屏幕显示” 获得更好体验（6T也可以试试哈）"
+            text = context.getString(R.string.top_touch_to_see)
         }
 
         button {
             setBorderlessStyle()
-            text = "开启抬手显示"
+            text = context.getString(R.string.open_pick_up_display)
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
                 val intent = Intent()
@@ -229,7 +229,7 @@ class MotionAwakeStatCard(context: Context, lifecycleOwner: LifecycleOwner) : St
 
     init {
         attachView(layout)
-        title.value = "抬手显示设置状态"
+        title.value = context.getString(R.string.tip_status_pick_up)
     }
 }
 
@@ -246,7 +246,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
             verticalMargin = dip(8)
             horizontalMargin = dip(16)
         })
-        textView("留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块，然后重启息屏。或检查是否授予储存权限，系统抬手亮屏是否打开。") {
+        textView(context.getString(R.string.attention_work_status)) {
             textColor = Color.parseColor("#9B9B9B")
             textSize = 14f
         }.lparams(matchParent, wrapContent) {
@@ -256,7 +256,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
         linearLayout {
             orientation = LinearLayout.HORIZONTAL
             button {
-                text = "点击刷新"
+                text = context.getString(R.string.touch_refresh)
                 setBorderlessStyle()
                 textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 setOnClickListener {
@@ -265,7 +265,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
             }.lparams(wrapContent, wrapContent)
 
             button {
-                text = "重新打钩"
+                text = context.getString(R.string.rehook)
                 setBorderlessStyle()
                 textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 setOnClickListener {
@@ -282,7 +282,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
             }.lparams(wrapContent, wrapContent)
 
             button {
-                text = "重启息屏"
+                text = context.getString(R.string.reboot_ambient)
                 setBorderlessStyle()
                 textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                 setOnClickListener {
@@ -296,7 +296,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
 
     init {
         attachView(layout)
-        title.value = "工作状态"
+        title.value = context.getString(R.string.work_status)
         AppState.needRefreshStatus.observe(lifecycleOwner, Observer {
             refresh()
         })
@@ -332,7 +332,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
             }
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "强力重启息屏 需要Root （非一加7Pro）"
+            text = context.getString(R.string.force_restart_not_7p)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -340,7 +340,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
             }
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "强力重启系统UI和息屏 需要Root（7Pro）"
+            text = context.getString(R.string.force_restart_7p)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -365,6 +365,17 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
                 context.joinQQGroup(key)
             }
         }.lparams(wrapContent, wrapContent)
+
+        button {
+            text = "Join Telegram Group EU/NA/IN"
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                val telegram = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/joinchat/FE-DFRPY5fduM2wTsl1Spg"));
+                context.startActivity(telegram);
+            }
+        }.lparams(wrapContent, wrapContent)
+
         button {
             text = "回到老设置界面"
             setBorderlessStyle()
@@ -400,7 +411,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
 class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
     val layout = context.verticalLayout {
         button {
-            text = "息屏音乐提醒设置"
+            text = context.getString(R.string.aod_music_settings)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -408,7 +419,7 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
             }
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "常亮模式自定义设置"
+            text = context.getString(R.string.aod_custom_settings)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -416,7 +427,7 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
             }
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "时钟对齐设置"
+            text = context.getString(R.string.clock_align_settings)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -428,7 +439,7 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
 
     init {
         attachView(layout)
-        title.value = "设置"
+        title.value = context.getString(R.string.settings)
         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
     }
 
@@ -447,7 +458,7 @@ class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard
                 val content = if (weatherData != null) {
                     with(weatherData) {
                         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
-                        status.value = "天气服务正常"
+                        status.value = context.getString(R.string.weather_service_ok)
                         val result =
                             "当前天气数据：$cityName $weatherName $temperature$temperatureUnit \n今日温度范围：$temperatureLow/$temperatureHigh$temperatureUnit"
                         if (AppPref.aodShowWeather) {
@@ -457,7 +468,7 @@ class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard
                         }
                     }
                 } else {
-                    status.value = "天气服务异常"
+                    status.value = context.getString(R.string.weather_service_error)
                     titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
                     AppPref.aodShowWeather = false
                     "获取天气数据失败 检查系统天气APP是否可用\n已自动关闭天气显示"
@@ -472,7 +483,7 @@ class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard
     }
 
     init {
-        title.value = "天气数据"
+        title.value = context.getString(R.string.weather_data)
         attachView(layout)
 
     }
@@ -490,9 +501,9 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
             checkStat.observe(lifecycleOwner, Observer {
                 it?.let {
                     if (it) {
-                        text = "存储权限已授予"
+                        text = context.getString(R.string.storage_permission_granted)
                     } else {
-                        text = "存储权限未授予 大量功能将会出现错误！"
+                        text = context.getString(R.string.storage_permission_not_granted)
                     }
                 }
             })
@@ -502,7 +513,7 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
         }
 
         button {
-            text = "检查权限授予"
+            text = context.getString(R.string.check_permission_status)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -526,7 +537,7 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
     }
 
     init {
-        title.value = "权限状态"
+        title.value = context.getString(R.string.permisssion_status)
         checkStat.observe(lifecycleOwner, Observer {
             it?.let {
                 if (it) {
@@ -547,7 +558,7 @@ class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(c
     val layout = context.linearLayout {
         orientation = LinearLayout.VERTICAL
         frameLayout {
-            textView("显示风格") {
+            textView(context.getString(R.string.display_style)) {
                 textColor = Color.BLACK
             }.lparams(wrapContent, wrapContent) {
                 gravity = Gravity.START or Gravity.CENTER_VERTICAL
@@ -570,7 +581,7 @@ class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(c
             }
         }.lparams(matchParent, wrapContent)
 
-        textView("PureMusic / FlatMusic 模式已测试性支持歌词显示，其他模式不支持。切记：并不是所有主题都支持全部的设置与功能。") {
+        textView(context.getString(R.string.music_lrc_support)) {
             textColor = Color.parseColor("#9B9B9B")
             textSize = 14f
         }.lparams(matchParent, wrapContent) {
@@ -578,7 +589,7 @@ class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(c
         }
 
         button {
-            text = "其他自定义风格设置"
+            text = context.getString(R.string.other_custom_style_settings)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -589,7 +600,7 @@ class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(c
     }
 
     init {
-        title.value = "息屏风格自定义"
+        title.value = context.getString(R.string.display_style_custom)
         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
         attachView(layout)
     }

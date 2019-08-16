@@ -24,7 +24,7 @@ class MusicSettingsActivity : AppCompatActivity() {
         scrollView {
             verticalLayout {
                 textView {
-                    text = "这是什么功能？"
+                    text = context.getString(R.string.aod_music_settings_what)
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     textSize = 18f
                     gravity = Gravity.START

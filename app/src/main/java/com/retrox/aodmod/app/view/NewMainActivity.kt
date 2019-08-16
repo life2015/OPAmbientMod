@@ -4,6 +4,7 @@ import android.Manifest
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import com.retrox.aodmod.app.SleepModeActivity
@@ -33,10 +34,9 @@ class NewMainActivity : AppCompatActivity() {
 
 
 //                button {
-//                    text = "测试weather"
+//                    text = "测试Settings"
 //                    setOnClickListener {
-//                        val weather = WeatherProvider
-//                        weather.queryWeatherInformation(context)
+//                        Settings.System.putString(contentResolver, "aodMod", "AOdmod")
 //                    }
 //                }
             }

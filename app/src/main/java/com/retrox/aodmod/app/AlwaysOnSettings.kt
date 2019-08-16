@@ -15,7 +15,7 @@ import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 class AlwaysOnSettings : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "常亮模式设置"
+        title = getString(R.string.always_on_settings)
         scrollView {
             verticalLayout {
 
@@ -50,11 +50,11 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
-                title("息屏备忘")
-                content("会在常驻通知区域显示一条备忘录")
+                title(context.getString(R.string.ambient_memo))
+                content(context.getString(R.string.ambient_will_display_memo))
                 toggleButton {
-                    textOn = "息屏备忘开"
-                    textOff = "息屏备忘关"
+                    textOn = context.getString(R.string.enable_aod_memo)
+                    textOff = context.getString(R.string.disabel_aod_memo)
                     isChecked = AppPref.aodShowNote
                     onCheckedChange { _, isChecked ->
                         AppPref.aodShowNote = isChecked
@@ -69,23 +69,23 @@ class AlwaysOnSettings : AppCompatActivity() {
                 isFocusableInTouchMode = true
 
                 val editNote = editText {
-                    hint = "备忘记录写在这里"
+                    hint = context.getString(R.string.input_memo_here)
                     if (!AppPref.aodNoteContent.isNullOrBlank()) {
                         setText(AppPref.aodNoteContent)
                     }
                 }
                 button {
-                    text = "保存备忘"
+                    text = context.getString(R.string.save_memo)
                     setOnClickListener {
                         AppPref.aodNoteContent = editNote.text.toString()
                     }
                 }
 
-                title("息屏显示天气")
-                content("通过CP获取一加系统天气APP的数据，展示在息屏上，数据跟随系统天气App。")
+                title(context.getString(R.string.aod_display_weather))
+                content(context.getString(R.string.aod_weather_tip))
                 toggleButton {
-                    textOn = "开启息屏天气显示"
-                    textOff = "息屏不显示天气"
+                    textOn = context.getString(R.string.enable_aod_weather)
+                    textOff = context.getString(R.string.disable_aod_weather)
                     isChecked = AppPref.aodShowWeather
                     onCheckedChange { _, isChecked ->
                         AppPref.aodShowWeather = isChecked
@@ -96,11 +96,11 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
-                title("倒扣手机 放入口袋自动灭屏 （7Pro不支持）")
-                content("替代之前的睡眠模式。在手机翻扣或者放入口袋后，自动关闭常亮状态的息屏，手机翻回来或者拿出口袋即可恢复。避免不必要的屏幕常亮。\n亲测好用，建议开启。")
+                title(context.getString(R.string.flip_off_screen))
+                content("替代之前的睡眠模式。在手机翻扣或者放入口袋后，自动关闭常亮状态的息屏，手机翻回来或者拿出口袋即可恢复。避免不必要的屏幕常亮。\n亲测好用，建议开启。Recommend to open")
                 toggleButton {
-                    textOn = "倒扣/口袋模式开"
-                    textOff = "倒扣/口袋模式关"
+                    textOn = "倒扣/口袋模式开 On"
+                    textOff = "倒扣/口袋模式关 OFF"
                     isChecked = AppPref.filpOffScreen
                     onCheckedChange { _, isChecked ->
                         AppPref.filpOffScreen = isChecked
@@ -112,11 +112,11 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
-                title("息屏光感调整亮度")
+                title(context.getString(R.string.auto_brightness_aod))
                 content("息屏之后通过光线传感器来调整亮度，节省电量")
                 toggleButton {
-                    textOn = "息屏自动亮度开"
-                    textOff = "息屏关闭自动亮度"
+                    textOn = "息屏自动亮度开 On"
+                    textOff = "息屏关闭自动亮度 Off"
                     isChecked = AppPref.autoBrightness
                     onCheckedChange { _, isChecked ->
                         AppPref.autoBrightness = isChecked
@@ -144,10 +144,10 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
-                title("锁屏字体跟随系统")
+                title(context.getString(R.string.aod_font))
                 content("你爱系统字体 GIAO辞")
                 toggleButton {
-                    textOn = "锁屏字体跟随系统"
+                    textOn = "锁屏字体跟随系统 System Fonts"
                     textOff = "使用Google Sans"
                     isChecked = AppPref.fontWithSystem
                     onCheckedChange { _, isChecked ->

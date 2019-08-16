@@ -1,3 +1,55 @@
 <resources>
     <string name="app_name">OPAodMod</string>
+    <string name="active_state">激活状态</string>
+    <string name="active_status_already">已激活</string>
+    <string name="active_state_noalready">尚未激活</string>
+    <string name="active_status_need_active">模块尚未激活 点击激活</string>
+    <string name="need_add_aod">主动显示/SystemUI(OP7Pro) 未添加 点击添加(需要太极Magisk)</string>
+    <string name="motion_awake_opened">已打开</string>
+    <string name="pickup_enabled">息屏抬手显示已打开</string>
+    <string name="please_enable_pick">请打开抬手显示</string>
+    <string name="status_pick_up_not_enabled">抬手显示未打开，请到系统设置里面打开抬手显示</string>
+    <string name="top_open_pick_up">虽然这个模块的功能不是抬手显示，但是系统设置的这个选项必须打开，否则功能无法正常运转</string>
+    <string name="top_touch_to_see">7Pro的用户强烈建议同时打开 “轻触屏幕显示” 获得更好体验（6T也可以试试哈）</string>
+    <string name="open_pick_up_display">开启抬手显示</string>
+    <string name="tip_status_pick_up">抬手显示设置状态</string>
+    <string name="attention_work_status">
+        留意息屏次数和上次息屏时间，如果息屏次数和时间没有随着息屏操作而变化，证明模块并没有正常工作。如果这是因为模块更新而造成，请尝试重新打钩模块，然后重启息屏。或检查是否授予储存权限，系统抬手亮屏是否打开。
+    </string>
+    <string name="touch_refresh">点击刷新</string>
+    <string name="rehook">重新打钩</string>
+    <string name="reboot_ambient">重启息屏</string>
+    <string name="work_status">工作状态</string>
+    <string name="aod_music_settings">息屏音乐提醒设置</string>
+    <string name="aod_custom_settings">常亮模式自定义设置</string>
+    <string name="clock_align_settings">时钟对齐设置</string>
+    <string name="settings">设置</string>
+    <string name="weather_service_ok">天气服务正常</string>
+    <string name="weather_service_error">天气服务异常</string>
+    <string name="weather_data">天气数据</string>
+    <string name="storage_permission_granted">存储权限已授予</string>
+    <string name="storage_permission_not_granted">存储权限未授予 大量功能将会出现错误！</string>
+    <string name="check_permission_status">检查权限授予</string>
+    <string name="permisssion_status">权限状态</string>
+    <string name="display_style">Display Style</string>
+    <string name="music_lrc_support">PureMusic / FlatMusic 模式已测试性支持歌词显示，其他模式不支持。切记：并不是所有主题都支持全部的设置与功能。</string>
+    <string name="other_custom_style_settings">其他自定义风格设置</string>
+    <string name="display_style_custom">息屏风格自定义</string>
+    <string name="force_restart_not_7p">强力重启息屏 需要Root （非一加7Pro）</string>
+    <string name="force_restart_7p">强力重启系统UI和息屏 需要Root（7Pro）</string>
+    <string name="always_on_settings">常亮模式设置</string>
+    <string name="ambient_memo">息屏备忘</string>
+    <string name="ambient_will_display_memo">会在常驻通知区域显示一条备忘录</string>
+    <string name="enable_aod_memo">息屏备忘开</string>
+    <string name="disabel_aod_memo">息屏备忘关</string>
+    <string name="input_memo_here">备忘记录写在这里</string>
+    <string name="save_memo">保存备忘</string>
+    <string name="aod_display_weather">息屏显示天气</string>
+    <string name="aod_weather_tip">通过CP获取一加系统天气APP的数据，展示在息屏上，数据跟随系统天气App。</string>
+    <string name="enable_aod_weather">开启息屏天气显示</string>
+    <string name="disable_aod_weather">息屏不显示天气</string>
+    <string name="flip_off_screen">倒扣手机 放入口袋自动灭屏 （7Pro不支持）</string>
+    <string name="auto_brightness_aod">息屏光感调整亮度</string>
+    <string name="aod_font">锁屏字体跟随系统</string>
+    <string name="aod_music_settings_what">这是什么功能？</string>
 </resources>
