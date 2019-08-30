@@ -67,7 +67,9 @@ fun TextView.setGradientTest(colorPack: ThemeClockPack = ThemeManager.getCurrent
 //    MainHook.logD("Debug Gradient -> text: $text width: $width height: $height")
 }
 
-val OP7DeviceModels = listOf<String>("GM1910", "GM1913", "GM1917", "GM1911", "GM1915", "GM1920")
+// 1911: India, 1913: EU, 1915: Tmobile, 1917: global/US unlocked, 1920: EU 5G
+val OP7DeviceModels = listOf<String>("GM1910", "GM1911", "GM1913", "GM1915", "GM1917", "GM1920")
+
 fun isOP7Pro() = OP7DeviceModels.contains(android.os.Build.MODEL)
 
 /**

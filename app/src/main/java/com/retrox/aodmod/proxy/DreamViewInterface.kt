@@ -8,6 +8,7 @@ import android.view.Display
 import android.view.View
 import com.retrox.aodmod.extensions.isOP7Pro
 import com.retrox.aodmod.extensions.simpleTap
+import com.retrox.aodmod.pref.SystemPref
 
 interface DreamView {
     val layoutTheme: String
@@ -46,7 +47,7 @@ abstract class AbsDreamView(private val dreamProxy: DreamProxy) : DreamProxyCont
             return
         }
         lastTapTime = System.currentTimeMillis()
-        if (isOP7Pro()) {
+        if (isOP7Pro() && !SystemPref.getNightModeStat()) {
             val vibrator = AndroidAppHelper.currentApplication().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             vibrator.simpleTap()
         }

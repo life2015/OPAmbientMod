@@ -20,6 +20,7 @@ import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.pref.SystemPref
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
@@ -40,8 +41,10 @@ import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.matchParent
+import java.net.URL
 
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner, DreamProxyController {
@@ -156,6 +159,10 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
 //        MediaServiceLocal.getActiveSessions()
 
+//        doAsync {
+//            val text = URL("www.baidu.com").readText()
+//            MainHook.logD("网络请求成功了: $text")
+//        }
 
         /**
          * setScreenOff -> startDozing -> setScreenDoze(delayed)
@@ -278,6 +285,10 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     override fun getScreenState() = XposedHelpers.callMethod(dreamService, "getDozeScreenState") as Int
 
     override fun setScreenDoze(reason: String) {
+        if (SystemPref.getNightModeStat()) {
+            MainHook.logD("NightMode，不要亮屏")
+            return
+        }
         XposedHelpers.callMethod(dreamService, "setDozeScreenState", Display.STATE_DOZE)
         lastScreenOnTime = System.currentTimeMillis()
 
@@ -303,6 +314,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     }
 
 
+    // 目前还是不好用 会出现很多问题
     override fun setScreenActive(reason: String) {
         if (getScreenState() != Display.STATE_DOZE) {
             setScreenDoze()
