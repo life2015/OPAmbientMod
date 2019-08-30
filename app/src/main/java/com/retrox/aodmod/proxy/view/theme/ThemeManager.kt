@@ -5,7 +5,7 @@ import java.lang.Exception
 
 object ThemeManager {
 
-    val defaultColorPack = ThemeClockPack("colorful_default", "#F6CDB0", "#93C4EF", "#DFCCC0")
+    val defaultColorPack = getPresetThemes()[0]
     private var currentColorPack = defaultColorPack
 
     fun getPresetThemes(): List<ThemeClockPack> {

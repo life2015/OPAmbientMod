@@ -19,10 +19,10 @@ object XPref {
             val result = preferences.makeWorldReadable()
             MainHook.logD("SELinux Pref Status: $result")
 
-            if (!result) {
-                // 从外置读取XSP
-                preferences = XSharedPreferences(File(FileUtils.sharedDir, AppPref.externalPrefName))
-            }
+//            if (!result) {
+//                // 从外置读取XSP
+//                preferences = XSharedPreferences(File(FileUtils.sharedDir, AppPref.externalPrefName))
+//            }
 
             preferences.reload()
             xSharedPreferences = WeakReference(preferences)

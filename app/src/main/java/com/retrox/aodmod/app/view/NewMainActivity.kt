@@ -33,12 +33,15 @@ class NewMainActivity : AppCompatActivity() {
 
 
 
-//                button {
-//                    text = "测试Settings"
-//                    setOnClickListener {
-//                        Settings.System.putString(contentResolver, "aodMod", "AOdmod")
-//                    }
-//                }
+                button {
+                    text = "测试Settings"
+                    setOnClickListener {
+                        val state = Settings.Secure.getInt(contentResolver, "night_display_activated", 0)
+                        val state2 = Settings.System.getInt(contentResolver, "sysui_do_not_disturb", 0)
+
+                        toast("night: $state  do not disturb $state2")
+                    }
+                }
             }
 
             checkAndroidVersion()
@@ -47,7 +50,7 @@ class NewMainActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(
                     this@NewMainActivity,
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 66
-                );
+                )
             }
         }
 

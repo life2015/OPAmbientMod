@@ -34,17 +34,18 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         Log.d("AODMOD", "package: ${lpparam.packageName}")
 //        ProxyInitHook.handleLoadPackage(lpparam)
 
-        AodLayoutSourceHook.handleLoadPackage(lpparam)
-        AodDurationHook.handleLoadPackage(lpparam)
-        DisplayStateHook.handleLoadPackage(lpparam)
+//        AodLayoutSourceHook.handleLoadPackage(lpparam)
+//        AodDurationHook.handleLoadPackage(lpparam)
+//        DisplayStateHook.handleLoadPackage(lpparam)
         MediaControl.handleLoadPackage(lpparam)
-        AodMainMediaHook.handleLoadPackage(lpparam)
+//        AodMainMediaHook.handleLoadPackage(lpparam)
         AodFingerPrintHook.handleLoadPackage(lpparam) // 理论上支持6T
 
 //        AodAlwaysOnHook.handleLoadPackage(lpparam)
         if (isOP7Pro()) {
             OP7DreamProxyHook.handleLoadPackage(lpparam)
             SystemServiceHook.handleLoadPackage(lpparam)
+            PermissionHook.handleLoadPackage(lpparam)
         } else {
             DreamProxyHook.handleLoadPackage(lpparam)
         }
