@@ -16,6 +16,8 @@
 package com.retrox.aodmod.hooks;
 
 import android.Manifest.permission;
+import android.util.Log;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -29,7 +31,7 @@ public class PermissionGranter {
     public static final String SYSTEM_UI = "com.android.systemui";
 
     private static final String CLASS_PERMISSION_MANAGER_SERVICE = "com.android.server.pm.permission.PermissionManagerService";
-    private static final String CLASS_PERMISSION_CALLBACK = "com.android.server.pm.permission.PermissionManagerInternal.PermissionCallback";
+    private static final String CLASS_PERMISSION_CALLBACK = "com.android.server.pm.permission.PermissionManagerServiceInternal$PermissionCallback";
     private static final String CLASS_PACKAGE_PARSER_PACKAGE = "android.content.pm.PackageParser.Package";
     private static final String PERM_ACCESS_SURFACE_FLINGER = "android.permission.ACCESS_SURFACE_FLINGER";
 
@@ -41,7 +43,7 @@ public class PermissionGranter {
         try {
             final Class<?> pmServiceClass = XposedHelpers.findClass(CLASS_PERMISSION_MANAGER_SERVICE, classLoader);
 
-            XposedHelpers.findAndHookMethod(pmServiceClass, "grantPermissions",
+            XposedHelpers.findAndHookMethod(pmServiceClass, "restorePermissionState",
                     CLASS_PACKAGE_PARSER_PACKAGE, boolean.class, String.class,
                     CLASS_PERMISSION_CALLBACK, new XC_MethodHook() {
                 @SuppressWarnings("unchecked")
@@ -62,18 +64,22 @@ public class PermissionGranter {
                             final Object p = XposedHelpers.callMethod(permissions, "get",
                                     permission.INTERNET);
                             XposedHelpers.callMethod(ps, "grantInstallPermission", p);
+                            Log.d("AODMOD", "grant internet ");
                         }
 
                         if (!grantedPerms.contains(permission.WRITE_EXTERNAL_STORAGE)) {
                             final Object p = XposedHelpers.callMethod(permissions, "get",
                                     permission.WRITE_EXTERNAL_STORAGE);
                             XposedHelpers.callMethod(ps, "grantInstallPermission", p);
+                            Log.d("AODMOD", "grant write stroage ");
+
                         }
 
                         if (!grantedPerms.contains(permission.READ_EXTERNAL_STORAGE)) {
                             final Object p = XposedHelpers.callMethod(permissions, "get",
                                     permission.READ_EXTERNAL_STORAGE);
                             XposedHelpers.callMethod(ps, "grantInstallPermission", p);
+                            Log.d("AODMOD", "grant read stroage ");
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package com.retrox.aodmod
 
+import android.os.Build
 import android.util.Log
 import com.retrox.aodmod.BuildConfig.DEBUG
 import com.retrox.aodmod.apple.AppleMusicHook
@@ -34,18 +35,24 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         Log.d("AODMOD", "package: ${lpparam.packageName}")
 //        ProxyInitHook.handleLoadPackage(lpparam)
 
-//        AodLayoutSourceHook.handleLoadPackage(lpparam)
-//        AodDurationHook.handleLoadPackage(lpparam)
-//        DisplayStateHook.handleLoadPackage(lpparam)
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
+            AodLayoutSourceHook.handleLoadPackage(lpparam)
+            AodDurationHook.handleLoadPackage(lpparam)
+            DisplayStateHook.handleLoadPackage(lpparam)
+            AodMainMediaHook.handleLoadPackage(lpparam)
+        }
+
         MediaControl.handleLoadPackage(lpparam)
-//        AodMainMediaHook.handleLoadPackage(lpparam)
-        AodFingerPrintHook.handleLoadPackage(lpparam) // 理论上支持6T
+        AodFingerPrintHook.handleLoadPackage(lpparam) // 理论上支持6T todo 适配 P Q
 
 //        AodAlwaysOnHook.handleLoadPackage(lpparam)
         if (isOP7Pro()) {
             OP7DreamProxyHook.handleLoadPackage(lpparam)
-            SystemServiceHook.handleLoadPackage(lpparam)
-            PermissionHook.handleLoadPackage(lpparam)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                PermissionHook.handleLoadPackage(lpparam) // Q
+            } else {
+                SystemServiceHook.handleLoadPackage(lpparam)
+            }
         } else {
             DreamProxyHook.handleLoadPackage(lpparam)
         }

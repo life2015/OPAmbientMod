@@ -1,5 +1,6 @@
 package com.retrox.aodmod.proxy
 
+import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.app.AndroidAppHelper
 import android.arch.lifecycle.Lifecycle
@@ -18,8 +19,11 @@ import android.os.PowerManager
 import android.service.dreams.DreamService
 import android.view.Display
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.AccelerateDecelerateInterpolator
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.extensions.children
 import com.retrox.aodmod.pref.SystemPref
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.DozeSensors
@@ -160,7 +164,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 //        MediaServiceLocal.getActiveSessions()
 
 //        doAsync {
-//            val text = URL("www.baidu.com").readText()
+//            val text = URL("https://www.baidu.com").readText()
 //            MainHook.logD("网络请求成功了: $text")
 //        }
 
@@ -282,7 +286,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
     }
 
-    override fun getScreenState() = XposedHelpers.callMethod(dreamService, "getDozeScreenState") as Int
+    override fun getScreenState() =
+        XposedHelpers.callMethod(dreamService, "getDozeScreenState") as Int
 
     override fun setScreenDoze(reason: String) {
         if (SystemPref.getNightModeStat()) {
@@ -336,13 +341,35 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         }
 //        LocalAlarmManager.cancelAlarm()
         MainHook.logD("DreamProxy -> onDreamingStopped")
-        LocalAlarmProxy.stopTick()
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        AodState.dreamState.postValue(AodState.DreamState.STOP)
-        dreamView.onDestroyView()
-        windowManager.removeViewImmediate(mainView)
+
+        val contentview = mainView
+        contentview?.apply {
+            val viewChild = (this as? ViewGroup)?.getChildAt(0)
+            // 不同阶动画，白色文字快速透明，背景慢速透明
+            viewChild?.apply {
+                visibility = View.INVISIBLE
+            }
+//            这部分注释掉的代码是因为这种渐变动画在直接指纹解锁的时候会出现奇怪的视觉效果 所以先去掉了
+//            animate().alpha(0f).setDuration(400L)
+//                .setListener(object : Animator.AnimatorListener {
+//                    override fun onAnimationRepeat(animation: Animator?) {}
+//                    override fun onAnimationEnd(animation: Animator?) {
+//
+//                    }
+//
+//                    override fun onAnimationCancel(animation: Animator?) {}
+//
+//                    override fun onAnimationStart(animation: Animator?) {}
+//                }).start()
+
+            LocalAlarmProxy.stopTick()
+            lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+            lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+            lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+            AodState.dreamState.postValue(AodState.DreamState.STOP)
+            dreamView.onDestroyView()
+            windowManager.removeViewImmediate(mainView)
+        }
 
     }
 
