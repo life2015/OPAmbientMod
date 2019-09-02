@@ -95,11 +95,12 @@ object DozeSensors {
 
         override fun onSensorChanged(event: SensorEvent) {
             if (event.values.isEmpty()) return
-//            MainHook.logD("PickupCheck: ${event.values.toList()}")
             if (event.values[0] == 1.0f) {
                 sensorWakeLiveData.postValue(DozeSensors.DozeSensorMessage.PICK_UP)
+                MainHook.logD("AOD PICK_UP detected")
             } else {
                 sensorWakeLiveData.postValue(DozeSensors.DozeSensorMessage.PICK_DROP)
+                MainHook.logD("AOD DROP detected")
             }
         }
 

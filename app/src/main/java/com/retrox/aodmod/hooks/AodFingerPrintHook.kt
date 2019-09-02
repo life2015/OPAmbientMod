@@ -42,7 +42,7 @@ object AodFingerPrintHook : IXposedHookLoadPackage {
         // handleUpdateIconVisibility
         XposedHelpers.findAndHookMethod(fingerprintDialogViewClass, "handleUpdateIconVisibility", Boolean::class.java, object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
-                MainHook.logD("handleUpdateIconVisibility Called ${param.args}")
+//                MainHook.logD("handleUpdateIconVisibility Called ${param.args}")
                 val view = XposedHelpers.getObjectField(param.thisObject, "mIconNormal") as View
                 view.visibility = View.INVISIBLE
                 view.alpha = 0f

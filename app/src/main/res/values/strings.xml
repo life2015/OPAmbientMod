@@ -48,7 +48,7 @@
     <string name="aod_weather_tip">通过CP获取一加系统天气APP的数据，展示在息屏上，数据跟随系统天气App。</string>
     <string name="enable_aod_weather">开启息屏天气显示</string>
     <string name="disable_aod_weather">息屏不显示天气</string>
-    <string name="flip_off_screen">倒扣手机 放入口袋自动灭屏 （7Pro不支持）</string>
+    <string name="flip_off_screen">倒扣手机 放入口袋自动灭屏 （7Pro反应较慢）</string>
     <string name="auto_brightness_aod">息屏光感调整亮度</string>
     <string name="aod_font">锁屏字体跟随系统</string>
     <string name="aod_music_settings_what">这是什么功能？</string>

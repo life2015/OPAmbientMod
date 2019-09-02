@@ -8,20 +8,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Gravity
-import android.view.View
-import android.widget.Toast
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.app.state.AppState.expApps
 import com.retrox.aodmod.app.state.AppState.isActive
 import com.retrox.aodmod.app.view.joinQQGroup
+import com.retrox.aodmod.shared.global.GlobalCacheManager
+import com.retrox.aodmod.shared.global.GlobalKV
+import com.retrox.aodmod.shared.global.OwnFileManager
 import org.jetbrains.anko.*
 import org.jetbrains.anko.cardview.v7.cardView
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import kotlin.random.Random
 
 /**
  * 不要在这里使用Xposed api相关的类
@@ -249,15 +248,16 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+
+
     }
-
-
 
 
     override fun onResume() {
         super.onResume()
         AppState.refreshActiveState(this)
         AppState.refreshExpApps(this)
+        OwnFileManager.writeFileWithContent("hello.file", "Hello Boy! ${Random.nextInt()}")
 
     }
 }

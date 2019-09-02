@@ -3,6 +3,9 @@ package com.retrox.aodmod.app
 import android.app.Application
 import android.content.SharedPreferences
 import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.shared.global.GlobalCacheManager
+import com.retrox.aodmod.shared.global.GlobalKV
+import com.retrox.aodmod.shared.global.OwnFileManager
 import org.jetbrains.anko.defaultSharedPreferences
 import java.lang.ref.WeakReference
 import kotlin.concurrent.thread
@@ -36,5 +39,10 @@ class App : Application() {
                 AppPref.flushPrefChangeToSDcard()
             }
         }
+
+        OwnFileManager.getOwnFileDir()
+        GlobalCacheManager.getCacheFileDir()
+        GlobalKV.getKVFileDir()
+
     }
 }

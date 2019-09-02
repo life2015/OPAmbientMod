@@ -14,13 +14,13 @@ object AodClockTick {
     val tickLiveData = object : MutableLiveData<Any>() {
         override fun onActive() {
             super.onActive()
-            startTick()
+//            startTick()
             MainHook.logD("Aod Clock start Tick")
         }
 
         override fun onInactive() {
             super.onInactive()
-            stopTick()
+//            stopTick()
             MainHook.logD("Aod Clock stop Tick")
         }
     }

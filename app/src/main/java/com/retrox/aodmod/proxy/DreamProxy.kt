@@ -24,6 +24,7 @@ import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.children
+import com.retrox.aodmod.extensions.isOP7Pro
 import com.retrox.aodmod.pref.SystemPref
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.sensor.DozeSensors
@@ -37,6 +38,7 @@ import com.retrox.aodmod.proxy.view.custom.music.PureMusicDream
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
+import com.retrox.aodmod.service.alarm.LocalAlarmTimeOutTicker
 import com.retrox.aodmod.service.alarm.proxy.LocalAlarmProxy
 import com.retrox.aodmod.service.notification.NotificationCollectorService
 import com.retrox.aodmod.service.notification.NotificationManager
@@ -70,7 +72,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 
     var mainView: View? = null
 
-    var dreamView: DreamView = AodDefaultDream(this)
+    var dreamView: DreamView = AodFlatDream(this)
 
     val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -112,6 +114,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
         LocalAlarmManager.initService(context)
+        LocalAlarmTimeOutTicker.initService(context)
         dreamView.onCreate()
     }
 
@@ -208,12 +211,13 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             })
         }
 
-        if (XPref.getAutoBrightnessEnabled()) {
+        if (XPref.getAutoBrightnessEnabled() || isOP7Pro()) {  // 一加7Pro的距离传感器依赖于光感的响应，所以开着就可以用口袋了
             LightSensor.lightSensorLiveData.observe(this, Observer {
                 it?.let { (suggestAlpha, _) ->
                     MainHook.logD("Light Sensor Alpha: $suggestAlpha")
-//                    AodClockTick.tickLiveData.postValue("Tick from Light Sensor")
-                    aodMainLayout.alpha = suggestAlpha
+                    if (XPref.getAutoBrightnessEnabled()) {
+                        aodMainLayout.alpha = suggestAlpha
+                    }
 
 //                    val brightness = (suggestAlpha * 255).roundToInt()
 //                    MainHook.logD("Light Sensor Brightness : $brightness")
@@ -345,22 +349,21 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         val contentview = mainView
         contentview?.apply {
             val viewChild = (this as? ViewGroup)?.getChildAt(0)
-            // 不同阶动画，白色文字快速透明，背景慢速透明
-            viewChild?.apply {
+//            不同阶动画，白色文字快速透明，背景慢速透明
+//            这部分注释掉的代码是因为这种渐变动画在直接指纹解锁的时候会出现奇怪的视觉效果 所以先去掉了
+/*             viewChild?.apply {
                 visibility = View.INVISIBLE
             }
-//            这部分注释掉的代码是因为这种渐变动画在直接指纹解锁的时候会出现奇怪的视觉效果 所以先去掉了
-//            animate().alpha(0f).setDuration(400L)
-//                .setListener(object : Animator.AnimatorListener {
-//                    override fun onAnimationRepeat(animation: Animator?) {}
-//                    override fun onAnimationEnd(animation: Animator?) {
-//
-//                    }
-//
-//                    override fun onAnimationCancel(animation: Animator?) {}
-//
-//                    override fun onAnimationStart(animation: Animator?) {}
-//                }).start()
+           animate().alpha(0f).setDuration(400L)
+                .setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationEnd(animation: Animator?) {
+
+                    }
+                    override fun onAnimationCancel(animation: Animator?) {}
+
+                    override fun onAnimationStart(animation: Animator?) {}
+                }).start()*/
 
             LocalAlarmProxy.stopTick()
             lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)

@@ -23,4 +23,8 @@ public class QueryResult {
     public String getTitle() {
         return mTitle;
     }
+
+    public int getId() {
+        return mId;
+    }
 }

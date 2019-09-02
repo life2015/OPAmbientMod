@@ -54,30 +54,35 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
             }
             addView(musicView)
 
-
-            val musicLyric = textView {
+            val bottomContainer = verticalLayout {
                 id = musicLrcId
-                textColor = Color.WHITE
-                textSize = 15f
-                letterSpacing = 0.05f
-                setGoogleSans()
-                visibility = View.GONE
-                gravity = Gravity.CENTER_HORIZONTAL
 
-                LrcSync.currentLrcRowLive.observe(this@PureMusicDream, Observer {
-                    if (it == null) {
-                        visibility = View.GONE
-                    } else {
-                        visibility = View.VISIBLE
-                        text = it.content
-                    }
-                })
-            }.lparams(wrapContent, wrapContent) {
+                val musicLyric = textView {
+                    textColor = Color.WHITE
+                    textSize = 15f
+                    letterSpacing = 0.05f
+                    setGoogleSans()
+                    visibility = View.GONE
+                    gravity = Gravity.CENTER_HORIZONTAL
+
+                    LrcSync.currentLrcRowLive.observe(this@PureMusicDream, Observer {
+                        if (it == null) {
+                            visibility = View.GONE
+                        } else {
+                            visibility = View.VISIBLE
+                            text = it.content
+                        }
+                    })
+
+                }.lparams(matchParent, wrapContent)
+
+
+            }.lparams(matchParent, wrapContent) {
                 bottomMargin = dip(24)
                 startToStart = PARENT_ID
                 endToEnd = PARENT_ID
                 bottomToBottom = PARENT_ID
-                horizontalMargin = dip(32)
+                horizontalMargin = dip(44)
             }
 
             addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->

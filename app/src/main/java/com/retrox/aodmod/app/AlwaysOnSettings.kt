@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.shared.global.GlobalKV
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 
@@ -90,6 +91,21 @@ class AlwaysOnSettings : AppCompatActivity() {
                     onCheckedChange { _, isChecked ->
                         AppPref.aodShowWeather = isChecked
                         Toast.makeText(context, "息屏天气:${AppPref.aodShowWeather}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
+
+                title("歌词开启翻译")
+                content("为息屏歌词开启中文翻译")
+                toggleButton {
+                    textOn = "开启翻译"
+                    textOff = "默认歌词"
+                    isChecked = GlobalKV.get("lrc_trans")?.toBoolean() ?: false
+                    onCheckedChange { _, isChecked ->
+                        GlobalKV.put("lrc_trans", isChecked.toString())
+                        Toast.makeText(context, "歌词翻译:${GlobalKV.get("lrc_trans")}", Toast.LENGTH_SHORT).show()
                     }
                 }.lparams(width = matchParent, height = wrapContent) {
                     verticalMargin = dip(12)

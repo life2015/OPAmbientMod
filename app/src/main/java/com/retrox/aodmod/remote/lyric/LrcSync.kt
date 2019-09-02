@@ -19,6 +19,9 @@ object LrcSync {
             val currentTime = syncStartTime + timeOffset // 加上初始同步时间
             val row = getSuggestRow(currentTime)
             if (currentLrcRowLive.value != row) {
+                row?.apply {
+                    setContent(content.replace("-trans-", "\n"))
+                }
                 currentLrcRowLive.value = row
 //                MainHook.logD("LRC Sync $currentTime $row ")
             }
@@ -42,7 +45,7 @@ object LrcSync {
 
     fun applyRawLrc(rawLrc: String) {
         val temp = DefaultLrcBuilder.getLrcRows(rawLrc)
-        MainHook.logD("applyRawLrc Rows , size: $temp")
+        MainHook.logD("applyRawLrc Rows , size: ${temp.size}")
         rows = temp
     }
 

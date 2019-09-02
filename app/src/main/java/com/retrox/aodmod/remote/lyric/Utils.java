@@ -290,7 +290,7 @@ public class Utils {
                             if (Objects.equals(tm.group(1), m.group(1))) {
                                 sb.append(m.group(1));
                                 sb.append(m.group(2));
-                                sb.append(" ");
+                                sb.append("-trans-");
                                 sb.append(tm.group(2));
                                 sb.append(Constants.LINE_SEPARATOR);
                             }

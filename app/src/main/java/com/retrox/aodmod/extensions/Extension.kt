@@ -16,11 +16,13 @@ import android.os.Vibrator
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.TextView
+import com.google.gson.reflect.TypeToken
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.view.theme.ThemeClockPack
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import de.robv.android.xposed.XposedHelpers
+import java.io.File
 import java.lang.reflect.InvocationTargetException
 import java.net.NetworkInterface
 import java.net.NetworkInterface.getNetworkInterfaces
@@ -117,6 +119,15 @@ fun getVpnStatus() : Boolean{
     val isVpnEnabled = XposedHelpers.callMethod(mSecurityController, "isVpnEnabled")
     MainHook.logD("Vpn Stat : $isVpnEnabled")
     return isVpnEnabled as Boolean
+}
+
+inline fun <reified T> genericType() = object: TypeToken<T>() {}.type
+
+@SuppressLint("SetWorldReadable", "SetWorldWritable")
+fun File.chmod777() {
+    setExecutable(true, false)
+    setReadable(true, false)
+    setWritable(true, false)
 }
 
 //fun getBlueToothAudioStatus() : Boolean {
