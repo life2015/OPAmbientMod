@@ -24,10 +24,6 @@ import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import de.robv.android.xposed.XposedHelpers
 import java.io.File
 import java.lang.reflect.InvocationTargetException
-import java.net.NetworkInterface
-import java.net.NetworkInterface.getNetworkInterfaces
-import java.security.Security
-import java.util.*
 
 
 fun TextView.setGoogleSans(style: String = "Regular"): Boolean {
@@ -128,6 +124,12 @@ fun File.chmod777() {
     setExecutable(true, false)
     setReadable(true, false)
     setWritable(true, false)
+}
+
+fun Number.toCNString(): String {
+    return Num2CN().convert(this.toLong(), true).reduce { acc, s ->
+        acc + s
+    }
 }
 
 //fun getBlueToothAudioStatus() : Boolean {

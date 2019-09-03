@@ -177,16 +177,18 @@ object LyricHelper {
                 result?.let {
                     val needTrans = GlobalKV.get("lrc_trans")?.toBoolean() ?: false
                     val lrcFileName =
-                        "${it.title}-${it.artist}-${it.id}${if (needTrans) "-trans" else ""}.lrc"
+                        "${it.artist}-${it.title}-${it.id}${if (needTrans) "-trans" else ""}.lrc"
                     val lrcCacheString = GlobalCacheManager.readCache(lrcFileName).also {
                         MainHook.logD("LRC Cache hit: $lrcFileName")
                     } ?: kotlin.run {
                         var raw = NEMDownloader.download(it, needTrans)
                         if (raw.isNullOrBlank()) {
                             raw = "[00:00.000] 歌词获取错误"
-                        }
-                        async(Dispatchers.IO) {
-                            GlobalCacheManager.writeCache(lrcFileName, raw)
+                        } else {
+                            // 成功再存
+                            async(Dispatchers.IO) {
+                                GlobalCacheManager.writeCache(lrcFileName, raw)
+                            }
                         }
                         raw
                     }

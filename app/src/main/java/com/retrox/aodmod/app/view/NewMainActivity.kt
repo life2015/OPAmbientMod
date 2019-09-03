@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import com.retrox.aodmod.app.SleepModeActivity
 import com.retrox.aodmod.app.state.AppState
+import com.retrox.aodmod.extensions.Num2CN
 import com.retrox.aodmod.extensions.checkPermission
 import org.jetbrains.anko.*
 
@@ -31,8 +32,6 @@ class NewMainActivity : AppCompatActivity() {
                 addView(SettingsCard(this@NewMainActivity, this@NewMainActivity).rootView)
                 addView(ToolCard(this@NewMainActivity, this@NewMainActivity).rootView)
 
-
-
                 button {
                     text = "测试Settings"
                     setOnClickListener {
@@ -52,6 +51,10 @@ class NewMainActivity : AppCompatActivity() {
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 66
                 )
             }
+        }
+
+        val result = Num2CN().convert(24, true).reduce { acc, s ->
+            acc + s
         }
 
     }

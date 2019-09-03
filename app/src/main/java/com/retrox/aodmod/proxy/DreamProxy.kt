@@ -35,6 +35,7 @@ import com.retrox.aodmod.proxy.view.custom.dvd.AodDVDDream
 import com.retrox.aodmod.proxy.view.custom.flat.AodFlatDream
 import com.retrox.aodmod.proxy.view.custom.music.ComplexMusicDream
 import com.retrox.aodmod.proxy.view.custom.music.PureMusicDream
+import com.retrox.aodmod.proxy.view.custom.word.WordDream
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
@@ -134,6 +135,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             "DVD" -> AodDVDDream(this)
             "PureMusic" -> PureMusicDream(this)
             "FlatMusic" -> ComplexMusicDream(this)
+            "Word" -> WordDream(this)
             else -> AodDefaultDream(this)
         }
 

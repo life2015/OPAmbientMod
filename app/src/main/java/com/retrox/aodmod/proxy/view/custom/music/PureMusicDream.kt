@@ -170,6 +170,7 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                 textSize = 14f
                 letterSpacing = 0.05f
                 setGoogleSans()
+                gravity = Gravity.CENTER
                 visibility = View.GONE
             }.lparams(wrapContent, wrapContent) {
                 bottomMargin = dip(8)
@@ -252,7 +253,7 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
                     notification.getNotificationData().let {
                         unReadNotification.visibility = View.VISIBLE
-                        unReadNotification.text = "${it.appName} 有未读通知"
+                        unReadNotification.text = "${it.appName} · ${it.title}\n${it.content}"
                     }
 
 //                val icon = notification.smallIcon.loadDrawable(context)

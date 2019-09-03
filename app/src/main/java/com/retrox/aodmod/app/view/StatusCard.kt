@@ -554,7 +554,7 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
 }
 
 class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
-    val themeLayoutList = listOf("Default", "Flat", "DVD", "PureMusic", "FlatMusic")
+    val themeLayoutList = listOf("Default", "Flat", "DVD", "PureMusic", "FlatMusic", "Word")
     val layout = context.linearLayout {
         orientation = LinearLayout.VERTICAL
         frameLayout {
