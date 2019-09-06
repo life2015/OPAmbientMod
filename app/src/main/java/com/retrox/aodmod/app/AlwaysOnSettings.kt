@@ -97,6 +97,22 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
+
+                title(context.getString(R.string.nightmode_auto_close))
+                content(context.getString(R.string.nightmode_auto_close_content))
+                toggleButton {
+                    textOn = context.getString(R.string.nightmode_autoclose)
+                    textOff = context.getString(R.string.nightmode_not_close)
+                    isChecked = AppPref.autoCloseByNightMode
+                    onCheckedChange { _, isChecked ->
+                        AppPref.autoCloseByNightMode = isChecked
+                        Toast.makeText(context, "NightMode AutoOFF:${AppPref.autoCloseByNightMode}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
+
                 title("歌词开启翻译")
                 content("为息屏歌词开启中文翻译")
                 toggleButton {

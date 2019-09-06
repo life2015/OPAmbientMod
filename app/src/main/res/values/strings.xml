@@ -52,4 +52,8 @@
     <string name="auto_brightness_aod">息屏光感调整亮度</string>
     <string name="aod_font">锁屏字体跟随系统</string>
     <string name="aod_music_settings_what">这是什么功能？</string>
+    <string name="nightmode_auto_close">夜间模式自动不显示息屏</string>
+    <string name="nightmode_auto_close_content">此选项开启时，夜间模式下自动关闭息屏常亮</string>
+    <string name="nightmode_autoclose">夜间模式不息屏</string>
+    <string name="nightmode_not_close">夜间模式不干预息屏</string>
 </resources>

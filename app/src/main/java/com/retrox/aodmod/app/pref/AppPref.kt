@@ -26,6 +26,8 @@ object AppPref {
     var aodAlarmMode by shared("AODALARMMODE", "Alarm-TimeOutMode")
     var aodPickCheck by shared("AODPICKCHECK", false)
     var autoCloseBySeconds by shared("AUTOCLOSEBYSECONDS", false)
+    var autoCloseByNightMode by shared("AUTOCLOSEBYNIGHTMODE", false)
+
 
 
     val externalPrefName = "${BuildConfig.APPLICATION_ID}_external_pref.xml"

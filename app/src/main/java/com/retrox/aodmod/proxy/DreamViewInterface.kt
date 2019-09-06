@@ -47,7 +47,7 @@ abstract class AbsDreamView(private val dreamProxy: DreamProxy) : DreamProxyCont
             return
         }
         lastTapTime = System.currentTimeMillis()
-        if (isOP7Pro() && !SystemPref.getNightModeStat()) {
+        if (isOP7Pro() && !SystemPref.getNightAutoOffX()) {
             val vibrator = AndroidAppHelper.currentApplication().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             vibrator.simpleTap()
         }

@@ -51,6 +51,7 @@ object XPref {
     fun getAodAlarmMode() = XPref.getPref().getString("AODALARMMODE", "Alarm-TimeOutMode") ?: "Alarm-TimeOutMode"
     fun getAodPickCheckEnabled() = XPref.getPref().getBoolean("AODPICKCHECK", false)
     fun getAodAutoCloseBySeconds() = XPref.getPref().getBoolean("AUTOCLOSEBYSECONDS", false)
+    fun getAodNightModeAutoOff() = XPref.getPref().getBoolean("AUTOCLOSEBYNIGHTMODE", false)
 
 
 }

@@ -59,6 +59,10 @@
     <string name="auto_brightness_aod">Adjust brightness by lux sensor</string>
     <string name="aod_font">Aod font follow System</string>
     <string name="aod_music_settings_what">What is this function?</string>
+    <string name="nightmode_auto_close">DO NOT AOD when NightMode is on</string>
+    <string name="nightmode_auto_close_content">When this option is on, NightMode ON -> Aod OFF. When this option is off, NightMode has nothing to do with AOD</string>
+    <string name="nightmode_autoclose">NightMode AutoClose AOD</string>
+    <string name="nightmode_not_close">NightMode DO NOT CLOSE AOD</string>
 
 
 </resources>

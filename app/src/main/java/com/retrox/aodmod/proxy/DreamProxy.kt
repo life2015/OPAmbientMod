@@ -297,7 +297,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         XposedHelpers.callMethod(dreamService, "getDozeScreenState") as Int
 
     override fun setScreenDoze(reason: String) {
-        if (SystemPref.getNightModeStat()) {
+        if (SystemPref.getNightAutoOffX()) {
             MainHook.logD("NightMode，不要亮屏")
             return
         }

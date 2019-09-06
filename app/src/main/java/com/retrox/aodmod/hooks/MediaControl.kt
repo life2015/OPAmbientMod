@@ -43,9 +43,6 @@ object MediaControl : IXposedHookLoadPackage {
                     val name = mediaMetadata.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
                     MainHook.logD("media: $albumName $artist $name ${lpparam.packageName}")
 
-                    val testContent = OwnFileManager.readFile("hello.file")
-                    MainHook.logD(testContent)
-
                     // SB B站 专辑和名字都是混的
                     val nowPlayingMediaData =
                         if (lpparam.packageName == "tv.danmaku.bili" && name == "") {

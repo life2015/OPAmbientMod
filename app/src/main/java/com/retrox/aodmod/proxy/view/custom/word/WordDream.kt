@@ -35,6 +35,8 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                     text = ""
                     textSize = 34f
                     setLineSpacing(8f, 1f)
+                    textColor = Color.WHITE
+                    setGoogleSans()
                 }.lparams(wrapContent, wrapContent) {
                     bottomMargin = dip(16)
                 }
@@ -42,6 +44,8 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                 val dateTextView = textView {
                     text = ""
                     textSize = 18f
+                    textColor = Color.WHITE
+                    setGoogleSans()
                 }.lparams(wrapContent, wrapContent)
 
                 AodClockTick.tickLiveData.observe(this@WordDream, Observer {

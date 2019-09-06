@@ -3,6 +3,7 @@ package com.retrox.aodmod.app
 import android.app.Application
 import android.content.SharedPreferences
 import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.shared.global.BaseFileManager
 import com.retrox.aodmod.shared.global.GlobalCacheManager
 import com.retrox.aodmod.shared.global.GlobalKV
 import com.retrox.aodmod.shared.global.OwnFileManager
@@ -40,6 +41,7 @@ class App : Application() {
             }
         }
 
+        BaseFileManager.makeCacheFileDir()
         OwnFileManager.getOwnFileDir()
         GlobalCacheManager.getCacheFileDir()
         GlobalKV.getKVFileDir()

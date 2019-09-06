@@ -39,9 +39,10 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
             AodDurationHook.handleLoadPackage(lpparam)
             DisplayStateHook.handleLoadPackage(lpparam)
             AodMainMediaHook.handleLoadPackage(lpparam)
-            AodFingerPrintHookForQ.handleLoadPackage(lpparam)
-        } else {
             AodFingerPrintHook.handleLoadPackage(lpparam) // 理论上支持6T
+        } else {
+            AodFingerPrintHookForQ.handleLoadPackage(lpparam)
+            PermissionHook.handleLoadPackage(lpparam) // Q
         }
 
         MediaControl.handleLoadPackage(lpparam)
@@ -50,9 +51,7 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         if (isOP7Pro()) {
             OP7DreamProxyHook.handleLoadPackage(lpparam)
 //            NotiLrcHook.handleLoadPackage(lpparam)
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                PermissionHook.handleLoadPackage(lpparam) // Q
-            } else {
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
                 SystemServiceHook.handleLoadPackage(lpparam)
             }
         } else {
