@@ -1,5 +1,6 @@
 package com.retrox.aodmod.pref
 
+import android.os.Build
 import com.retrox.aodmod.BuildConfig
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.app.pref.AppPref
@@ -19,10 +20,10 @@ object XPref {
             val result = preferences.makeWorldReadable()
             MainHook.logD("SELinux Pref Status: $result")
 
-//            if (!result) {
-//                // 从外置读取XSP
-//                preferences = XSharedPreferences(File(FileUtils.sharedDir, AppPref.externalPrefName))
-//            }
+            if (!result && !isAndroidQ()) {
+                // 从外置读取XSP
+                preferences = XSharedPreferences(File(FileUtils.sharedDir, AppPref.externalPrefName))
+            }
 
             preferences.reload()
             xSharedPreferences = WeakReference(preferences)
@@ -31,6 +32,8 @@ object XPref {
         }
         return preferences
     }
+
+    fun isAndroidQ() = Build.VERSION.SDK_INT > Build.VERSION_CODES.P
 
     fun getDisplayMode() = XPref.getPref().getString("AODMODE", "ALWAYS_ON") ?: ""
     fun getMusicAodEnabled() = XPref.getPref().getBoolean("MUSICSHOWONAOD",true)
@@ -45,7 +48,7 @@ object XPref {
     fun getAodShowNote() = XPref.getPref().getBoolean("AODSHOWNOTE", false)
     fun getAodNoteContent() = XPref.getPref().getString("AODNOTECONTENT", "") ?: ""
     fun getAodLayoutTheme() = XPref.getPref().getString("AODLAYOUTTHEME", "Flat") ?: "Flat"
-    fun getAodAlarmMode() = XPref.getPref().getString("AODALARMMODE", "Chore") ?: "Chore"
+    fun getAodAlarmMode() = XPref.getPref().getString("AODALARMMODE", "Alarm-TimeOutMode") ?: "Alarm-TimeOutMode"
     fun getAodPickCheckEnabled() = XPref.getPref().getBoolean("AODPICKCHECK", false)
     fun getAodAutoCloseBySeconds() = XPref.getPref().getBoolean("AUTOCLOSEBYSECONDS", false)
 

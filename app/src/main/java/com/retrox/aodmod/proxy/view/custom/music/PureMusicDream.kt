@@ -142,7 +142,7 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                 textSize = 18f
                 letterSpacing = 0.02f
                 setGoogleSans(style = "Medium")
-                text = "Dark Side Of The Moon"
+                text = ""
                 gravity = Gravity.CENTER_HORIZONTAL
             }.lparams(wrapContent, wrapContent) {
                 bottomMargin = dip(8)
@@ -222,7 +222,7 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                 AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
                     if (it == null) {
                         musicArtist.visibility = View.GONE
-                        musicName.text = "Dark Side Of The Moon"
+                        musicName.text = ""
                         LrcSync.stopSync()
                         return@Observer
                     }

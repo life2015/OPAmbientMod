@@ -38,6 +38,7 @@ import com.retrox.aodmod.proxy.view.custom.music.PureMusicDream
 import com.retrox.aodmod.proxy.view.custom.word.WordDream
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
+import com.retrox.aodmod.remote.lyric.LrcSync
 import com.retrox.aodmod.service.alarm.LocalAlarmManager
 import com.retrox.aodmod.service.alarm.LocalAlarmTimeOutTicker
 import com.retrox.aodmod.service.alarm.proxy.LocalAlarmProxy

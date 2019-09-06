@@ -8,10 +8,10 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.retrox.aodmod"
-        minSdkVersion 26
+        minSdkVersion 27
         targetSdkVersion 27 //为了XSP不能上28 淦
-        versionCode 19
-        versionName "2.5.2-beta-oversea"
+        versionCode 20
+        versionName "2.6.0-beta2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

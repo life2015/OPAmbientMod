@@ -135,7 +135,7 @@ object LyricHelper {
                         val tempCacheMap = Gson().fromJson<HashMap<String, QueryResult>>(it, type)
                         initialCacheSize = tempCacheMap.size
                         cacheMap.putAll(tempCacheMap)
-                        MainHook.logD("本地加载LrcMap缓存: $cacheMap")
+                        MainHook.logD("本地加载LrcMap缓存Size: ${cacheMap.size}")
                     }
                 }
 

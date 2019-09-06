@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.extensions.toCNString
@@ -31,6 +32,7 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
 
                 val timeTextView = textView {
+                    text = ""
                     textSize = 34f
                     setLineSpacing(8f, 1f)
                 }.lparams(wrapContent, wrapContent) {
@@ -38,8 +40,9 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                 }
 
                 val dateTextView = textView {
+                    text = ""
                     textSize = 18f
-                }
+                }.lparams(wrapContent, wrapContent)
 
                 AodClockTick.tickLiveData.observe(this@WordDream, Observer {
                     val cal = Calendar.getInstance()
@@ -51,7 +54,9 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
                     timeTextView.text = "${hour.toCNString()}时\n${minute.toCNString()}分\nです"
                     val weekDayStr = if (weekDay == 1) "日" else ((weekDay - 1).toCNString())
-                    dateTextView.text = "${month.toCNString()}月${day.toCNString()}日 周${weekDayStr}  "
+                    val text = "${month.toCNString()}月${day.toCNString()}日 周${weekDayStr}" + " "
+                    MainHook.logD(text)
+                    dateTextView.text = "${month.toCNString()}月${day.toCNString()}日 周${weekDayStr}" + " "
                 })
 
                 textView {// 备忘

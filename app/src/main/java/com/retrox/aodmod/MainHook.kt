@@ -8,7 +8,6 @@ import com.retrox.aodmod.extensions.isOP7Pro
 import com.retrox.aodmod.hooks.*
 import com.retrox.aodmod.proxy.DreamProxyHook
 import com.retrox.aodmod.proxy.OP7DreamProxyHook
-import com.retrox.aodmod.proxy.ProxyInitHook
 import com.retrox.aodmod.shared.SharedLogger
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
@@ -40,14 +39,17 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
             AodDurationHook.handleLoadPackage(lpparam)
             DisplayStateHook.handleLoadPackage(lpparam)
             AodMainMediaHook.handleLoadPackage(lpparam)
+            AodFingerPrintHookForQ.handleLoadPackage(lpparam)
+        } else {
+            AodFingerPrintHook.handleLoadPackage(lpparam) // 理论上支持6T
         }
 
         MediaControl.handleLoadPackage(lpparam)
-        AodFingerPrintHook.handleLoadPackage(lpparam) // 理论上支持6T todo 适配 P Q
+        AppleMusicHook.handleLoadPackage(lpparam)
 
-//        AodAlwaysOnHook.handleLoadPackage(lpparam)
         if (isOP7Pro()) {
             OP7DreamProxyHook.handleLoadPackage(lpparam)
+//            NotiLrcHook.handleLoadPackage(lpparam)
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
                 PermissionHook.handleLoadPackage(lpparam) // Q
             } else {
@@ -57,16 +59,12 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
             DreamProxyHook.handleLoadPackage(lpparam)
         }
 
-        AppleMusicHook.handleLoadPackage(lpparam)
 
 //        DreamLifeCycleHook.handleLoadPackage(lpparam)
 
     }
 
-    override fun handleInitPackageResources(resparam: XC_InitPackageResources.InitPackageResourcesParam) {
-//        resparam.res.
-//        AodLayoutHook.handleInitPackageResources(resparam)
-    }
+    override fun handleInitPackageResources(resparam: XC_InitPackageResources.InitPackageResourcesParam) {}
 
 
     private const val LOG_FORMAT = "[OnePlus AOD MOD] %1\$s %2\$s: %3\$s"

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.Process
 import android.service.dreams.DreamService
 import android.view.View
@@ -78,12 +79,7 @@ object OP7DreamProxyHook : IXposedHookLoadPackage {
             }
         })
 
-//        XposedHelpers.findAndHookMethod(dozeServiceClass, "onAttachedToWindow", object : XC_MethodHook() {
-//            override fun beforeHookedMethod(param: MethodHookParam) {
-//                dreamProxy?.onAttachedToWindow()
-//                param.result = null
-//            }
-//        })
+
 
         XposedHelpers.findAndHookMethod(dozeServiceClass, "onDreamingStarted", object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
@@ -99,12 +95,30 @@ object OP7DreamProxyHook : IXposedHookLoadPackage {
             }
         })
 
-//        XposedHelpers.findAndHookMethod(dozeServiceClass, "onWakingUp", String::class.java, object : XC_MethodHook() {
-//            override fun beforeHookedMethod(param: MethodHookParam) {
-//                dreamProxy?.onWakingUp(param.args[0] as String)
-//                param.result = null
-//            }
-//        })
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
+
+            XposedHelpers.findAndHookMethod(
+                dozeServiceClass,
+                "onAttachedToWindow",
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam) {
+                        dreamProxy?.onAttachedToWindow()
+                        param.result = null
+                    }
+                })
+
+            XposedHelpers.findAndHookMethod(
+                dozeServiceClass,
+                "onWakingUp",
+                String::class.java,
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam) {
+                        dreamProxy?.onWakingUp(param.args[0] as String)
+                        param.result = null
+                    }
+                })
+        }
 
         XposedHelpers.findAndHookMethod(dozeServiceClass, "onSingleTap", object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {

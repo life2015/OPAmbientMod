@@ -47,8 +47,8 @@ class AlarmSettingsActivity : AppCompatActivity() {
                     }
                 }.lparams(wrapContent, wrapContent)
 
-                title("使用AlarmManager-TimeOut模式唤醒")
-                content("除了系统广播外使用AlarmManager来唤醒，一分钟同步一次，尚在测试中")
+                title("使用AlarmManager-TimeOut模式唤醒（默认）")
+                content("使用AlarmManager固定时间任务唤醒，一分钟同步一次。经过一段时间的自测，目前效果良好")
                 button {
                     text = "点击设置AlarmManager-TimeOut模式"
                     setBorderlessStyle()
@@ -59,7 +59,7 @@ class AlarmSettingsActivity : AppCompatActivity() {
                     }
                 }.lparams(wrapContent, wrapContent)
 
-                title("使用Chore机制来唤醒（默认）")
+                title("使用Chore机制来唤醒")
                 content("另辟蹊径使用动画时钟来唤醒，可以做到相对最精准的时间同步，但是会影响手机耗电，在手机进入深度睡眠时候也可能会出现不准的情况\n**备注：有电量消耗，在翻扣灭屏后会暂停唤醒（这种状态省电），因此建议在不用的时候翻扣或者口袋灭屏")
                 button {
                     text = "点击设置Chore模式"

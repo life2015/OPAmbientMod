@@ -23,7 +23,7 @@ object AppPref {
     var aodShowNote by shared("AODSHOWNOTE", false)
     var aodNoteContent by shared("AODNOTECONTENT", "")
     var aodLayoutTheme by shared("AODLAYOUTTHEME", "Default")
-    var aodAlarmMode by shared("AODALARMMODE", "Chore")
+    var aodAlarmMode by shared("AODALARMMODE", "Alarm-TimeOutMode")
     var aodPickCheck by shared("AODPICKCHECK", false)
     var autoCloseBySeconds by shared("AUTOCLOSEBYSECONDS", false)
 
