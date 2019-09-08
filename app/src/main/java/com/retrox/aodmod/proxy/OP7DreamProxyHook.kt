@@ -95,31 +95,6 @@ object OP7DreamProxyHook : IXposedHookLoadPackage {
             }
         })
 
-
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
-
-            XposedHelpers.findAndHookMethod(
-                dozeServiceClass,
-                "onAttachedToWindow",
-                object : XC_MethodHook() {
-                    override fun beforeHookedMethod(param: MethodHookParam) {
-                        dreamProxy?.onAttachedToWindow()
-                        param.result = null
-                    }
-                })
-
-            XposedHelpers.findAndHookMethod(
-                dozeServiceClass,
-                "onWakingUp",
-                String::class.java,
-                object : XC_MethodHook() {
-                    override fun beforeHookedMethod(param: MethodHookParam) {
-                        dreamProxy?.onWakingUp(param.args[0] as String)
-                        param.result = null
-                    }
-                })
-        }
-
         XposedHelpers.findAndHookMethod(dozeServiceClass, "onSingleTap", object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
                 dreamProxy?.onSingleTap()

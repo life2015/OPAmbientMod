@@ -10,8 +10,8 @@ android {
         applicationId "com.retrox.aodmod"
         minSdkVersion 27
         targetSdkVersion 27 //为了XSP不能上28 淦
-        versionCode 24
-        versionName "2.6.0-beta6"
+        versionCode 26
+        versionName "2.6.0-beta8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
