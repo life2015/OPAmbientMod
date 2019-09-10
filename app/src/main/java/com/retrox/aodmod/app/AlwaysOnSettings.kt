@@ -113,6 +113,21 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
+                title("Force Use English on Word Theme")
+                content("English on Word Clock")
+                toggleButton {
+                    textOn = "Force English ON"
+                    textOff = "Force English OFF"
+                    isChecked = AppPref.forceEnglishWordClock
+                    onCheckedChange { _, isChecked ->
+                        AppPref.forceEnglishWordClock = isChecked
+                        Toast.makeText(context, "FORCE ENGLISH WORD CLOCK:${AppPref.forceEnglishWordClock}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
+
                 title("歌词开启翻译")
                 content("为息屏歌词开启中文翻译")
                 toggleButton {

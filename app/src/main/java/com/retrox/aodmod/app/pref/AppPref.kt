@@ -27,6 +27,7 @@ object AppPref {
     var aodPickCheck by shared("AODPICKCHECK", false)
     var autoCloseBySeconds by shared("AUTOCLOSEBYSECONDS", false)
     var autoCloseByNightMode by shared("AUTOCLOSEBYNIGHTMODE", false)
+    var forceEnglishWordClock by shared("FORCEENGLISHWORDCLOCK", false)
 
 
 
