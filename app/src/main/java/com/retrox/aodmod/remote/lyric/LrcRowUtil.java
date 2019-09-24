@@ -59,9 +59,13 @@ public class LrcRowUtil {
                 LrcRow lrcRow = new LrcRow();
                 lrcRow.setContent(content);
                 lrcRow.setStartTimeString(temp);
-                long startTime = timeConvert(temp);
-                lrcRow.setStartTime(startTime);
-                listTimes.add(lrcRow);
+                try {
+                    long startTime = timeConvert(temp);
+                    lrcRow.setStartTime(startTime);
+                    listTimes.add(lrcRow);
+                } catch (Exception e) { // 避免一些不正常的歌词标签
+                    e.printStackTrace();
+                }
             }
             return listTimes;
         } catch (Exception e) {
@@ -80,7 +84,7 @@ public class LrcRowUtil {
         //将字符串 XX:XX:XX 拆分
         String[] times = timeString.split(":");
         // mm:ss:SS
-        long time =  Integer.valueOf(times[0]) * 60 * 1000 +//分
+        long time = Integer.valueOf(times[0]) * 60 * 1000 +//分
                 Integer.valueOf(times[1]) * 1000 +//秒
                 Integer.valueOf(times[2]);//毫秒
 

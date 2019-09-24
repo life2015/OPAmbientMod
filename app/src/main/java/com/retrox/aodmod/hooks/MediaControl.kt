@@ -122,10 +122,11 @@ object LyricHelper {
 
     fun queryMusic(artist: String, name: String) {
         GlobalScope.launch(Dispatchers.Main + handler) {
-            val result = withContext(Dispatchers.IO) {
+            val result = async (Dispatchers.IO) {
                 // Load Cached Map
                 if (cacheMap.isEmpty()) {
                     val str = GlobalCacheManager.readCache(cacheKey)
+                    MainHook.logD("Cache Str: $str")
                     str?.let {
                         // Pair<String, String> 无法被反序列化
                         val type = genericType<HashMap<String, QueryResult>>()
@@ -146,7 +147,7 @@ object LyricHelper {
                         val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")
                         intent.putExtra("mediaLyric", raw)
                         application.applicationContext.sendBroadcast(intent)
-                        return@withContext
+                        return@async
                     }
                     val bestMatch = arrayResult.find {
                         it.title == name
@@ -158,7 +159,7 @@ object LyricHelper {
                     MainHook.logD("Lrc Search From NetWork $artist $name")
 
                     // 不需要拿到返回值 多了10个数据再回写
-                    if (cacheMap.size - initialCacheSize > 10) {
+                    if (cacheMap.size - initialCacheSize > 5) {
                         initialCacheSize = cacheMap.size // 更新数据size位
                         async(Dispatchers.IO) {
                             // 异步回写
@@ -196,10 +197,12 @@ object LyricHelper {
                     lrcCacheString
                 }
             }
+            result.await()
         }
     }
 
     val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
         MainHook.logE("歌词获取错误", t = throwable)
+        throwable.printStackTrace()
     }
 }

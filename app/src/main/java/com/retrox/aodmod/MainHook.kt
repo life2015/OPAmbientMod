@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import com.retrox.aodmod.BuildConfig.DEBUG
 import com.retrox.aodmod.apple.AppleMusicHook
+import com.retrox.aodmod.apple.NetEaseQHook
 import com.retrox.aodmod.extensions.isOP7Pro
 import com.retrox.aodmod.hooks.*
 import com.retrox.aodmod.proxy.DreamProxyHook
@@ -47,6 +48,9 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
 
         MediaControl.handleLoadPackage(lpparam)
         AppleMusicHook.handleLoadPackage(lpparam)
+        if (BuildConfig.DEBUG) {
+            NetEaseQHook.handleLoadPackage(lpparam)
+        }
 
         if (isOP7Pro()) {
             OP7DreamProxyHook.handleLoadPackage(lpparam)
@@ -90,7 +94,7 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
     fun logD(msg: String, tag: String = TAG) {
         val message = String.format(LOG_FORMAT, "[DEBUG]", tag, msg)
         SharedLogger.writeLog(message)
-        if (DEBUG) XposedBridge.log(message)
+        XposedBridge.log(message)
 //        Log.d(tag, msg)
     }
 
