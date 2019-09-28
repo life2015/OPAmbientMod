@@ -20,7 +20,7 @@ object XPref {
             val result = preferences.makeWorldReadable()
             MainHook.logD("SELinux Pref Status: $result")
 
-            if (!result && !isAndroidQ()) {
+            if (preferences.file == null) {
                 // 从外置读取XSP
                 preferences = XSharedPreferences(File(FileUtils.sharedDir, AppPref.externalPrefName))
             }

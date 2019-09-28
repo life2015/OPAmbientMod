@@ -18,6 +18,7 @@ import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import kotlinx.coroutines.*
+import java.util.concurrent.ConcurrentHashMap
 
 object MediaControl : IXposedHookLoadPackage {
     var metadata: MediaMetadata? = null
@@ -116,7 +117,7 @@ object MediaControl : IXposedHookLoadPackage {
 }
 
 object LyricHelper {
-    val cacheMap = mutableMapOf<String, QueryResult>()
+    val cacheMap = ConcurrentHashMap<String, QueryResult>()
     val cacheKey = "LyricIdMap.cache"
     var initialCacheSize = 0
 
@@ -163,7 +164,7 @@ object LyricHelper {
                         initialCacheSize = cacheMap.size // 更新数据size位
                         async(Dispatchers.IO) {
                             // 异步回写
-                            GlobalCacheManager.writeCache(cacheKey, Gson().toJson(cacheMap))
+                            GlobalCacheManager.writeCache(cacheKey, Gson().toJson(cacheMap.toMap()))
                         }
                     }
                     first
@@ -177,7 +178,7 @@ object LyricHelper {
                     val lrcFileName =
                         "${it.artist}-${it.title}-${it.id}${if (needTrans) "-trans" else ""}.lrc"
                     val lrcCacheString = GlobalCacheManager.readCache(lrcFileName).also {
-                        MainHook.logD("LRC Cache hit: $lrcFileName")
+                        MainHook.logD("LRC Cache hit: $lrcFileName , 一部分歌词: ${it?.take(30)}")
                     } ?: kotlin.run {
                         var raw = NEMDownloader.download(it, needTrans)
                         if (raw.isNullOrBlank()) {
