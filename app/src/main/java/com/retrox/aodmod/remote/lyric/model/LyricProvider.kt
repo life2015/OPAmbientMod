@@ -1,5 +1,6 @@
 package com.retrox.aodmod.remote.lyric.model
 
+import android.support.annotation.Keep
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.remote.lyric.model.cache.CacheLyricProvider
 import com.retrox.aodmod.remote.lyric.model.netease.NetEaseLyricProvider
@@ -10,7 +11,8 @@ interface LyricProvider {
     suspend fun fetchLyric(song: SongEntity, forceReload: Boolean = false): String? // 返回歌词字符串
 }
 
-data class SongEntity(val name: String, val artist: String) {
+@Keep
+data class SongEntity(@Keep val name: String, @Keep val artist: String) {
     override fun toString(): String {
         return "${name}-${artist}"
     }
@@ -27,10 +29,10 @@ object CommonLyricProvider: LyricProvider {
             MainHook.logD("从缓存中获取歌词: $lyricCache")
             return lyricCache
         } else {
-            val netEaseLyric = netEaseLyricProvider.fetchLyric(song, forceReload)
+            val netEaseLyric = null
             if (netEaseLyric != null) {
                 MainHook.logD("从网易云中获取歌词: $netEaseLyric")
-                cacheLyricProvider.writeLyricToCache(song, netEaseLyric)
+//                cacheLyricProvider.writeLyricToCache(song, netEaseLyric)
                 return netEaseLyric
             }
             val qqMusicLyric = qqMusicLyricProvider.fetchLyric(song, forceReload)

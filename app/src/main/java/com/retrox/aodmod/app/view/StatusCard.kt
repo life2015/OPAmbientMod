@@ -377,7 +377,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
         }.lparams(wrapContent, wrapContent)
 
         button {
-            text = "回到老设置界面"
+            text = "回到老设置界面（不建议使用）"
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {

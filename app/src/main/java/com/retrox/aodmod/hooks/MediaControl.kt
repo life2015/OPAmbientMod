@@ -4,23 +4,18 @@ import android.app.AndroidAppHelper
 import android.content.Intent
 import android.media.MediaMetadata
 import android.media.session.PlaybackState
-import com.google.gson.Gson
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.data.NowPlayingMediaData
-import com.retrox.aodmod.extensions.genericType
-import com.retrox.aodmod.remote.lyric.NEMDownloader
-import com.retrox.aodmod.remote.lyric.QueryResult
 import com.retrox.aodmod.remote.lyric.model.CommonLyricProvider
 import com.retrox.aodmod.remote.lyric.model.SongEntity
-import com.retrox.aodmod.shared.global.GlobalCacheManager
-import com.retrox.aodmod.shared.global.GlobalKV
-import com.retrox.aodmod.shared.global.OwnFileManager
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
-import kotlinx.coroutines.*
-import java.util.concurrent.ConcurrentHashMap
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 object MediaControl : IXposedHookLoadPackage {
     var metadata: MediaMetadata? = null
@@ -63,8 +58,6 @@ object MediaControl : IXposedHookLoadPackage {
                     application.applicationContext.sendBroadcast(intent)
 
                     LyricHelper.queryMusic2(artist, name)
-//                    val file = AndroidAppHelper.currentApplication().getExternalFilesDir(Environment.MEDIA_MOUNTED)
-//                    MainHook.logD(file.toString())
 
                     val intentPulsing = Intent("com.oneplus.aod.doze.pulse")
                     application.applicationContext.sendBroadcast(intentPulsing)
@@ -119,9 +112,6 @@ object MediaControl : IXposedHookLoadPackage {
 }
 
 object LyricHelper {
-    val cacheMap = ConcurrentHashMap<String, QueryResult>()
-    val cacheKey = "LyricIdMap.cache"
-    var initialCacheSize = 0
 
     fun queryMusic2(artist: String, name: String) {
         val songEntity = SongEntity(name, artist)
@@ -132,87 +122,6 @@ object LyricHelper {
             val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")
             intent.putExtra("mediaLyric", lyric)
             application.applicationContext.sendBroadcast(intent)
-        }
-    }
-
-    fun queryMusic(artist: String, name: String) {
-        GlobalScope.launch(Dispatchers.Main + handler) {
-            val result = async (Dispatchers.IO) {
-                // Load Cached Map
-                if (cacheMap.isEmpty()) {
-                    val str = GlobalCacheManager.readCache(cacheKey)
-                    MainHook.logD("Cache Str: $str")
-                    str?.let {
-                        // Pair<String, String> 无法被反序列化
-                        val type = genericType<HashMap<String, QueryResult>>()
-                        val tempCacheMap = Gson().fromJson<HashMap<String, QueryResult>>(it, type)
-                        initialCacheSize = tempCacheMap.size
-                        cacheMap.putAll(tempCacheMap)
-                        MainHook.logD("本地加载LrcMap缓存Size: ${cacheMap.size}")
-                    }
-                }
-
-                val cache = cacheMap[(artist to name).toString()]
-
-                val result = if (cache == null) {
-                    val arrayResult = NEMDownloader.query(artist, name)
-                    if (arrayResult.isNullOrEmpty()) {
-                        val raw = "[00:00.000] 歌词获取错误，请尝试更换网络\n[00:10.000] "
-                        val application = AndroidAppHelper.currentApplication()
-                        val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")
-                        intent.putExtra("mediaLyric", raw)
-                        application.applicationContext.sendBroadcast(intent)
-                        return@async
-                    }
-                    val bestMatch = arrayResult.find {
-                        it.title == name
-                    }
-                    val first = bestMatch ?: arrayResult.firstOrNull()
-                    first?.let {
-                        cacheMap[(artist to name).toString()] = it
-                    }
-                    MainHook.logD("Lrc Search From NetWork $artist $name")
-
-                    // 不需要拿到返回值 多了10个数据再回写
-                    if (cacheMap.size - initialCacheSize > 5) {
-                        initialCacheSize = cacheMap.size // 更新数据size位
-                        async(Dispatchers.IO) {
-                            // 异步回写
-                            GlobalCacheManager.writeCache(cacheKey, Gson().toJson(cacheMap.toMap()))
-                        }
-                    }
-                    first
-                } else {
-                    MainHook.logD("Lrc Search From Cache Hit $artist $name Size: ${cacheMap.size}")
-                    cache
-                }
-
-                result?.let {
-                    val needTrans = GlobalKV.get("lrc_trans")?.toBoolean() ?: false
-                    val lrcFileName =
-                        "${it.artist}-${it.title}-${it.id}${if (needTrans) "-trans" else ""}.lrc"
-                    val lrcCacheString = GlobalCacheManager.readCache(lrcFileName).also {
-                        MainHook.logD("LRC Cache hit: $lrcFileName , 一部分歌词: ${it?.take(30)}")
-                    } ?: kotlin.run {
-                        var raw = NEMDownloader.download(it, needTrans)
-                        if (raw.isNullOrBlank()) {
-                            raw = "[00:00.000] 歌词获取错误"
-                        } else {
-                            // 成功再存
-                            async(Dispatchers.IO) {
-                                GlobalCacheManager.writeCache(lrcFileName, raw)
-                            }
-                        }
-                        raw
-                    }
-                    val application = AndroidAppHelper.currentApplication()
-                    val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")
-                    intent.putExtra("mediaLyric", lrcCacheString)
-                    application.applicationContext.sendBroadcast(intent)
-                    lrcCacheString
-                }
-            }
-            result.await()
         }
     }
 

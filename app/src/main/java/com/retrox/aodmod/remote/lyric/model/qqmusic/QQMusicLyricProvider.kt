@@ -1,5 +1,6 @@
 package com.retrox.aodmod.remote.lyric.model.qqmusic
 
+import android.os.Build
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.remote.lyric.model.LyricProvider
 import com.retrox.aodmod.remote.lyric.model.SongEntity
@@ -17,7 +18,7 @@ class QQMusicLyricProvider : LyricProvider {
 
     override suspend fun fetchLyric(song: SongEntity, forceReload: Boolean): String? {
         try {
-            val mid = queryMusicMid(song) ?: return null
+            val mid = queryMusicMid(song) ?: queryMusicMidBySmartBox(song) ?: return null
             return queryMusicLyric(mid)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -34,7 +35,10 @@ class QQMusicLyricProvider : LyricProvider {
         val request = Request.Builder()
             .url(url)
             .get()
-            .addHeader("User-Agent", "PostmanRuntime/7.17.1")
+            .addHeader(
+                "User-Agent",
+                "Android/Device ${Build.DEVICE} SDK Version/${Build.VERSION.SDK_INT}"
+            )
             .addHeader("Accept", "*/*")
             .addHeader("Cache-Control", "no-cache")
             .addHeader("Host", "c.y.qq.com")
@@ -47,10 +51,48 @@ class QQMusicLyricProvider : LyricProvider {
         val realResponse = response.drop(9).dropLast(1)
 
         MainHook.logD(response)
-        val jsonObject = JSONObject(realResponse)
-        val mid = jsonObject.getJSONObject("data").getJSONObject("song").getJSONArray("list")
-            .getJSONObject(0).getString("songmid")
+        val mid = try {
+            val jsonObject = JSONObject(realResponse)
+            jsonObject.getJSONObject("data").getJSONObject("song").getJSONArray("list")
+                .getJSONObject(0).getString("songmid")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            MainHook.logE("QQ音乐查询接口无法查到", t = e)
+            null
+        }
         return@withContext mid
+    }
+
+    suspend fun queryMusicMidBySmartBox(song: SongEntity) = withContext(Dispatchers.IO) {
+
+        val url =
+            HttpUrl.parse("https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg?is_xml=0&format=json")!!
+                .newBuilder().addQueryParameter("key", "${song.name}-${song.artist}").build()
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .addHeader(
+                "User-Agent",
+                "Android/Device ${Build.DEVICE} SDK Version/${Build.VERSION.SDK_INT}"
+            )            .addHeader("Accept", "*/*")
+            .addHeader("Host", "c.y.qq.com")
+            .addHeader("Connection", "keep-alive")
+            .addHeader("cache-control", "no-cache")
+            .build()
+
+        val response = client.newCall(request).execute().body()?.string() ?: return@withContext null
+        val mid = try {
+            val jsonObject = JSONObject(response)
+            jsonObject.getJSONObject("data").getJSONObject("song").getJSONArray("itemlist")
+                .getJSONObject(0).getString("mid")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            MainHook.logE("QQ音乐自动补全接口无法查到", t = e)
+            null
+        }
+        MainHook.logD("QQ音乐自动补全接口查询到mid: $mid")
+        mid
     }
 
     suspend fun queryMusicLyric(mid: String) = withContext(Dispatchers.IO) {
@@ -62,7 +104,10 @@ class QQMusicLyricProvider : LyricProvider {
             .url(url)
             .get()
             .addHeader("Referer", "y.qq.com/portal/player.html")
-            .addHeader("User-Agent", "PostmanRuntime/7.17.1")
+            .addHeader(
+                "User-Agent",
+                "Android/Device ${Build.DEVICE} SDK Version/${Build.VERSION.SDK_INT}"
+            )
             .addHeader("Accept", "*/*")
             .addHeader("Cache-Control", "no-cache")
             .addHeader("Host", "c.y.qq.com")
