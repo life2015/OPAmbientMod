@@ -10,6 +10,8 @@ import com.retrox.aodmod.data.NowPlayingMediaData
 import com.retrox.aodmod.extensions.genericType
 import com.retrox.aodmod.remote.lyric.NEMDownloader
 import com.retrox.aodmod.remote.lyric.QueryResult
+import com.retrox.aodmod.remote.lyric.model.CommonLyricProvider
+import com.retrox.aodmod.remote.lyric.model.SongEntity
 import com.retrox.aodmod.shared.global.GlobalCacheManager
 import com.retrox.aodmod.shared.global.GlobalKV
 import com.retrox.aodmod.shared.global.OwnFileManager
@@ -60,7 +62,7 @@ object MediaControl : IXposedHookLoadPackage {
                     intent.putExtra("mediaMetaData", nowPlayingMediaData)
                     application.applicationContext.sendBroadcast(intent)
 
-                    LyricHelper.queryMusic(artist, name)
+                    LyricHelper.queryMusic2(artist, name)
 //                    val file = AndroidAppHelper.currentApplication().getExternalFilesDir(Environment.MEDIA_MOUNTED)
 //                    MainHook.logD(file.toString())
 
@@ -120,6 +122,18 @@ object LyricHelper {
     val cacheMap = ConcurrentHashMap<String, QueryResult>()
     val cacheKey = "LyricIdMap.cache"
     var initialCacheSize = 0
+
+    fun queryMusic2(artist: String, name: String) {
+        val songEntity = SongEntity(name, artist)
+        GlobalScope.launch(Dispatchers.Main + handler) {
+            val lyric = CommonLyricProvider.fetchLyric(song = songEntity) ?: "[00:00.000] 歌词获取错误，请尝试更换网络\n[00:10.000] "
+
+            val application = AndroidAppHelper.currentApplication()
+            val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")
+            intent.putExtra("mediaLyric", lyric)
+            application.applicationContext.sendBroadcast(intent)
+        }
+    }
 
     fun queryMusic(artist: String, name: String) {
         GlobalScope.launch(Dispatchers.Main + handler) {

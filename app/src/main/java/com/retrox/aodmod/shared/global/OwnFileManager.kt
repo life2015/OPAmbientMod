@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.os.FileObserver
 import android.util.Log
 import com.retrox.aodmod.extensions.chmod777
+import com.retrox.aodmod.shared.FileUtils
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
 object OwnFileManager {
-    val ownDir = "/data/data/com.retrox.aodmod" + "/files/own"
+    val ownDir = FileUtils.sharedDir + "/files/own"
     var watcher: FileObserver? = null
 
     fun getOwnFileDir(): File {

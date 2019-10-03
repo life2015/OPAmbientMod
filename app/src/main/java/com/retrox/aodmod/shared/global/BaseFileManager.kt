@@ -1,10 +1,11 @@
 package com.retrox.aodmod.shared.global
 
 import com.retrox.aodmod.extensions.chmod777
+import com.retrox.aodmod.shared.FileUtils
 import java.io.File
 
 object BaseFileManager {
-    val baseFileDir = "/data/data/com.retrox.aodmod" + "/files"
+    val baseFileDir = FileUtils.sharedDir + "/files"
 
     fun makeCacheFileDir(): File {
         val file = File(baseFileDir)

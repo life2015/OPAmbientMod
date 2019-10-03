@@ -2,13 +2,14 @@ package com.retrox.aodmod.shared.global
 
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.chmod777
+import com.retrox.aodmod.shared.FileUtils
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
 object GlobalCacheManager {
-    val globalCacheDir = "/data/data/com.retrox.aodmod" + "/files/cache"
+    val globalCacheDir = FileUtils.sharedDir + "/files/cache"
 
     fun getCacheFileDir(): File {
         val file = File(globalCacheDir)

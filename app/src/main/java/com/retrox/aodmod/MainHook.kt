@@ -49,7 +49,7 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         MediaControl.handleLoadPackage(lpparam)
 //        AppleMusicHook.handleLoadPackage(lpparam)
         if (BuildConfig.DEBUG) {
-            NetEaseQHook.handleLoadPackage(lpparam)
+//            NetEaseQHook.handleLoadPackage(lpparam)
         }
 
         if (isOP7Pro()) {

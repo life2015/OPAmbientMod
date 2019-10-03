@@ -3,12 +3,13 @@ package com.retrox.aodmod.shared.global
 import android.os.FileObserver
 import android.util.Log
 import com.retrox.aodmod.extensions.chmod777
+import com.retrox.aodmod.shared.FileUtils
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
 object GlobalKV {
-    val kvDir = "/data/data/com.retrox.aodmod" + "/files/kv"
+    val kvDir = FileUtils.sharedDir + "/files/kv"
     var watcher: FileObserver? = null
 
     fun getKVFileDir(): File {

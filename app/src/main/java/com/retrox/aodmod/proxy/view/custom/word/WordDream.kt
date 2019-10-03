@@ -65,7 +65,7 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
                     // 系统语言是中文 并且关闭了强制英文时钟时候才使用中文时钟
                     if (Locale.getDefault().language == Locale.CHINESE.language && !XPref.getForceEnglishWordClock()) {
-                        timeTextView.text = "${hour.toCNString()}时\n${minute.toCNString()}分\nです"
+                        timeTextView.text = "${hour.toCNString()}時\n${minute.toCNString()}分\nです"
                         val weekDayStr = if (weekDay == 1) "日" else ((weekDay - 1).toCNString())
                         val text = "${month.toCNString()}月${day.toCNString()}日 周${weekDayStr}" + " "
                         MainHook.logD(text)

@@ -21,6 +21,7 @@ object XPref {
             MainHook.logD("SELinux Pref Status: $result")
 
             if (preferences.file == null) {
+                MainHook.logD("XPref get null, use external pref as XPref")
                 // 从外置读取XSP
                 preferences = XSharedPreferences(File(FileUtils.sharedDir, AppPref.externalPrefName))
             }
