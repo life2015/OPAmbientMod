@@ -15,6 +15,8 @@ import android.os.ParcelFileDescriptor;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
+import com.retrox.aodmod.MainHook;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -273,38 +275,33 @@ public class Utils {
 
     }
 
-    public static String mergeLyrics(String basic, String trans) {
-        try {
-            StringBuilder sb = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new StringReader(basic));
-            Pattern p = Pattern.compile("^(\\[.*])+(.*)");
-            String line;
-            String tline;
-            while ((line = reader.readLine()) != null) {
-                Matcher m = p.matcher(line);
-                if (m.find()) {
-                    BufferedReader treader = new BufferedReader(new StringReader(trans));
-                    while ((tline = treader.readLine()) != null) {
-                        Matcher tm = p.matcher(tline);
-                        if (tm.find()) {
-                            if (Objects.equals(tm.group(1), m.group(1))) {
-                                sb.append(m.group(1));
-                                sb.append(m.group(2));
-                                sb.append("-trans-");
-                                sb.append(tm.group(2));
-                                sb.append(Constants.LINE_SEPARATOR);
-                            }
+    public static String mergeLyrics(String basic, String trans) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new StringReader(basic));
+        Pattern p = Pattern.compile("^(\\[.*])+(.*)");
+        String line;
+        String tline;
+        while ((line = reader.readLine()) != null) {
+            Matcher m = p.matcher(line);
+            if (m.find()) {
+                BufferedReader treader = new BufferedReader(new StringReader(trans));
+                while ((tline = treader.readLine()) != null) {
+                    Matcher tm = p.matcher(tline);
+                    if (tm.find()) {
+                        if (Objects.equals(tm.group(1), m.group(1))) {
+                            sb.append(m.group(1));
+                            sb.append(m.group(2));
+                            sb.append("-trans-");
+                            sb.append(tm.group(2));
+                            sb.append(Constants.LINE_SEPARATOR);
                         }
                     }
-                    treader.close();
                 }
+                treader.close();
             }
-            reader.close();
-            return sb.toString();
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return basic;
         }
+        reader.close();
+        return sb.toString();
+
     }
 }

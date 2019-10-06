@@ -16,6 +16,8 @@ class CacheLyricProvider : LyricProvider {
     }
 
     fun writeLyricToCache(song: SongEntity, lyric: String) {
-        GlobalCacheManager.writeCache(song.toString(), lyric)
+        if (lyric.trimIndent().isNotEmpty()) { // 避免写入脏数据
+            GlobalCacheManager.writeCache(song.toString(), lyric)
+        }
     }
 }

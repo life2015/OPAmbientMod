@@ -50,29 +50,19 @@ class NetEaseLyricProvider : LyricProvider {
             .build()
 
         // 反正返回空就是出问题了
-        val response = try {
-            client.newCall(request).execute().body()?.string() ?: return@withContext null
-        } catch (e: IOException) {
-            e.printStackTrace()
-            MainHook.logE(msg = "网易云歌词获取错误", t = e)
-            return@withContext null
-        }
-
-        val jsonObject = try {
-            JSONObject(response)
-        } catch (e: Exception) {
-            MainHook.logE(msg = "网易云歌词获取json解析错误", t = e)
-            return@withContext null
-        }
-
-        val songs = jsonObject.getJSONObject("result").getJSONArray("songs")
-        if (songs.length() > 1) {
-            val id = songs.getJSONObject(0).getString("id")
+        val response = client.newCall(request).execute().body()?.string() ?: return@withContext null
+        try {
+            MainHook.logD(response)
+            val jsonObject = JSONObject(response)
+            val id = jsonObject.getJSONObject("result").getJSONArray("songs").getJSONObject(0)
+                .getString("id")
             return@withContext id
-        } else {
+        } catch (e: Exception) {
+            e.printStackTrace()
             MainHook.logE(msg = "网易云歌词搜索结果为空")
             return@withContext null
         }
+
     }
 
     suspend fun queryMusicLyric(id: String) = withContext(Dispatchers.IO) {
@@ -100,9 +90,13 @@ class NetEaseLyricProvider : LyricProvider {
         val tlyric = jsonObject.getJSONObject("tlyric").getString("lyric")
 
         val result = if (null != tlyric && tlyric != "null" && tlyric != "") {
-            Utils.mergeLyrics(lyric, tlyric)
+            val merged = Utils.mergeLyrics(lyric, tlyric)
+            if (merged.isEmpty()) lyric else merged // todo 暂时避免merge出现问题的情况 有时间排查下
         } else lyric
 
+        MainHook.logD(lyric)
+        MainHook.logD(tlyric)
+        MainHook.logD(result.isEmpty().toString())
         return@withContext result
     }
 }

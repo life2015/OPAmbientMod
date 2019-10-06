@@ -29,10 +29,10 @@ object CommonLyricProvider: LyricProvider {
             MainHook.logD("从缓存中获取歌词: $lyricCache")
             return lyricCache
         } else {
-            val netEaseLyric = null
+            val netEaseLyric = netEaseLyricProvider.fetchLyric(song, forceReload)
             if (netEaseLyric != null) {
                 MainHook.logD("从网易云中获取歌词: $netEaseLyric")
-//                cacheLyricProvider.writeLyricToCache(song, netEaseLyric)
+                cacheLyricProvider.writeLyricToCache(song, netEaseLyric)
                 return netEaseLyric
             }
             val qqMusicLyric = qqMusicLyricProvider.fetchLyric(song, forceReload)

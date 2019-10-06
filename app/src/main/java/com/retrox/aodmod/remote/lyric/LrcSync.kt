@@ -3,6 +3,7 @@ package com.retrox.aodmod.remote.lyric
 import android.view.Choreographer
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.LiveEvent
+import com.retrox.aodmod.shared.global.GlobalKV
 
 object LrcSync {
     private val choreographer = Choreographer.getInstance()
@@ -20,7 +21,11 @@ object LrcSync {
             val row = getSuggestRow(currentTime)
             if (currentLrcRowLive.value != row) {
                 row?.apply {
-                    setContent(content.replace("-trans-", "\n"))
+                    if (GlobalKV.get("lrc_trans")?.toBoolean() == true) {
+                        setContent(content.replace("-trans-", "\n"))
+                    } else {
+                        setContent(content.split("-trans-")[0])
+                    }
                 }
                 currentLrcRowLive.value = row
 //                MainHook.logD("LRC Sync $currentTime $row ")

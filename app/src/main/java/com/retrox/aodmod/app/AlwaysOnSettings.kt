@@ -129,7 +129,7 @@ class AlwaysOnSettings : AppCompatActivity() {
                 }
 
                 title("歌词开启翻译")
-                content("为息屏歌词开启中文翻译")
+                content("为息屏歌词开启中文翻译（有时候开了也没用）")
                 toggleButton {
                     textOn = "开启翻译"
                     textOff = "默认歌词"
