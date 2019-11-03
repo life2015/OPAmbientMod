@@ -23,7 +23,10 @@ object XPref {
             if (preferences.file == null) {
                 MainHook.logD("XPref get null, use external pref as XPref")
                 // 从外置读取XSP
-                preferences = XSharedPreferences(File(FileUtils.sharedDir, AppPref.externalPrefName))
+                val file = File(FileUtils.sharedDir, AppPref.externalPrefName)
+                if (file.exists()) {
+                    preferences = XSharedPreferences(file)
+                }
             }
 
             preferences.reload()
