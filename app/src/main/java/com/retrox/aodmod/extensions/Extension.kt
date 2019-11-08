@@ -10,6 +10,7 @@ import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.graphics.Typeface
 import android.media.AudioAttributes
+import android.os.Build
 import android.os.PowerManager
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -68,7 +69,7 @@ fun TextView.setGradientTest(colorPack: ThemeClockPack = ThemeManager.getCurrent
 // 1900/1905:OP7 China, 1910 OP7Pro China, 1911: India, 1913: EU, 1915: Tmobile, 1917: global/US unlocked, 1920: EU 5G
 val OP7DeviceModels = listOf<String>("GM1900", "GM1905", "GM1910", "GM1911", "GM1913", "GM1915", "GM1917", "GM1920")
 
-fun isOP7Pro() = OP7DeviceModels.contains(android.os.Build.MODEL)
+fun isOP7Pro() = OP7DeviceModels.contains(android.os.Build.MODEL) || XPref.isAndroidQ() // 强制Q机器使用7pro适配模式
 
 /**
  * Only for OP7Pro

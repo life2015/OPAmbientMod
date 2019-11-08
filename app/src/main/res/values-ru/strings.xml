@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OPAodMod</string>
+    <string name="active_state">Статус</string>
+    <string name="active_status_already">Активирован</string>
+    <string name="active_state_noalready">Не активирован</string>
+    <string name="active_status_need_active">Этот модуль не активирован. Нажмите тут чтобы активировать</string>
+    <string name="need_add_aod">Активный дисплей/SystemUI (для Oneplus 7 Pro) не добавлен в список исключений. Нажмите для добавления (требуется Tai Chi Magisk Module)</string>
+    <string name="motion_awake_opened">Открыто</string>
+    <string name="pickup_enabled">Поднимите телефон чтобы показать включено</string>
+    <string name="please_enable_pick">Пожалуйста включите поднимите телефон чтобы показать</string>
+    <string name="status_pick_up_not_enabled">Поднимите телефон чтобы показать не работает. Пожалуйста зайдите в системные настройки
+	    для того чтобы включить Поднимите телефон чтобы показать
+    </string>
+    <string name="top_open_pick_up">Хотя функция этого модуля заключается не в том, чтобы пробуждаться по поднятию телефона, эти 
+	системные опции должны быть включены, иначе модуль не будет правильно работать.
+    </string>
+    <string name="top_touch_to_see">Пользователям Oneplus 7 Pro строго рекомендуется включить функцию “Коснитесь экрана для отображения” также для лучшей работы
+	модуля (пользователи 6T также могут это попробовать）
+    </string>
+    <string name="open_pick_up_display">Включить поднятие телефона для включения экрана</string>
+    <string name="tip_status_pick_up">Поднятие телефона для включения экрана</string>
+    <string name="attention_work_status">
+        Обратите внимание на количество время включения экрана и последний раз включения экрана. Если количество раз и время не меняется при включении / отключении экрана, модуль не работает так как должен. Если это случилось из-за обновления модуля, попробуйте повторно выкл/вкл модуль и перезапустить смартфон. Или проверьте, предоставлено ли разрешение на Хранилище, и включена ли функция включения экрана по поднятию.
+    </string>
+    <string name="touch_refresh">Нажмите чтобы обновить</string>
+    <string name="rehook">Поймать заново</string>
+    <string name="reboot_ambient">Перезагрузить Ambient Display</string>
+    <string name="work_status">Статус работы</string>
+    <string name="aod_music_settings">Ambient Display Настройки Музыки</string>
+    <string name="aod_custom_settings">Ambient Display Свои Настрйоки</string>
+    <string name="clock_align_settings">Настройки Выравнивания Часов</string>
+    <string name="settings">Настройки</string>
+    <string name="weather_service_ok">Служба погоды работает правильно</string>
+    <string name="weather_service_error">Служба погода ОШИБКА (Не работает)</string>
+    <string name="weather_data">Информация о погоде</string>
+    <string name="storage_permission_granted">Разрешение на Хранилище предоставлено</string>
+    <string name="storage_permission_not_granted">Разрешение на Хранилище не предоставлено. Много функций будут работать неправильно!</string>
+    <string name="check_permission_status">Проверить Статус Разрешения</string>
+    <string name="permisssion_status">Статус Разрешения</string>
+    <string name="display_style">Стиль Отображения</string>
+    <string name="music_lrc_support"> Стиль Чистая Музыка / Плоская Музыка протестирован на поддержку отображения лирики, другие стили не поддерживают эту функцию. Помните: не все темы поддерживают все настройки и функции.</string>
+    <string name="other_custom_style_settings">Другие настройки текущей темы</string>
+    <string name="display_style_custom">Изменить стиль Ambient Display</string>
+    <string name="force_restart_not_7p">Принудительная перезагрузка Ambient Display, требуется Рут-доступ (НЕ ИСПОЛЬЗОВАТЬ НА Oneplus 7 Pro)</string>
+    <string name="force_restart_7p">Принудительная перезагрузка SystemUi и Ambient Display, требуется Рут-доступ (ИСПОЛЬЗОВАТЬ ТОЛЬКО НА Oneplus 7 Pro)</string>
+    <string name="always_on_settings">Натсройки Always On</string>
+    <string name="ambient_memo">Свой текст на Ambient Display</string>
+    <string name="ambient_will_display_memo">Текст будет отображён на экране когда AOD включён</string>
+    <string name="enable_aod_memo">Включить свой текст на AOD</string>
+    <string name="disabel_aod_memo">Выключить свой текст на AOD</string>
+    <string name="input_memo_here">Введите свой текст сюда</string>
+    <string name="save_memo">Сохранить текст</string>
+    <string name="aod_display_weather">Показывать погоду на AOD</string>
+    <string name="aod_weather_tip">Данные AOD будет получать от системного приложения погоды (Oneplus Weather). Требуется его установка и настройка. После этого погода будет работать</string>
+    <string name="enable_aod_weather">Включить отображение погоды на AOD</string>
+    <string name="disable_aod_weather">Выключить отображение погоды на AOD</string>
+    <string name="flip_off_screen">Выключать экран когда смартфон в кармане(Oneplus 7 Pro медленная реакция）</string>
+    <string name="auto_brightness_aod">Adjust brightness by lux sensor</string>
+    <string name="aod_font">Системный шрифт на AOD</string>
+    <string name="aod_music_settings_what">Что это за функция?</string>
+    <string name="nightmode_auto_close">Не включать AOD когда работает ночной режим</string>
+    <string name="nightmode_auto_close_content">Когда эта функция включена, Ночной Режим ВКЛ -> AOD ВЫКЛ. Когда эта функция выключена, Ночной Режим не будет изменять настрйоки AOD</string>
+    <string name="nightmode_autoclose">При активации ночного режима AOD будет выключен</string>
+    <string name="nightmode_not_close">При активации ночного режима AOD не будет выключен</string>
+
+    <!-- Hour displayed in words on the typographic clock face. [CHAR LIMIT=12] -->
+    <string-array name="type_clock_hours">
+        <item>Двенадцать</item>
+        <item>Час</item>
+        <item>Два</item>
+        <item>Три</item>
+        <item>Четыре</item>
+        <item>Пять</item>
+        <item>Шесть</item>
+        <item>Семь</item>
+        <item>Восемь</item>
+        <item>Девять</item>
+        <item>Десять</item>
+        <item>Одиннадцать</item>
+    </string-array>
+
+    <!-- Minutes displayed in words on the typographic clock face. [CHAR LIMIT=20] -->
+    <string-array name="type_clock_minutes">
+        <item>O\u2019Clock</item>
+        <item>Ноль один</item>
+        <item>Ноль два</item>
+        <item>Ноль три</item>
+        <item>Ноль четыре</item>
+        <item>Ноль пять</item>
+        <item>Ноль шесть</item>
+        <item>Ноль семь</item>
+        <item>Ноль восемь</item>
+        <item>Ноль девять</item>
+        <item>Десять</item>
+        <item>Одиннадцать</item>
+        <item>Двенадцать</item>
+        <item>Тринадцать</item>
+        <item>Четырнадцать</item>
+        <item>Пятнадцать</item>
+        <item>Шестнадцать</item>
+        <item>Семнадцать</item>
+        <item>Восемнадцать</item>
+        <item>Девятнадцать</item>
+        <item>Двадцать</item>
+        <item>Двадцать Один</item>
+        <item>Двадцать Два</item>
+        <item>Двадцать Три</item>
+        <item>Двадцать Четыре</item>
+        <item>Двадцать Пять</item>
+        <item>Двадцать Шесть</item>
+        <item>Двадцать Семь</item>
+        <item>Двадцать Восемь</item>
+        <item>Двадцать Девять</item>
+        <item>Тридцать</item>
+        <item>Тридцать Один</item>
+        <item>Тридцать Два</item>
+        <item>Тридцать Три</item>
+        <item>Тридцать Четыре</item>
+        <item>Тридцать Пять</item>
+        <item>Тридцать Шесть</item>
+        <item>Тридцать Семь</item>
+        <item>Тридцать Восемь</item>
+        <item>Тридцать Девять</item>
+        <item>Сорок</item>
+        <item>Сорок Один</item>
+        <item>Сорок Два</item>
+        <item>Сорок Три</item>
+        <item>Сорок Четыре</item>
+        <item>Сорок Пять</item>
+        <item>Сорок Шесть</item>
+        <item>Сорок Семь</item>
+        <item>Сорок Восемь</item>
+        <item>Сорок Девять</item>
+        <item>Пятьдесят</item>
+        <item>Пятьдесят Один</item>
+        <item>Пятьдесят Два</item>
+        <item>Пятьдесят Три</item>
+        <item>Пятьдесят Четыре</item>
+        <item>Пятьдесят Пять</item>
+        <item>Пятьдесят Шесть</item>
+        <item>Пятьдесят Семь</item>
+        <item>Пятьдесят Восемь</item>
+        <item>Пятьдесят Девять</item>
+    </string-array>
+
+</resources>
