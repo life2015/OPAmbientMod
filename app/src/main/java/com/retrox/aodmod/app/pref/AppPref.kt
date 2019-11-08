@@ -28,6 +28,7 @@ object AppPref {
     var autoCloseBySeconds by shared("AUTOCLOSEBYSECONDS", false)
     var autoCloseByNightMode by shared("AUTOCLOSEBYNIGHTMODE", false)
     var forceEnglishWordClock by shared("FORCEENGLISHWORDCLOCK", false)
+    var forceShowWordClockOnFlat by shared("FORCESHOWWORDCLOCKONFLAT", true)
 
 
 

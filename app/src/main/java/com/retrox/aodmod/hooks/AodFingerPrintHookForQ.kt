@@ -1,6 +1,7 @@
 package com.retrox.aodmod.hooks
 
 import android.view.View
+import android.widget.TextView
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.IXposedHookLoadPackage
@@ -55,6 +56,16 @@ object AodFingerPrintHookForQ : IXposedHookLoadPackage {
                         view.visibility = View.VISIBLE
                         view.alpha = 1f
                     }
+                }
+            }
+        })
+
+        // 隐藏指纹的错误提示
+        XposedHelpers.findAndHookMethod(fingerprintDialogViewClass, "animateErrorText", TextView::class.java, object : XC_MethodHook() {
+            override fun beforeHookedMethod(param: MethodHookParam) {
+                val view = param.args[0] as? TextView
+                if (AodState.DreamState.ACTIVE == AodState.dreamState.value) {
+                    view?.text = ""
                 }
             }
         })

@@ -57,6 +57,7 @@ object XPref {
     fun getAodAutoCloseBySeconds() = XPref.getPref().getBoolean("AUTOCLOSEBYSECONDS", false)
     fun getAodNightModeAutoOff() = XPref.getPref().getBoolean("AUTOCLOSEBYNIGHTMODE", false)
     fun getForceEnglishWordClock() = XPref.getPref().getBoolean("FORCEENGLISHWORDCLOCK", false)
+    fun getForceWordClockOnFlat() = XPref.getPref().getBoolean("FORCESHOWWORDCLOCKONFLAT", true)
 
 
 }

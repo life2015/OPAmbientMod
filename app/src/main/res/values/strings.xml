@@ -63,6 +63,9 @@
     <string name="nightmode_auto_close_content">When this option is on, NightMode ON -> Aod OFF. When this option is off, NightMode has nothing to do with AOD</string>
     <string name="nightmode_autoclose">NightMode AutoClose AOD</string>
     <string name="nightmode_not_close">NightMode DO NOT CLOSE AOD</string>
+    <string name="force_word_on_flat" translatable="false">Force Word Clock on Flat theme</string>
+    <string name="use_word_clock" translatable="false">Use Word Clock</string>
+    <string name="not_use_word_flat" translatable="false">Not use Word Clock</string>
 
     <!-- Hour displayed in words on the typographic clock face. [CHAR LIMIT=12] -->
     <string-array name="type_clock_hours">

@@ -20,6 +20,7 @@ import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodHeadSetView
+import com.retrox.aodmod.proxy.view.custom.components.wordClock
 import com.retrox.aodmod.receiver.HeadSetReceiver
 import com.retrox.aodmod.service.notification.NotificationData
 import com.retrox.aodmod.service.notification.NotificationManager
@@ -37,19 +38,31 @@ val maxTextViewWidth = 260
 
 fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
     return verticalLayout {
-        textView {
-            id = Ids.tv_clock
-            textColor = Color.WHITE
-            textSize = 46f
-            letterSpacing = 0.1f
-            setGoogleSans()
-            text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
-            AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
-            })
-        }.lparams(wrapContent, wrapContent) {
-            bottomMargin = dip(8)
+
+
+        if (XPref.getForceWordClockOnFlat()) {
+            wordClock(lifecycleOwner) {
+                textSize = 29f
+                id = Ids.tv_clock
+            }.lparams(wrapContent, wrapContent) {
+                bottomMargin = dip(20)
+            }
+        } else {
+            textView {
+                id = Ids.tv_clock
+                textColor = Color.WHITE
+                textSize = 42f
+                letterSpacing = 0.1f
+                setGoogleSans()
+                text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
+                AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
+                    text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
+                })
+            }.lparams(wrapContent, wrapContent) {
+                bottomMargin = dip(16)
+            }
         }
+
 
         textView {
             id = Ids.tv_today

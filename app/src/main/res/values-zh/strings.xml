@@ -56,4 +56,7 @@
     <string name="nightmode_auto_close_content">此选项开启时，夜间模式下自动关闭息屏常亮</string>
     <string name="nightmode_autoclose">夜间模式不息屏</string>
     <string name="nightmode_not_close">夜间模式不干预息屏</string>
+    <string name="force_word_on_flat">在Flat主题上显示Word时钟</string>
+    <string name="use_word_clock">使用Word时钟</string>
+    <string name="not_use_word_flat">不使用Word时钟</string>
 </resources>

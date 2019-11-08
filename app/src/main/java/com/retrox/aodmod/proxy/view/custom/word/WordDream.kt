@@ -35,7 +35,7 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
                 val timeTextView = textView {
                     text = ""
-                    textSize = 34f
+                    textSize = 30f
                     setLineSpacing(8f, 1f)
                     textColor = Color.WHITE
                     setGoogleSans()
@@ -45,7 +45,7 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
 
                 val dateTextView = textView {
                     text = ""
-                    textSize = 18f
+                    textSize = 16f
                     textColor = Color.WHITE
                     setGoogleSans()
                 }.lparams(wrapContent, wrapContent)

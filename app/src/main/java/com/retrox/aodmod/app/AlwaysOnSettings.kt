@@ -51,6 +51,22 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
+
+                title(context.getString(R.string.force_word_on_flat))
+                content(context.getString(R.string.force_word_on_flat))
+                toggleButton {
+                    textOn = context.getString(R.string.use_word_clock)
+                    textOff = context.getString(R.string.not_use_word_flat)
+                    isChecked = AppPref.forceShowWordClockOnFlat
+                    onCheckedChange { _, isChecked ->
+                        AppPref.forceShowWordClockOnFlat = isChecked
+                        Toast.makeText(context, "Word on Flat:${AppPref.forceShowWordClockOnFlat}", Toast.LENGTH_SHORT).show()
+                    }
+                }.lparams(width = matchParent, height = wrapContent) {
+                    verticalMargin = dip(12)
+                    horizontalMargin = dip(8)
+                }
+
                 title(context.getString(R.string.ambient_memo))
                 content(context.getString(R.string.ambient_will_display_memo))
                 toggleButton {
@@ -237,7 +253,7 @@ class AlwaysOnSettings : AppCompatActivity() {
                     horizontalMargin = dip(8)
                 }
 
-                title("亮屏15秒自动关屏")
+                title("亮屏15秒自动关屏（bug很多不建议用）")
                 content("一部分人只需要美化，因此提供了此功能，配合最上面的抬手检测功能使用。（此设置优先级高于10分钟的设置，只有在15秒不关屏的时候10分钟才会显现作用）")
                 toggleButton {
                     textOn = "亮屏15秒自动关屏"
