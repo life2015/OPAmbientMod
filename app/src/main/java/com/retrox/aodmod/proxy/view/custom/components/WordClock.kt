@@ -26,7 +26,7 @@ fun ViewManager.wordClock(lifecycleOwner: LifecycleOwner, init: TextView.() -> U
 
         AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
             val cal = Calendar.getInstance()
-            val hour = cal.get(Calendar.HOUR) % 12
+            val hour = if (cal.get(Calendar.HOUR) == 0 ) 12 else cal.get(Calendar.HOUR) % 12
             val minute = cal.get(Calendar.MINUTE) % 60
             val month = cal.get(Calendar.MONTH) + 1
             val day = cal.get(Calendar.DAY_OF_MONTH)

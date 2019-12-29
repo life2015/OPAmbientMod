@@ -10,6 +10,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.extensions.getNewAodNoteContent
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.service.notification.NotificationManager
@@ -27,9 +28,9 @@ fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
             setGoogleSans()
             gravity = Gravity.CENTER_HORIZONTAL
             visibility = View.GONE
-            if (XPref.getAodShowNote() && !XPref.getAodNoteContent().isNullOrBlank()) {
+            if (XPref.getAodShowNote() && !getNewAodNoteContent().isBlank()) {
                 visibility = View.VISIBLE
-                text = XPref.getAodNoteContent()
+                text = getNewAodNoteContent()
             }
         }.lparams(matchParent, wrapContent) {
             horizontalMargin = dip(16)

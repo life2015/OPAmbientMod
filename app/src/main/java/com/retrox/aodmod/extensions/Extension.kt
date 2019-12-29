@@ -22,6 +22,8 @@ import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.view.theme.ThemeClockPack
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
+import com.retrox.aodmod.service.notification.NotificationManager
+import com.retrox.aodmod.service.notification.getNotificationData
 import de.robv.android.xposed.XposedHelpers
 import java.io.File
 import java.lang.reflect.InvocationTargetException
@@ -130,6 +132,28 @@ fun File.chmod777() {
 fun Number.toCNString(): String {
     return Num2CN().convert(this.toLong(), true).reduce { acc, s ->
         acc + s
+    }
+}
+
+private fun getNotiNotiMessage(): String {
+    return NotificationManager.notificationMap.values.find {
+        it.packageName == "mark.notification"
+    }?.let {
+        val data = it.notification.getNotificationData()
+        val message = "${data.title}  ${data.content}"
+        MainHook.logD(message)
+        message
+    } ?: ""
+}
+
+fun getNewAodNoteContent(): String {
+    val oldContent = XPref.getAodNoteContent()
+    if (oldContent.isBlank()) {
+        return getNotiNotiMessage()
+    } else if (getNotiNotiMessage().isBlank()) {
+        return oldContent
+    } else{
+        return "${oldContent} \n${getNotiNotiMessage()} "
     }
 }
 

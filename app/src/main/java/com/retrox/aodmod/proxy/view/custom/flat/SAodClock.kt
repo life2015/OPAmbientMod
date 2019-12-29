@@ -16,6 +16,7 @@ import android.widget.LinearLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
 import com.retrox.aodmod.extensions.ResourceUtils
+import com.retrox.aodmod.extensions.getNewAodNoteContent
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.view.Ids
@@ -102,9 +103,9 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
 
             maxWidth = dip(maxTextViewWidth)
             visibility = View.GONE
-            if (XPref.getAodShowNote() && !XPref.getAodNoteContent().isNullOrBlank()) {
+            if (XPref.getAodShowNote() && !getNewAodNoteContent().isBlank()) {
                 visibility = View.VISIBLE
-                text = XPref.getAodNoteContent()
+                text = getNewAodNoteContent()
             }
         }.lparams(wrapContent, wrapContent) {
             bottomMargin = dip(6)
@@ -271,13 +272,13 @@ private fun Context.flatNotificationInClock(lifecycleOwner: LifecycleOwner): Vie
         val title = textView {
             textColor = Color.WHITE
             setGoogleSans()
-            textSize = 15f
+            textSize = 14f
         }.lparams(wrapContent, wrapContent)
 
         val content = textView {
             textColor = Color.WHITE
             setGoogleSans()
-            textSize = 15f
+            textSize = 14f
             maxLines = 10
             ellipsize = TextUtils.TruncateAt.END
             maxWidth = dip(maxTextViewWidth + 30)

@@ -15,7 +15,7 @@ object DozeSensors {
         AndroidAppHelper.currentApplication().getSystemService(SensorManager::class.java)
     }
 
-    private val sensorList = listOf<DozeSensor>( MotionCheck(), PickupCheck())
+    private val sensorList = listOf<DozeSensor>(MotionCheck(), PickupCheck(), MoveSensor())
 
     private val sensorWakeLiveData = object : MutableLiveData<DozeSensorMessage>() {
         override fun onActive() {
@@ -102,6 +102,25 @@ object DozeSensors {
                 sensorWakeLiveData.postValue(DozeSensors.DozeSensorMessage.PICK_DROP)
                 MainHook.logD("AOD DROP detected")
             }
+        }
+
+    }
+
+    class MoveSensor: SensorEventListener, DozeSensor {
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        }
+
+        override fun onSensorChanged(event: SensorEvent?) {
+            MainHook.logD("MoveCheck: ${event?.values?.toList()}")
+        }
+
+        override fun check() {
+            val sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR, true) ?: return
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+
+        override fun unCheck() {
+            sensorManager.unregisterListener(this)
         }
 
     }
