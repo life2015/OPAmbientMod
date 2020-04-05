@@ -1,5 +1,6 @@
 package com.retrox.aodmod.shared
 
+import android.annotation.SuppressLint
 import android.os.Environment
 import java.io.File
 import java.io.FileInputStream
@@ -7,7 +8,9 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 object FileUtils {
-    val sharedDir = Environment.getExternalStorageDirectory().path + "/Android/aod"
+
+    @SuppressLint("SdCardPath")
+    val sharedDir = "/sdcard/Android/aod"
 
     fun createSharedFileDir() {
         val file = File(sharedDir)
