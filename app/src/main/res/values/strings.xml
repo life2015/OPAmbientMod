@@ -211,6 +211,33 @@
     <string name="no_record">No Record</string>
     <string name="operating_mode_not_detected">Operating Mode Not Detected</string>
 
+    <!-- Custom Mod settings -->
+    <string name="custom_settings_title">Custom Settings</string>
+    <string name="custom_settings_info_title">What\'s this?</string>
+    <string name="custom_settings_info_desc">Custom Settings, fixes, mod and translation by Kieron Quinn / Quinny899 @ XDA. All options not guaranteed to work on all devices and configurations.</string>
+    <string name="custom_settings_general">General</string>
+    <string name="custom_settings_date_format">Date Format</string>
+    <string name="custom_settings_24_h_clock">24 hour clock</string>
+    <string name="custom_settings_24_h_clock_desc">Use a 24 hour clock on the AoD</string>
+    <string name="custom_settings_show_am_pm">Show AM/PM</string>
+    <string name="custom_settings_show_am_pm_desc">Show AM/PM text when using 12 hour (looks pretty broken)</string>
+    <string name="custom_settings_show_bullets">Show Bullet Symbols</string>
+    <string name="custom_settings_show_bullets_desc">Show bullet point symbols • between the date and weather and weather city (if enabled) and alarm</string>
+    <string name="custom_settings_weather">Weather</string>
+    <string name="custom_settings_weather_condition">Show weather condition icon</string>
+    <string name="custom_settings_weather_condition_desc">Show an icon before the weather condition text in the form of an emoji (eg. ☁️)</string>
+    <string name="custom_settings_weather_condition_text">Show weather condition text</string>
+    <string name="custom_settings_weather_condition_text_desc">Show the weather condition as text (eg. Cloudy)</string>
+    <string name="custom_settings_temperature">Show temperature</string>
+    <string name="custom_settings_temperature_desc">Show the current temperature (unit can be changed in the OnePlus weather app)</string>
+    <string name="custom_settings_city">Show city</string>
+    <string name="custom_settings_city_desc">Show the current weather city from the auto location (shows on a second line)</string>
+    <string name="custom_settings_alarm">Alarm</string>
+    <string name="custom_settings_next_alarm">Show next alarm</string>
+    <string name="custom_settings_next_alarm_desc">Show the next alarm after the weather. Only shows alarms within the next 24h (shows on a second line)</string>
+    <string name="custom_settings_alarm_emoji">Show alarm emoji</string>
+    <string name="custom_settings_alarm_emoji_desc">Show alarm emoji before the next alarm time</string>
+
     <!-- Hour displayed in words on the typographic clock face. [CHAR LIMIT=12] -->
     <string-array name="type_clock_hours">
         <item>Twelve</item>

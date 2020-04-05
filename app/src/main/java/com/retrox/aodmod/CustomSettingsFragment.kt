@@ -36,16 +36,16 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
         val activity = this.activity as? AppCompatActivity ?: return
         sharedPreferences = activity.defaultSharedPreferences
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        activity.supportActionBar?.title = "Custom Settings"
+        activity.supportActionBar?.title = getString(R.string.custom_settings_title)
         val screen = preferenceManager.createPreferenceScreen(activity)
         val infoPreference = Preference(activity)
-        infoPreference.title = "What's this?"
+        infoPreference.title = getString(R.string.custom_settings_info_title)
         infoPreference.summary =
-            "Custom Settings, fixes, mod and translation by Kieron Quinn / Quinny899 @ XDA. All options not guaranteed to work on all devices and configurations."
+            getString(R.string.custom_settings_info_desc)
         screen.addPreference(infoPreference)
         val generalCategory = PreferenceCategory(activity)
-        screen.addPreference(generalCategory)
-        generalCategory.title = "General"
+        val addPreference = screen.addPreference(generalCategory)
+        generalCategory.title = getString(R.string.custom_settings_general)
         val dateFormat = ListPreference(activity)
         dateFormat.entries = arrayOf<CharSequence>(
             getDateFormatted(dateFormats[0]),
@@ -74,13 +74,13 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         dateFormat.key = KEY_DATE_FORMAT
-        dateFormat.dialogTitle = "Date Format"
-        dateFormat.title = "Date Format"
+        dateFormat.dialogTitle = getString(R.string.custom_settings_date_format)
+        dateFormat.title = getString(R.string.custom_settings_date_format)
         generalCategory.addPreference(dateFormat)
         val useTwentyFourHour = SwitchPreference(activity)
         val showAmPm = SwitchPreference(activity)
-        useTwentyFourHour.title = "24 hour clock"
-        useTwentyFourHour.summary = "Use a 24 hour clock on the AoD"
+        useTwentyFourHour.title = getString(R.string.custom_settings_24_h_clock)
+        useTwentyFourHour.summary = getString(R.string.custom_settings_24_h_clock_desc)
         useTwentyFourHour.isChecked = getBooleanPreference(KEY_24_HOUR, true)
         useTwentyFourHour.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
@@ -90,8 +90,8 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         generalCategory.addPreference(useTwentyFourHour)
-        showAmPm.title = "Show AM/PM"
-        showAmPm.summary = "Show AM/PM text when using 12 hour (looks pretty broken)"
+        showAmPm.title = getString(R.string.custom_settings_show_am_pm)
+        showAmPm.summary = getString(R.string.custom_settings_show_am_pm_desc)
         showAmPm.isChecked = getBooleanPreference(KEY_USE_AM_PM, false)
         showAmPm.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
@@ -102,9 +102,9 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
         showAmPm.isEnabled = !getBooleanPreference(KEY_24_HOUR, true)
         generalCategory.addPreference(showAmPm)
         val showBullets = SwitchPreference(activity)
-        showBullets.title = "Show Bullet Symbols"
+        showBullets.title = getString(R.string.custom_settings_show_bullets)
         showBullets.summary =
-            "Show bullet point symbols • between the date and weather and weather city (if enabled) and alarm"
+            getString(R.string.custom_settings_show_bullets_desc)
         showBullets.isChecked = getBooleanPreference(KEY_SHOW_BULLETS, true)
         showBullets.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
@@ -115,11 +115,11 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
         generalCategory.addPreference(showBullets)
         val weatherCategory = PreferenceCategory(activity)
         screen.addPreference(weatherCategory)
-        weatherCategory.title = "Weather"
+        weatherCategory.title = getString(R.string.custom_settings_weather)
         val showIcon = SwitchPreference(activity)
-        showIcon.title = "Show weather condition icon"
+        showIcon.title = getString(R.string.custom_settings_weather_condition)
         showIcon.summary =
-            "Show an icon before the weather condition text in the form of an emoji (eg. ☁️)"
+            getString(R.string.custom_settings_weather_condition_desc)
         showIcon.isChecked = getBooleanPreference(KEY_WEATHER_SHOW_SYMBOL, true)
         showIcon.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
@@ -130,8 +130,8 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
             }
         weatherCategory.addPreference(showIcon)
         val showCondition = SwitchPreference(activity)
-        showCondition.title = "Show weather condition text"
-        showCondition.summary = "Show the weather condition as text (eg. Cloudy)"
+        showCondition.title = getString(R.string.custom_settings_weather_condition_text)
+        showCondition.summary = getString(R.string.custom_settings_weather_condition_text_desc)
         showCondition.isChecked = getBooleanPreference(KEY_WEATHER_SHOW_CONDITION, true)
         showCondition.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
@@ -142,9 +142,9 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
             }
         weatherCategory.addPreference(showCondition)
         val showTemperature = SwitchPreference(activity)
-        showTemperature.title = "Show temperature"
+        showTemperature.title = getString(R.string.custom_settings_temperature)
         showTemperature.summary =
-            "Show the current temperature (unit can be changed in the OnePlus weather app)"
+            getString(R.string.custom_settings_temperature_desc)
         showTemperature.isChecked = getBooleanPreference(KEY_WEATHER_SHOW_TEMPERATURE, true)
         showTemperature.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
@@ -155,9 +155,9 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
             }
         weatherCategory.addPreference(showTemperature)
         val showCity = SwitchPreference(activity)
-        showCity.title = "Show city"
+        showCity.title = getString(R.string.custom_settings_city)
         showCity.summary =
-            "Show the current weather city from the auto location (shows on a second line)"
+            getString(R.string.custom_settings_city_desc)
         showCity.isChecked = getBooleanPreference(KEY_WEATHER_SHOW_CITY, false)
         showCity.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
@@ -169,12 +169,12 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
         weatherCategory.addPreference(showCity)
         val alarmCategory = PreferenceCategory(activity)
         screen.addPreference(alarmCategory)
-        alarmCategory.title = "Alarm"
+        alarmCategory.title = getString(R.string.custom_settings_alarm)
         val showAlarm = SwitchPreference(activity)
         val showAlarmEmoji = SwitchPreference(activity)
-        showAlarm.title = "Show next alarm"
+        showAlarm.title = getString(R.string.custom_settings_next_alarm)
         showAlarm.summary =
-            "Show the next alarm after the weather. Only shows alarms within the next 24h (shows on a second line)"
+            getString(R.string.custom_settings_next_alarm_desc)
         showAlarm.isChecked = getBooleanPreference(KEY_SHOW_ALARM, false)
         showAlarm.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
@@ -184,8 +184,8 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         alarmCategory.addPreference(showAlarm)
-        showAlarmEmoji.title = "Show alarm emoji"
-        showAlarmEmoji.summary = "Show alarm emoji before the next alarm time"
+        showAlarmEmoji.title = getString(R.string.custom_settings_alarm_emoji)
+        showAlarmEmoji.summary = getString(R.string.custom_settings_alarm_emoji_desc)
         showAlarmEmoji.isChecked = getBooleanPreference(KEY_SHOW_ALARM_EMOJI, true)
         showAlarmEmoji.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference: Preference?, o: Any? ->
