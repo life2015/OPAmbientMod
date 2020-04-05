@@ -3,8 +3,8 @@ package com.retrox.aodmod.app
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import android.widget.Toast
 import com.retrox.aodmod.R
@@ -17,7 +17,7 @@ class SleepModeActivity : AppCompatActivity() {
         scrollView {
             verticalLayout {
                 textView {
-                    text = "这是干什么的？"
+                    text = context.getString(R.string.aod_sleep_what)
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     textSize = 18f
                     gravity = Gravity.START
@@ -27,7 +27,7 @@ class SleepModeActivity : AppCompatActivity() {
                 }
 
                 textView {
-                    text = "我们在使用息屏的常亮模式时，有些时候我们并不想要它一直亮屏，比如说在睡觉的时候。睡眠模式打开的时候，常亮模式只会持续5-10秒钟然后关屏，反之亦然。"
+                    text = context.getString(R.string.aod_sleep_what_desc)
                     gravity = Gravity.START
                     textColor = Color.BLACK
                     textSize = 16f
@@ -38,11 +38,11 @@ class SleepModeActivity : AppCompatActivity() {
                 }
 
                 button {
-                    text = "开启睡眠模式"
+                    text = context.getString(R.string.aod_sleep_turn_on)
                     setOnClickListener {
                         val intent = Intent("com.aodmod.sleep.on")
                         sendBroadcast(intent)
-                        Toast.makeText(context, "已启用睡眠模式", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.aod_sleep_enabled_toast), Toast.LENGTH_SHORT).show()
                     }
                 }.lparams(wrapContent, wrapContent) {
                     gravity = Gravity.START
@@ -51,11 +51,11 @@ class SleepModeActivity : AppCompatActivity() {
                 }
 
                 button {
-                    text = "关闭睡眠模式"
+                    text = context.getString(R.string.aod_sleep_turn_off)
                     setOnClickListener {
                         val intent = Intent("com.aodmod.sleep.off")
                         sendBroadcast(intent)
-                        Toast.makeText(context, "已关闭睡眠模式", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.aod_sleep_disabled_toast), Toast.LENGTH_SHORT).show()
                     }
                 }.lparams(wrapContent, wrapContent) {
                     gravity = Gravity.START

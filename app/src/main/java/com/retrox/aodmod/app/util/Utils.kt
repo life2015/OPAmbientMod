@@ -3,6 +3,7 @@ package com.retrox.aodmod.app.util
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.retrox.aodmod.R
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.shared.SharedContentManager
 import org.jetbrains.anko.runOnUiThread
@@ -48,7 +49,7 @@ object Utils {
 
         } catch (ex: Exception) {
             ex.printStackTrace()
-            Toast.makeText(context, "出现错误，可能是无法获取Root权限", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.root_error_toast), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -61,12 +62,12 @@ object Utils {
             context.runOnUiThread {
                 Toast.makeText(
                     context,
-                    "查询成功：Pid:${strings[1]} 已重启息屏程序 点击按钮可以再次重启",
+                    context.getString(R.string.pid_restart_toast, strings[1]),
                     Toast.LENGTH_SHORT
                 ).show()
 
                 thread {
-                    SharedContentManager.resetStateFile()
+                    SharedContentManager.resetStateFile(context)
                     AppState.refreshStatus("Process Kill")
                 }
             }
@@ -76,7 +77,7 @@ object Utils {
 
     private fun kill(pid: String, context: Context) {
         if (pid == "") {
-            Toast.makeText(context, "未查询到pid，您的手机可能不是一加，如果是，请联系开发者", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.no_pid_found), Toast.LENGTH_SHORT).show()
         }
         try {
             val process = Runtime.getRuntime().exec("su")

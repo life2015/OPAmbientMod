@@ -17,7 +17,7 @@
 package com.retrox.aodmod.extensions
 
 //import android.support.annotation.MainThread
-import android.support.annotation.UiThread
+import androidx.annotation.UiThread
 import android.view.View
 import android.view.animation.AlphaAnimation
 

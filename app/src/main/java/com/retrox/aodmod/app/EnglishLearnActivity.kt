@@ -2,8 +2,8 @@ package com.retrox.aodmod.app
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import com.retrox.aodmod.R
 import org.jetbrains.anko.*
@@ -13,7 +13,7 @@ class EnglishLearnActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         scrollView {
             verticalLayout {
-                title("星期对照")
+                title(context.getString(R.string.english_learn_weekdays))
                 content("Sunday Sun. 星期天\n" +
                         "\n" +
                         "Monday Mon. 星期一\n" +
@@ -28,19 +28,19 @@ class EnglishLearnActivity : AppCompatActivity() {
                         "\n" +
                         "Saturday Sat. 星期六")
 
-                title("电池状态")
+                title(context.getString(R.string.english_learn_battery_status))
                 content("Charging 充电中\n\n" +
                         "Quick Charging 一加Dash快速充电中")
 
-                title("耳机连接")
+                title(context.getString(R.string.english_learn_headphone_connection))
                 content("Headset Unplugged 耳机拔出\n\n" +
                         "Headset Plugged 耳机插入")
 
-                title("蓝牙连接")
+                title(context.getString(R.string.english_learn_bluetooth_connection))
                 content("DisConnected 断开连接\n\n" +
                         "Connected 已连接")
 
-                title("音量相关")
+                title(context.getString(R.string.english_learn_volume_related))
                 content("Volume 音量")
             }
         }

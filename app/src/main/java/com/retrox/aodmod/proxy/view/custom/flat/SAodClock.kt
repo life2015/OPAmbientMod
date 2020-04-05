@@ -1,7 +1,7 @@
 package com.retrox.aodmod.proxy.view.custom.flat
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
+import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.getNewAodNoteContent
 import com.retrox.aodmod.extensions.setGoogleSans
@@ -55,9 +56,9 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
                 textSize = 42f
                 letterSpacing = 0.1f
                 setGoogleSans()
-                text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
+                text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date())
                 AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                    text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
+                    text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
                 })
             }.lparams(wrapContent, wrapContent) {
                 bottomMargin = dip(16)
@@ -73,11 +74,11 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
             fun generateDateBrief(weatherData: WeatherProvider.WeatherData?): String {
                 if (XPref.getAodShowWeather() && weatherData != null) { // 这里变更一下逻辑 没有天气就不显示了
                     return SimpleDateFormat(
-                        "E MM. dd",
+                        SmaliImports.systemDateFormat,
                         Locale.ENGLISH
-                    ).format(Date()) + "  " + (weatherData.toBriefString())
+                    ).format(Date()) + " ${SmaliImports.bulletSymbol} " + (weatherData.toBriefString())
                 } else {
-                    return SimpleDateFormat("EEEE MM. dd", Locale.ENGLISH).format(Date())
+                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.ENGLISH).format(Date())
                 }
             }
 //            text = SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date())
@@ -91,6 +92,7 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
                     text = generateDateBrief(it)
                 }
             })
+            gravity = Gravity.CENTER
         }.lparams(wrapContent, wrapContent) {
             bottomMargin = dip(6)
         }

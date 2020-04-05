@@ -1,7 +1,7 @@
 package com.retrox.aodmod.proxy
 
 import android.app.AndroidAppHelper
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleOwner
 import android.content.Context
 import android.os.Vibrator
 import android.view.Display

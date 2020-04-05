@@ -1,16 +1,16 @@
 package com.retrox.aodmod.app
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import com.retrox.aodmod.app.state.AppState
 import org.jetbrains.anko.*
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.widget.Toast
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
@@ -34,7 +34,7 @@ class MusicSettingsActivity : AppCompatActivity() {
                 }
 
                 textView {
-                    text = "这是一个息屏音乐提示的功能，界面效果类似于Google Pixel的NowPlaying，但是本质上是显示系统的正在播放，使用此功能，你需要把使用的音乐APP添加到太极的应用列表。"
+                    text = context.getString(R.string.aod_music_settings_what_desc)
                     gravity = Gravity.START
                     textColor = Color.BLACK
                     textSize = 16f
@@ -45,7 +45,7 @@ class MusicSettingsActivity : AppCompatActivity() {
                 }
 
                 textView {
-                    text = "支持什么APP？"
+                    text = context.getString(R.string.aod_music_supported)
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     textSize = 18f
                     gravity = Gravity.START
@@ -55,7 +55,7 @@ class MusicSettingsActivity : AppCompatActivity() {
                 }
 
                 textView {
-                    text = "目前测试了网易云音乐和QQ音乐，RetroMusic，但是理论上不存在兼容性问题，记住要把自己用的音乐APP加入的太极并且杀掉并重新启动。"
+                    text = context.getString(R.string.aod_music_supported_desc)
                     gravity = Gravity.START
                     textColor = Color.BLACK
                     textSize = 16f
@@ -66,7 +66,7 @@ class MusicSettingsActivity : AppCompatActivity() {
                 }
 
                 textView {
-                    text = "注意事项？"
+                    text = context.getString(R.string.aod_music_precautions)
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     textSize = 18f
                     gravity = Gravity.START
@@ -76,7 +76,7 @@ class MusicSettingsActivity : AppCompatActivity() {
                 }
 
                 textView {
-                    text = "网易云音乐中要开启音乐锁屏里面的系统锁屏模式，其他软件不能用也同理设置。"
+                    text = context.getString(R.string.aod_music_precautions_desc)
                     gravity = Gravity.START
                     textColor = Color.BLACK
                     textSize = 16f
@@ -87,12 +87,12 @@ class MusicSettingsActivity : AppCompatActivity() {
                 }
 
                 toggleButton {
-                    textOn = "音乐显示开"
-                    textOff = "音乐显示关"
+                    textOn = context.getString(R.string.aod_music_enabled)
+                    textOff = context.getString(R.string.aod_music_disabled)
                     isChecked = AppPref.musicShowOnAod
                     onCheckedChange { buttonView, isChecked ->
                         AppPref.musicShowOnAod = isChecked
-                        Toast.makeText(context, "音乐显示状态:${AppPref.musicShowOnAod}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.aod_music_toast, AppPref.musicShowOnAod.toString()), Toast.LENGTH_SHORT).show()
                     }
                 }.lparams(width = matchParent, height = wrapContent) {
                     verticalMargin = dip(12)
@@ -100,7 +100,7 @@ class MusicSettingsActivity : AppCompatActivity() {
                 }
 
                 button {
-                    text = "点击这里帮你加入网易云和QQ音乐~"
+                    text = context.getString(R.string.aod_music_add_qq)
                     setOnClickListener {
                         val t = Intent("me.weishu.exp.ACTION_ADD_APP")
                         t.data = Uri.parse("package:" + "com.netease.cloudmusic" + "|" + "com.tencent.qqmusic")
@@ -120,7 +120,7 @@ class MusicSettingsActivity : AppCompatActivity() {
 
 
                 textView {
-                    text = "这些是已经在太极中的APP"
+                    text = context.getString(R.string.aod_music_enabled_apps)
                     textColor = ContextCompat.getColor(context, R.color.colorOrange)
                     textSize = 18f
                     gravity = Gravity.START

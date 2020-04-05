@@ -1,18 +1,19 @@
 package com.retrox.aodmod.proxy.view.custom.music
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.PowerManager
-import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.proxy.AbsDreamView
@@ -128,9 +129,9 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                 textSize = 26f
                 letterSpacing = 0.1f
                 setGoogleSans()
-                text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
+                text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date())
                 AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                    text = "  " + SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
+                    text = "  " + SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
                 })
             }.lparams(wrapContent, wrapContent) {
                 bottomMargin = dip(14)

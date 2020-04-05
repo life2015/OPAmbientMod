@@ -2,9 +2,9 @@ package com.retrox.aodmod.app.view
 
 import android.Manifest
 import android.app.Activity
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
@@ -12,9 +12,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
-import android.support.constraint.ConstraintLayout
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -98,7 +98,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                         context.startActivity(t)
                     } catch (e: ActivityNotFoundException) {
                         // TaiChi not installed.
-                        Toast.makeText(context, "太极尚未安装", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.tai_chi_not_installed_toast), Toast.LENGTH_SHORT).show()
                     }
                 }
             }.lparams(matchParent, wrapContent) {
@@ -111,7 +111,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 activeState.observe(lifecycleOwner, Observer {
                     it?.let { (_, isAppInList) ->
                         text =
-                            if (isAppInList) "主动显示/SystemUI(OP7Pro) 已添加" else context.getString(R.string.need_add_aod)
+                            if (isAppInList) context.getString(R.string.aod_in_list) else context.getString(R.string.need_add_aod)
                     }
                 })
                 setOnClickListener {
@@ -122,7 +122,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                         context.startActivity(t)
                     } catch (e: ActivityNotFoundException) {
                         // TaiChi not installed or version below 4.3.4.
-                        Toast.makeText(context, "太极尚未安装或版本低于4.3.4", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.taichi_out_of_date_toast), Toast.LENGTH_SHORT).show()
                     }
                 }
             }.lparams(matchParent, wrapContent) {
@@ -130,7 +130,7 @@ class ActiveStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : Statu
                 horizontalMargin = dip(16)
             }
 
-            textView("注意：EdXposed自己弄好的话，请忽略以上提示!! 使用太极添加App时，OP7Pro之前是主动显示，OP7Pro是系统界面SystemUI") {
+            textView(context.getString(R.string.status_edxposed_warning)) {
                 activeState.observe(lifecycleOwner, Observer {
                     it?.let {
                         if (it.first && it.second) {
@@ -276,7 +276,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
                         context.startActivity(t)
                     } catch (e: ActivityNotFoundException) {
                         // TaiChi not installed.
-                        Toast.makeText(context, "太极尚未安装", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.tai_chi_not_installed_toast), Toast.LENGTH_SHORT).show()
                     }
                 }
             }.lparams(wrapContent, wrapContent)
@@ -305,17 +305,17 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
 
     fun refresh() {
         // todo IO性能优化
-        val sharedState = SharedContentManager.getSharedState()
+        val sharedState = SharedContentManager.getSharedState(context)
 
         val times = sharedState.aodTimes.toInt()
         val text = if (times > 0) {
-            status.value = "正常 ${sharedState.workMode}"
+            status.value = context.getString(R.string.status_normal, sharedState.workMode)
             titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
-            "本次插件介入息屏的次数为 $times \n上次息屏时间：${sharedState.lastTime}"
+            context.getString(R.string.plugin_intervines_state, times.toString(), sharedState.lastTime)
         } else {
-            status.value = "异常 ${sharedState.workMode}"
+            status.value = context.getString(R.string.status_abnormal, sharedState.workMode)
             titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
-            "本次插件介入息屏的次数为0 \n上次息屏时间：${sharedState.lastTime} \n如果这不是刚刚重启了息屏 那也许出了问题"
+            context.getString(R.string.plugin_intervines_error, sharedState.lastTime)
         }
         textView.text = text
     }
@@ -324,7 +324,7 @@ class RunStatusCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCa
 class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(context, lifecycleOwner) {
     val layout = context.verticalLayout {
         button {
-            text = "学习一点必要的英语"
+            text = context.getString(R.string.learn_a_little_english)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -338,6 +338,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
             setOnClickListener {
                 Utils.findProcessAndKill(context)
             }
+            gravity = Gravity.START
         }.lparams(wrapContent, wrapContent)
         button {
             text = context.getString(R.string.force_restart_7p)
@@ -346,9 +347,10 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
             setOnClickListener {
                 Utils.findProcessAndKill(context, "com.android.systemui")
             }
+            gravity = Gravity.START
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "加群交流一下？"
+            text = context.getString(R.string.join_qq_group)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -357,7 +359,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
             }
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "群满可加入中转备用群"
+            text = context.getString(R.string.join_backup_qq_group)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -367,7 +369,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
         }.lparams(wrapContent, wrapContent)
 
         button {
-            text = "Join Telegram Group EU/NA/IN"
+            text = context.getString(R.string.join_telegram_group)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -377,15 +379,16 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
         }.lparams(wrapContent, wrapContent)
 
         button {
-            text = "回到老设置界面（不建议使用）"
+            text = context.getString(R.string.return_to_old_settings)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
                 context.startActivity<MainActivity>()
             }
+            gravity = Gravity.START
         }.lparams(wrapContent, wrapContent)
         button {
-            text = "觉得好用？捐赠开发者"
+            text = context.getString(R.string.button_donate)
             setBorderlessStyle()
             textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
             setOnClickListener {
@@ -401,7 +404,7 @@ class ToolCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(co
 
     init {
         attachView(layout)
-        title.value = "工具箱"
+        title.value = context.getString(R.string.title_toolbox)
         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
     }
 
@@ -434,6 +437,14 @@ class SettingsCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCar
                 context.startActivity<AlarmSettingsActivity>()
             }
         }.lparams(wrapContent, wrapContent)
+        button {
+            text = context.getString(R.string.custom_settings)
+            setBorderlessStyle()
+            textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
+            setOnClickListener {
+                context.startActivity<CustomSettingsActivity>()
+            }
+        }.lparams(wrapContent, wrapContent)
         leftPadding = dip(16)
     }
 
@@ -460,18 +471,18 @@ class WeatherCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard
                         titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                         status.value = context.getString(R.string.weather_service_ok)
                         val result =
-                            "当前天气数据：$cityName $weatherName $temperature$temperatureUnit \n今日温度范围：$temperatureLow/$temperatureHigh$temperatureUnit"
+                            context.getString(R.string.weather_data_preview, cityName, weatherName, temperature.toString(), temperatureUnit, temperatureLow.toString(), temperatureHigh.toString(), temperatureUnit)
                         if (AppPref.aodShowWeather) {
                             result
                         } else {
-                            "$result\n您的息屏未开启天气显示，可以在常亮自定义设置中打开"
+                            context.getString(R.string.weather_service_disabled, result)
                         }
                     }
                 } else {
                     status.value = context.getString(R.string.weather_service_error)
                     titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorOrange)
                     AppPref.aodShowWeather = false
-                    "获取天气数据失败 检查系统天气APP是否可用\n已自动关闭天气显示"
+                    context.getString(R.string.weather_service_error_desc)
                 }
 
                 text = content
@@ -542,10 +553,10 @@ class PermissionCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusC
             it?.let {
                 if (it) {
                     titleBar.backgroundColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
-                    status.value = "权限授予正常"
+                    status.value = context.getString(R.string.permission_granted)
                 } else {
                     titleBar.backgroundColor = Color.RED
-                    status.value = "请授予储存权限"
+                    status.value = context.getString(R.string.permission_denied)
                 }
             }
         })
@@ -572,7 +583,7 @@ class ThemeCard(context: Context, lifecycleOwner: LifecycleOwner) : StatusCard(c
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                         val style = themeLayoutList[position]
                         AppPref.aodLayoutTheme = style
-                        Toast.makeText(context, "主题已设置 $style", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.theme_set_toast, style), Toast.LENGTH_SHORT).show()
                     }
                 }
                 setSelection(themeLayoutList.indexOf(AppPref.aodLayoutTheme), true)
@@ -623,7 +634,7 @@ fun Context.joinQQGroup(key: String): Boolean {
         true
     } catch (e: Exception) {
         // 未安装手Q或安装的版本不支持
-        Toast.makeText(this, "未安装手Q或安装的版本不支持", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.qq_not_supported), Toast.LENGTH_SHORT).show()
         false
     }
 

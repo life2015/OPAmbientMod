@@ -1,8 +1,8 @@
 package com.retrox.aodmod.extensions
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import android.util.Log
 
 open class LiveEvent<T>() : MediatorLiveData<T>() {
@@ -31,15 +31,15 @@ open class LiveEvent<T>() : MediatorLiveData<T>() {
         super.observe(owner, wrapped)
     }
 
-    override fun observeForever(observer: Observer<T>) {
-        val wrapped = observers[observer] ?: StartVersionObserver(version, observer).also {
+    override fun observeForever(observer: Observer<in T>) {
+        val wrapped = observers[observer] ?: StartVersionObserver(version, observer as Observer<T>).also {
             observers[observer] = it
             wrappedObservers[it] = observer
         }
         super.observeForever(wrapped)
     }
 
-    override fun removeObserver(observer: Observer<T>) {
+    override fun removeObserver(observer: Observer<in T>) {
         // since we dont' know where this will be called from, `observer` could be
         // the original observable or the wrapped observable, so we need to make sure
         // we update our current observer state and pass the wrapped observer to the
