@@ -54,10 +54,10 @@ object OP7DreamProxyHook : IXposedHookLoadPackage {
 
         MainHook.logD("DisplayMode: ${XPref.getDisplayMode()}")
         if (XPref.getDisplayMode() == "SYSTEM") {
-            SharedContentManager.setWorkMode("系统增强 - 不支持7Pro")
+            SharedContentManager.setWorkMode("System Enhancement - 7 Pro is not supported")
             return
         }
-        SharedContentManager.setWorkMode("常亮模式 - 7Pro")
+        SharedContentManager.setWorkMode("Constant light mode - 7 Pro")
 
 
         XposedHelpers.findAndHookConstructor(dozeServiceClass, object : XC_MethodHook() {

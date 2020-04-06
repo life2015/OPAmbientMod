@@ -27,7 +27,7 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
             bottomMargin = dip(16)
         }
 
-        val musicText = textView("无最近播放") {
+        val musicText = textView("No recent music") {
             //            gravity = Gravity.CENTER
             id = Ids.tv_music
             textColor = Color.WHITE
