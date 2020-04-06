@@ -1,6 +1,6 @@
 package com.retrox.aodmod.proxy.view.custom.dvd
 
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleOwner
 import android.content.Context
 import android.graphics.Color
 import android.view.View

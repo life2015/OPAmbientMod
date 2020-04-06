@@ -2,8 +2,8 @@ package com.retrox.aodmod.app
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import android.widget.Toast
 import com.retrox.aodmod.R
@@ -15,59 +15,59 @@ class AlarmSettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "时钟对齐设置"
+        title = getString(R.string.clock_alignment_settings)
 
         scrollView {
             verticalLayout {
                 leftPadding = dip(12)
-                title("时钟对齐设置是什么")
-                content("常亮模式中，常常会有时间不对应的情况，所以要进行一些操作来对齐时间，但是不同的对齐方案有着不同的耗电量\n这里你可以选择自己喜欢的对齐方案。\n**备注：仅适用于常亮模式")
+                title(context.getString(R.string.what_is_clock_alignment_setting))
+                content(context.getString(R.string.what_is_clock_alignment_setting_desc))
 
-                title("仅依靠系统广播")
-                content("仅仅通过系统的广播来更新时间，适用于广播准确的OOS，但是在HOS会有延迟。\n**备注：最省电")
+                title(context.getString(R.string.rely_on_system_broadcast))
+                content(context.getString(R.string.rely_on_system_broadcast_desc))
                 button {
-                    text = "点击设置系统广播模式"
+                    text = context.getString(R.string.click_to_set_system_broadcast_mode)
                     setBorderlessStyle()
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     setOnClickListener {
                         AppPref.aodAlarmMode = "SYSTEM"
-                        Toast.makeText(context, "已设置模式 ${AppPref.aodAlarmMode}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.mode_set, AppPref.aodAlarmMode), Toast.LENGTH_SHORT).show()
                     }
                 }.lparams(wrapContent, wrapContent)
 
-                title("使用AlarmManager来唤醒")
-                content("除了系统广播外使用AlarmManager来唤醒，这种方式大概一分钟会同步一次时间，但是也会影响到手机的睡眠状态。\n**备注：有电量消耗，在翻扣灭屏后会暂停唤醒（这种状态省电），因此建议在不用的时候翻扣或者口袋灭屏")
+                title(context.getString(R.string.use_alarm_manager))
+                content(context.getString(R.string.use_alarm_manager_desc))
                 button {
-                    text = "点击设置AlarmManager模式"
+                    text = context.getString(R.string.click_to_set_alarm_manager)
                     setBorderlessStyle()
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     setOnClickListener {
                         AppPref.aodAlarmMode = "AlarmManager-1min"
-                        Toast.makeText(context, "已设置模式 ${AppPref.aodAlarmMode}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.mode_set, AppPref.aodAlarmMode), Toast.LENGTH_SHORT).show()
                     }
                 }.lparams(wrapContent, wrapContent)
 
-                title("使用AlarmManager-TimeOut模式唤醒（默认）")
-                content("使用AlarmManager固定时间任务唤醒，一分钟同步一次。经过一段时间的自测，目前效果良好")
+                title(context.getString(R.string.use_alarm_manager_timeout_mode))
+                content(context.getString(R.string.use_alarm_manager_timeout_mode_desc))
                 button {
-                    text = "点击设置AlarmManager-TimeOut模式"
+                    text = context.getString(R.string.click_to_set_alarm_manager_timeout)
                     setBorderlessStyle()
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     setOnClickListener {
                         AppPref.aodAlarmMode = "Alarm-TimeOutMode"
-                        Toast.makeText(context, "已设置模式 ${AppPref.aodAlarmMode}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.mode_set, AppPref.aodAlarmMode), Toast.LENGTH_SHORT).show()
                     }
                 }.lparams(wrapContent, wrapContent)
 
-                title("使用Chore机制来唤醒")
-                content("另辟蹊径使用动画时钟来唤醒，可以做到相对最精准的时间同步，但是会影响手机耗电，在手机进入深度睡眠时候也可能会出现不准的情况\n**备注：有电量消耗，在翻扣灭屏后会暂停唤醒（这种状态省电），因此建议在不用的时候翻扣或者口袋灭屏")
+                title(context.getString(R.string.use_chore_mechanism))
+                content(context.getString(R.string.use_chore_mechanism_desc))
                 button {
-                    text = "点击设置Chore模式"
+                    text = context.getString(R.string.click_to_set_chore_mechanism)
                     setBorderlessStyle()
                     textColor = ContextCompat.getColor(context, R.color.colorPixelBlue)
                     setOnClickListener {
                         AppPref.aodAlarmMode = "Chore"
-                        Toast.makeText(context, "已设置模式 ${AppPref.aodAlarmMode}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.mode_set, AppPref.aodAlarmMode), Toast.LENGTH_SHORT).show()
                     }
                 }.lparams(wrapContent, wrapContent)
             }

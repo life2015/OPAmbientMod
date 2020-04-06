@@ -1,14 +1,15 @@
 package com.retrox.aodmod.proxy.view.custom.word
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
+import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
@@ -74,7 +75,7 @@ class WordDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                     } else {
                         val engStr = "It's\n${hoursArray[hour]}\n${minutesArray[minute]}" + " "
                         timeTextView.text = engStr
-                        dateTextView.text = SimpleDateFormat("EEEE MM. dd", Locale.ENGLISH).format(Date())
+                        dateTextView.text = SimpleDateFormat(SmaliImports.systemDateFormat, Locale.ENGLISH).format(Date())
                     }
 
                 })

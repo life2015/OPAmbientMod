@@ -1,5 +1,7 @@
 package com.retrox.aodmod.shared
 
+import android.content.Context
+import com.retrox.aodmod.R
 import com.retrox.aodmod.shared.data.SharedState
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,17 +24,19 @@ object SharedContentManager {
         }
     }
 
-    fun resetStateFile() {
-        val state = SharedState("刚刚重启", 0.toString(), "无记录")
+    fun resetStateFile(context: Context) {
+        val state = SharedState(context.getString(R.string.just_restarted), 0.toString(), context.getString(
+                    R.string.no_record))
         state.writeToFile()
     }
 
-    fun getSharedState(): SharedState {
+    fun getSharedState(context: Context): SharedState {
         return try {
             SharedState.readFromFile()
         } catch (e: Exception) {
             e.printStackTrace()
-            return SharedState("尚未检测到工作模式", 0.toString(), "无记录")
+            return SharedState(context.getString(R.string.operating_mode_not_detected), 0.toString(), context.getString(
+                R.string.no_record))
         }
     }
 }

@@ -5,9 +5,10 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import com.retrox.aodmod.R
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.extensions.Num2CN
 import com.retrox.aodmod.extensions.checkPermission
@@ -34,7 +35,7 @@ class NewMainActivity : AppCompatActivity() {
                 addView(ToolCard(this@NewMainActivity, this@NewMainActivity).rootView)
 
                 button {
-                    text = "测试Settings"
+                    text = context.getString(R.string.test_settings)
                     setOnClickListener {
                         val state = Settings.Secure.getInt(contentResolver, "night_display_activated", 0)
                         val state2 = Settings.System.getInt(contentResolver, "sysui_do_not_disturb", 0)
@@ -65,13 +66,13 @@ class NewMainActivity : AppCompatActivity() {
     private fun checkAndroidVersion() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             val dialog = alert {
-                title = "系统版本太低"
-                message = "此模块只能用于一加官方的Android P上，其他系统会翻车，这是一个悬崖勒马的对话框。强行使用出现bug应当自己负责，无需反馈。"
+                title = getString(R.string.dialog_invalid_system)
+                message = getString(R.string.dialog_invalid_system_content)
                 isCancelable = false
-                positiveButton("退出") {
+                positiveButton(getString(R.string.dialog_invalid_system_exit)) {
                     finish()
                 }
-                negativeButton("强行使用") {
+                negativeButton(getString(R.string.dialog_invalid_system_ignore)) {
                     it.dismiss()
                 }
             }.show()

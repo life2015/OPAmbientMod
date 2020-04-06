@@ -1,13 +1,13 @@
 package com.retrox.aodmod.app
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                     textView {
                         textColor = Color.WHITE
                         textSize = 16f
-                        text = "##上车提示 -> 太极·Magisk运行环境需求：\n严格要求 太极App -> 5.0.2 及以上  太极Magisk插件版本 4.7.5(可加群下载) 及以上\nEdXposed也可以上车\n上车前确保自己系统开着抬手显示 "
+                        text = context.getString(R.string.main_activity_instructions)
                         horizontalPadding = dip(16)
                         gravity = Gravity.CENTER_HORIZONTAL
                     }.lparams {
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         isActive.observe(this@MainActivity, Observer {
                             it?.let { active ->
                                 if (active) {
-                                    text = "模块已激活\n 重装或者升级APP建议重新打钩并且点击下方重启息屏显示"
+                                    text = context.getString(R.string.main_module_active)
                                     this@cardView.setCardBackgroundColor(
                                         ContextCompat.getColor(
                                             context,
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                                     )
                                     alpha = 0.85f
                                 } else {
-                                    text = "模块尚未激活 请在太极·Magisk中激活模块"
+                                    text = context.getString(R.string.main_module_inactive)
                                     this@cardView.setCardBackgroundColor(
                                         ContextCompat.getColor(
                                             context,
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                         expApps.observe(this@MainActivity, Observer {
                             it?.let { list ->
                                 if (list.contains("com.oneplus.aod")) {
-                                    text = "主动显示APP已添加 \n 首次添加需要点击下方强制重启"
+                                    text = context.getString(R.string.main_aod_added)
                                     this@cardView.setCardBackgroundColor(
                                         ContextCompat.getColor(
                                             context,
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
                                     )
                                     alpha = 0.85f
                                 } else {
-                                    text = "主动显示APP未添加 点击添加主动显示APP \n 需要太极·Magisk"
+                                    text = context.getString(R.string.main_aod_not_added)
                                     this@cardView.setCardBackgroundColor(
                                         ContextCompat.getColor(
                                             context,
@@ -179,7 +179,7 @@ class MainActivity : AppCompatActivity() {
                     textView {
                         textColor = Color.WHITE
                         textSize = 17f
-                        text = "设置息屏音乐提醒"
+                        text = context.getString(R.string.main_music_settings)
                         horizontalPadding = dip(16)
                         gravity = Gravity.CENTER_HORIZONTAL
                     }.lparams {
@@ -204,7 +204,7 @@ class MainActivity : AppCompatActivity() {
                     textView {
                         textColor = Color.WHITE
                         textSize = 16f
-                        text = "设置息屏模式: 系统模式/常亮模式 \n当前模式: ${AppPref.aodMode}"
+                        text = context.getString(R.string.main_aod_mode, AppPref.aodMode)
                         horizontalPadding = dip(16)
                         gravity = Gravity.CENTER_HORIZONTAL
                     }.lparams {
@@ -228,7 +228,7 @@ class MainActivity : AppCompatActivity() {
                     textView {
                         textColor = Color.WHITE
                         textSize = 16f
-                        text = "Always ON 常亮模式自定义设置\n 翻转亮屏，敏感消息隐藏等设置"
+                        text = context.getString(R.string.main_aod_settings)
                         horizontalPadding = dip(16)
                         gravity = Gravity.CENTER_HORIZONTAL
                     }.lparams {

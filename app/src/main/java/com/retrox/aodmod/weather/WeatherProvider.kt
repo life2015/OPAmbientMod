@@ -1,7 +1,7 @@
 package com.retrox.aodmod.weather
 
+import android.app.AlarmManager
 import android.app.AndroidAppHelper
-import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.pm.PackageManager
 import android.database.ContentObserver
@@ -9,7 +9,10 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Handler
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.app.App
+import com.retrox.aodmod.pref.XPref
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -182,7 +185,7 @@ object WeatherProvider {
 //                Log.d(str2, stringBuilder3.toString())
                 weatherData.timestamp = SimpleDateFormat("yyyyMMddkkmm", Locale.getDefault()).parse(string2).time / 1000
                 weatherData.cityName = string
-                weatherData.weatherCode = 0 // fake code 本来是对应图标的
+                weatherData.weatherCode = string3.toInt()
                 weatherData.weatherName = string4
                 weatherData.temperature = Integer.parseInt(string5)
                 weatherData.temperatureHigh = Integer.parseInt(string6)
@@ -272,7 +275,48 @@ object WeatherProvider {
         }
 
         fun toBriefString(): String {
-            return "$weatherName $temperature$temperatureUnit"
+            val weatherEmoji = SmaliImports.getEmojiForCode(weatherCode)
+            val stringBuilder = java.lang.StringBuilder()
+            if (XPref.getWeatherShowSymbol()) {
+                stringBuilder.append(weatherEmoji)
+                stringBuilder.append(" ")
+            }
+            if (XPref.getWeatherShowCondition()) {
+                stringBuilder.append(weatherName)
+                stringBuilder.append(" ")
+            }
+            if (XPref.getWeatherShowTemperature()) {
+                stringBuilder.append(temperature)
+                stringBuilder.append(temperatureUnit)
+            }
+            val isCityNameEnabled = XPref.getWeatherShowCity()
+            if (isCityNameEnabled) {
+                stringBuilder.append("\n")
+                stringBuilder.append(cityName)
+            }
+            if (XPref.getShowAlarm()) {
+                val alarmManager =
+                    context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val nextAlarm = alarmManager.nextAlarmClock
+                val nextAlarmTime = nextAlarm.triggerTime
+                val currentTime = System.currentTimeMillis()
+                if (nextAlarmTime - currentTime <= 86400000) {
+                    if (isCityNameEnabled) {
+                        if (XPref.getShowBullets()) {
+                            stringBuilder.append(" • ")
+                        }
+                    } else {
+                        stringBuilder.append("\n")
+                    }
+                    //Alarm is within next 24h
+                    if (XPref.getShowAlarmEmoji()) {
+                        stringBuilder.append("⏰")
+                        stringBuilder.append(" ")
+                    }
+                    stringBuilder.append(SmaliImports.getFormattedTime(nextAlarmTime))
+                }
+            }
+            return stringBuilder.toString().trim { it <= ' ' }
         }
     }
 

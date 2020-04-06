@@ -1,6 +1,6 @@
 package com.retrox.aodmod.app.state
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.provider.Settings
 import com.retrox.aodmod.app.XposedUtils

@@ -39,25 +39,35 @@ object XPref {
 
     fun isAndroidQ() = Build.VERSION.SDK_INT > Build.VERSION_CODES.P
 
-    fun getDisplayMode() = XPref.getPref().getString("AODMODE", "ALWAYS_ON") ?: ""
-    fun getMusicAodEnabled() = XPref.getPref().getBoolean("MUSICSHOWONAOD",true)
-    fun getFilpOffMode() = XPref.getPref().getBoolean("FILPOFFSCREEN", true)
-    fun getAodShowSensitiveContent() = XPref.getPref().getBoolean("AODSHOWSENSITIVECONTENT", true)
-    fun getFontWithSystem() = XPref.getPref().getBoolean("FONTWITHSYSTEM", false)
-    fun getMusicOffsetEnabled() = XPref.getPref().getBoolean("MUSICDISPLAYOFFSET", false)
-    fun getAutoScreenOffAfterHourEnabled() = XPref.getPref().getBoolean("AUTOCLOSEAFTERHOUR", true)
-    fun getAutoBrightnessEnabled() = XPref.getPref().getBoolean("AUTOBRIGHTNESS", true)
-    fun getAlarmTimeCorrection() = XPref.getPref().getBoolean("ALARMTIMECORRECTION", true)
-    fun getAodShowWeather() = XPref.getPref().getBoolean("AODSHOWWEATHER", true)
-    fun getAodShowNote() = XPref.getPref().getBoolean("AODSHOWNOTE", false)
-    fun getAodNoteContent() = XPref.getPref().getString("AODNOTECONTENT", "") ?: ""
-    fun getAodLayoutTheme() = XPref.getPref().getString("AODLAYOUTTHEME", "Flat") ?: "Flat"
-    fun getAodAlarmMode() = XPref.getPref().getString("AODALARMMODE", "Alarm-TimeOutMode") ?: "Alarm-TimeOutMode"
-    fun getAodPickCheckEnabled() = XPref.getPref().getBoolean("AODPICKCHECK", false)
-    fun getAodAutoCloseBySeconds() = XPref.getPref().getBoolean("AUTOCLOSEBYSECONDS", false)
-    fun getAodNightModeAutoOff() = XPref.getPref().getBoolean("AUTOCLOSEBYNIGHTMODE", false)
-    fun getForceEnglishWordClock() = XPref.getPref().getBoolean("FORCEENGLISHWORDCLOCK", false)
-    fun getForceWordClockOnFlat() = XPref.getPref().getBoolean("FORCESHOWWORDCLOCKONFLAT", true)
+    fun getDisplayMode() = getPref().getString("AODMODE", "ALWAYS_ON") ?: ""
+    fun getMusicAodEnabled() = getPref().getBoolean("MUSICSHOWONAOD",true)
+    fun getFilpOffMode() = getPref().getBoolean("FILPOFFSCREEN", true)
+    fun getAodShowSensitiveContent() = getPref().getBoolean("AODSHOWSENSITIVECONTENT", true)
+    fun getFontWithSystem() = getPref().getBoolean("FONTWITHSYSTEM", false)
+    fun getMusicOffsetEnabled() = getPref().getBoolean("MUSICDISPLAYOFFSET", false)
+    fun getAutoScreenOffAfterHourEnabled() = getPref().getBoolean("AUTOCLOSEAFTERHOUR", true)
+    fun getAutoBrightnessEnabled() = getPref().getBoolean("AUTOBRIGHTNESS", true)
+    fun getAlarmTimeCorrection() = getPref().getBoolean("ALARMTIMECORRECTION", true)
+    fun getAodShowWeather() = getPref().getBoolean("AODSHOWWEATHER", true)
+    fun getAodShowNote() = getPref().getBoolean("AODSHOWNOTE", false)
+    fun getAodNoteContent() = getPref().getString("AODNOTECONTENT", "") ?: ""
+    fun getAodLayoutTheme() = getPref().getString("AODLAYOUTTHEME", "Flat") ?: "Flat"
+    fun getAodAlarmMode() = getPref().getString("AODALARMMODE", "Alarm-TimeOutMode") ?: "Alarm-TimeOutMode"
+    fun getAodPickCheckEnabled() = getPref().getBoolean("AODPICKCHECK", false)
+    fun getAodAutoCloseBySeconds() = getPref().getBoolean("AUTOCLOSEBYSECONDS", false)
+    fun getAodNightModeAutoOff() = getPref().getBoolean("AUTOCLOSEBYNIGHTMODE", false)
+    fun getForceEnglishWordClock() = getPref().getBoolean("FORCEENGLISHWORDCLOCK", false)
+    fun getForceWordClockOnFlat() = getPref().getBoolean("FORCESHOWWORDCLOCKONFLAT", true)
+    fun getDateFormat() = getPref().getString("KEY_DATE_FORMAT", "EEE, d MMM")
+    fun getIs24h() = getPref().getBoolean("KEY_24_HOUR", true)
+    fun getIsAmPm() = getPref().getBoolean("KEY_USE_AM_PM", true)
+    fun getWeatherShowSymbol() = getPref().getBoolean("KEY_WEATHER_SHOW_SYMBOL", true)
+    fun getWeatherShowCondition() = getPref().getBoolean("KEY_WEATHER_SHOW_CONDITION", true)
+    fun getWeatherShowTemperature() = getPref().getBoolean("KEY_WEATHER_SHOW_TEMPERATURE", true)
+    fun getWeatherShowCity() = getPref().getBoolean("KEY_WEATHER_SHOW_CITY", true)
+    fun getShowAlarm() = getPref().getBoolean("KEY_SHOW_ALARM", true)
+    fun getShowAlarmEmoji() = getPref().getBoolean("KEY_SHOW_ALARM_EMOJI", true)
+    fun getShowBullets() = getPref().getBoolean("KEY_SHOW_BULLETS", true)
 
 
 }

@@ -3,10 +3,10 @@ package com.retrox.aodmod.proxy
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.app.AndroidAppHelper
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.Observer
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent

@@ -1,7 +1,7 @@
 package com.retrox.aodmod.proxy.view.custom.components
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import android.graphics.Color
 import android.view.ViewManager
 import android.widget.TextView

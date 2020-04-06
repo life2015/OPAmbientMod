@@ -22,7 +22,7 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.*;
+import androidx.annotation.*;
 import android.view.View;
 import com.retrox.aodmod.MainHook;
 

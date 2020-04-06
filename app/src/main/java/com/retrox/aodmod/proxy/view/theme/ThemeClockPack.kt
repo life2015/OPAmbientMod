@@ -1,6 +1,6 @@
 package com.retrox.aodmod.proxy.view.theme
 
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import com.retrox.aodmod.shared.FileUtils
 import com.retrox.aodmod.shared.SharedFile
 import com.retrox.aodmod.shared.SharedFileReader

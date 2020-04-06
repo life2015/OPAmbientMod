@@ -1,6 +1,6 @@
 package com.retrox.aodmod.remote.lyric.model
 
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.remote.lyric.model.cache.CacheLyricProvider
 import com.retrox.aodmod.remote.lyric.model.netease.NetEaseLyricProvider

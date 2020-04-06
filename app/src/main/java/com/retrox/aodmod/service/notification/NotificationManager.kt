@@ -2,7 +2,7 @@ package com.retrox.aodmod.service.notification
 
 import android.app.AndroidAppHelper
 import android.app.Notification
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import com.retrox.aodmod.MainHook

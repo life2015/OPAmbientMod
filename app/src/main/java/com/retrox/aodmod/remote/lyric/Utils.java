@@ -12,10 +12,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.v4.provider.DocumentFile;
+import androidx.documentfile.provider.DocumentFile;
 import android.util.Log;
-
-import com.retrox.aodmod.MainHook;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -50,17 +48,6 @@ public class Utils {
     static void setSharedPreferences(SharedPreferences sp) {
         mSharedPreferences = sp;
     }
-
-    static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = null;
-        if (connectivityManager != null) {
-            activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        }
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
 
     static String readFile(String pathname) throws IOException {
         File file = new File(pathname);

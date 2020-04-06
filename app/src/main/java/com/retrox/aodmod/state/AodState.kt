@@ -1,6 +1,6 @@
 package com.retrox.aodmod.state
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.retrox.aodmod.data.NowPlayingMediaData
 import com.retrox.aodmod.extensions.LiveEvent
 import com.retrox.aodmod.receiver.PowerData

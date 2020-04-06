@@ -1,13 +1,13 @@
 package com.retrox.aodmod.service.notification;
 
-import android.arch.lifecycle.Observer;
+import androidx.lifecycle.Observer;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import com.retrox.aodmod.MainHook;
 import com.retrox.aodmod.state.AodState;

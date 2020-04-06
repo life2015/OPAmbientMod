@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.IXposedHookLoadPackage
@@ -46,7 +47,7 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
                 val timeTextView = TextView(headerContainer.context).apply {
                     textSize = 22f
                     textColor = Color.WHITE
-                    text = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Date())
+                    text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date())
                     gravity = Gravity.CENTER_HORIZONTAL
                     setGoogleSans()
                     layoutParams = LinearLayout.LayoutParams(matchParent, wrapContent).apply {

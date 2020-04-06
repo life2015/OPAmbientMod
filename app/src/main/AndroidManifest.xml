@@ -46,6 +46,7 @@
         <activity android:name=".app.EnglishLearnActivity"/>
         <activity android:name=".app.CustomActivity"/>
         <activity android:name=".app.AlarmSettingsActivity"/>
+        <activity android:name=".app.CustomSettingsActivity" android:theme="@style/Theme.AppCompat.Light"/>
 
 
         <service

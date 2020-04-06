@@ -1,12 +1,12 @@
 package com.retrox.aodmod.proxy.view
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.PowerManager
-import android.support.constraint.ConstraintLayout.LayoutParams.PARENT_ID
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import android.transition.TransitionManager
 import android.view.View
 import android.widget.ImageView

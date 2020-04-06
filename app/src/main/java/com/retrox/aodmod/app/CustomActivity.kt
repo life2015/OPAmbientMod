@@ -4,8 +4,8 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.hardware.camera2.params.ColorSpaceTransform
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.Gravity
 import android.view.View
 import android.widget.*
@@ -21,14 +21,14 @@ class CustomActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "主题色彩"
+        title = getString(R.string.activity_custom_title)
         scrollView {
             backgroundColor = Color.BLACK
             verticalLayout {
                 ThemeManager.getPresetThemes().forEach {
                     textView {
                         textColor = Color.WHITE
-                        text = "${it.themeName} 点击使用"
+                        text = context.getString(R.string.custom_theme_click_to_use, it.themeName)
                         setGradientTest(it)
                         textSize = 30f
                         tag = it
@@ -36,7 +36,7 @@ class CustomActivity : AppCompatActivity() {
                         setOnClickListener {
                             val pack = tag as ThemeClockPack
                             ThemeManager.setThemePackSync(pack)
-                            Toast.makeText(context, "主题已应用 ${pack.themeName}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.custom_theme_toast, pack.themeName), Toast.LENGTH_SHORT).show()
                         }
                     }.lparams(wrapContent, wrapContent)
                 }

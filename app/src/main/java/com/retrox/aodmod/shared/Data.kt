@@ -1,6 +1,6 @@
 package com.retrox.aodmod.shared
 
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import com.google.gson.Gson
 
 /**
