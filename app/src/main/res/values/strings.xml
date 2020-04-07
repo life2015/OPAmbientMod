@@ -237,6 +237,11 @@
     <string name="custom_settings_next_alarm_desc">Show the next alarm after the weather. Only shows alarms within the next 24h (shows on a second line)</string>
     <string name="custom_settings_alarm_emoji">Show alarm emoji</string>
     <string name="custom_settings_alarm_emoji_desc">Show alarm emoji before the next alarm time</string>
+    <string name="custom_settings_music">Music</string>
+    <string name="custom_settings_system_music">Use System Music</string>
+    <string name="custom_settings_system_music_desc">Use the system music controller listener, which may be more reliable when using TaiChi. Requires AOD music display to be enabled.</string>
+    <string name="custom_settings_pixel_music_icon">Use Pixel music icon</string>
+    <string name="custom_settings_pixel_music_icon_desc">Use the music icon from the Pixel always on display (animated, may be buggy)</string>
 
     <!-- Hour displayed in words on the typographic clock face. [CHAR LIMIT=12] -->
     <string-array name="type_clock_hours">

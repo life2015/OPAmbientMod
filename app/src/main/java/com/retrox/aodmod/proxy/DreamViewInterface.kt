@@ -1,14 +1,21 @@
 package com.retrox.aodmod.proxy
 
 import android.app.AndroidAppHelper
-import androidx.lifecycle.LifecycleOwner
 import android.content.Context
+import android.content.Context.MEDIA_SESSION_SERVICE
+import android.media.session.MediaController
+import android.media.session.MediaSessionManager
 import android.os.Vibrator
+import android.util.Log
 import android.view.Display
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import com.retrox.aodmod.extensions.isOP7Pro
 import com.retrox.aodmod.extensions.simpleTap
+import com.retrox.aodmod.music.MediaCallback
 import com.retrox.aodmod.pref.SystemPref
+import com.retrox.aodmod.pref.XPref
+
 
 interface DreamView {
     val layoutTheme: String
@@ -37,7 +44,7 @@ interface DreamProxyController {
 }
 
 abstract class AbsDreamView(private val dreamProxy: DreamProxy) : DreamProxyController by dreamProxy, LifecycleOwner by dreamProxy,
-    DreamView {
+    DreamView, MediaSessionManager.OnActiveSessionsChangedListener {
     override val context: Context
         get() = dreamProxy.dreamService
 
@@ -55,6 +62,53 @@ abstract class AbsDreamView(private val dreamProxy: DreamProxy) : DreamProxyCont
             setScreenDoze("SingleTap")
         } else {
             setScreenOff("SingleTap")
+        }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        if(XPref.getUseSystemMusic()) {
+            setupMediaListener()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if(XPref.getUseSystemMusic()) {
+            removeMediaListener()
+        }
+    }
+
+    private fun setupMediaListener(){
+        val mediaSessionManager: MediaSessionManager = context.getSystemService(MEDIA_SESSION_SERVICE) as MediaSessionManager
+        mediaSessionManager.addOnActiveSessionsChangedListener(this, null)
+        onActiveSessionsChanged(mediaSessionManager.getActiveSessions(null))
+    }
+
+    private fun removeMediaListener(){
+        val mediaSessionManager: MediaSessionManager = context.getSystemService(MEDIA_SESSION_SERVICE) as MediaSessionManager
+        mediaSessionManager.removeOnActiveSessionsChangedListener(this)
+    }
+
+    private var controllers: List<MediaController>? = null
+    private val callbacks: HashMap<String, MediaCallback> = HashMap()
+
+    override fun onActiveSessionsChanged(list: MutableList<MediaController>) {
+        for (controller in list) {
+            if (controller.packageName != null && callbacks.containsKey(controller.packageName)) {
+                callbacks[controller.packageName]?.let {
+                    controller.unregisterCallback(it)
+                    callbacks.remove(controller.packageName)
+                }
+            }
+        }
+        controllers = list
+        for (controller in list) {
+            if (controller.packageName != null) {
+                val mediaCallback = MediaCallback(controller, context)
+                controller.registerCallback(mediaCallback)
+                callbacks[controller.packageName] = mediaCallback
+            }
         }
     }
 }

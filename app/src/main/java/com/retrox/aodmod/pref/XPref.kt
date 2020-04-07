@@ -68,6 +68,8 @@ object XPref {
     fun getShowAlarm() = getPref().getBoolean("KEY_SHOW_ALARM", true)
     fun getShowAlarmEmoji() = getPref().getBoolean("KEY_SHOW_ALARM_EMOJI", true)
     fun getShowBullets() = getPref().getBoolean("KEY_SHOW_BULLETS", true)
+    fun getUseSystemMusic() = getPref().getBoolean("USE_SYSTEM_MUSIC", false)
+    fun getUsePixelMusicIcon() = getPref().getBoolean("USE_PIXEL_MUSIC_ICON", false)
 
 
 }
