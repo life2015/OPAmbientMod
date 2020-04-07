@@ -32,11 +32,11 @@ object SmaliImports {
         } else {
             if (getIsAmPm()) {
                 val format =
-                    SimpleDateFormat("hh:mm a", Locale.getDefault())
+                    SimpleDateFormat("h:mm a", Locale.getDefault())
                 format.format(time)
             } else {
                 val format =
-                    SimpleDateFormat("hh:mm", Locale.getDefault())
+                    SimpleDateFormat("h:mm", Locale.getDefault())
                 format.format(time)
             }
         }
