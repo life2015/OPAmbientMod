@@ -1,11 +1,17 @@
 package com.retrox.aodmod.app.util
 
+import android.app.AndroidAppHelper
 import android.content.Context
+import android.content.res.Configuration
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.shared.SharedContentManager
+import de.robv.android.xposed.XposedHelpers
+import org.jetbrains.anko.configuration
 import org.jetbrains.anko.runOnUiThread
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -61,9 +67,9 @@ object Utils {
         if (strings.isNotEmpty()) {
             context.runOnUiThread {
                 Toast.makeText(
-                    context,
-                    context.getString(R.string.pid_restart_toast, strings[1]),
-                    Toast.LENGTH_SHORT
+                        context,
+                        context.getString(R.string.pid_restart_toast, strings[1]),
+                        Toast.LENGTH_SHORT
                 ).show()
 
                 thread {
@@ -110,4 +116,77 @@ object Utils {
             ex.printStackTrace()
         }
     }
+}
+
+fun runOnMainThread(invokeMethod: () -> Unit) {
+    val mainHandler = Handler(Looper.getMainLooper())
+    mainHandler.post {
+        invokeMethod.invoke()
+    }
+}
+
+fun getObjectFieldOrNull(thisObject: Any?, fieldName: String): Any? {
+    return try {
+        XposedHelpers.getObjectField(thisObject, fieldName)
+    } catch (e: NoSuchFieldError) {
+        null
+    }
+}
+
+fun getClassOrNull(clazz: String): Class<*>? {
+    return try {
+        Class.forName(clazz)
+    } catch (e: ClassNotFoundException) {
+        return null
+    }
+}
+
+val mainLooper: Looper
+    get() {
+        return if (getClassOrNull("android.app.AndroidAppHelper") != null) {
+            AndroidAppHelper.currentApplication().mainLooper
+        } else {
+            Looper.getMainLooper()
+        }
+    }
+
+fun logD(message: String){
+    Log.d("OPAodMod", message)
+}
+
+fun logE(message: String){
+    Log.d("OPAodMod", message)
+}
+
+fun logEE(message: String, e: Exception){
+    Log.d("OPAodMod", message, e)
+}
+
+fun Context.isDarkTheme(): Boolean {
+    val currentNightMode = configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    return when (currentNightMode) {
+        Configuration.UI_MODE_NIGHT_NO -> false
+        Configuration.UI_MODE_NIGHT_YES -> true
+        else -> false
+    }
+}
+
+fun getSystemContext(): Context {
+    // a prepared Looper is required for the calls below to succeed
+    if (Looper.getMainLooper() == null) {
+        try {
+            Looper.prepareMainLooper()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    val cActivityThread = Class.forName("android.app.ActivityThread")
+    val mSystemMain = cActivityThread.getMethod("systemMain")
+    val mGetSystemContext = cActivityThread.getMethod("getSystemContext")
+
+    val oActivityThread = mSystemMain.invoke(null)
+    val oContext = mGetSystemContext.invoke(oActivityThread)
+
+    return oContext as Context
 }

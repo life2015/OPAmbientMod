@@ -1,15 +1,18 @@
 package com.retrox.aodmod.proxy.view.custom.flat
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewManager
 import android.widget.TextView
+import com.retrox.aodmod.pref.XPref
 import de.robv.android.xposed.XposedHelpers
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.singleLine
 
+@SuppressLint("AppCompatCustomView")
 class MarqueTextView : TextView {
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {}
@@ -33,8 +36,11 @@ class MarqueTextView : TextView {
     }
 
     private fun setMarqueeTime() {
-        val clazz = XposedHelpers.findClass("android.widget.TextView.Marquee", javaClass.classLoader)
-        XposedHelpers.setStaticIntField(clazz, "MARQUEE_DELAY", 100000)
+        if(!XPref.isSettings()){
+            val clazz =
+                XposedHelpers.findClass("android.widget.TextView.Marquee", javaClass.classLoader)
+            XposedHelpers.setStaticIntField(clazz, "MARQUEE_DELAY", 100000)
+        }
     }
 }
 

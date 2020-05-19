@@ -8,4 +8,83 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Settings" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.ExtraSmall.OPAodMod" parent="TextAppearance.AppCompat.Small">
+        <item name="android:fontFamily">@font/googlesans</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Small.OPAodMod" parent="TextAppearance.AppCompat.Small">
+        <item name="android:fontFamily">@font/googlesans</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Small.OPAodMod.Medium" parent="TextAppearance.AppCompat.Small">
+        <item name="android:fontFamily">@font/googlesans_medium</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Medium.OPAodMod" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:fontFamily">@font/googlesans</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Large.OPAodMod" parent="TextAppearance.AppCompat.Large">
+        <item name="android:fontFamily">@font/googlesans</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:navigationBarColor">@color/sheet_color</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog.Dark" parent="@style/Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:navigationBarColor">@color/sheet_color</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_rounded_bg</item>
+    </style>
+
+    <style name="AppTheme.ThirdPartyLicences" parent="Theme.MaterialComponents.DayNight">
+        <item name="actionBarStyle">@style/ThirdPartyLicencesToolbarTheme</item>
+        <item name="android:statusBarColor">@color/toolbar_color_solid</item>
+        <item name="android:navigationBarColor">?android:windowBackground</item>
+        <item name="android:windowLightStatusBar">@bool/lightStatusNav</item>
+        <item name="android:windowLightNavigationBar">@bool/lightStatusNav</item>
+        <item name="android:textViewStyle">@style/ThirdPartyLicencesTextViewStyle</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ThirdPartyLicencesToolbarTheme" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="background">@color/toolbar_color_solid</item>
+        <item name="titleTextStyle">@style/ThirdPartyLicencesToolbarTitleStyle</item>
+        <item name="colorControlNormal">@color/colorBlack</item>
+        <item name="homeAsUpIndicator">@drawable/ic_back</item>
+    </style>
+
+    <style name="ThirdPartyLicencesToolbarTitleStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:fontFamily">@font/googlesans</item>
+    </style>
+
+    <style name="ThirdPartyLicencesTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/googlesans</item>
+    </style>
+
 </resources>

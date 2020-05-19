@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_raise_detection"
+        android:title="@string/settings_general_raise_detection"
+        android:summary="@string/settings_general_raise_detection_desc"
+        android:icon="@drawable/ic_settings_general_raise_detection" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_flip_mode"
+        android:title="@string/settings_general_flip_mode"
+        android:summary="@string/settings_general_flip_mode_desc"
+        android:icon="@drawable/ic_settings_general_pocket_mode" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_night_mode"
+        android:title="@string/settings_general_night_mode"
+        android:summary="@string/settings_general_night_mode_desc"
+        android:icon="@drawable/ic_settings_general_night_mode"/>
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_auto_brightness"
+        android:title="@string/settings_general_auto_brightness"
+        android:summary="@string/settings_general_auto_brightness_desc"
+        android:icon="@drawable/ic_settings_general_auto_brightness"/>
+
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:key="general_aod_memo"
+        android:title="@string/settings_general_aod_memo"
+        android:summary="@string/settings_general_aod_memo_desc"
+        android:icon="@drawable/ic_settings_general_memo"/>
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_sensitive_notifications"
+        android:title="@string/settings_general_sensitive_notifications"
+        android:summary="@string/settings_general_sensitive_notifications_desc"
+        android:icon="@drawable/ic_settings_general_sensitive_notifications"/>
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_system_font"
+        android:title="@string/settings_general_system_font"
+        android:summary="@string/settings_general_system_font_desc"
+        android:icon="@drawable/ic_settings_general_system_font"/>
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_ten_minutes"
+        android:title="@string/settings_general_ten_minutes"
+        android:summary="@string/settings_general_ten_minutes_desc"
+        android:icon="@drawable/ic_settings_general_ten_minutes"/>
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_turn_off_after_fifteen_seconds"
+        android:title="@string/settings_general_turn_off_after_fifteen_seconds"
+        android:summary="@string/settings_general_turn_off_after_fifteen_seconds_desc"
+        android:icon="@drawable/ic_settings_general_turn_off_after_fifteen_seconds"/>
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_force_english"
+        android:title="@string/settings_general_force_english"
+        android:summary="@string/settings_general_force_english_desc"
+        android:icon="@drawable/ic_settings_general_force_english"/>
+
+</PreferenceScreen>

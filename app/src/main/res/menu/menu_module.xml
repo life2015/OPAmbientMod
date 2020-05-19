@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/settings_module_menu_old_settings"
+        android:id="@+id/menu_module_old_settings"/>
+
+    <item android:title="@string/settings_module_menu_third_party_licences"
+        android:id="@+id/menu_module_third_party"/>
+
+</menu>

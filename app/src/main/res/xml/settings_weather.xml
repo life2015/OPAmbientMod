@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:key="settings_weather_current_condition"
+        android:title="@string/settings_weather_current_condition"
+        android:icon="@drawable/ic_weather" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_weather_condition"
+        android:title="@string/settings_weather_show_condition"
+        android:summary="@string/settings_weather_show_condition_desc"
+        android:icon="@drawable/ic_settings_weather_condition" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_weather_condition_text"
+        android:title="@string/settings_weather_show_condition_text"
+        android:summary="@string/settings_weather_show_condition_text_desc"
+        android:icon="@drawable/ic_settings_general_system_font" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_weather_tempeature"
+        android:title="@string/settings_weather_show_temperature"
+        android:summary="@string/settings_weather_show_temperature_desc"
+        android:icon="@drawable/ic_settings_weather_thermometer" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_weather_city"
+        android:title="@string/settings_weather_show_city"
+        android:summary="@string/settings_weather_show_city_desc"
+        android:icon="@drawable/ic_settings_weather_city" />
+
+</PreferenceScreen>

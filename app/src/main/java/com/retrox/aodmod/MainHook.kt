@@ -10,10 +10,7 @@ import com.retrox.aodmod.hooks.*
 import com.retrox.aodmod.proxy.DreamProxyHook
 import com.retrox.aodmod.proxy.OP7DreamProxyHook
 import com.retrox.aodmod.shared.SharedLogger
-import de.robv.android.xposed.IXposedHookInitPackageResources
-import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.IXposedHookZygoteInit
-import de.robv.android.xposed.XposedBridge
+import de.robv.android.xposed.*
 import de.robv.android.xposed.callbacks.XC_InitPackageResources
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -64,6 +61,17 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
 
 
 //        DreamLifeCycleHook.handleLoadPackage(lpparam)
+
+        if(lpparam.packageName == BuildConfig.APPLICATION_ID){
+            //Self hooking for EdXposed check
+            XposedHelpers.findAndHookMethod("com.retrox.aodmod.app.XposedUtils", lpparam.classLoader,"isEdXposedModuleActive", object: XC_MethodReplacement(){
+                override fun replaceHookedMethod(param: MethodHookParam?): Any {
+                    //Just return true
+                    param?.result = true
+                    return true
+                }
+            })
+        }
 
     }
 

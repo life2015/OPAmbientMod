@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_clock_general">
+
+        <com.retrox.aodmod.app.settings.preference.SwitchPreference
+            android:icon="@drawable/ic_settings_clock_24h"
+            android:key="clock_use_24h"
+            android:summary="@string/settings_clock_24h_desc"
+            android:title="@string/settings_clock_24h" />
+
+        <com.retrox.aodmod.app.settings.preference.SwitchPreference
+            android:icon="@drawable/ic_settings_clock_am_pm"
+            android:key="clock_show_am_pm"
+            android:summary="@string/settings_clock_show_am_pm_desc"
+            android:title="@string/settings_clock_show_am_pm" />
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:icon="@drawable/ic_settings_clock_date_format"
+            android:key="clock_date_format_string"
+            android:title="@string/settings_clock_date_format" />
+
+        <com.retrox.aodmod.app.settings.preference.SwitchPreference
+            android:icon="@drawable/ic_settings_general_system_font"
+            android:key="clock_word_clock_flat"
+            android:summary="@string/settings_clock_word_clock_flat_desc"
+            android:title="@string/settings_clock_word_clock_flat" />
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_clock_alarm">
+
+        <com.retrox.aodmod.app.settings.preference.SwitchPreference
+            android:icon="@drawable/ic_settings_clock_alarm"
+            android:key="clock_show_alarm"
+            android:summary="@string/settings_clock_show_alarm_desc"
+            android:title="@string/settings_clock_show_alarm" />
+
+        <com.retrox.aodmod.app.settings.preference.SwitchPreference
+            android:icon="@drawable/ic_settings_clock_emoji"
+            android:key="clock_show_alarm_emoji"
+            android:summary="@string/settings_clock_show_alarm_emoji"
+            android:title="@string/settings_clock_show_alarm_emoji_desc" />
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_clock_advanced">
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:key="clock_advanced_sync"
+            android:icon="@drawable/ic_settings_clock_alignment"
+            android:title="@string/settings_clock_advanced_clock_sync"
+            android:summary="@string/settings_clock_advanced_clock_sync_desc"/>
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+</PreferenceScreen>

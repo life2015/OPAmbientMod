@@ -25,4 +25,9 @@ class ThemeClockPack(
 
         override val fileName: String = "ThemeClockPack"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if(other is ThemeClockPack) return other.themeName == themeName
+        return super.equals(other)
+    }
 }

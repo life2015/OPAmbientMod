@@ -39,6 +39,9 @@
 -keep class com.retrox.aodmod.proxy.view.theme.ThemeClockPack{*;}
 -keep class com.retrox.aodmod.app.util.Utils{*;}
 
+# Do not remove - Required by the EdXposed check
+-keep class com.retrox.aodmod.app.XposedUtils{*;}
+
 # Kotlin
 -keep class kotlin.Metadata { *; }
 -dontnote kotlin.internal.PlatformImplementationsKt

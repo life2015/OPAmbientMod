@@ -294,28 +294,6 @@ object WeatherProvider {
                 stringBuilder.append("\n")
                 stringBuilder.append(cityName)
             }
-            if (XPref.getShowAlarm()) {
-                val alarmManager =
-                    context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                val nextAlarm = alarmManager.nextAlarmClock
-                val nextAlarmTime = nextAlarm.triggerTime
-                val currentTime = System.currentTimeMillis()
-                if (nextAlarmTime - currentTime <= 86400000) {
-                    if (isCityNameEnabled) {
-                        if (XPref.getShowBullets()) {
-                            stringBuilder.append(" • ")
-                        }
-                    } else {
-                        stringBuilder.append("\n")
-                    }
-                    //Alarm is within next 24h
-                    if (XPref.getShowAlarmEmoji()) {
-                        stringBuilder.append("⏰")
-                        stringBuilder.append(" ")
-                    }
-                    stringBuilder.append(SmaliImports.getFormattedTime(nextAlarmTime))
-                }
-            }
             return stringBuilder.toString().trim { it <= ' ' }
         }
     }

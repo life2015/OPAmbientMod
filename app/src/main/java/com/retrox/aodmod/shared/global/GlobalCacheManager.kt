@@ -1,6 +1,7 @@
 package com.retrox.aodmod.shared.global
 
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.app.util.logEE
 import com.retrox.aodmod.extensions.chmod777
 import com.retrox.aodmod.shared.FileUtils
 import java.io.File
@@ -44,7 +45,7 @@ object GlobalCacheManager {
             fin.close()
             return text
         } catch (e: Exception) {
-            MainHook.logE(msg = "读取缓存错误", t = e)
+            logEE("读取缓存错误", e)
             e.printStackTrace()
             return null
         }

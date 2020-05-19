@@ -32,7 +32,7 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
 
     private var sharedPreferences: SharedPreferences? = null
     private val dateFormats =
-        arrayOf("EEE, d MMM", "EEE, MMM d", "dd/MM/y", "MM/dd/y")
+        arrayOf("EEE, d MMM", "EEE, MMM d", "dd/MM/y", "MM/dd/y", "d/M/y", "M/d/y")
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val activity = this.activity as? AppCompatActivity ?: return
@@ -53,7 +53,9 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
             getDateFormatted(dateFormats[0]),
             getDateFormatted(dateFormats[1]),
             getDateFormatted(dateFormats[2]),
-            getDateFormatted(dateFormats[3])
+            getDateFormatted(dateFormats[3]),
+            getString(R.string.custom_settings_date_format_no_leading, getDateFormatted(dateFormats[4])),
+            getString(R.string.custom_settings_date_format_no_leading, getDateFormatted(dateFormats[5]))
         )
         dateFormat.entryValues = dateFormats
         dateFormat.value = getStringPreference(KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT)

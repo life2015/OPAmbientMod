@@ -3,6 +3,7 @@ package com.retrox.aodmod.app
 import android.app.Application
 import android.content.SharedPreferences
 import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.shared.global.BaseFileManager
 import com.retrox.aodmod.shared.global.GlobalCacheManager
 import com.retrox.aodmod.shared.global.GlobalKV
@@ -45,6 +46,7 @@ class App : Application() {
         OwnFileManager.getOwnFileDir()
         GlobalCacheManager.getCacheFileDir()
         GlobalKV.getKVFileDir()
+        XPref.context = WeakReference(this)
 
     }
 }

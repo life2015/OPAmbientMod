@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/menu_nav_bar_settings_aod"
+        android:id="@+id/menu_nav_bar_settings_aod"
+        android:icon="@drawable/ic_aod"/>
+
+    <item android:title="@string/menu_nav_bar_settings_clock"
+        android:id="@+id/menu_nav_bar_settings_clock"
+        android:icon="@drawable/ic_clock"/>
+
+    <item android:title="@string/menu_nav_bar_settings_music"
+        android:id="@+id/menu_nav_bar_settings_music"
+        android:icon="@drawable/ic_music_nav"/>
+
+    <item android:title="@string/menu_nav_bar_settings_weather"
+        android:id="@+id/menu_nav_bar_settings_weather"
+        android:icon="@drawable/ic_weather"/>
+
+</menu>

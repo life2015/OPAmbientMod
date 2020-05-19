@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_module_module_status">
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:title="@string/settings_module_status_xposed"
+            android:key="module_status_xposed" />
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:title="@string/settings_module_status_working"
+            android:key="module_status_working" />
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_module_required_setup">
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:key="module_pick_up_display"
+            android:title="@string/settings_module_status_pick_up_display" />
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:key="module_storage_permission"
+            android:title="@string/settings_module_status_storage_permission" />
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_module_options">
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:key="module_options"
+            android:title="@string/settings_module_settings"
+            android:icon="@drawable/ic_module_settings"
+            android:summary="@string/settings_module_settings_desc" />
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_module_help">
+
+        <com.retrox.aodmod.app.settings.preference.ButtonsPreference
+            android:key="module_troubleshooting"
+            android:title="@string/settings_module_troubleshooting"
+            android:icon="@drawable/ic_module_help"
+            android:summary="@string/settings_module_troubleshooting_desc" />
+
+        <com.retrox.aodmod.app.settings.preference.ButtonsPreference
+            android:key="module_groups"
+            android:title="@string/settings_module_groups"
+            android:icon="@drawable/ic_module_groups"
+            android:summary="@string/settings_module_groups_desc" />
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_module_about">
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:key="module_about"
+            android:title="@string/settings_module_about_info"
+            android:icon="@drawable/ic_info"
+            android:summary="@string/settings_module_about_info_desc" />
+
+        <com.retrox.aodmod.app.settings.preference.Preference
+            android:key="module_translators"
+            android:title="@string/settings_module_translators"
+            android:icon="@drawable/ic_settings_general_force_english"
+            android:summary="@string/settings_module_translators_desc" />
+
+        <com.retrox.aodmod.app.settings.preference.ButtonsPreference
+            android:key="module_donate"
+            android:title="@string/settings_module_about_donate"
+            android:icon="@drawable/ic_settings_module_donate"
+            android:summary="@string/settings_module_about_donate_desc" />
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:icon="@drawable/ic_info"
+        android:title="@string/settings_clock_alignment_info"
+        android:summary="@string/settings_clock_alignment_info_desc"/>
+
+    <com.retrox.aodmod.app.settings.preference.RadioButtonPreference
+        android:key="system_broadcast"
+        android:icon="@drawable/ic_settings_clock_alignment_broadcast"
+        android:title="@string/settings_clock_alignment_system_broadcast"
+        android:summary="@string/settings_clock_alignment_system_broadcast_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.RadioButtonPreference
+        android:key="alarm_manager"
+        android:icon="@drawable/ic_settings_clock_alarm"
+        android:title="@string/settings_clock_alignment_alarmmanager"
+        android:summary="@string/settings_clock_alignment_alarmmanager_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.RadioButtonPreference
+        android:key="alarm_manager_timeout"
+        android:icon="@drawable/ic_settings_clock_alignment_alarm_manager_timeout"
+        android:title="@string/settings_clock_alignment_alarmmanager_timeout"
+        android:summary="@string/settings_clock_alignment_alarmmanager_timeout_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.RadioButtonPreference
+        android:key="choreographer"
+        android:icon="@drawable/ic_settings_clock_alignment_choreographer"
+        android:title="@string/settings_clock_alignment_choreographer"
+        android:summary="@string/settings_clock_alignment_choreographer_desc" />
+
+</PreferenceScreen>

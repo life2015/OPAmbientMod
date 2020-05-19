@@ -11,6 +11,9 @@ import android.transition.TransitionManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.retrox.aodmod.R
+import com.retrox.aodmod.app.util.logD
+import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.pref.XPref
@@ -34,7 +37,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             startToStart = PARENT_ID
             topToTop = PARENT_ID
             endToEnd = PARENT_ID
-            topMargin = dip(120)
+            topMargin = getTopMargin()
         }
         addView(clockView)
 
@@ -114,10 +117,10 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
 
             AodState.powerState.observe(lifecycleOwner, Observer {
                 it?.let {
-                    var statusText = if (it.plugged) "Charging" else ""
-                    if (it.fastCharge) statusText = "Quick Charging"
-                    if (it.charged) statusText = "Charged"
-                    if (AodState.sleepMode) statusText += " SleepMode"
+                    var statusText = if (it.plugged) ResourceUtils.getInstance(context).getString(R.string.charging_charging) else ""
+                    if (it.fastCharge) statusText = ResourceUtils.getInstance(context).getString(R.string.charging_quick_charging)
+                    if (it.charged) statusText = ResourceUtils.getInstance(context).getString(R.string.charging_charged)
+                    if (AodState.sleepMode) statusText += " " + ResourceUtils.getInstance(context).getString(R.string.charging_sleep_mode)
                     text = "${it.level}%  $statusText"
                 }
             })
@@ -141,29 +144,31 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
             }
             if (animWakeLock.isHeld) animWakeLock.release()
         }
-        HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
-            it?.let {
-                // do Animation now
-                removeCallbacks(headSetViewReset)
-                if (animWakeLock.isHeld) {
-                    animWakeLock.release()
+        if(!XPref.isSettings()) {
+            HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+                it?.let {
+                    // do Animation now
+                    removeCallbacks(headSetViewReset)
+                    if (animWakeLock.isHeld) {
+                        animWakeLock.release()
+                    }
+                    animWakeLock.acquire(10000L)
+
+                    val delay = when (it) {
+                        is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
+                        is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
+                        is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
+                        is HeadSetReceiver.ConnectionState.ZenModeChange -> 4000L
+                    }
+
+                    TransitionManager.beginDelayedTransition(this)
+                    findViewById<View>(Ids.ly_music_control).visibility = View.INVISIBLE
+                    findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
+
+                    postDelayed(headSetViewReset, delay)
                 }
-                animWakeLock.acquire(10000L)
-
-                val delay = when (it) {
-                    is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
-                    is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
-                    is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
-                    is HeadSetReceiver.ConnectionState.ZenModeChange -> 4000L
-                }
-
-                TransitionManager.beginDelayedTransition(this)
-                findViewById<View>(Ids.ly_music_control).visibility = View.INVISIBLE
-                findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
-
-                postDelayed(headSetViewReset, delay)
-            }
-        })
+            })
+        }
 
         val notificationAnimReset = Runnable {
             TransitionManager.beginDelayedTransition(this)
@@ -219,6 +224,7 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
         addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             applyRecursively {
                 val pack = ThemeManager.getCurrentColorPack()
+                logD("Pack ${pack.themeName}")
                 when (it) {
                     is TextView -> it.setGradientTest()
                     is ImageView -> it.imageTintList = ColorStateList.valueOf(Color.parseColor(pack.tintColor))
@@ -232,5 +238,13 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
     }
 
 
+}
+
+private fun View.getTopMargin() : Int {
+    return if(XPref.isSettings()){
+        0
+    }else{
+        dip(120)
+    }
 }
 

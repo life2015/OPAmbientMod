@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="sensitive_notification">Notificacion nueva</string>
+
+    <!-- New Settings UI -->
+    <string name="menu_nav_bar_settings_aod">General</string>
+    <string name="menu_nav_bar_settings_clock">Reloj</string>
+    <string name="menu_nav_bar_settings_music">Musica</string>
+    <string name="menu_nav_bar_settings_weather">Clima</string>
+    <string name="menu_nav_bar_settings_theme">Tema</string>
+    <string name="bs_theme_picker_title">Selector de temas</string>
+
+    <string name="bs_theme_name_default">Predeterminado</string>
+    <string name="bs_theme_name_flat">Plano</string>
+    <string name="bs_theme_name_dvd">DVD</string>
+    <string name="bs_theme_name_pure_music">Musica Puro</string>
+    <string name="bs_theme_name_flat_music">Musica Plano</string>
+    <string name="bs_theme_name_word">Texto</string>
+    <string name="settings_general_raise_detection">Rise detection</string>
+    <string name="settings_general_raise_detection_desc">Muestra el AoD solo cuando levantas el telefono. Solo testeado en el 7 Pro, y no se garantiza que funcione igual en otros dispositivos.</string>
+    <string name="settings_general_aod_memo">Mensaje en Ambient Display</string>
+    <string name="settings_general_aod_memo_desc">Configura el texto que se mostrara (en los temas que lo soporten).</string>
+    <string name="settings_general_night_mode">Desactivar Ambient Display cuando el Modo Noche esta activado</string>
+    <string name="settings_general_night_mode_desc">Habilita esto para que el AoD no se muestre cuando el Modo Noche del sistema esta activado. Toma nota de esta configuracion, ya que suele ser la causa de bugs mal reportados!</string>
+    <string name="settings_general_force_english">Siempre usar ingles en el tema \'Texto\' </string>
+    <string name="settings_general_force_english_desc">Habilita esto para usar ingles en el tema \'Texto\' , independientemente del tema del dispositivo.</string>
+    <string name="settings_general_flip_mode">Modo Bolsillo</string>
+    <string name="settings_general_flip_mode_desc">Apaga la pantalla cuando el dispositivo esta en un bolsillo. Para ahorrar bateria, se recomienda activar este modo.</string>
+    <string name="settings_general_auto_brightness">Brillo Automatico</string>
+    <string name="settings_general_auto_brightness_desc">Ajusta el brillo automaticamente para ahorrar bateria.</string>
+    <string name="settings_general_sensitive_notifications">Ocultar Notificaciones Sensibles</string>
+    <string name="settings_general_sensitive_notifications_desc">Oculta notificaciones sensibles, como los mensajes, en el AoD.</string>
+    <string name="settings_general_system_font">Google Sans Font</string>
+    <string name="settings_general_system_font_desc">Usar la fuente Google Sans en la pantalla de bloqueo. Desactivar para usar la fuente del sistema.</string>
+    <string name="settings_general_ten_minutes">Apagar luego de 10 minutos</string>
+    <string name="settings_general_ten_minutes_desc">Oculta el AoD luego de 10 minutos de inactividad.</string>
+    <string name="settings_general_turn_off_after_fifteen_seconds">Apagar luego de 15 segundos</string>
+    <string name="settings_general_turn_off_after_fifteen_seconds_desc">Apaga el AoD luego de 15 segundos. Esto funciona mejor con Rise Detection, para los que solo quieran ver sus notificaciones. Tiene mas prioridad que la opcion de 10 minutos.</string>
+    <string name="settings_general_aod_memo_input">Mensaje</string>
+    <string name="settings_general_aod_memo_helper">Dejar en blanco para no mostrar nada.</string>
+    <string name="settings_clock_word_clock_flat">Reloj de Texto</string>
+    <string name="settings_clock_word_clock_flat_desc">Usar Reloj de Texto en el Tema Plano.</string>
+    <string name="settings_clock_date_format">Formato de Hora</string>
+    <string name="settings_clock_24h">Reloj de 24 Horas</string>
+    <string name="settings_clock_24h_desc">Usa un reloj de 24 horas en el AoD.</string>
+    <string name="settings_clock_show_am_pm">Mostrar AM/PM</string>
+    <string name="settings_clock_show_am_pm_desc">Muestra AM/PM cuando se usa un reloj de 12 horas (luce bastante roto).</string>
+    <string name="settings_clock_general">General</string>
+    <string name="settings_clock_alarm">Alarma</string>
+    <string name="settings_clock_show_alarm">Mostrar Proxima Alarma</string>
+    <string name="settings_clock_show_alarm_desc">Muestra la proxima alarma luego del clima. Solo muestra alarmas en las proximas 24 horas (se muestra en la segunda linea).</string>
+    <string name="settings_clock_show_alarm_emoji_desc">Mostrar Emoji de alarma</string>
+    <string name="settings_clock_show_alarm_emoji">Muestra el emoji de un reloj antes de la proxima alarma.</string>
+    <string name="settings_music_master_switch">Habilitar Musica</string>
+    <string name="settings_music_use_system_music">Musica del Sistema</string>
+    <string name="settings_music_use_system_music_desc">Usa el controlador de musica del sistema, el cual puede ser mas confiable y estable.</string>
+    <string name="settings_music_use_pixel_icon">Icono de Musica de los Pixel</string>
+    <string name="settings_music_use_pixel_icon_desc">Usa el icon de musica del always on display de los Pixel (animado, puede ser buggy).</string>
+    <string name="settings_music_offset">Offset Music</string>
+    <string name="settings_music_offset_desc">Mueve la musica mas arriba para que no moleste al sensor de huellas en pantalla, en el caso de que tu dispositivo tenga uno.</string>
+    <string name="settings_lyrics_translation">Traduccion de Letras</string>
+    <string name="settings_lyrics_translation_desc">Traduce las letras de las canciones a Chino (las letras no estan disponibles en todos los temas)(inutil si no lees chino)</string>
+    <string name="settings_music_taichi_apps">TaiChi Music Apps</string>
+    <string name="settings_music_taichi_apps_desc">Para mejor compatibilidad, se recomienda que agreges tus apps de musica a TaiChi. Haz click aqui para ver las apps que ya estan cargadas a TaiChi entre otras cosas.</string>
+    <string name="settings_weather_master_switch">Habilitar Clima</string>
+    <string name="settings_weather_current_condition">Informacion del Clima Actual:</string>
+    <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nRango de Temperatura de Hoy: %4s\n\nPara cambiar la ciudad o la unidad de temperatura, haz click aqui para lanzar la aplicacion del Clima de OnePlus</string>
+    <string name="settings_weather_current_condition_desc_off">La informacion del clima no esta disponible. La funcion del clima del AoD no se mostrara. Por favor revisa que tengas las aplicacion del Clima de OnePlus instalada y habilitada.</string>
+    <string name="settings_weather_show_condition">Mostrar icono del Clima</string>
+    <string name="settings_weather_show_condition_desc">Muestra un icono antes del texto con la informacion del clima en forma de emoji (ej. ☁️).</string>
+    <string name="settings_weather_show_condition_text">Mostrar texto del clima</string>
+    <string name="settings_weather_show_condition_text_desc">Muestra el clima como texto (ej. Nublado).</string>
+    <string name="settings_weather_show_temperature">Mostrar Temperatura</string>
+    <string name="settings_weather_show_temperature_desc">Muestra la temperatura actual (La unidad puede ser cambiada en la aplicacion del Clima de  OnePlus).</string>
+    <string name="settings_weather_show_city">Mostrar Ciudad</string>
+    <string name="settings_weather_show_city_desc">Muestra la ciudad de la ubicaion automatica (en una segunda linea).</string>
+    <string name="settings_clock_advanced">Avancado</string>
+    <string name="settings_clock_advanced_clock_sync">Sincronizacion de la hora</string>
+    <string name="settings_clock_advanced_clock_sync_desc">Si la hora no se sincroniza correctamente en el AoD, puedes cambiar el modo de sincronizacion aqui.</string>
+    <string name="settings_clock_alignment_info">Que hace la sincronizacion del reloj?</string>
+    <string name="settings_clock_alignment_info_desc">Este ajuste te permite elegir entre 4 opciones para cambiar le balance entrela precicion del reloj en el AoD y el consumo de bateria. Si notas que la hora del aod no se esta acutalizando como deberia, prueba cambiando a un ajuste de sincronizacion diferente\n\nPor favor nota que esta es una <b>opcion avanzada</b>, no toques si no entiendes lo que hace.</string>
+    <string name="settings_clock_alignment_system_broadcast">System Broadcast Mode</string>
+    <string name="settings_clock_alignment_system_broadcast_desc">Esta opcion usa solamente la actulizacion del horario del sistema. Es bastante preciso, pero tiene problemas  especialmente en HydrogenOS. Esto usa la menor cantidad de bateria.</string>
+    <string name="settings_clock_alignment_alarmmanager">Alarm Manager Mode</string>
+    <string name="settings_clock_alignment_alarmmanager_desc">Esta opcion utiliza el Alarm Manager de android (administrador de alarmas) ademas del "system broadcast". Esto permite actualizaciones mas precisas cada minuto, a costa de un mayor consumo de bateria. Si usas esta opcion, se recomienda que la uses en conjunto con alguna de las opciones que apagan la pantalla despes de un tiempo.</string>
+    <string name="settings_clock_alignment_alarmmanager_timeout">Modo Alarm Manager con intervalo de Tiempo<b>(Default)</b></string>
+    <string name="settings_clock_alignment_alarmmanager_timeout_desc">Esta opcion usa Alarm Manager, pero usa un \'fixed time task\' para despertar y sincronizar una vez por minuto. Esta es la mas balanceada de todas las opciones.</string>
+    <string name="settings_clock_alignment_choreographer">Modo Coreografo</string>
+    <string name="settings_clock_alignment_choreographer_desc">Esta opcion usa un reloj animado para despertar, lo cual provee una sincronizacion muy precisa, a expensas del consumo de bateria. Puede que sea inpresiso cuando el telefono entra en deep sleep (sueño profundo). Si usas esta opcion, se recomienda que la uses en conjunto con alguna de las opciones que apagan la pantalla despes de un tiempo.</string>
+    <string name="settings_module_module_status">Estado del mod</string>
+    <string name="settings_module_options">Opciones</string>
+    <string name="settings_module_settings">Ajustes de OPAodMod</string>
+    <string name="settings_module_settings_desc">Cambia la dispocicion, tema y opciones para la manera en la cual el mod luce y se comporta</string>
+    <string name="settings_module_status_xposed">Xposed Status</string>
+    <string name="settings_module_status_xposed_desc_not_installed">TaiChi o EdXposed nno estan instalados</string>
+    <string name="settings_module_status_xposed_desc_off_tai">El mod no esta activado en TaiChi</string>
+    <string name="settings_module_status_xposed_desc_off_ed">El mod no esta activado en EdXposed</string>
+    <string name="settings_module_status_xposed_desc_on_ed">El mod esta activado en EdXposed</string>
+    <string name="settings_module_status_xposed_desc_on_tai">El mod esta activado en TaiChi</string>
+
+    <string name="settings_module_required_setup">Configuracion Necesaria</string>
+    <string name="settings_module_status_pick_up_display">System Pick up Setting</string>
+    <string name="settings_module_status_pick_up_display_desc_off">Debes habilitar la opcion en el sistema \"Levanta tu telefono para mostrar\" para que este mod funcione correctamente. Haz click para ir a configuracion y activarlo.</string>
+    <string name="settings_module_status_pick_up_display_desc_on">La opcion \"Levanta tu telefono para mostrar\" esta habilitada.</string>
+
+    <string name="settings_module_status_storage_permission">Permiso de Almacenamiento</string>
+    <string name="settings_module_status_storage_permission_desc_off">El permiso de almacenamiento debe estar habilitado para poder guardar las configuraciones en el dispositivo. Haz click para habilitarlo.</string>
+    <string name="settings_module_status_storage_permission_desc_on">Permiso de Almacenamiendo habilitado</string>
+
+    <string name="settings_module_status_working">Estado de coneccion</string>
+    <string name="settings_module_status_working_desc_off">El always on display no ah sido conectado con TaiChi o Edxposed aun. Si el problema persiste, Prueba siguiendo los pasos para Troubleshooting en la seccion de \'Ayuda\' mas abajo.\n\nHaz click para informacion de depuracion.</string>
+    <string name="settings_module_status_working_desc_on">El mod funciona correctamente. Haz click para informacion de depuracion.</string>
+    <string name="settings_module_status_working_desc_just_restarted">Ambient Display ah sido reiniciado. Proba usar el AoD ahora. Si este mensaje no se va, Si el problema persiste, Prueba siguiendo los pasos para Troubleshooting en la seccion de \'Ayuda\' mas abajo.\n\nHaz click para informacion de depuracion.</string>
+
+    <string name="settings_module_help">Ayuda</string>
+    <string name="settings_module_troubleshooting">Troubleshooting</string>
+    <string name="settings_module_troubleshooting_desc">Prueba uno o mas de los siguientes:\n- Asegurate de que el Mod esta activado en TaiChi o EdXposed\n- Asegurate de que seguiste los pasos de arriba\n- Reinicia Ambient Display\n- Reinicia tu dispositivo\n- Reconecta el modulo (deshabilitalo y rehabilitalo en TaiChi or EdXposed), luego reinicia</string>
+    <string name="settings_module_troubleshooting_rehooking">Reconectando</string>
+    <string name="settings_module_troubleshooting_restart_ambient">Reinicia Ambient Display</string>
+    <string name="settings_module_troubleshooting_restart_ambient_snackbar">Ambient Display ah sido reiniciado</string>
+    <string name="settings_module_groups">Grupos</string>
+    <string name="settings_module_groups_desc" formatted="false">Unete al Telegram oficial 🌍 o QQ 🇨🇳 groups</string>
+    <string name="settings_module_groups_telegram">Telegram</string>
+    <string name="settings_module_groups_qq">QQ</string>
+    <string name="settings_module_groups_qq_backup">QQ (Backup)</string>
+
+    <string name="settings_module_about">About</string>
+    <string name="settings_module_about_info">la version de OPAodMod es %1s</string>
+    <string name="settings_module_about_info_desc">Creado por RetroX y Kieron Quinn (Quinny898/Quinny899). Icono por Amadeo.</string>
+
+    <string name="settings_module_about_donate">Donar</string>
+    <string name="settings_module_about_donate_desc">Te gusta este mod? Dona al desarrollador original (RetroX) via AliPay o al maintainer (Kieron Quinn) via PayPal</string>
+    <string name="settings_module_about_donate_alipay">AliPay</string>
+    <string name="settings_module_about_donate_paypal">PayPal</string>
+    <string name="settings_module_about_donate_alipay_not_installed">AliPay no esta instalado</string>
+
+    <string name="settings_module_menu_old_settings">Regresar a la configuracion antigua</string>
+    <string name="settings_module_menu_third_party_licences">Licencias de Terceros</string>
+    <string name="menu_back">Atras</string>
+
+    <string name="bottom_sheet_debug_info">Informacion de depuracion</string>
+    <string name="bottom_sheet_debug_info_desc">Running mode: %1s\nNumero de veces que el mod a reemplazado al screensaver del sistema: %1s\ntiempo desde la ultima vez que se apago la pantalla: %1s</string>
+
+    <string name="app_shortcut_settings">Ajustes</string>
+
+    <string name="xposed_constant_light_mode_7pro_ns">Mejora del sistema - 7 Pro no esta soportado</string>
+    <string name="xposed_constant_light_mode_7pro">Modo claro constante - 7 Pro</string>
+
+    <string name="settings_module_translators">Traductores</string>
+
+    <string name="clock_its">Es</string>
+
+    <!-- Hour displayed in words on the typographic clock face. [CHAR LIMIT=12] -->
+    <string-array name="type_clock_hours">
+        <item>Doce</item>
+        <item>Uno</item>
+        <item>Dos</item>
+        <item>Tres</item>
+        <item>Cuatro</item>
+        <item>Cinco</item>
+        <item>Seis</item>
+        <item>Siete</item>
+        <item>Ocho</item>
+        <item>Nueve</item>
+        <item>Diez</item>
+        <item>Once</item>
+    </string-array>
+
+    <!-- Minutes displayed in words on the typographic clock face. [CHAR LIMIT=20] -->
+    <string-array name="type_clock_minutes">
+        <item>O\u2019Clock</item>
+        <item>Oh Uno</item>
+        <item>Oh Dos</item>
+        <item>Oh Tres</item>
+        <item>Oh Cuatro</item>
+        <item>Oh Cinco</item>
+        <item>Oh Seis</item>
+        <item>Oh Siete</item>
+        <item>Oh Ocho</item>
+        <item>Oh Nueve</item>
+        <item>Diez</item>
+        <item>Once</item>
+        <item>Doce</item>
+        <item>Trece</item>
+        <item>Catorce</item>
+        <item>Quince</item>
+        <item>Dieciseis</item>
+        <item>Diecisiete</item>
+        <item>Dieciocho</item>
+        <item>Diecinueve</item>
+        <item>Veinte</item>
+        <item>Veintiuno</item>
+        <item>Veintidos</item>
+        <item>Veintitres</item>
+        <item>Veinticuatro</item>
+        <item>Veinticinco</item>
+        <item>Veintiseis</item>
+        <item>Veintisiete</item>
+        <item>Veintiocho</item>
+        <item>Veintinueve</item>
+        <item>Treinta</item>
+        <item>Treinta y uno</item>
+        <item>Treinta y dos</item>
+        <item>Treinta y tres</item>
+        <item>Treinta y cuatro</item>
+        <item>Treinta y cinco</item>
+        <item>Treinta y seis</item>
+        <item>Treinta y siete</item>
+        <item>Treinta y ocho</item>
+        <item>Treinta y nueve</item>
+        <item>Cuarenta</item>
+        <item>Cuarenta y uno</item>
+        <item>Cuarenta y dos</item>
+        <item>Cuarenta y tres</item>
+        <item>Cuarenta y cuatro</item>
+        <item>Cuarenta y cinco</item>
+        <item>Cuarenta y seis</item>
+        <item>Cuarenta y siete</item>
+        <item>Cuarenta y ocho</item>
+        <item>Cuarenta y nueve</item>
+        <item>Cincuenta</item>
+        <item>Cincuenta y uno</item>
+        <item>Cincuenta y dos</item>
+        <item>Cincuenta y tres</item>
+        <item>Cincuenta y cuatro</item>
+        <item>Cincuenta y cinco</item>
+        <item>Cincuenta y seis</item>
+        <item>Cincuenta y siete</item>
+        <item>Cincuenta y ocho</item>
+        <item>Cincuenta y nueve</item>
+    </string-array>
+
+    <string name="charging_charging">Cargando</string>
+    <string name="charging_quick_charging">Carga Rápida</string>
+    <string name="charging_charged">Cargado</string>
+
+
+</resources>

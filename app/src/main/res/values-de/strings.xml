@@ -1,0 +1,238 @@
+<resources>
+
+    <!-- Hour displayed in words on the typographic clock face. [CHAR LIMIT=12] -->
+    <string-array name="type_clock_hours">
+        <item>Zwölf</item>
+        <item>Ein</item>
+        <item>Zwei</item>
+        <item>Drei</item>
+        <item>Vier</item>
+        <item>Fünf</item>
+        <item>Sechs</item>
+        <item>Sieben</item>
+        <item>Acht</item>
+        <item>Neun</item>
+        <item>Zehn</item>
+        <item>Elf</item>
+    </string-array>
+
+    <!-- Minutes displayed in words on the typographic clock face. [CHAR LIMIT=20] -->
+    <string-array name="type_clock_minutes">
+        <item>Uhr</item>
+        <item>Uhr Eins</item>
+        <item>Uhr Zwei</item>
+        <item>Uhr Drei</item>
+        <item>Uhr Vier</item>
+        <item>Uhr Fünf</item>
+        <item>Uhr Sechs</item>
+        <item>Uhr Sieben</item>
+        <item>Uhr Acht</item>
+        <item>Uhr Neun</item>
+        <item>Uhr Zehn</item>
+        <item>Uhr Elf</item>
+        <item>Uhr Zwölf</item>
+        <item>Uhr Dreizehn</item>
+        <item>Uhr Vierzehn</item>
+        <item>Uhr Fünfzehn</item>
+        <item>Uhr Sechszehn</item>
+        <item>Uhr Siebzehn</item>
+        <item>Uhr Achtzehn</item>
+        <item>Uhr Neunzehn</item>
+        <item>Uhr Zwanzig</item>
+        <item>Uhr Einundzwanzig</item>
+        <item>Uhr Zweiundzwanzig</item>
+        <item>Uhr Dreiundzwanzig</item>
+        <item>Uhr Vierundzwanzig</item>
+        <item>Uhr Fünfundzwanzig</item>
+        <item>Uhr Sechsundzwanzig</item>
+        <item>Uhr Siebenundzwanzig</item>
+        <item>Uhr Achtundzwanzig</item>
+        <item>Uhr Neunundzwanzig</item>
+        <item>Uhr Dreißig</item>
+        <item>Uhr Einunddreißig</item>
+        <item>Uhr Zweiunddreißig</item>
+        <item>Uhr Dreiunddreißig</item>
+        <item>Uhr Vierunddreißig</item>
+        <item>Uhr Fünfunddreißig</item>
+        <item>Uhr Sechsunddreißig</item>
+        <item>Uhr Siebenunddreißig</item>
+        <item>Uhr Achtunddreißig</item>
+        <item>Uhr Neununddreißig</item>
+        <item>Uhr Vierzig</item>
+        <item>Uhr Einundvierzig</item>
+        <item>Uhr Zweiundvierzig</item>
+        <item>Uhr Dreiundvierzig</item>
+        <item>Uhr Vierundvierzig</item>
+        <item>Uhr Fünfundvierzig</item>
+        <item>Uhr Sechsundvierzig</item>
+        <item>Uhr Siebenundvierzig</item>
+        <item>Uhr Achtundvierzig</item>
+        <item>Uhr Neunundvierzig</item>
+        <item>Uhr Fünfzig</item>
+        <item>Uhr Einundfünfzig</item>
+        <item>Uhr Zweiundfünfzig</item>
+        <item>Uhr Dreiundfünfzig</item>
+        <item>Uhr Vierundfünfzig</item>
+        <item>Uhr Fünfundfünfzig</item>
+        <item>Uhr Sechsundfünfzig</item>
+        <item>Uhr Siebenundfünfzig</item>
+        <item>Uhr Achtundfünfzig</item>
+        <item>Uhr Neunundfünfzig</item>
+    </string-array>
+
+    <!-- New Settings UI -->
+    <string name="menu_nav_bar_settings_aod">Allgemein</string>
+    <string name="menu_nav_bar_settings_clock">Uhr</string>
+    <string name="menu_nav_bar_settings_music">Musik</string>
+    <string name="menu_nav_bar_settings_weather">Wetter</string>
+    <string name="menu_nav_bar_settings_theme">Theme</string>
+    <string name="bs_theme_picker_title">Theme-Auswahl</string>
+
+    <string name="bs_theme_name_default">Standard</string>
+    <string name="bs_theme_name_flat">Flach</string>
+    <string name="bs_theme_name_dvd">DVD</string>
+    <string name="bs_theme_name_pure_music">Reine Musik</string>
+    <string name="bs_theme_name_flat_music">Musik Flach</string>
+    <string name="bs_theme_name_word">Worte</string>
+    <string name="settings_general_raise_detection">Anhebungserkennung</string>
+    <string name="settings_general_raise_detection_desc">Zeigt das AOD nur, wenn das Gerät angehoben wird. Nur getestet auf dem 7 Pro, und keine Garantie, dass es wie die Systemoption funktioniert</string>
+    <string name="settings_general_aod_memo">Inaktivitätsdisplaynachricht</string>
+    <string name="settings_general_aod_memo_desc">Setze den Text, der in unterstützten Layouts unter der Uhr angezeigt wird</string>
+    <string name="settings_general_night_mode">Inaktivitätsdisplay deaktivieren, wenn der Nachtmodus an ist</string>
+    <string name="settings_general_night_mode_desc">Aktivieren, damit das AOD bei aktiviertem System-Nachtmodus nicht angezeigt wird. Achte auf diese Einstellung, sie ist oft die Ursache für falsche Problemberichte!</string>
+    <string name="settings_general_force_english">Immer Englisch im „Worte“-Layout benutzen</string>
+    <string name="settings_general_force_english_desc">Aktiviere diese Einstellung, um im „Worte“-Theme immer englischen Text zu verwenden, unabhängig von der Gerätesprache</string>
+    <string name="settings_general_flip_mode">Umdrehen-/Taschenmodus</string>
+    <string name="settings_general_flip_mode_desc">Den Bildschirm ausschalten, wenn das Gerät umgedreht oder in deiner Tasche ist. Es wird empfohlen, diese Option zum Energiesparen zu aktivieren.</string>
+    <string name="settings_general_auto_brightness">Automatische Helligkeit</string>
+    <string name="settings_general_auto_brightness_desc">Automatisch die Helligkeit des AOD anpassen, um Energie zu sparen</string>
+    <string name="settings_general_sensitive_notifications">Sensible Benachrichtigungen verstecken</string>
+    <string name="settings_general_sensitive_notifications_desc">Versteckt sensible Benachrichtigunsinhalte auf dem AOD, bspw. Nachrichten</string>
+    <string name="settings_general_system_font">Google Sans Schriftart</string>
+    <string name="settings_general_system_font_desc">Benutzt die Google Sans Schriftart auf dem AOD. Deaktivieren, um die Systemschriftart zu verwenden</string>
+    <string name="settings_general_ten_minutes">Ausschalten nach zehn Minuten</string>
+    <string name="settings_general_ten_minutes_desc">Versteckt das AOD nach zehn Minuten Inaktivität</string>
+    <string name="settings_general_turn_off_after_fifteen_seconds">Ausschalten nach 15 Sekunden</string>
+    <string name="settings_general_turn_off_after_fifteen_seconds_desc">Versteckt das AoD nach 15 Sekunden Inaktivität. Am besten mit Anhebungserkennung verwenden, für Leute die nur ihre Benachrichtigungen überprüfen wollen. Hat eine höhere Priorität als die Zehn-Minuten-Option.</string>
+    <string name="settings_general_aod_memo_input">Nachricht</string>
+    <string name="settings_general_aod_memo_helper">Freilassen, damit kein Text angezeigt wird</string>
+    <string name="settings_clock_word_clock_flat">Wortuhr</string>
+    <string name="settings_clock_word_clock_flat_desc">Benutze die Wortuhr im flachen Layout</string>
+    <string name="settings_clock_date_format">Datumsformat</string>
+    <string name="settings_clock_24h">24-Stunden-Uhr</string>
+    <string name="settings_clock_24h_desc">Benutze eine 24-Stunden-Uhr auf dem AOD</string>
+    <string name="settings_clock_show_am_pm">Zeige AM/PM</string>
+    <string name="settings_clock_show_am_pm_desc">Zeigt AM-/PM-Beschriftungen, wenn die 12-Stunden-Uhr aktiviert ist (sieht ziemlich kaputt aus)</string>
+    <string name="settings_clock_general">Allgemein</string>
+    <string name="settings_clock_alarm">Wecker</string>
+    <string name="settings_clock_show_alarm">Zeige den nächsten Wecker</string>
+    <string name="settings_clock_show_alarm_desc">Zeigt den nächstem Alarm nach dem Wetter. Zeigt nur Wecker innherhalb der nächsten 24 Stunden (angezeigt auf einer zweiten Zeile)</string>
+    <string name="settings_clock_show_alarm_emoji_desc">Zeige Wecker-Emoji</string>
+    <string name="settings_clock_show_alarm_emoji">Zeigt ein Wecker-Emoji vor der nächsten Weckerzeit</string>
+    <string name="settings_music_master_switch">Aktiviere Musikanzeige</string>
+    <string name="settings_music_use_system_music">System-Musik</string>
+    <string name="settings_music_use_system_music_desc">Benutzt die System-Musik-Steuerung als Quelle, welche zuverlässlicher sein könnte</string>
+    <string name="settings_music_use_pixel_icon">Pixel-Musik-Symbol</string>
+    <string name="settings_music_use_pixel_icon_desc">Benutze das Musik-Symbol vom Pixel-Always-On-Display (animiert, könnte verbuggt sein)</string>
+    <string name="settings_music_offset">Musikanzeige verschieben</string>
+    <string name="settings_music_offset_desc">Verschiebt die Musikanzeige nach oben, um einen Konflikt mit dem Fingerabdrucksensorsymbol bei Geräten mit In-Display-Fingerabdrucksensor zu vermeiden.</string>
+    <string name="settings_lyrics_translation">Liedtextübersetzung</string>
+    <string name="settings_lyrics_translation_desc">Übersetzt Liedtexte auf dem AOD ins Chinesische (Liedtexte sind nicht in allen AOD Layouts verfügbar)</string>
+    <string name="settings_music_taichi_apps">TaiChi-Musikapps</string>
+    <string name="settings_music_taichi_apps_desc">Es wird empfohlen, deine Musikapps für eine bessere Kompatibilität zu TaiChi hinzuzufügen. Tipper hier, um die zurzeit hinzugefügten Apps zu betrachten und mehr hinzuzufügen.</string>
+    <string name="settings_weather_master_switch">Aktiviere Wetter</string>
+    <string name="settings_weather_current_condition">Aktuelle Wetterinformationen:</string>
+    <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nHeutiger Temperaturbereich: %4s\n\nUm den Standort oder die Temperatureinheit zu ändern, tippe um die OnePlus Wetter-App zu öffnen</string>
+    <string name="settings_weather_current_condition_desc_off">Wetterinformationen sind nicht verfügbar. Die Wetterfunktion auf dem AOD wird nicht funktionieren. Überprüfe bitte, dass du die OnePlus Wetter-App installiert und aktiviert hast</string>
+    <string name="settings_weather_show_condition">Zeige Symbol zur Wetterlage</string>
+    <string name="settings_weather_show_condition_desc">Zeigt ein Symbol vor dem Text zur Wetterlage in Form eines Emojis (z. B. ☁️)</string>
+    <string name="settings_weather_show_condition_text">Zeige Text zur Wetterlage</string>
+    <string name="settings_weather_show_condition_text_desc">Zeigt die Wetterlage als Text (z. B. Bewölkt)</string>
+    <string name="settings_weather_show_temperature">Zeige Temperatur</string>
+    <string name="settings_weather_show_temperature_desc">Zeigt die aktuelle Temperatur (Eineheit kann in der OnePlus Wetter-App geändert werden)</string>
+    <string name="settings_weather_show_city">Zeige Stadt</string>
+    <string name="settings_weather_show_city_desc">Zeigt die aktuelle Stadt für das Wetter des automatischen Standort (angezeigt auf einer zweiten Zeile)</string>
+    <string name="settings_clock_advanced">Erweitert</string>
+    <string name="settings_clock_advanced_clock_sync">Uhrsynchronisation</string>
+    <string name="settings_clock_advanced_clock_sync_desc">Hier kannst du den Modus der Synchronisation ändern, falls sich die Uhr auf deinem AoD nicht richtig aktualisiert.</string>
+    <string name="settings_clock_alignment_info">Was macht die Uhrsynchronisation?</string>
+    <string name="settings_clock_alignment_info_desc">Diese Einstellungen erlauben dir, aus vier Optionen auszuwählen, um die Balance zwischen Uhrgenauigkeit auf dem Always-On-Display und Energieverbrauch zu ändern. Falls du bemerkst, dass sich die Uhr auf dem AOD nicht aktualisiert wie sie sollte, versuche zu einer anderen Synchronisationseinstellung zu wechseln\n\nBitte beachte, dass das eine <b>erweiterte Option</b> ist, ändere sie nicht, falls du nicht verstehst, was sie macht</string>
+    <string name="settings_clock_alignment_system_broadcast">System-Broadcast-Modus</string>
+    <string name="settings_clock_alignment_system_broadcast_desc">Diese Option verlässt sich nur auf den System-Broadcast für Zeitaktualisierungen. Es ist ziemlich genau, aber hat Probleme, vor allem auf HydrogenOS. Das verbraucht die kleinste Menge an Energie.</string>
+    <string name="settings_clock_alignment_alarmmanager">Alarm-Manager-Modus</string>
+    <string name="settings_clock_alignment_alarmmanager_desc">Diese Option benutzt das Android-Alarm-Manager-System zusätzlich zum System-Broadcast. Das erlaubt genauere Aktualisierungen jede Minute, auf Kosten eines höheren Energieverbrauchs. Es wird empfohlen, eine der Optionen, um den Bildschirm nach einiger Zeit auszuschalten, zu benutzen, falls du diese Option nutzt.</string>
+    <string name="settings_clock_alignment_alarmmanager_timeout">Alarm-Manager-mit-Timeout-Modus <b>(Standard)</b></string>
+    <string name="settings_clock_alignment_alarmmanager_timeout_desc">Diese Option nutzt den Alarm-Manager, aber verwendet eine „Festzeit-Aufgabe“, um aufzuwachen und einmal pro Minute zu aktualisieren. Das ist die ausbalancierteste der Optionen.</string>
+    <string name="settings_clock_alignment_choreographer">Choreographmodus</string>
+    <string name="settings_clock_alignment_choreographer_desc">Diese Option nutzt nutzt eine animierte Uhr um aufzuwachen, was eine sehr genaue Zeitsynchronisation bietet, auf Kosten der Energie. Es könnte auch ungenau werden, wenn das Telefon in den Tiefschlafmodus wechselt. Es wird empfohlen, eine der Optionen, um den Bildschirm nach einiger Zeit auszuschalten, zu benutzen, falls du diese Option benutzt.</string>
+    <string name="settings_module_module_status">Modulstatus</string>
+    <string name="settings_module_options">Optionen</string>
+    <string name="settings_module_settings">OPAodMod-Einstellungen</string>
+    <string name="settings_module_settings_desc">Ändere das Layout, Themes und Optionen für das Aussehen und der Funktionsweise des Moduls</string>
+    <string name="settings_module_status_xposed">Xposed-Status</string>
+    <string name="settings_module_status_xposed_desc_not_installed">TaiChi oder EdXposed sind nicht installiert</string>
+    <string name="settings_module_status_xposed_desc_off_tai">Modul ist nicht aktiviert in TaiChi</string>
+    <string name="settings_module_status_xposed_desc_off_ed">Modul ist nicht aktiviert in EdXposed</string>
+    <string name="settings_module_status_xposed_desc_on_ed">Modul ist aktiviert in EdXposed</string>
+    <string name="settings_module_status_xposed_desc_on_tai">Modul ist aktiviert in TaiChi</string>
+
+    <string name="settings_module_required_setup">Notwendiges Setup</string>
+    <string name="settings_module_status_pick_up_display">System-Anheben-Option</string>
+    <string name="settings_module_status_pick_up_display_desc_off">Du musst die System-„Zum Aktivieren Ihr Telefon in die Hand nehmen“-Option aktivieren, damit dieses Modul korrekt funktionieren kann. Tippe, um zum Aktivieren in die Systemeinstellungen zu gehen.</string>
+    <string name="settings_module_status_pick_up_display_desc_on">Die System-„Zum Aktivieren Ihr Telefon in die Hand nehmen“-Option ist aktiviert.</string>
+
+    <string name="settings_module_status_storage_permission">Speicherzugriff</string>
+    <string name="settings_module_status_storage_permission_desc_off">Der Speichzugriff muss zugelassen werden, um globale Einstellungen auf deinem Gerät zu speichern. Tippe, um ihn zuzulassen.</string>
+    <string name="settings_module_status_storage_permission_desc_on">Speicherzugriff ist zugelassen</string>
+
+    <string name="settings_module_status_working">Einbindungsstatus</string>
+    <string name="settings_module_status_working_desc_off">Das Always-On-Display wurde noch nicht eingebunden. Falls das Problem trotzdem bestehen bleibt, versuche den Fehlerbehebungsschritten in der „Hilfe“-Sektion unten zu folgen.\n\nTippe für Debug-Infos</string>
+    <string name="settings_module_status_working_desc_on">Das Modul funktioniert wie erwartet. Tippe für Debug-Infos.</string>
+    <string name="settings_module_status_working_desc_just_restarted">Inaktivitätsdisplay wurde gerade neugestartet. Bitte versuche jetzt, das AOD zu nutzen. Falls diese Nachricht nicht verschwindet, versuche den Fehlerbehebungsschritten in der „Hilfe“-Sektion unten zu folgen.\n\nTippe für Debug-Infos</string>
+
+    <string name="settings_module_help">Hilfe</string>
+    <string name="settings_module_troubleshooting">Fehlerbehebung</string>
+    <string name="settings_module_troubleshooting_desc">Probiere einen oder mehrere der folgenden Schritte aus:\n- Stelle sicher, dass das Modul in TaiChi oder EdXposed aktiviert ist\n- Stelle sicher, dass du das oben angegebene notwendige Setup befolgt hat\n- Starte das Inaktivitätsdisplay neu\n- Starte dein Gerät neu\n- Binde das Modul erneut ein (deaktiviere und danach reaktiviere es in TaiChi oder EdXposed), danach Geräteneustart</string>
+    <string name="settings_module_troubleshooting_rehooking">Erneut einbinden</string>
+    <string name="settings_module_troubleshooting_restart_ambient">Inaktivitätsdisplay neustarten</string>
+    <string name="settings_module_troubleshooting_restart_ambient_snackbar">Inaktivitätsdisplay wurde neugestartet</string>
+    <string name="settings_module_groups">Gruppen</string>
+    <string name="settings_module_groups_desc" formatted="false">Tritt den offiziellen Telegram- 🌍 oder QQ- 🇨🇳 Gruppen bei</string>
+    <string name="settings_module_groups_telegram">Telegram</string>
+    <string name="settings_module_groups_qq">QQ</string>
+    <string name="settings_module_groups_qq_backup">QQ (Backup)</string>
+
+    <string name="settings_module_about">Über</string>
+    <string name="settings_module_about_info">OPAodMod Version %1s</string>
+    <string name="settings_module_about_info_desc">Erstellt von RetroX und Kieron Quinn (Quinny898/Quinny899)</string>
+
+    <string name="settings_module_about_donate">Spenden</string>
+    <string name="settings_module_about_donate_desc">Du magst dieses Modul? Spende dem ursprünglichen Entwickler (RetroX) via AliPay oder dem Maintainer (Kieron Quinn) via PayPal</string>
+    <string name="settings_module_about_donate_alipay">AliPay</string>
+    <string name="settings_module_about_donate_paypal">PayPal</string>
+    <string name="settings_module_about_donate_alipay_not_installed">AliPay ist nicht installiert</string>
+
+    <string name="settings_module_menu_old_settings">Zurück zu den alten Einstellungen</string>
+    <string name="settings_module_menu_third_party_licences">Drittanbieterlizenzen</string>
+    <string name="menu_back">Zurück</string>
+
+    <string name="bottom_sheet_debug_info">Debug-Infos</string>
+    <string name="bottom_sheet_debug_info_desc">Betriebsmodus: %1s\nWie oft das Modul den System-Bildschirmschoner ersetzt hat: %1s\nLetzte Bildschirm-aus-Uhrzeit: %1s</string>
+
+    <string name="app_shortcut_settings">Einstellungen</string>
+
+    <string name="xposed_constant_light_mode_7pro_ns">Systemerweiterung - 7 Pro wird nicht unterstützt</string>
+    <string name="xposed_constant_light_mode_7pro">Konstant-beleuchten-Modus - 7 Pro</string>
+
+    <string name="settings_module_translators">Übersetzer</string>
+
+    <string name="clock_its">Es ist</string>
+    <string name="no_record">Keine Aufzeichnung</string>
+    <string name="operating_mode_not_detected">Betriebsmodus nicht erkannt</string>
+
+    <string name="charging_charging">Wird geladen</string>
+    <string name="charging_quick_charging">Wird schnell geladen</string>
+    <string name="charging_charged">Aufgeladen</string>
+    <string name="charging_sleep_mode">Schlafmodus</string>
+
+</resources>

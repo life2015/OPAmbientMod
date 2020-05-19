@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_appshortcut"
+        android:shortcutId="settings"
+        android:shortcutLongLabel="@string/app_shortcut_settings"
+        android:shortcutShortLabel="@string/app_shortcut_settings">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.retrox.aodmod.app.settings.SettingsActivity"
+            android:targetPackage="com.retrox.aodmod"/>
+    </shortcut>
+</shortcuts>

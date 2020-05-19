@@ -1,65 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.retrox.aodmod">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.retrox.aodmod">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
     <application
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:name=".app.App"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            tools:ignore="GoogleAppIndexingWarning">
+        android:name=".app.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data
-                android:name="xposedmodule"
-                android:value="true"/>
+            android:name="xposedmodule"
+            android:value="true" />
         <meta-data
-                android:name="xposeddescription"
-                android:value="OnePlusOS AOD MOD"/>
+            android:name="xposeddescription"
+            android:value="OnePlusOS AOD MOD" />
         <meta-data
-                android:name="xposedminversion"
-                android:value="90"/>
+            android:name="xposedminversion"
+            android:value="90" />
 
         <activity android:name=".app.MainActivity">
 
         </activity>
         <activity
-                android:name=".app.view.NewMainActivity"
-                android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+            android:name=".app.view.NewMainActivity"
+            android:exported="true"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+        <activity
+            android:name=".app.settings.SettingsActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:theme="@style/AppTheme.Settings"/>
+
+        <activity android:name=".app.settings.SettingsClockAlignmentActivity"
+            android:theme="@style/AppTheme.Settings"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".app.settings.ModuleActivity"
+            android:theme="@style/AppTheme.Settings"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/app_shortcuts"/>
+
         </activity>
-        <activity android:name=".app.MusicSettingsActivity"/>
-        <activity android:name=".app.AodModeActivity"/>
-        <activity android:name=".app.SleepModeActivity"/>
-        <activity android:name=".app.AlwaysOnSettings"/>
-        <activity android:name=".app.EnglishLearnActivity"/>
-        <activity android:name=".app.CustomActivity"/>
-        <activity android:name=".app.AlarmSettingsActivity"/>
-        <activity android:name=".app.CustomSettingsActivity" android:theme="@style/Theme.AppCompat.Light"/>
+
+        <activity android:name=".app.MusicSettingsActivity" />
+        <activity android:name=".app.AodModeActivity" />
+        <activity android:name=".app.SleepModeActivity" />
+        <activity android:name=".app.AlwaysOnSettings" />
+        <activity android:name=".app.EnglishLearnActivity" />
+        <activity android:name=".app.CustomActivity" />
+        <activity android:name=".app.AlarmSettingsActivity" />
+        <activity
+            android:name=".app.CustomSettingsActivity"
+            android:theme="@style/Theme.AppCompat.Light" />
 
 
         <service
-                android:name=".doze.RetroDream"
-                android:exported="true"
-                android:icon="@drawable/ic_music"
-                android:label="RetroDream"
-                android:permission="android.permission.BIND_DREAM_SERVICE">
+            android:name=".doze.RetroDream"
+            android:exported="true"
+            android:icon="@drawable/ic_music"
+            android:label="RetroDream"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter>
                 <action android:name="android.service.dreams.DreamService" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.ThirdPartyLicences" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/AppTheme.ThirdPartyLicences" />
 
 
     </application>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="4dp"
+        android:background="@color/toolbar_color_solid"
+        android:id="@+id/fakeStatusBar"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:background="@color/toolbar_color_solid">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title"
+            android:fontFamily="@font/googlesans"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:text="@string/app_name" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <fragment
+        android:id="@+id/modulePreferenceFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.retrox.aodmod.app.settings.fragments.ModulePreferenceFragment"/>
+
+</FrameLayout>

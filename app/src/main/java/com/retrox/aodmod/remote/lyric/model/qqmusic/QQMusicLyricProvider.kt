@@ -7,6 +7,7 @@ import com.retrox.aodmod.remote.lyric.model.SongEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
@@ -29,7 +30,7 @@ class QQMusicLyricProvider : LyricProvider {
 
     suspend fun queryMusicMid(song: SongEntity) = withContext(Dispatchers.IO) {
         val url =
-            HttpUrl.parse("https://c.y.qq.com/soso/fcgi-bin/client_search_cp")!!
+            "https://c.y.qq.com/soso/fcgi-bin/client_search_cp".toHttpUrlOrNull()!!
                 .newBuilder().addQueryParameter("w", "${song.name}-${song.artist}").build()
 
         val request = Request.Builder()
@@ -47,7 +48,7 @@ class QQMusicLyricProvider : LyricProvider {
             .build()
 
         MainHook.logD(url.toString())
-        val response = client.newCall(request).execute().body()?.string() ?: return@withContext null
+        val response = client.newCall(request).execute().body?.string() ?: return@withContext null
         val realResponse = response.drop(9).dropLast(1)
 
         MainHook.logD(response)
@@ -66,7 +67,7 @@ class QQMusicLyricProvider : LyricProvider {
     suspend fun queryMusicMidBySmartBox(song: SongEntity) = withContext(Dispatchers.IO) {
 
         val url =
-            HttpUrl.parse("https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg?is_xml=0&format=json")!!
+            "https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg?is_xml=0&format=json".toHttpUrlOrNull()!!
                 .newBuilder().addQueryParameter("key", "${song.name}-${song.artist}").build()
 
         val request = Request.Builder()
@@ -81,7 +82,7 @@ class QQMusicLyricProvider : LyricProvider {
             .addHeader("cache-control", "no-cache")
             .build()
 
-        val response = client.newCall(request).execute().body()?.string() ?: return@withContext null
+        val response = client.newCall(request).execute().body?.string() ?: return@withContext null
         val mid = try {
             val jsonObject = JSONObject(response)
             jsonObject.getJSONObject("data").getJSONObject("song").getJSONArray("itemlist")
@@ -97,7 +98,7 @@ class QQMusicLyricProvider : LyricProvider {
 
     suspend fun queryMusicLyric(mid: String) = withContext(Dispatchers.IO) {
 
-        val url = HttpUrl.parse("https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg")!!
+        val url = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg".toHttpUrlOrNull()!!
             .newBuilder().addQueryParameter("songmid", mid).build()
 
         val request = Request.Builder()
@@ -115,9 +116,10 @@ class QQMusicLyricProvider : LyricProvider {
             .addHeader("cache-control", "no-cache")
             .build()
 
-        val response = client.newCall(request).execute().body()?.string() ?: return@withContext null
+        val response = client.newCall(request).execute().body?.string() ?: return@withContext null
         val realResponse = response.drop(18).dropLast(1)
         val jsonObject = JSONObject(realResponse)
+        if(!jsonObject.has("lyric")) return@withContext null
         val base64Lyric = jsonObject.getString("lyric")
         val lyric = String(Base64.getDecoder().decode(base64Lyric))
         return@withContext lyric

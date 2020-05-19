@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import android.view.View
 import android.widget.LinearLayout
 import com.retrox.aodmod.SmaliImports
+import com.retrox.aodmod.extensions.generateAlarmText
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.service.notification.NotificationManager
@@ -47,9 +48,9 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
             setGoogleSans()
             fun generateDateBrief(weatherData: WeatherProvider.WeatherData?): String {
                 if (XPref.getAodShowWeather() && weatherData != null) { // 这里变更一下逻辑 没有天气就不显示了
-                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.ENGLISH).format(Date()) + " ${SmaliImports.bulletSymbol} " + (weatherData.toBriefString())
+                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.getDefault()).format(Date()) + " ${SmaliImports.bulletSymbol} " + (weatherData.toBriefString()) + generateAlarmText(context)
                 } else {
-                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.ENGLISH).format(Date())
+                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.getDefault()).format(Date()) + generateAlarmText(context)
                 }
             }
 //            text = SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date())

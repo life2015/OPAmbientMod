@@ -8,6 +8,7 @@ import com.retrox.aodmod.remote.lyric.model.SongEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
@@ -32,7 +33,7 @@ class NetEaseLyricProvider : LyricProvider {
     suspend fun queryMusicId(song: SongEntity) = withContext(Dispatchers.IO) {
 
         val url =
-            HttpUrl.parse("https://music.163.com/api/search/get/web?csrf_token=&type=1&offset=0&total=true&limit=20")!!
+            "https://music.163.com/api/search/get/web?csrf_token=&type=1&offset=0&total=true&limit=20".toHttpUrlOrNull()!!
                 .newBuilder().addQueryParameter("s", "${song.name}-${song.artist}").build()
 
         val request = Request.Builder()
@@ -50,7 +51,7 @@ class NetEaseLyricProvider : LyricProvider {
             .build()
 
         // 反正返回空就是出问题了
-        val response = client.newCall(request).execute().body()?.string() ?: return@withContext null
+        val response = client.newCall(request).execute().body?.string() ?: return@withContext null
         try {
             MainHook.logD(response)
             val jsonObject = JSONObject(response)
@@ -67,7 +68,7 @@ class NetEaseLyricProvider : LyricProvider {
 
     suspend fun queryMusicLyric(id: String) = withContext(Dispatchers.IO) {
 
-        val url = HttpUrl.parse("https://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1")!!
+        val url = "https://music.163.com/api/song/lyric?os=pc&lv=-1&kv=-1&tv=-1".toHttpUrlOrNull()!!
             .newBuilder().addQueryParameter("id", id).build()
 
         val request = Request.Builder()
@@ -84,7 +85,7 @@ class NetEaseLyricProvider : LyricProvider {
             .addHeader("cache-control", "no-cache")
             .build()
 
-        val response = client.newCall(request).execute().body()?.string() ?: return@withContext null
+        val response = client.newCall(request).execute().body?.string() ?: return@withContext null
         val jsonObject = JSONObject(response)
         val lyric = jsonObject.getJSONObject("lrc").getString("lyric")
         val tlyric = jsonObject.getJSONObject("tlyric").getString("lyric")

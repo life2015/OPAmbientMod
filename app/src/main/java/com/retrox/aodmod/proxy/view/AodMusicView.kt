@@ -15,6 +15,8 @@ import android.view.View
 import android.widget.LinearLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
+import com.retrox.aodmod.app.util.logD
+import com.retrox.aodmod.data.NowPlayingMediaData
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
@@ -71,7 +73,7 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
 
 
         AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
-            MainHook.logD("Receive Media Data $it")
+            logD("Receive Media Data $it")
             if (!XPref.getMusicAodEnabled()) { // 修复音乐显示关不掉的bug
                 return@Observer
             }
@@ -82,7 +84,7 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
             it?.let {
                 visibility = View.VISIBLE
                 musicText.text = "${it.name} - ${it.artist}"
-                if(!isAnimating) {
+                if(!isAnimating && isPixelIconEnabled) {
                     if (mAnimatedIcon != null) {
                         imageIcon.setImageDrawable(mAnimatedIcon)
                         //Gets stuck first time if not done in post
@@ -137,7 +139,7 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
             }
 
             setOnClickListener {
-                MainHook.logD("Dream Click Event!")
+                logD("Dream Click Event!")
             }
 
             visibility = View.GONE // todo 控制音乐播放能不能用的状态
@@ -146,6 +148,19 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
 //            startToStart = ConstraintLayout.LayoutParams.PARENT_ID
 //            topToBottom = Ids.tv_music
             topMargin = dip(12)
+        }
+
+        post {
+            if (XPref.isSettings()) {
+                AodMedia.aodMediaLiveData.postValue(
+                    NowPlayingMediaData(
+                        "Song Name",
+                        "Artist",
+                        "Album"
+                    )
+                )
+                visibility = View.VISIBLE
+            }
         }
 
     }
