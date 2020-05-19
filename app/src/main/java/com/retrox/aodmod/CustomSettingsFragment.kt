@@ -25,6 +25,8 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
         var KEY_SHOW_ALARM = "KEY_SHOW_ALARM"
         var KEY_SHOW_ALARM_EMOJI = "KEY_SHOW_ALARM_EMOJI"
         var KEY_SHOW_BULLETS = "KEY_SHOW_BULLETS"
+        var KEY_USE_SYSTEM_MUSIC = "USE_SYSTEM_MUSIC"
+        var KEY_USE_PIXEL_MUSIC_ICON = "USE_PIXEL_MUSIC_ICON"
     }
 
 
@@ -197,6 +199,31 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
         showAlarmEmoji.isEnabled =
             sharedPreferences?.getBoolean(KEY_SHOW_ALARM, false) ?: false
         alarmCategory.addPreference(showAlarmEmoji)
+        val musicCategory = PreferenceCategory(context)
+        screen.addPreference(musicCategory)
+        musicCategory.title = getString(R.string.custom_settings_music)
+        val musicUseSystem = SwitchPreference(context)
+        musicUseSystem.title = getString(R.string.custom_settings_system_music)
+        musicUseSystem.summary = getString(R.string.custom_settings_system_music_desc)
+        musicUseSystem.setOnPreferenceChangeListener { preference, o ->
+            val newValue = o as Boolean?
+            sharedPreferences?.edit()?.putBoolean(KEY_USE_SYSTEM_MUSIC, newValue!!)
+                ?.commit()
+            true
+        }
+        musicUseSystem.isChecked = getBooleanPreference(KEY_USE_SYSTEM_MUSIC, false)
+        musicCategory.addPreference(musicUseSystem)
+        val musicPixelIcon = SwitchPreference(context)
+        musicPixelIcon.title = getString(R.string.custom_settings_pixel_music_icon)
+        musicPixelIcon.summary = getString(R.string.custom_settings_pixel_music_icon_desc)
+        musicPixelIcon.setOnPreferenceChangeListener { preference, o ->
+            val newValue = o as Boolean?
+            sharedPreferences?.edit()?.putBoolean(KEY_USE_PIXEL_MUSIC_ICON, newValue!!)
+                ?.commit()
+            true
+        }
+        musicPixelIcon.isChecked = getBooleanPreference(KEY_USE_PIXEL_MUSIC_ICON, false)
+        musicCategory.addPreference(musicPixelIcon)
         preferenceScreen = screen
     }
 

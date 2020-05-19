@@ -33,4 +33,8 @@ data class NowPlayingMediaData (val name: String, val artist: String, val album:
         }
     }
 
+    override fun toString(): String {
+        return "NPMD: $name - $artist - $album from $app"
+    }
+
 }

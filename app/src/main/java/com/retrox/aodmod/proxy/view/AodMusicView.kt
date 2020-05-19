@@ -3,7 +3,12 @@ package com.retrox.aodmod.proxy.view
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.Animatable2
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.view.Gravity
 import android.view.View
@@ -18,13 +23,37 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.constraintLayout
 
 fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
+    val isPixelIconEnabled = XPref.getUsePixelMusicIcon()
+    var isAnimating = false
     return verticalLayout {
 
+        val mAnimatedIcon = ResourceUtils.getInstance(this).getDrawable(R.drawable.audioanim_animation).constantState?.newDrawable() as? AnimatedVectorDrawable
+        mAnimatedIcon?.setBounds(0, 0, 24.toDp, 24.toDp)
+        mAnimatedIcon?.registerAnimationCallback(object: Animatable2.AnimationCallback() {
+            override fun onAnimationStart(drawable: Drawable?) {
+                super.onAnimationStart(drawable)
+                isAnimating = true
+            }
+
+            override fun onAnimationEnd(drawable: Drawable?) {
+                super.onAnimationEnd(drawable)
+                isAnimating = false
+            }
+        })
+        val staticIcon = if(isPixelIconEnabled){
+            ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_music_pixel_inset)
+        }else {
+            ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_music)
+        }
         val imageIcon = imageView {
-            setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_music))
+            setImageDrawable(staticIcon)
         }.lparams(width = dip(24), height = dip(24)) {
             gravity = Gravity.CENTER_HORIZONTAL
             bottomMargin = dip(16)
+        }
+        if(isPixelIconEnabled){
+            imageIcon.scaleX = 2f
+            imageIcon.scaleY = 2f
         }
 
         val musicText = textView("No recent music") {
@@ -53,8 +82,29 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
             it?.let {
                 visibility = View.VISIBLE
                 musicText.text = "${it.name} - ${it.artist}"
+                if(!isAnimating) {
+                    if (mAnimatedIcon != null) {
+                        imageIcon.setImageDrawable(mAnimatedIcon)
+                        //Gets stuck first time if not done in post
+                        imageIcon.post {
+                            mAnimatedIcon.reset()
+                            mAnimatedIcon.start()
+                        }
+                    } else {
+                        imageIcon.setImageDrawable(staticIcon)
+                    }
+                }
             }
         })
+
+        //Hides the view initially if the value is null
+        if(AodMedia.aodMediaLiveData.value == null){
+            post {
+                visibility = View.INVISIBLE
+            }
+        }
+
+
 
 
         val controlPanel = constraintLayout {
@@ -101,3 +151,6 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
     }
 
 }
+
+val Int.toDp: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
