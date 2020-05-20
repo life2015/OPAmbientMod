@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import com.retrox.aodmod.R
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.setGoogleSans
+import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.receiver.HeadSetReceiver
 import org.jetbrains.anko.*
 
@@ -41,62 +42,82 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner): FrameLayout {
             }
 
             var prevVol = -1 // 上一次音乐音量
-
-            HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
-                it?.let {
-                    if (it is HeadSetReceiver.ConnectionState.HeadSetConnection) {
-                        val connection = it.connection
-                        image.setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_headset))
-                        when (connection) {
-                            HeadSetReceiver.Connection.DISCONNECTED -> headSetTextView.text = "Headset Unplugged"
-                            HeadSetReceiver.Connection.CONNECTED -> headSetTextView.text = "Headset Plugged"
-                        }
-                    } else if (it is HeadSetReceiver.ConnectionState.BlueToothConnection) {
-                        val connection = it.connection
-                        val name = it.deviceName
-                        val device = it.device
-
-                        image.setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_bluetooth))
-                        when (connection) {
-                            HeadSetReceiver.Connection.CONNECTING -> headSetTextView.text = "$name Connecting"
-                            HeadSetReceiver.Connection.CONNECTED -> headSetTextView.text = "$name Connected"
-                            HeadSetReceiver.Connection.DISCONNECTING -> headSetTextView.text = "$name Disconnecting"
-                            HeadSetReceiver.Connection.DISCONNECTED -> headSetTextView.text = "$name Disconnected"
-                        }
-                    } else if (it is HeadSetReceiver.ConnectionState.VolumeChange) {
-                        val vol = it.volValue
-                        val percent = "${((vol / 30.toFloat()) * 100).toInt()}%"
-                        if (vol == 0) {
-                            image.setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_volume_off))
-                            headSetTextView.text = "Volume $percent"
-                        } else {
-                            if (vol < prevVol && prevVol != -1) {
-                                image.setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_volume_down))
-                            } else {
-                                image.setImageDrawable(ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_volume_up))
+            if(!XPref.isSettings()) {
+                HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+                    it?.let {
+                        if (it is HeadSetReceiver.ConnectionState.HeadSetConnection) {
+                            val connection = it.connection
+                            image.setImageDrawable(
+                                ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_headset)
+                            )
+                            when (connection) {
+                                HeadSetReceiver.Connection.DISCONNECTED -> headSetTextView.text =
+                                    "Headset Unplugged"
+                                HeadSetReceiver.Connection.CONNECTED -> headSetTextView.text =
+                                    "Headset Plugged"
                             }
-                            headSetTextView.text = "Volume $percent"
-                            prevVol = vol
-                        }
+                        } else if (it is HeadSetReceiver.ConnectionState.BlueToothConnection) {
+                            val connection = it.connection
+                            val name = it.deviceName
+                            val device = it.device
 
-                    } else if (it is HeadSetReceiver.ConnectionState.ZenModeChange) {
-                        val zenMode = it.newMode
-                        val resourceUtils = ResourceUtils.getInstance(this)
-                        val zenStatePair = when (zenMode) {
-                            1 -> resourceUtils.getDrawable(R.drawable.ic_notifications_off) to "Silent"
-                            2 -> resourceUtils.getDrawable(R.drawable.ic_vibration) to "Vibrate"
-                            3 -> resourceUtils.getDrawable(R.drawable.ic_notifications_active) to "Ring"
-                            else -> null
-                        }
+                            image.setImageDrawable(
+                                ResourceUtils.getInstance(this).getDrawable(R.drawable.ic_bluetooth)
+                            )
+                            when (connection) {
+                                HeadSetReceiver.Connection.CONNECTING -> headSetTextView.text =
+                                    "$name Connecting"
+                                HeadSetReceiver.Connection.CONNECTED -> headSetTextView.text =
+                                    "$name Connected"
+                                HeadSetReceiver.Connection.DISCONNECTING -> headSetTextView.text =
+                                    "$name Disconnecting"
+                                HeadSetReceiver.Connection.DISCONNECTED -> headSetTextView.text =
+                                    "$name Disconnected"
+                            }
+                        } else if (it is HeadSetReceiver.ConnectionState.VolumeChange) {
+                            val vol = it.volValue
+                            val percent = "${((vol / 30.toFloat()) * 100).toInt()}%"
+                            if (vol == 0) {
+                                image.setImageDrawable(
+                                    ResourceUtils.getInstance(this)
+                                        .getDrawable(R.drawable.ic_volume_off)
+                                )
+                                headSetTextView.text = "Volume $percent"
+                            } else {
+                                if (vol < prevVol && prevVol != -1) {
+                                    image.setImageDrawable(
+                                        ResourceUtils.getInstance(this)
+                                            .getDrawable(R.drawable.ic_volume_down)
+                                    )
+                                } else {
+                                    image.setImageDrawable(
+                                        ResourceUtils.getInstance(this)
+                                            .getDrawable(R.drawable.ic_volume_up)
+                                    )
+                                }
+                                headSetTextView.text = "Volume $percent"
+                                prevVol = vol
+                            }
 
-                        zenStatePair?.let { (drawable, text) ->
-                            image.setImageDrawable(drawable)
-                            headSetTextView.text = text
+                        } else if (it is HeadSetReceiver.ConnectionState.ZenModeChange) {
+                            val zenMode = it.newMode
+                            val resourceUtils = ResourceUtils.getInstance(this)
+                            val zenStatePair = when (zenMode) {
+                                1 -> resourceUtils.getDrawable(R.drawable.ic_notifications_off) to "Silent"
+                                2 -> resourceUtils.getDrawable(R.drawable.ic_vibration) to "Vibrate"
+                                3 -> resourceUtils.getDrawable(R.drawable.ic_notifications_active) to "Ring"
+                                else -> null
+                            }
+
+                            zenStatePair?.let { (drawable, text) ->
+                                image.setImageDrawable(drawable)
+                                headSetTextView.text = text
+                            }
                         }
                     }
-                }
 
-            })
+                })
+            }
         }.lparams(wrapContent, wrapContent) {
             gravity = Gravity.CENTER_HORIZONTAL
         }

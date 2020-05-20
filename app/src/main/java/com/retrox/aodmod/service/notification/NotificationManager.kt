@@ -5,11 +5,13 @@ import android.app.Notification
 import androidx.lifecycle.MutableLiveData
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.util.Log
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.LiveEvent
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.state.AodMedia
 import de.robv.android.xposed.XposedHelpers
+import java.lang.Exception
 
 object NotificationManager {
 
@@ -27,7 +29,7 @@ object NotificationManager {
     fun onNotificationPosted(sbn: StatusBarNotification, rankingMap: NotificationListenerService.RankingMap) {
         sbn.notification.extras.putString(EXTRA_PACKAGE, sbn.packageName)
 
-        notificationMap[sbn.key] = sbn
+        notificationMap.putNotification(sbn.key, sbn)
         val notification = sbn.notification
         notification.debugMessage()
 
@@ -50,7 +52,7 @@ object NotificationManager {
         val ranking = getRanking(sbn, rankingMap)
         sbn.notification.extras.putInt(EXTRA_IMPORTANTCE, ranking.importance)
 
-        notificationMap[sbn.key] = sbn
+        notificationMap.putNotification(sbn.key, sbn)
         sbn.notification.debugMessage(type = "Added")
     }
 
@@ -113,15 +115,46 @@ fun Notification.getNotificationData(): NotificationData {
                 "com.tencent.mm",
                 "com.tencent.tim",
                 "com.tencent.mobileqq",
-                "com.android.mms"
+                "com.android.mms",
+                "com.oneplus.mms",
+                "com.google.android.apps.messaging",
+                "com.google.android.dialer",
+                "com.android.dialer",
+                "com.whatsapp",
+                "org.telegram.messenger",
+                "com.facebook.orca",
+                "com.instagram.android",
+                "com.facebook.katana",
+                "com.discord",
+                "com.snapchat.android",
+                "com.twitter.android",
+                "com.vkontakte.android",
+                "ru.sberbankmobile",
+                "ru.raiffeisennews"
             )
             return@inner (sensitiveApps.contains(it))
         } else return@inner false
     } ?: false
 
-    val realContent = if (sensitive) "收到新通知" else content
+    val realContent = if (sensitive) "Sensitive notification" else content
 
     return NotificationData(appName, title, realContent, isOnGoing > 0)
+}
+
+fun MutableMap<String, StatusBarNotification>.putNotification(key: String, notification: StatusBarNotification){
+    //Check notification with matching group is not already added and if it is, remove it
+    try {
+        if (notification.isGroup) {
+            this.forEach {
+                if (it.value.groupKey == notification.groupKey) this.remove(it.key)
+            }
+        }
+    }catch (e: Exception){
+        //Ignore
+    }
+
+    //Add the new notification
+    this[key] = notification
 }
 
 

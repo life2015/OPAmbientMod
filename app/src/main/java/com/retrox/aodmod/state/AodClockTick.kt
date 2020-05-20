@@ -6,6 +6,8 @@ import android.os.Handler
 import android.os.SystemClock
 import android.view.Choreographer
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.app.util.logD
+import com.retrox.aodmod.app.util.mainLooper
 
 /**
  * 因为系统广播不靠谱 所以用自己的Handler了
@@ -15,13 +17,13 @@ object AodClockTick {
         override fun onActive() {
             super.onActive()
 //            startTick()
-            MainHook.logD("Aod Clock start Tick")
+            logD("Aod Clock start Tick")
         }
 
         override fun onInactive() {
             super.onInactive()
 //            stopTick()
-            MainHook.logD("Aod Clock stop Tick")
+            logD("Aod Clock stop Tick")
         }
     }
 
@@ -29,14 +31,14 @@ object AodClockTick {
     private val runnable = object : Runnable {
         override fun run() {
             AodClockTick.tickLiveData.postValue("Tick!")
-            MainHook.logD("Tick By Handler Ticker")
+            logD("Tick By Handler Ticker")
             val now = SystemClock.uptimeMillis()
             val time = (1000 - (now % 1000)) + now + 60*1000L
             handler.postAtTime(this, time)
         }
     }
 
-    private val handler = Handler(AndroidAppHelper.currentApplication().mainLooper)
+    private val handler = Handler(mainLooper)
 
     private fun startTick() {
         handler.postDelayed(runnable, delay)

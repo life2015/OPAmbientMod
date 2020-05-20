@@ -30,7 +30,7 @@ class EnglishLearnActivity : AppCompatActivity() {
 
                 title(context.getString(R.string.english_learn_battery_status))
                 content("Charging 充电中\n\n" +
-                        "Quick Charging 一加Dash快速充电中")
+                        "Quick Charging 一加快速充电中")
 
                 title(context.getString(R.string.english_learn_headphone_connection))
                 content("Headset Unplugged 耳机拔出\n\n" +

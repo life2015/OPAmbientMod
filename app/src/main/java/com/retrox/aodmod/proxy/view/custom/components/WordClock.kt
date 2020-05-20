@@ -26,7 +26,7 @@ fun ViewManager.wordClock(lifecycleOwner: LifecycleOwner, init: TextView.() -> U
 
         AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
             val cal = Calendar.getInstance()
-            val hour = if (cal.get(Calendar.HOUR) == 0 ) 12 else cal.get(Calendar.HOUR) % 12
+            val hour = cal.get(Calendar.HOUR) % 12
             val minute = cal.get(Calendar.MINUTE) % 60
             val month = cal.get(Calendar.MONTH) + 1
             val day = cal.get(Calendar.DAY_OF_MONTH)
@@ -41,7 +41,7 @@ fun ViewManager.wordClock(lifecycleOwner: LifecycleOwner, init: TextView.() -> U
             if (Locale.getDefault().language == Locale.CHINESE.language && !XPref.getForceEnglishWordClock()) {
                 text = "${hour.toCNString()}時\n${minute.toCNString()}分" + "  "
             } else {
-                val engStr = "It's\n${hoursArray[hour]}\n${minutesArray[minute]}" + " "
+                val engStr = ResourceUtils.getInstance(this).resources.getString(R.string.clock_its) + "\n${hoursArray.getOrNull(hour)}\n${minutesArray.getOrNull(minute)}" + " "
                 text = engStr
             }
 

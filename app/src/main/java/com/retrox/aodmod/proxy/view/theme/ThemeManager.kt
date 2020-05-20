@@ -28,6 +28,10 @@ object ThemeManager {
 
     fun getCurrentColorPack() = currentColorPack
 
+    fun setCurrentColorPack(currentColorPack: ThemeClockPack){
+        this.currentColorPack = currentColorPack
+    }
+
     fun setThemePackSync(themeClockPack: ThemeClockPack) {
         themeClockPack.writeToFile()
     }

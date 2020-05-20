@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
+import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.remote.lyric.LrcSync
@@ -30,7 +31,7 @@ fun Context.flatAodMainView(lifecycleOwner: LifecycleOwner): View {
             }.lparams(width = matchParent, height = wrapContent) {
                 startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                 topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-                topMargin = dip(140)
+                topMargin = getTopMargin()
                 leftMargin = dip(36)
             }
             addView(clockView)
@@ -76,5 +77,13 @@ fun Context.flatAodMainView(lifecycleOwner: LifecycleOwner): View {
             }
 
         }.lparams(width = matchParent, height = matchParent)
+    }
+}
+
+private fun View.getTopMargin() : Int {
+    return if(XPref.isSettings()){
+        0
+    }else{
+        dip(140)
     }
 }

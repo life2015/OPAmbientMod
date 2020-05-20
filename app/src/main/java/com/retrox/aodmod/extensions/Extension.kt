@@ -1,7 +1,9 @@
 package com.retrox.aodmod.extensions
 
 import android.Manifest
+import android.R
 import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.AndroidAppHelper
 import android.content.Context
 import android.content.pm.PackageManager
@@ -9,17 +11,31 @@ import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.media.AudioAttributes
-import android.os.Build
+import android.os.Handler
 import android.os.PowerManager
 import android.os.VibrationEffect
 import android.os.Vibrator
-import androidx.core.app.ActivityCompat
 import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.reflect.TypeToken
-import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.BuildConfig
+import com.retrox.aodmod.SmaliImports
+import com.retrox.aodmod.app.App
+import com.retrox.aodmod.app.XposedUtils
+import com.retrox.aodmod.app.util.getSystemContext
+import com.retrox.aodmod.app.util.logD
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.pref.XPref.isSettings
 import com.retrox.aodmod.proxy.view.theme.ThemeClockPack
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.service.notification.NotificationManager
@@ -27,6 +43,8 @@ import com.retrox.aodmod.service.notification.getNotificationData
 import de.robv.android.xposed.XposedHelpers
 import java.io.File
 import java.lang.reflect.InvocationTargetException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 fun TextView.setGoogleSans(style: String = "Regular"): Boolean {
@@ -65,7 +83,7 @@ fun TextView.setGradientTest(colorPack: ThemeClockPack = ThemeManager.getCurrent
     val shader = LinearGradient(
         0f, 0f, width.toFloat() * 1.2f, height.toFloat() * 1.2f, Color.parseColor(colorPack.gradientStart),Color.parseColor(colorPack.gradientEnd),Shader.TileMode.CLAMP)
     paint.shader = shader
-//    MainHook.logD("Debug Gradient -> text: $text width: $width height: $height")
+//    Log.d("OPAodMod", "Debug Gradient -> text: $text width: $width height: $height")
 }
 
 // 1900/1905:OP7 China, 1910 OP7Pro China, 1911: India, 1913: EU, 1915: Tmobile, 1917: global/US unlocked, 1920: EU 5G
@@ -116,7 +134,7 @@ fun getVpnStatus() : Boolean{
     val SecurityController = XposedHelpers.findClass("com.android.systemui.statusbar.policy.SecurityController", AndroidAppHelper.currentApplication().classLoader)
     val mSecurityController = getDependency(SecurityController)
     val isVpnEnabled = XposedHelpers.callMethod(mSecurityController, "isVpnEnabled")
-    MainHook.logD("Vpn Stat : $isVpnEnabled")
+    Log.d("OPAodMod", "Vpn Stat : $isVpnEnabled")
     return isVpnEnabled as Boolean
 }
 
@@ -124,9 +142,50 @@ inline fun <reified T> genericType() = object: TypeToken<T>() {}.type
 
 @SuppressLint("SetWorldReadable", "SetWorldWritable")
 fun File.chmod777() {
-    setExecutable(true, false)
-    setReadable(true, false)
-    setWritable(true, false)
+    val ex = setExecutable(true, false)
+    val r = setReadable(true, false)
+    val w = setWritable(true, false)
+    logD("chmod777 ${this.absolutePath} $r $w $ex")
+}
+
+fun resetPrefPermissions(context: Context?){
+    //Arbitrary delay to workaround delays with .apply() on prefs
+    //This fixes an issue where the prefs would get reset to 644, resetting the AoD to defaults
+    Handler().postDelayed({
+        context?.let {
+            val file = File("${it.cacheDir.parentFile.absolutePath}/shared_prefs", "${BuildConfig.APPLICATION_ID}_preferences.xml")
+            file.chmod777()
+        }
+    }, 250)
+}
+
+fun generateAlarmText(context: Context): String {
+    if (XPref.getShowAlarm()) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val nextAlarm = alarmManager.nextAlarmClock
+        val stringBuilder = StringBuilder()
+        if(nextAlarm != null) {
+            val nextAlarmTime = nextAlarm.triggerTime
+            val currentTime = System.currentTimeMillis()
+            if (nextAlarmTime - currentTime <= 86400000) {
+                if (XPref.getWeatherShowCity()) {
+                    if (XPref.getShowBullets()) {
+                        stringBuilder.append(" • ")
+                    }
+                } else {
+                    stringBuilder.append("\n")
+                }
+                //Alarm is within next 24h
+                if (XPref.getShowAlarmEmoji()) {
+                    stringBuilder.append("⏰")
+                    stringBuilder.append(" ")
+                }
+                stringBuilder.append(SmaliImports.getFormattedTime(nextAlarmTime))
+            }
+        }
+        return stringBuilder.toString()
+    }
+    return ""
 }
 
 fun Number.toCNString(): String {
@@ -141,7 +200,7 @@ private fun getNotiNotiMessage(): String {
     }?.let {
         val data = it.notification.getNotificationData()
         val message = "${data.title}  ${data.content}"
-        MainHook.logD(message)
+        Log.d("OPAodMod", message)
         message
     } ?: ""
 }
@@ -154,6 +213,58 @@ fun getNewAodNoteContent(): String {
         return oldContent
     } else{
         return "${oldContent} \n${getNotiNotiMessage()} "
+    }
+}
+
+val dateFormats = arrayOf("EEE, d MMM", "EEE, MMM d", "dd/MM/y", "MM/dd/y", "d/M/y", "M/d/y")
+
+fun getDateFormatted(dateFormat: String): String {
+    return SimpleDateFormat(dateFormat, Locale.ENGLISH)
+            .format(Date())
+}
+
+fun Context.getToolbarHeight(): Int {
+    // Calculate ActionBar height
+    val tv = TypedValue()
+    if (theme.resolveAttribute(R.attr.actionBarSize, tv, true)) {
+        return TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
+    }
+    return 0
+}
+
+fun View.getBottomY(): Int {
+    return getTopY() + height
+}
+
+fun View.getTopY(): Int {
+    val location = IntArray(2)
+    this.getLocationOnScreen(location)
+    return location[1]
+}
+
+fun Context?.getDrawableC(@DrawableRes id: Int): Drawable? {
+    this?.let {
+        return ContextCompat.getDrawable(it, id)
+    }
+    return null
+}
+
+fun Snackbar.setGoogleSans() : Snackbar {
+    view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).typeface = ResourcesCompat.getFont(context, com.retrox.aodmod.R.font.googlesans)
+    return this
+}
+
+fun getAppString(@StringRes stringRes: Int): String {
+    return if(isSettings()){
+        App.application.getString(stringRes)
+    }else{
+        val appContext = AndroidAppHelper.currentApplication()
+        if(appContext != null){
+            appContext.createPackageContext(BuildConfig.APPLICATION_ID, Context.CONTEXT_IGNORE_SECURITY).getString(stringRes)
+        }else{
+            getSystemContext().createPackageContext(BuildConfig.APPLICATION_ID, Context.CONTEXT_IGNORE_SECURITY).getString(stringRes)
+        }
+
     }
 }
 

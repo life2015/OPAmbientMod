@@ -128,156 +128,7 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    fun Context.clockView(lifecycleOwner: LifecycleOwner) = constraintLayout {
-        val timeView = textView {
-            id = Ids.tv_clock
-            textColor = Color.WHITE
-            textSize = 36f
-            letterSpacing = 0.1f
-            setGoogleSans()
-            text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date())
-            AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
-            })
-        }.lparams(wrapContent, wrapContent) {
-            bottomMargin = dip(10)
-            startToStart = PARENT_ID
-            topToTop = PARENT_ID
-        }
 
-        val dateView = textView {
-            textColor = Color.WHITE
-            textSize = 16f
-            letterSpacing = 0.1f
-            setGoogleSans()
-            val dateFormat = SimpleDateFormat("MM/dd EE", Locale.ENGLISH)
-            text = dateFormat.format(Date())
-
-            AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                text = dateFormat.format(Date())
-            })
-        }.lparams(wrapContent, wrapContent) {
-            startToStart = PARENT_ID
-            topToBottom = timeView.id
-        }
-
-
-        val battery = textView {
-            id = Ids.tv_battery
-            textColor = Color.WHITE
-            setGoogleSans()
-            letterSpacing = 0.02f
-            textSize = 15f
-
-            AodState.powerState.observe(lifecycleOwner, Observer {
-                it?.let {
-                    var statusText = if (it.plugged) "Charging" else ""
-                    if (it.fastCharge) statusText = "Quick Charging"
-                    if (it.charged) statusText = "Charged"
-                    if (AodState.sleepMode) statusText += " SleepMode"
-                    text = "${it.level}%  $statusText"
-                }
-            })
-        }.lparams(width = wrapContent, height = wrapContent) {
-            bottomToBottom = PARENT_ID
-            endToEnd = PARENT_ID
-        }
-
-        val headSetStatusView = aodHeadSetView(lifecycleOwner).apply {
-            id = Ids.ly_headset_status
-            visibility = View.INVISIBLE
-
-            findViewById<View>(Ids.iv_headSet).visibility = View.GONE
-            findViewById<TextView>(Ids.tv_headSetStatus).apply {
-                gravity = Gravity.END
-                textSize = 15f
-                maxWidth = dip(200)
-            }
-
-        }.lparams(wrapContent, wrapContent) {
-            endToEnd = PARENT_ID
-            bottomToBottom = timeView.id
-        }
-        addView(headSetStatusView)
-
-        // 使用WakeLock来保证Handler计时的准确以及避免休眠
-        val animWakeLock = context.getSystemService(PowerManager::class.java)
-            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:PureMusicViewAnim")
-
-        val headSetViewReset = Runnable {
-            TransitionManager.beginDelayedTransition(this)
-            findViewById<View>(Ids.ly_headset_status).visibility = View.GONE
-            if (animWakeLock.isHeld) animWakeLock.release()
-        }
-        HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
-            it?.let {
-                // do Animation now
-                removeCallbacks(headSetViewReset)
-                if (animWakeLock.isHeld) {
-                    animWakeLock.release()
-                }
-                animWakeLock.acquire(10000L)
-
-                val delay = when (it) {
-                    is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
-                    is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
-                    is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
-                    is HeadSetReceiver.ConnectionState.ZenModeChange -> 4000L
-                }
-
-                TransitionManager.beginDelayedTransition(this)
-                findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
-
-                postDelayed(headSetViewReset, delay)
-            }
-        })
-
-    }
-
-    fun Context.musicView(lifecycleOwner: LifecycleOwner) = verticalLayout {
-
-        val musicName = textView {
-            textColor = Color.WHITE
-            textSize = 16f
-            letterSpacing = 0.02f
-            setGoogleSans(style = "Medium")
-            text = "Dark Side Of The Moon"
-            visibility = View.GONE
-            gravity = Gravity.START
-        }.lparams(matchParent, wrapContent) {
-            bottomMargin = dip(8)
-            gravity = Gravity.START
-        }
-
-        val musicArtist = textView {
-            textColor = Color.WHITE
-            textSize = 14f
-            letterSpacing = 0.05f
-            setGoogleSans()
-            visibility = View.GONE
-            gravity = Gravity.START
-        }.lparams(matchParent, wrapContent) {
-            bottomMargin = dip(12)
-            gravity = Gravity.START
-        }
-
-        if (AodMedia.aodMediaLiveData.value != null) {
-            AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
-                if (it == null) {
-                    musicArtist.visibility = View.GONE
-                    musicName.visibility = View.GONE
-                    LrcSync.stopSync()
-                    return@Observer
-                }
-
-                musicArtist.visibility = View.VISIBLE
-                musicName.visibility = View.VISIBLE
-                musicName.text = it.name
-                musicArtist.text = it.artist
-            })
-        }
-    }
 
     fun Context.notiView(lifecycleOwner: LifecycleOwner) = verticalLayout {
         val notiView = this
@@ -372,5 +223,156 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
             .translationY(-vertical2.toFloat())
             .setDuration(if (lastTime == 0L) /*加入初始位移 避免烧屏*/ 0L else 800L)
             .start()
+    }
+}
+
+@SuppressLint("MissingPermission")
+fun Context.clockView(lifecycleOwner: LifecycleOwner) = constraintLayout {
+    val timeView = textView {
+        id = Ids.tv_clock
+        textColor = Color.WHITE
+        textSize = 36f
+        letterSpacing = 0.1f
+        setGoogleSans()
+        text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date())
+        AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
+            text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
+        })
+    }.lparams(wrapContent, wrapContent) {
+        bottomMargin = dip(10)
+        startToStart = PARENT_ID
+        topToTop = PARENT_ID
+    }
+
+    val dateView = textView {
+        textColor = Color.WHITE
+        textSize = 16f
+        letterSpacing = 0.1f
+        setGoogleSans()
+        val dateFormat = SimpleDateFormat("MM/dd EE", Locale.ENGLISH)
+        text = dateFormat.format(Date())
+
+        AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
+            text = dateFormat.format(Date())
+        })
+    }.lparams(wrapContent, wrapContent) {
+        startToStart = PARENT_ID
+        topToBottom = timeView.id
+    }
+
+
+    val battery = textView {
+        id = Ids.tv_battery
+        textColor = Color.WHITE
+        setGoogleSans()
+        letterSpacing = 0.02f
+        textSize = 15f
+
+        AodState.powerState.observe(lifecycleOwner, Observer {
+            it?.let {
+                var statusText = if (it.plugged) "Charging" else ""
+                if (it.fastCharge) statusText = "Quick Charging"
+                if (it.charged) statusText = "Charged"
+                if (AodState.sleepMode) statusText += " SleepMode"
+                text = "${it.level}%  $statusText"
+            }
+        })
+    }.lparams(width = wrapContent, height = wrapContent) {
+        bottomToBottom = PARENT_ID
+        endToEnd = PARENT_ID
+    }
+
+    val headSetStatusView = aodHeadSetView(lifecycleOwner).apply {
+        id = Ids.ly_headset_status
+        visibility = View.INVISIBLE
+
+        findViewById<View>(Ids.iv_headSet).visibility = View.GONE
+        findViewById<TextView>(Ids.tv_headSetStatus).apply {
+            gravity = Gravity.END
+            textSize = 15f
+            maxWidth = dip(200)
+        }
+
+    }.lparams(wrapContent, wrapContent) {
+        endToEnd = PARENT_ID
+        bottomToBottom = timeView.id
+    }
+    addView(headSetStatusView)
+
+    // 使用WakeLock来保证Handler计时的准确以及避免休眠
+    val animWakeLock = context.getSystemService(PowerManager::class.java)
+        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:PureMusicViewAnim")
+
+    val headSetViewReset = Runnable {
+        TransitionManager.beginDelayedTransition(this)
+        findViewById<View>(Ids.ly_headset_status).visibility = View.GONE
+        if (animWakeLock.isHeld) animWakeLock.release()
+    }
+    HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+        it?.let {
+            // do Animation now
+            removeCallbacks(headSetViewReset)
+            if (animWakeLock.isHeld) {
+                animWakeLock.release()
+            }
+            animWakeLock.acquire(10000L)
+
+            val delay = when (it) {
+                is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
+                is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
+                is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
+                is HeadSetReceiver.ConnectionState.ZenModeChange -> 4000L
+            }
+
+            TransitionManager.beginDelayedTransition(this)
+            findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
+
+            postDelayed(headSetViewReset, delay)
+        }
+    })
+
+}
+
+fun Context.musicView(lifecycleOwner: LifecycleOwner) = verticalLayout {
+
+    val musicName = textView {
+        textColor = Color.WHITE
+        textSize = 16f
+        letterSpacing = 0.02f
+        setGoogleSans(style = "Medium")
+        text = "Dark Side Of The Moon"
+        visibility = View.GONE
+        gravity = Gravity.START
+    }.lparams(matchParent, wrapContent) {
+        bottomMargin = dip(8)
+        gravity = Gravity.START
+    }
+
+    val musicArtist = textView {
+        textColor = Color.WHITE
+        textSize = 14f
+        letterSpacing = 0.05f
+        setGoogleSans()
+        visibility = View.GONE
+        gravity = Gravity.START
+    }.lparams(matchParent, wrapContent) {
+        bottomMargin = dip(12)
+        gravity = Gravity.START
+    }
+
+    if (AodMedia.aodMediaLiveData.value != null) {
+        AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
+            if (it == null) {
+                musicArtist.visibility = View.GONE
+                musicName.visibility = View.GONE
+                LrcSync.stopSync()
+                return@Observer
+            }
+
+            musicArtist.visibility = View.VISIBLE
+            musicName.visibility = View.VISIBLE
+            musicName.text = it.name
+            musicArtist.text = it.artist
+        })
     }
 }

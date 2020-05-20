@@ -3,6 +3,8 @@ package com.retrox.aodmod.hooks
 import android.view.View
 import android.widget.TextView
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.app.util.getObjectFieldOrNull
+import com.retrox.aodmod.app.util.runOnMainThread
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
@@ -14,50 +16,81 @@ object AodFingerPrintHookForQ : IXposedHookLoadPackage {
         if (lpparam.packageName != "com.android.systemui") return
         MainHook.logD("Hook into System UI -> AodFingerPrintHookForQ")
 
-        val fingerprintDialogViewClassOld = XposedHelpers.findClass("com.oneplus.systemui.biometrics.OpFingerprintDialogView", lpparam.classLoader)
-        val fingerprintDialogViewClassNew = XposedHelpers.findClass("com.oneplus.systemui.biometrics.OpFodIconViewController", lpparam.classLoader)
+        //New class
+        val v5 = XposedHelpers.findClassIfExists("com.oneplus.systemui.biometrics.OpFodIconViewController", lpparam.classLoader);
+        //Old class
+        val v6 = XposedHelpers.findClassIfExists("com.oneplus.systemui.biometrics.OpFingerprintDialogView", lpparam.classLoader);
 
-        val methodCheck = try {
-            XposedHelpers.findMethodExact(fingerprintDialogViewClassOld, "handleUpdateIconVisibility", Boolean::class.java)
-        } catch (e: Throwable) {
-            null
+        XposedHelpers.findAndHookMethod(v6, "updateIconVisibility", Boolean::class.java, NewMethodHook());
+
+        if(v5 != null && XposedHelpers.findMethodExactIfExists(v5, "handleUpdateIconVisibility", Boolean::class.java) != null){
+            XposedHelpers.findAndHookMethod(v5, "handleUpdateIconVisibility", Boolean::class.java, OldMethodHook());
+        }
+        if(v6 != null && XposedHelpers.findMethodExactIfExists(v6, "handleUpdateIconVisibility", Boolean::class.java) != null){
+            XposedHelpers.findAndHookMethod(v6, "handleUpdateIconVisibility", Boolean::class.java, OldMethodHook());
         }
 
-        val fingerprintDialogViewClass = if (methodCheck != null) {
-            fingerprintDialogViewClassOld
-        } else {
-            fingerprintDialogViewClassNew
+        if(v5 != null && XposedHelpers.findMethodExactIfExists(v5, "animateErrorText", TextView::class.java) != null){
+            XposedHelpers.findAndHookMethod(v5, "animateErrorText", TextView::class.java, ErrorMethodHook())
         }
 
-        // handleUpdateIconVisibility
-        XposedHelpers.findAndHookMethod(fingerprintDialogViewClass, "handleUpdateIconVisibility", Boolean::class.java, object : XC_MethodHook() {
-            override fun beforeHookedMethod(param: MethodHookParam) {
+        if(v6 != null && XposedHelpers.findMethodExactIfExists(v6, "animateErrorText", TextView::class.java) != null){
+            XposedHelpers.findAndHookMethod(v6, "animateErrorText", TextView::class.java, ErrorMethodHook())
+        }
+    }
+
+    class NewMethodHook : XC_MethodHook() {
+        override fun beforeHookedMethod(param: XC_MethodHook.MethodHookParam) {
 //                MainHook.logD("handleUpdateIconVisibility Called ${param.args}")
-                val view = XposedHelpers.getObjectField(param.thisObject, "mIconNormal") as View
+            val view = getObjectFieldOrNull(param.thisObject, "mIconNormal") as? View
+            if (view != null) {
                 view.visibility = View.INVISIBLE
                 view.alpha = 0f
                 if (AodState.DreamState.ACTIVE == AodState.dreamState.value) {
                     view.visibility = View.INVISIBLE
                     view.alpha = 0f
                 }
-                AodState.dreamState.observeForever {
-                    if (AodState.DreamState.STOP == AodState.dreamState.value) {
-                        view.visibility = View.VISIBLE
-                        view.alpha = 1f
+                runOnMainThread {
+                    AodState.dreamState.observeForever {
+                        if (AodState.DreamState.STOP == AodState.dreamState.value) {
+                            view.visibility = View.VISIBLE
+                            view.alpha = 1f
+                        }
                     }
                 }
             }
-        })
+        }
+    }
 
-        if (methodCheck == null) return // 如果没有找到这个方法，那也不要做此Hook 避免Crash
-        // 隐藏指纹的错误提示
-        XposedHelpers.findAndHookMethod(fingerprintDialogViewClass, "animateErrorText", TextView::class.java, object : XC_MethodHook() {
-            override fun beforeHookedMethod(param: MethodHookParam) {
-                val view = param.args[0] as? TextView
+    class OldMethodHook : XC_MethodHook() {
+        override fun beforeHookedMethod(param: XC_MethodHook.MethodHookParam) {
+            MainHook.logD("Update Icon Visbility ${param.args}")
+            val view = getObjectFieldOrNull(param.thisObject, "mIconNormal") as? View
+            if (view != null) {
+                view.visibility = View.INVISIBLE
+                view.alpha = 0f
                 if (AodState.DreamState.ACTIVE == AodState.dreamState.value) {
-                    view?.text = ""
+                    view.visibility = View.INVISIBLE
+                    view.alpha = 0f
+                }
+                runOnMainThread {
+                    AodState.dreamState.observeForever {
+                        if (AodState.DreamState.STOP == AodState.dreamState.value) {
+                            view.visibility = View.VISIBLE
+                            view.alpha = 1f
+                        }
+                    }
                 }
             }
-        })
+        }
+    }
+
+    class ErrorMethodHook : XC_MethodHook() {
+        override fun beforeHookedMethod(param: MethodHookParam) {
+            val view = param.args[0] as? TextView
+            if (AodState.DreamState.ACTIVE == AodState.dreamState.value) {
+                view?.text = ""
+            }
+        }
     }
 }

@@ -199,4 +199,154 @@
     <string name="just_restarted">刚刚重启</string>
     <string name="no_record">无记录</string>
     <string name="operating_mode_not_detected">尚未检测到工作模式</string>
+    <string name="sensitive_notification">收到新通知</string>
+
+    <!-- New Settings UI -->
+    <string name="menu_nav_bar_settings_aod">息屏显示通用设置</string>
+    <string name="menu_nav_bar_settings_clock">时钟设置</string>
+    <string name="menu_nav_bar_settings_music">音乐设置</string>
+    <string name="menu_nav_bar_settings_weather">天气设置</string>
+    <string name="menu_nav_bar_settings_theme">主题设置</string>
+    <string name="bs_theme_picker_title">主题选择</string>
+
+    <string name="bs_theme_name_default">Default</string>
+    <string name="bs_theme_name_flat">Flat</string>
+    <string name="bs_theme_name_dvd">DVD</string>
+    <string name="bs_theme_name_pure_music">Pure Music</string>
+    <string name="bs_theme_name_flat_music">Flat Music</string>
+    <string name="bs_theme_name_word">Word</string>
+    <string name="settings_general_raise_detection">抬手检测</string>
+    <string name="settings_general_raise_detection_desc">仅当屏幕抬起时显示息屏显示，仅在7Pro上测试，不确保其他系统条件下正常运行</string>
+    <string name="settings_general_aod_memo">息屏备忘</string>
+    <string name="settings_general_aod_memo_desc">当主题支持时，备忘内容将显示在时钟下方</string>
+    <string name="settings_general_night_mode">夜间模式启用时关闭息屏显示</string>
+    <string name="settings_general_night_mode_desc">选中后，系统夜间模式开启时关闭息屏显示。（注意此设置通常是导致错误报告的原因！）</string>
+    <string name="settings_general_force_english">在Word主题中强制使用英语</string>
+    <string name="settings_general_force_english_desc">选中后，对Word主题强制使用英语，无视系统语言设置</string>
+    <string name="settings_general_flip_mode">翻转/口袋模式</string>
+    <string name="settings_general_flip_mode_desc">倒扣手机或放入口袋时关闭屏幕。省电！建议开启！</string>
+    <string name="settings_general_auto_brightness">自动亮度</string>
+    <string name="settings_general_auto_brightness_desc">根据传感器自动调整息屏显示亮度，省电！</string>
+    <string name="settings_general_sensitive_notifications">隐藏敏感消息提醒</string>
+    <string name="settings_general_sensitive_notifications_desc">息屏不显示敏感信息内容，比如微信，QQ，短信等</string>
+    <string name="settings_general_system_font">Google Sans字体</string>
+    <string name="settings_general_system_font_desc">选中后使用Google Sans字体，关闭后使用系统字体</string>
+    <string name="settings_general_ten_minutes">常亮10分钟自动关屏</string>
+    <string name="settings_general_ten_minutes_desc">10分钟无操作自动关闭息屏显示</string>
+    <string name="settings_general_turn_off_after_fifteen_seconds">显示15秒后自动关屏</string>
+    <string name="settings_general_turn_off_after_fifteen_seconds_desc">无操作15秒后自动关闭息屏显示，此选项提供给仅想查看通知的人。配合抬手检测使用，比“常亮10分钟自动关屏”有更高的优先级</string>
+    <string name="settings_general_aod_memo_input">输入备忘内容</string>
+    <string name="settings_general_aod_memo_helper">若不想显示请留空</string>
+    <string name="settings_clock_word_clock_flat">Word时钟</string>
+    <string name="settings_clock_word_clock_flat_desc">在Flat主题使用Word时钟</string>
+    <string name="settings_clock_date_format">日期格式</string>
+    <string name="settings_clock_24h">24小时制时间</string>
+    <string name="settings_clock_24h_desc">在息屏显示使用24小时制时间</string>
+    <string name="settings_clock_show_am_pm">显示AM/PM</string>
+    <string name="settings_clock_show_am_pm_desc">当使用12小时制时显示AM/PM（看起来不太协调）</string>
+    <string name="settings_clock_general">时钟通用设置</string>
+    <string name="settings_clock_alarm">闹钟显示</string>
+    <string name="settings_clock_show_alarm">显示下一个闹钟</string>
+    <string name="settings_clock_show_alarm_desc">将在天气之后换行显示24小时内的下一个闹钟</string>
+    <string name="settings_clock_show_alarm_emoji_desc">显示闹钟Emoji图标</string>
+    <string name="settings_clock_show_alarm_emoji">在下一个闹钟时间前显示闹钟Emoji图标</string>
+    <string name="settings_music_master_switch">开启音乐显示</string>
+    <string name="settings_music_use_system_music">系统音乐控制器</string>
+    <string name="settings_music_use_system_music_desc">使用系统音乐控制器，可能更加稳定</string>
+    <string name="settings_music_use_pixel_icon">Pixel音乐图标</string>
+    <string name="settings_music_use_pixel_icon_desc">息屏显示使用Pixel的音乐图标（动态，可能存在Bug）</string>
+    <string name="settings_music_offset">音乐显示偏移</string>
+    <string name="settings_music_offset_desc">将音乐显示上移，避免遮挡屏下指纹传感器（如果有的话）</string>
+    <string name="settings_lyrics_translation">歌词翻译</string>
+    <string name="settings_lyrics_translation_desc">将屏幕上的歌词翻译为中文（并不是每一个主题都支持歌词显示）</string>
+    <string name="settings_music_taichi_apps">太极音乐软件</string>
+    <string name="settings_music_taichi_apps_desc">为了更好的兼容性，建议将音乐播放器添加进太极，点击查看已添加的软件并继续添加</string>
+    <string name="settings_weather_master_switch">开启天气显示</string>
+    <string name="settings_weather_current_condition">当前天气信息:</string>
+    <string name="settings_weather_current_condition_desc">%1s - %2s - %3s \n今日温度范围: %4s\n\n改变定位或单位，请点击打开一加天气APP</string>
+    <string name="settings_weather_current_condition_desc_off">天气信息不可用。息屏显示不会显示天气。请查看是否安装并启用了一加天气</string>
+    <string name="settings_weather_show_condition">显示天气状况图标</string>
+    <string name="settings_weather_show_condition_desc">在天气状况前显示Emoji图标（例如☁️）</string>
+    <string name="settings_weather_show_condition_text">显示天气状况文本</string>
+    <string name="settings_weather_show_condition_text_desc">文字显示天气状况（例如：多云）</string>
+    <string name="settings_weather_show_temperature">显示气温</string>
+    <string name="settings_weather_show_temperature_desc">显示当前温度（单位可以在一加天气APP内修改）</string>
+    <string name="settings_weather_show_city">显示城市</string>
+    <string name="settings_weather_show_city_desc">换行显示当前天气的城市（来自自动定位）</string>
+
+
+    <string name="settings_clock_advanced">高级设置 Advanced</string>
+    <string name="settings_clock_advanced_clock_sync">时钟对齐 Clock Synchronization</string>
+    <string name="settings_clock_advanced_clock_sync_desc">如果息屏显示的时间更新不准确，您可以在这里更换时钟对齐方式。 If the clock does not update correctly on your AoD, you can change the mode of sync here.</string>
+    <string name="settings_clock_alignment_info">时钟同步是做什么的？ What does Clock Synchronization do?</string>
+    <string name="settings_clock_alignment_info_desc">如果您发现时间没有正确刷新，您可以尝试更换时钟对齐方式。此项设置中您有四个选项，有着不同的时间准确性和耗电量。请注意此为高级设置！如果不明白，请不要随意修改！ These settings allow you to pick from four options to change the balance between clock accuracy on the always on display and power consumption. If you notice the clock on the AoD isn\'t updating as it should do, try changing to a different synchronization setting\nPlease note this is an <b>advanced option</b>, don\'t touch it if you don\'t understand what it does</string>
+    <string name="settings_clock_alignment_system_broadcast">系统广播模式 System Broadcast Mode</string>
+    <string name="settings_clock_alignment_system_broadcast_desc">此设置仅依赖系统的广播来更新时间，一般挺准的，但是尤其在氢OS存在问题，耗电量最少。 This option relies on just the system broadcast of time updates. It is fairly accurate, but does have problems, especially on HydrogenOS. This uses the least amount of power.</string>
+    <string name="settings_clock_alignment_alarmmanager">闹钟管理器模式 Alarm Manager Mode</string>
+    <string name="settings_clock_alignment_alarmmanager_desc">此选项调用安卓闹钟管理系统作为系统广播的补充。每分钟刷新会获得更高的准确性，会增加耗电量。开启此选项时建议通过设置定时关屏或通过倒扣手机/口袋模式触发关屏。 This option uses the android Alarm Manager system in addition to the system broadcast. This allows for more accurate updates every minute, at the expense of a higher power consumption. If you use this option, it\'s recommended to use one of the options to turn the screen off after some time.</string>
+    <string name="settings_clock_alignment_alarmmanager_timeout">闹钟管理器-超时模式 Alarm Manager with Timeout Mode <b>默认(Default)</b></string>
+    <string name="settings_clock_alignment_alarmmanager_timeout_desc">此选项调用闹钟管理器，但使用定时任务唤醒，每分钟同步一次。是最平衡的选项。This option uses the Alarm Manager, but uses a \'fixed time task\' to wake up and synchronize once a minute. This is the most balanced of the options.</string>
+    <string name="settings_clock_alignment_choreographer">编舞者模式 Choreographer Mode</string>
+    <string name="settings_clock_alignment_choreographer_desc">此选项使用动态时钟唤醒，将提供非常准确的时钟对齐，会增加耗电量。当手机深度睡眠时会出现不准确的情况。开启此选项时建议通过设置定时关屏或通过倒扣手机/口袋模式触发关屏。 This option uses an animated clock to wake up, which provides a very accurate time synchronization, at the expense of power. It may also be inaccurate when the phone enters deep sleep. If you use this option, it\'s recommended to use one of the options to turn the screen off after some time.</string>
+
+
+    <string name="settings_module_module_status">模块激活状态</string>
+    <string name="settings_module_options">选项</string>
+    <string name="settings_module_settings">OPAodMod设置</string>
+    <string name="settings_module_settings_desc">改变布局，主题，以及修改模块的运行方式和外观</string>
+    <string name="settings_module_status_xposed">Xposed状态</string>
+    <string name="settings_module_status_xposed_desc_not_installed">太极或EdXposed未安装</string>
+    <string name="settings_module_status_xposed_desc_off_tai">模块在太极内未激活</string>
+    <string name="settings_module_status_xposed_desc_off_ed">模块在EdXposed内未激活</string>
+    <string name="settings_module_status_xposed_desc_on_ed">模块在EdXposed内已激活</string>
+    <string name="settings_module_status_xposed_desc_on_tai">模块在太极内已激活</string>
+
+    <string name="settings_module_required_setup">必要设置</string>
+    <string name="settings_module_status_pick_up_display">系统抬手亮屏设置</string>
+    <string name="settings_module_status_pick_up_display_desc_off">为了模块正常运行，您必须开启系统“拿起手机显示（抬手亮屏）”，点击去开启</string>
+    <string name="settings_module_status_pick_up_display_desc_on">系统“拿起手机显示（抬手亮屏）”已经开启</string>
+
+    <string name="settings_module_status_storage_permission">储存权限</string>
+    <string name="settings_module_status_storage_permission_desc_off">请授予储存权限以便在设备内存储全局设置。点击授权</string>
+    <string name="settings_module_status_storage_permission_desc_on">储存权限已获得</string>
+
+    <string name="settings_module_status_working">模块打钩状态</string>
+    <string name="settings_module_status_working_desc_off">息屏显示模块未打钩。如果此问题一直存在，请在下方的帮助栏目内尝试按照故障排除操作！\n\n点击显示Debug信息</string>
+    <string name="settings_module_status_working_desc_on">模块按预期运行。点击显示Debug信息</string>
+    <string name="settings_module_status_working_desc_just_restarted">息屏显示刚刚完成了重启。请尝试现在锁屏。如果此消息不消失，请在下方的帮助栏目内尝试按照故障排除操作！\n\n点击显示Debug信息</string>
+
+    <string name="settings_module_help">帮助</string>
+    <string name="settings_module_troubleshooting">故障排除</string>
+    <string name="settings_module_troubleshooting_desc">尝试以下一至多个步骤\n- 确保模块在太极或EdXposed内开启（打钩）\n- 确保您完成了以上要求的配置\n- 重启息屏显示\n- 重启您的设备\n- 在太极或EdXposed内重新为模块打钩，并重启</string>
+    <string name="settings_module_troubleshooting_rehooking">为模块重新打钩</string>
+    <string name="settings_module_troubleshooting_restart_ambient">重启息屏显示（可能会重启）</string>
+    <string name="settings_module_troubleshooting_restart_ambient_snackbar">息屏显示已经重启</string>
+    <string name="settings_module_groups">群组 Groups</string>
+    <string name="settings_module_groups_desc" formatted="false">Join the official Telegram 🌍 or QQ 🇨🇳 groups</string>
+    <string name="settings_module_groups_telegram">Telegram</string>
+    <string name="settings_module_groups_qq">QQ</string>
+    <string name="settings_module_groups_qq_backup">QQ (备用)</string>
+
+    <string name="settings_module_about">关于</string>
+    <string name="settings_module_about_info">OPAodMod 版本 %1s</string>
+    <string name="settings_module_about_info_desc">由RetroX和Kieron Quinn (Quinny898/Quinny899)共同开发维护</string>
+
+    <string name="settings_module_about_donate">捐赠</string>
+    <string name="settings_module_about_donate_desc">喜欢这个模块？ 给原开发者（RetroX）通过支付宝捐赠或给维护者（Kieron Quinn)通过PayPal捐赠。</string>
+    <string name="settings_module_about_donate_alipay">支付宝</string>
+    <string name="settings_module_about_donate_paypal">PayPal</string>
+    <string name="settings_module_about_donate_alipay_not_installed">支付宝未安装</string>
+
+    <string name="settings_module_menu_old_settings">返回老版设置界面</string>
+    <string name="settings_module_menu_third_party_licences">第三方许可文件</string>
+    <string name="menu_back">返回</string>
+
+    <string name="bottom_sheet_debug_info">Debug信息</string>
+    <string name="bottom_sheet_debug_info_desc">运行模式: %1s\n本次插件介入息屏次数: %1s\n上次息屏时间: %1s</string>
+
+    <string name="app_shortcut_settings">设置</string>
+
+    <string name="xposed_constant_light_mode_7pro_ns">系统增强 - 7 Pro 不支持</string>
+    <string name="xposed_constant_light_mode_7pro">常亮模式 - 7 Pro </string>
+
 </resources>

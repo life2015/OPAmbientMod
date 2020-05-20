@@ -29,8 +29,22 @@ object AppPref {
     var autoCloseByNightMode by shared("AUTOCLOSEBYNIGHTMODE", false)
     var forceEnglishWordClock by shared("FORCEENGLISHWORDCLOCK", false)
     var forceShowWordClockOnFlat by shared("FORCESHOWWORDCLOCKONFLAT", true)
+    var use24h by shared("USE_24_HOUR", true)
+    var dateFormat by shared("DATE_FORMAT", "EEE, d MMM")
+    var useAmPm by shared("USE_AM_PM_MARKER", false)
+    var weatherShowSymbol by shared("WEATHER_SHOW_SYMBOL", true)
+    var weatherShowCondition by shared("WEATHER_SHOW_CONDITION", true)
+    var weatherShowTemperature by shared("WEATHER_SHOW_TEMPERATURE", true)
+    var weatherShowCity by shared("KEY_WEATHER_SHOW_CITY", false)
+    var showAlarm by shared("KEY_SHOW_ALARM", true)
+    var showAlarmEmoji by shared("KEY_SHOW_ALARM_EMOJI", true)
+    var showBullets by shared("KEY_SHOW_BULLETS", true)
+    var useSystemMusic by shared("USE_SYSTEM_MUSIC", false)
+    var usePixelMusicIcon by shared("USE_PIXEL_MUSIC_ICON", false)
 
-
+    //Static translations stored for when there isn't yet a context
+    var translationConstantLightMode by shared("xposed_constant_light_mode_7pro", "System Enhancement - 7 Pro")
+    var translationConstantLightModeNS by shared("xposed_constant_light_mode_7pro_ns", "System Enhancement - 7 Pro is not supported")
 
     val externalPrefName = "${BuildConfig.APPLICATION_ID}_external_pref.xml"
 
@@ -57,7 +71,11 @@ object AppPref {
             FileUtils.createSharedFileDir()
             val externalPrefFile = File(FileUtils.sharedDir, externalPrefName)
             externalPrefFile.createNewFile()
-            prefsFile.copyTo(externalPrefFile, true)
+            try {
+                prefsFile.copyTo(externalPrefFile, true)
+            }catch (e: FileAlreadyExistsException){
+                //Happens sometimes, still applies
+            }
         }
     }
 }

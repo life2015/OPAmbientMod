@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_music_system_music"
+        android:icon="@drawable/ic_settings_music_system"
+        android:title="@string/settings_music_use_system_music"
+        android:summary="@string/settings_music_use_system_music_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_music_pixel_icon"
+        android:title="@string/settings_music_use_pixel_icon"
+        android:icon="@drawable/ic_settings_music_pixel"
+        android:summary="@string/settings_music_use_pixel_icon_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_music_offset"
+        android:icon="@drawable/ic_settings_music_offset"
+        android:title="@string/settings_music_offset"
+        android:summary="@string/settings_music_offset_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_lyrics_translation"
+        android:icon="@drawable/ic_settings_general_force_english"
+        android:title="@string/settings_lyrics_translation"
+        android:summary="@string/settings_lyrics_translation_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:key="settings_music_taichi"
+        android:icon="@drawable/ic_taichi"
+        android:title="@string/settings_music_taichi_apps"
+        android:summary="@string/settings_music_taichi_apps_desc" />
+
+</PreferenceScreen>

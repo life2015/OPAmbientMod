@@ -13,10 +13,11 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
 import com.retrox.aodmod.SmaliImports
+import com.retrox.aodmod.app.util.logD
 import com.retrox.aodmod.extensions.ResourceUtils
+import com.retrox.aodmod.extensions.generateAlarmText
 import com.retrox.aodmod.extensions.getNewAodNoteContent
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
@@ -75,10 +76,10 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
                 if (XPref.getAodShowWeather() && weatherData != null) { // 这里变更一下逻辑 没有天气就不显示了
                     return SimpleDateFormat(
                         SmaliImports.systemDateFormat,
-                        Locale.ENGLISH
-                    ).format(Date()) + " ${SmaliImports.bulletSymbol} " + (weatherData.toBriefString())
+                        Locale.getDefault()
+                    ).format(Date()) + " ${SmaliImports.bulletSymbol} " + (weatherData.toBriefString())  + generateAlarmText(context)
                 } else {
-                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.ENGLISH).format(Date())
+                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.getDefault()).format(Date()) + generateAlarmText(context)
                 }
             }
 //            text = SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date())
@@ -92,7 +93,7 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
                     text = generateDateBrief(it)
                 }
             })
-            gravity = Gravity.CENTER
+            gravity = Gravity.START
         }.lparams(wrapContent, wrapContent) {
             bottomMargin = dip(6)
         }
@@ -247,7 +248,7 @@ private fun Context.flatMusicInClock(lifecycleOwner: LifecycleOwner): View {
         visibility = View.GONE
 
         AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
-            MainHook.logD("Receive Media Data $it")
+            logD("Receive Media Data $it")
             if (!XPref.getMusicAodEnabled()) { // 修复音乐显示关不掉的bug
                 return@Observer
             }
@@ -303,11 +304,11 @@ private fun Context.flatNotificationInClock(lifecycleOwner: LifecycleOwner): Vie
                 title.text = "${notificationData?.appName} · ${min.toInt()} min"
             }
 
-            MainHook.logD("SAod Log tick")
+            logD("SAod Log tick")
         })
 
 
-        MainHook.logD("observe noti !")// 这里 liveevent本身observe会烂 -> 后来修复了
+        logD("observe noti !")// 这里 liveevent本身observe会烂 -> 后来修复了
         NotificationManager.notificationStatusLiveData.observe(lifecycleOwner, Observer {
             it?.let { (sbn, status) ->
                 if (status == "Removed") return@let
@@ -325,7 +326,7 @@ private fun Context.flatNotificationInClock(lifecycleOwner: LifecycleOwner): Vie
                     }
                     content.text = contentText
 
-                    MainHook.logD("AOD Noti Size ${content.text.toString().length}")
+                    logD("AOD Noti Size ${content.text.toString().length}")
                 }
 
 //                val icon = notification.smallIcon.loadDrawable(context)

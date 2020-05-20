@@ -2,10 +2,16 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#A0A0A0</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#448AFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGray">#A0A0A0</color>
     <color name="colorOrange">#F5A623</color>
     <color name="colorPixelBlue">#1B73E8</color>
+    <color name="toolbar_color">#BFffffff</color>
+    <color name="toolbar_color_solid">#ffffff</color>
+    <color name="navbar_color">#D9F9F9F9</color>
+    <color name="sheet_color">#F9F9F9</color>
+    <color name="button_telegram">#0088cc</color>
+    <color name="button_qq">#EB1923</color>
 </resources>
