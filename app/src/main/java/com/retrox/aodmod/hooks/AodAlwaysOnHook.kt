@@ -3,8 +3,9 @@ package com.retrox.aodmod.hooks
 import android.content.Context
 import android.view.Display
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -45,7 +46,7 @@ object AodAlwaysOnHook : IXposedHookLoadPackage {
 //        })
 
         val aodDisplayManagerClass = XposedHelpers.findClass("com.oneplus.aod.DisplayViewManager", classLoader)
-        XposedHelpers.findAndHookMethod(aodDisplayManagerClass, "resetViewState", object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(aodDisplayManagerClass, "resetViewState", ToggleableXC_MethodHook(object : XC_MethodHook() {
             private var backupValue = false
             private var aodUpdateMonitor: Any? = null
             override fun beforeHookedMethod(param: MethodHookParam) {
@@ -64,14 +65,14 @@ object AodAlwaysOnHook : IXposedHookLoadPackage {
                     MainHook.logD("Hook Method AOP: after -> ${aodUpdateMonitor.toString()} backupValue: $backupValue")
                 }
             }
-        })
+        }))
 
         val dozeServiceClass = XposedHelpers.findClass("com.oneplus.doze.DozeService", classLoader)
-        XposedHelpers.findAndHookMethod(dozeServiceClass, "turnDisplayOff", object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(dozeServiceClass, "turnDisplayOff", ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
                 XposedHelpers.callMethod(param.thisObject, "setDozeScreenState", Display.STATE_DOZE)
                 param.result = null
             }
-        })
+        }))
     }
 }

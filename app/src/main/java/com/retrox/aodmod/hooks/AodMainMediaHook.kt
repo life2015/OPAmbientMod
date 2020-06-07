@@ -14,8 +14,9 @@ import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.receiver.MediaMessageReceiver
 import com.retrox.aodmod.state.AodMedia
 import com.retrox.aodmod.state.AodState
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import org.jetbrains.anko.*
@@ -29,18 +30,18 @@ object AodMainMediaHook : IXposedHookLoadPackage {
         val classLoader = lpparam.classLoader
 
         val aodUpdateMonitorClass = XposedHelpers.findClass("com.oneplus.aod.AodUpdateMonitor", classLoader)
-        XposedHelpers.findAndHookMethod(aodUpdateMonitorClass, "init", object : XC_MethodHook() {
-            override fun afterHookedMethod(param: MethodHookParam?) {
+        XposedHelpers.findAndHookMethod(aodUpdateMonitorClass, "init", ToggleableXC_MethodHook(object : XC_MethodHook() {
+            override fun afterHookedMethod(param: MethodHookParam) {
                 val intentFilter = IntentFilter()
                 intentFilter.addAction("com.retrox.aodmod.NEW_MEDIA_META")
                 val receiver = MediaMessageReceiver()
                 AndroidAppHelper.currentApplication().registerReceiver(receiver, intentFilter)
                 MainHook.logD("mediaMessageReceiver registered")
             }
-        })
+        }))
 
         val displayViewManagerClass = XposedHelpers.findClass("com.oneplus.aod.DisplayViewManager", classLoader)
-        XposedHelpers.findAndHookMethod(displayViewManagerClass, "updateView", object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(displayViewManagerClass, "updateView", ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 val state = XposedHelpers.getIntField(param.thisObject, "mState") // 1 -> 抬手息屏
                 MainHook.logD("Media Hook display state: $state")
@@ -100,7 +101,7 @@ object AodMainMediaHook : IXposedHookLoadPackage {
                 parent.addView(linearLayout)
                 MainHook.logD("music view hook added")
             }
-        })
+        }))
 
     }
 }

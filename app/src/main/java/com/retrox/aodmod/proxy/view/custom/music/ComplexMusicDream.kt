@@ -360,19 +360,17 @@ fun Context.musicView(lifecycleOwner: LifecycleOwner) = verticalLayout {
         gravity = Gravity.START
     }
 
-    if (AodMedia.aodMediaLiveData.value != null) {
-        AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
-            if (it == null) {
-                musicArtist.visibility = View.GONE
-                musicName.visibility = View.GONE
-                LrcSync.stopSync()
-                return@Observer
-            }
+    AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
+        if (it == null) {
+            musicArtist.visibility = View.GONE
+            musicName.visibility = View.GONE
+            LrcSync.stopSync()
+            return@Observer
+        }
 
-            musicArtist.visibility = View.VISIBLE
-            musicName.visibility = View.VISIBLE
-            musicName.text = it.name
-            musicArtist.text = it.artist
-        })
-    }
+        musicArtist.visibility = View.VISIBLE
+        musicName.visibility = View.VISIBLE
+        musicName.text = it.name
+        musicArtist.text = it.artist
+    })
 }

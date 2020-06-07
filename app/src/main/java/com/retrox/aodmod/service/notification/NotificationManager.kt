@@ -8,6 +8,7 @@ import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.LiveEvent
+import com.retrox.aodmod.extensions.getApplicationContext
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.state.AodMedia
 import de.robv.android.xposed.XposedHelpers
@@ -100,8 +101,10 @@ fun Notification.debugMessage(type: String = "Posted") {
 }
 
 fun Notification.getNotificationData(): NotificationData {
-    val builder = Notification.Builder.recoverBuilder(AndroidAppHelper.currentApplication().applicationContext, this)
-    val appName = XposedHelpers.callMethod(builder, "loadHeaderAppName") as String
+
+    val builder = Notification.Builder.recoverBuilder(getApplicationContext(), this)
+    val method = builder.javaClass.getMethod("loadHeaderAppName")
+    val appName = method.invoke(builder) as String
 
     val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
     val content = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: "" // 不能直接取String Spannable的时候会CastException
@@ -150,7 +153,7 @@ fun MutableMap<String, StatusBarNotification>.putNotification(key: String, notif
             }
         }
     }catch (e: Exception){
-        //Ignore
+        this[key] = notification
     }
 
     //Add the new notification

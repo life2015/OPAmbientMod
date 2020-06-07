@@ -28,7 +28,7 @@ class HeadSetReceiver : BroadcastReceiver() {
             val deviceName: String,
             val device: BluetoothDevice
         ) : ConnectionState()
-        data class VolumeChange(val volValue : Int) : ConnectionState()
+        data class VolumeChange(val volValue : Int, val maxValue: Int) : ConnectionState()
         data class ZenModeChange(val newMode: Int) : ConnectionState()
     }
 
@@ -84,8 +84,9 @@ class HeadSetReceiver : BroadcastReceiver() {
             if (streamType == AudioManager.STREAM_MUSIC) {
                 val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
                 val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) // 0 min - 30 max
-                MainHook.logD("Vol $currentVolume")
-                headSetConnectLiveEvent.postValue(ConnectionState.VolumeChange(currentVolume))
+                val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) // 0 min - 30 max
+                MainHook.logD("Vol $currentVolume max $maxVolume")
+                headSetConnectLiveEvent.postValue(ConnectionState.VolumeChange(currentVolume, maxVolume))
             }
         } else if ("com.oem.intent.action.THREE_KEY_MODE" == action) {
             val zen = intent.getIntExtra("switch_state", 0)  // 0 -> changing 1 -> mute 2 -> vibrate 3 -> ring

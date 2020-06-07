@@ -20,6 +20,18 @@
         android:summary="@string/settings_music_offset_desc" />
 
     <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_music_small_music"
+        android:title="@string/settings_music_use_small_music"
+        android:icon="@drawable/ic_music_nav"
+        android:summary="@string/settings_music_use_small_music_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_lyrics"
+        android:icon="@drawable/ic_settings_music_lyrics"
+        android:title="@string/settings_lyrics"
+        android:summary="@string/settings_lyrics_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
         android:key="settings_lyrics_translation"
         android:icon="@drawable/ic_settings_general_force_english"
         android:title="@string/settings_lyrics_translation"
@@ -30,5 +42,11 @@
         android:icon="@drawable/ic_taichi"
         android:title="@string/settings_music_taichi_apps"
         android:summary="@string/settings_music_taichi_apps_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:icon="@drawable/ic_info"
+        android:title="@string/settings_generic_theme_not_supported"
+        android:summary="@string/settings_generic_theme_not_supported_desc"
+        android:key="generic_theme_unsupported"/>
 
 </PreferenceScreen>

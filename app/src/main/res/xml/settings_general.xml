@@ -26,10 +26,22 @@
         android:icon="@drawable/ic_settings_general_auto_brightness"/>
 
     <com.retrox.aodmod.app.settings.preference.Preference
+        android:key="general_battery_optimisation"
+        android:title="@string/settings_battery_optimisation_title"
+        android:summary="@string/settings_battery_optimisation_desc"
+        android:icon="@drawable/ic_settings_general_battery_optimisation"/>
+
+    <com.retrox.aodmod.app.settings.preference.Preference
         android:key="general_aod_memo"
         android:title="@string/settings_general_aod_memo"
         android:summary="@string/settings_general_aod_memo_desc"
         android:icon="@drawable/ic_settings_general_memo"/>
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="general_hide_divider"
+        android:title="@string/settings_general_hide_divider"
+        android:summary="@string/settings_general_hide_divider_desc"
+        android:icon="@drawable/ic_settings_general_divider"/>
 
     <com.retrox.aodmod.app.settings.preference.SwitchPreference
         android:key="general_sensitive_notifications"

@@ -125,6 +125,13 @@ fun runOnMainThread(invokeMethod: () -> Unit) {
     }
 }
 
+fun runOnLooper(looper: Looper, invokeMethod: () -> Unit) {
+    val mainHandler = Handler(looper)
+    mainHandler.post {
+        invokeMethod.invoke()
+    }
+}
+
 fun getObjectFieldOrNull(thisObject: Any?, fieldName: String): Any? {
     return try {
         XposedHelpers.getObjectField(thisObject, fieldName)

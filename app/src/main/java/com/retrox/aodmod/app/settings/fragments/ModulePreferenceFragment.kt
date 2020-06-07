@@ -17,16 +17,15 @@ import com.retrox.aodmod.BuildConfig
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.XposedUtils
 import com.retrox.aodmod.app.alipay.AlipayZeroSdk
+import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.app.settings.ModuleActivity
 import com.retrox.aodmod.app.settings.SettingsActivity
 import com.retrox.aodmod.app.settings.fragments.bottomsheet.DebugInfoBottomSheetFragment
 import com.retrox.aodmod.app.settings.preference.ButtonsPreference
 import com.retrox.aodmod.app.util.Utils
 import com.retrox.aodmod.app.view.joinQQGroup
-import com.retrox.aodmod.extensions.getDrawableC
-import com.retrox.aodmod.extensions.isOP7Pro
-import com.retrox.aodmod.extensions.setGoogleSans
+import com.retrox.aodmod.extensions.*
 import com.retrox.aodmod.shared.SharedContentManager
-import org.jetbrains.anko.support.v4.act
 
 class ModulePreferenceFragment : GenericPreferenceFragment() {
 
@@ -83,6 +82,19 @@ class ModulePreferenceFragment : GenericPreferenceFragment() {
             it.title = getString(R.string.settings_module_about_info, BuildConfig.VERSION_NAME)
         }
         setupDonatePreference()
+        (activity as? ModuleActivity)?.getAodSwitch()?.let {
+            it.isChecked = AppPref.moduleState
+            it.setOnCheckedChangeListener { buttonView, isChecked ->
+                it.isEnabled = false
+                AppPref.moduleState = isChecked
+                resetPrefPermissions(context)
+                runAfter(0.5){
+                    it.isEnabled = true
+                    setupModuleStatusPreference()
+                }
+            }
+            it.isEnabled = isTaiChiActivated() || isEdXposedActivated()
+        }
     }
 
     private fun setupStoragePreference() {
@@ -107,6 +119,11 @@ class ModulePreferenceFragment : GenericPreferenceFragment() {
             val sharedState = SharedContentManager.getSharedState(context)
             val times = sharedState.aodTimes.toInt()
             findPreference("module_status_working") {
+                if(!AppPref.moduleState){
+                    it.icon = context.getDrawableC(R.drawable.ic_module_settings_power)
+                    it.summary = getString(R.string.settings_module_status_working_desc_disabled)
+                    return@findPreference
+                }
                 if (times > 0) {
                     hasJustRestarted = false
                     it.icon = context.getDrawableC(R.drawable.ic_module_check)

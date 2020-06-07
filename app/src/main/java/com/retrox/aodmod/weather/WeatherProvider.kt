@@ -8,11 +8,17 @@ import android.database.ContentObserver
 import android.database.Cursor
 import android.net.Uri
 import android.os.Handler
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.app.App
+import com.retrox.aodmod.extensions.appendSpace
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.weather.icons.BaseWeatherIconProvider
+import com.retrox.aodmod.weather.icons.EmojiWeatherIconProvider
+import com.retrox.aodmod.weather.icons.PixelWeatherIconProvider
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,7 +32,7 @@ object WeatherProvider {
     private val WEATHER_CONTENT_URI = Uri.parse("content://com.oneplus.weather.ContentProvider/data")
     private val TEMP_UNIT_CELSIUS = "˚C"
     private val WEATHER_NAME_NONE = "N/A"
-    private val TAG = "AODMOD WeatherProvider"
+    private val TAG = "OPAodWeather"
     private val context: Context by lazy {
         val contextRef = App.applicationReference?.get()?.applicationContext
         if (contextRef != null) {
@@ -182,7 +188,7 @@ object WeatherProvider {
                 stringBuilder3.append(string7)
                 stringBuilder3.append(", unit: ")
                 stringBuilder3.append(string8)
-//                Log.d(str2, stringBuilder3.toString())
+                Log.d(str2, stringBuilder3.toString())
                 weatherData.timestamp = SimpleDateFormat("yyyyMMddkkmm", Locale.getDefault()).parse(string2).time / 1000
                 weatherData.cityName = string
                 weatherData.weatherCode = string3.toInt()
@@ -274,27 +280,32 @@ object WeatherProvider {
             return stringBuilder.toString()
         }
 
-        fun toBriefString(): String {
-            val weatherEmoji = SmaliImports.getEmojiForCode(weatherCode)
-            val stringBuilder = java.lang.StringBuilder()
+        fun toBriefString(includeCity: Boolean = true): CharSequence {
+            val iconProvider = BaseWeatherIconProvider.getWeatherIconProvider()
+            val weatherText = if(iconProvider is EmojiWeatherIconProvider) iconProvider.getEmojiForCode(weatherCode) else "X"
+            val stringBuilder = SpannableStringBuilder()
             if (XPref.getWeatherShowSymbol()) {
-                stringBuilder.append(weatherEmoji)
-                stringBuilder.append(" ")
+                stringBuilder.appendSpace()
+                stringBuilder.appendSpace()
+                stringBuilder.appendSpace()
+                stringBuilder.append(weatherText, iconProvider.getWeatherIcon(context, weatherCode), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                stringBuilder.appendSpace()
+                stringBuilder.appendSpace()
             }
             if (XPref.getWeatherShowCondition()) {
                 stringBuilder.append(weatherName)
                 stringBuilder.append(" ")
             }
             if (XPref.getWeatherShowTemperature()) {
-                stringBuilder.append(temperature)
+                stringBuilder.append(temperature.toString())
                 stringBuilder.append(temperatureUnit)
             }
             val isCityNameEnabled = XPref.getWeatherShowCity()
-            if (isCityNameEnabled) {
+            if (isCityNameEnabled && includeCity) {
                 stringBuilder.append("\n")
                 stringBuilder.append(cityName)
             }
-            return stringBuilder.toString().trim { it <= ' ' }
+            return stringBuilder.trim { it <= ' ' }
         }
     }
 

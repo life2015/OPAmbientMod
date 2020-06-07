@@ -6,11 +6,13 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
+import android.text.SpannableStringBuilder
 import android.view.Gravity
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import android.view.View
 import android.widget.LinearLayout
 import com.retrox.aodmod.SmaliImports
+import com.retrox.aodmod.extensions.appendSpace
 import com.retrox.aodmod.extensions.generateAlarmText
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
@@ -46,11 +48,25 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
             textColor = Color.WHITE
             textSize = 18f
             setGoogleSans()
-            fun generateDateBrief(weatherData: WeatherProvider.WeatherData?): String {
-                if (XPref.getAodShowWeather() && weatherData != null) { // 这里变更一下逻辑 没有天气就不显示了
-                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.getDefault()).format(Date()) + " ${SmaliImports.bulletSymbol} " + (weatherData.toBriefString()) + generateAlarmText(context)
-                } else {
-                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.getDefault()).format(Date()) + generateAlarmText(context)
+            fun generateDateBrief(weatherData: WeatherProvider.WeatherData?): SpannableStringBuilder {
+                return SpannableStringBuilder().apply {
+                    append(SimpleDateFormat(SmaliImports.systemDateFormat, Locale.getDefault()).format(Date()))
+                    if(XPref.getAodShowWeather() && weatherData != null){
+                        SmaliImports.bulletSymbol.let {
+                            if(it.isNotEmpty()) {
+                                append(it)
+                            }else{
+                                appendSpace()
+                            }
+                        }
+                        append(weatherData.toBriefString(false))
+                        appendSpace()
+                    }
+                    if(XPref.getShowAlarm()){
+                        appendSpace()
+                        append(generateAlarmText(context, false))
+                        appendSpace()
+                    }
                 }
             }
 //            text = SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date())
@@ -74,6 +90,9 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
         view {
             backgroundColor = Color.WHITE
             id = Ids.view_divider
+            if(XPref.getHideDivider()){
+                alpha = 0f
+            }
 //            visibility = View.INVISIBLE
         }.lparams(width = dip(12), height = dip(2)) {
             endToEnd = PARENT_ID

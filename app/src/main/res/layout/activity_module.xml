@@ -31,6 +31,18 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="?android:actionBarSize"
+        android:text="@string/switch_aod_enabled"
+        android:elevation="4dp"
+        android:id="@+id/aod_switch"
+        android:background="@color/toolbar_color_solid"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium.OPAodMod"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"/>
+
     <fragment
         android:id="@+id/modulePreferenceFragment"
         android:layout_width="match_parent"

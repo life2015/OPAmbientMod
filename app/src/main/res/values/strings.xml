@@ -187,7 +187,7 @@
     <string name="status_edxposed_warning">Note: If EdXposed works by itself, please ignore the above tips</string>
     <string name="status_normal">normal %1s</string>
     <string name="status_abnormal">abnormal %1s</string>
-    <string name="plugin_intervines_state" formatted="false">The number of times this plugin replaced the always on display is %1s\nLast screen off time: %2s</string>
+    <string name="plugin_intervines_state">The number of times this plugin replaced the always on display is %1s\nLast screen off time: %2s</string>
     <string name="plugin_intervines_error">The number of times the plug-in replaced the always on display is 0\nLast screen off time: %1s\nIf this is not just after restarting the phone, there may be a problem</string>
     <string name="learn_a_little_english">Learn a little Chinese</string>
     <string name="join_qq_group">Join QQ group</string>
@@ -373,8 +373,6 @@
     <string name="settings_clock_alarm">Alarm</string>
     <string name="settings_clock_show_alarm">Show Next Alarm</string>
     <string name="settings_clock_show_alarm_desc">Show the next alarm after the weather. Only shows alarms within the next 24h (shows on a second line)</string>
-    <string name="settings_clock_show_alarm_emoji_desc">Show Alarm Emoji</string>
-    <string name="settings_clock_show_alarm_emoji">Show alarm emoji before the next alarm time</string>
     <string name="settings_music_master_switch">Enable Music Display</string>
     <string name="settings_music_use_system_music">System Music</string>
     <string name="settings_music_use_system_music_desc">Use the system music controller listener, which may be more reliable</string>
@@ -383,7 +381,7 @@
     <string name="settings_music_offset">Offset Music</string>
     <string name="settings_music_offset_desc">Move the music display up to avoid the in-display fingerprint sensor, for devices that have one.</string>
     <string name="settings_lyrics_translation">Lyrics Translation</string>
-    <string name="settings_lyrics_translation_desc">Translate on-screen lyrics into Chinese (lyrics are not available on all AoD layouts)</string>
+    <string name="settings_lyrics_translation_desc">Translate on-screen lyrics into Chinese</string>
     <string name="settings_music_taichi_apps">TaiChi Music Apps</string>
     <string name="settings_music_taichi_apps_desc">For better compatibility, it\'s recommended that you add your music apps to TaiChi. Tap here to view the currently added apps and add more.</string>
     <string name="settings_weather_master_switch">Enable Weather</string>
@@ -391,7 +389,7 @@
     <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nToday\'s temperature range: %4s\n\nTo change the location or unit, tap to launch the OnePlus Weather app</string>
     <string name="settings_weather_current_condition_desc_off">Weather information is not available. The weather functionality of the AoD will not work. Please check that you have the OnePlus Weather app installed and enabled</string>
     <string name="settings_weather_show_condition">Show weather condition icon</string>
-    <string name="settings_weather_show_condition_desc">Show a icon before the weather condition text in the form of an emoji (eg. ☁️)</string>
+    <string name="settings_weather_show_condition_desc">Show an icon before the weather condition text</string>
     <string name="settings_weather_show_condition_text">Show weather condition text</string>
     <string name="settings_weather_show_condition_text_desc">Show the weather condition as text (eg. Cloudy)</string>
     <string name="settings_weather_show_temperature">Show Temperature</string>
@@ -473,11 +471,73 @@
     <string name="settings_module_translators">Translators</string>
     <string name="settings_module_translators_desc" translatable="false"><![CDATA[Lucayunxiao & RetroX 🇨🇳, Gregor Wünsch 🇩🇪, Igor Nechiporenko / jimmy123322 🇷🇺, Joaquin Benincasa (español)🇦🇷, Kieron Quinn 🇬🇧]]></string>
 
+    <!-- 3.1 -->
     <string name="clock_its">It\'s</string>
 
     <string name="charging_charging">Charging</string>
     <string name="charging_quick_charging">Quick Charging</string>
     <string name="charging_charged">Charged</string>
     <string name="charging_sleep_mode">Sleep Mode</string>
+
+    <!-- Battery Optimisation settings -->
+    <string name="settings_battery_optimisation_title">Battery Optimisation</string>
+    <string name="settings_battery_optimisation_desc">Tweak options that make the battery last longer when the AoD is in use</string>
+    <string name="settings_battery_force_doze">Force Doze</string>
+    <string name="settings_battery_force_doze_desc">Forcibly enable doze when the AoD is showing.\n<b>Warning: This might cause problems with notifications or alarms working when the AoD is showing, and is not fully tested</b></string>
+    <string name="settings_battery_enable_saver">Battery Saver</string>
+    <string name="settings_battery_enable_saver_desc">Enable the system battery saver when the AoD is showing.\n<b>Warning: This may cause apps to be killed unexpectedly when the screen is off</b></string>
+    <string name="settings_lower_refresh_rate">Lower Refresh Rate</string>
+    <string name="settings_lower_refresh_rate_desc">Lower the refresh rate to 60Hz when the AoD is showing on devices that support it</string>
+    <string name="settings_battery_lower_brightness">Lowest Brightness</string>
+    <string name="settings_battery_lower_brightness_desc">Always use the lowest brightness when the AoD is visible, regardless of the light sensor.\n<b>Note: This overrides the auto brightness setting in the General Settings</b></string>
+
+    <!-- Weather icon style settings -->
+    <string name="settings_weather_icon_style">Weather Icon Style</string>
+    <string name="settings_weather_icon_style_desc">Pick the style of the weather condition icon</string>
+    <string name="settings_clock_show_alarm_emoji_desc">Show Alarm Icon</string>
+    <string name="settings_clock_show_alarm_emoji">Show alarm icon before the next alarm time</string>
+    <string name="switch_aod_enabled">AoD Enabled</string>
+    <string name="settings_module_status_working_desc_disabled">AoD hooking is disabled</string>
+    <string name="qs_aodmod_title">Always on Display</string>
+    <string name="bs_theme_name_oneplus">OnePlus</string>
+    <string name="bs_theme_name_pixel">Pixel</string>
+    <array name="settings_weather_icon_style_text">
+        <item>Google</item>
+        <item>OnePlus</item>
+        <item>Emoji</item>
+    </array>
+    <string name="settings_op_clock_style">OnePlus Clock Style</string>
+    <string name="settings_clock_style">Style</string>
+    <string name="headset_connected">Headset connected</string>
+    <string name="headset_disconnected">Headset disconnected</string>
+    <string name="bt_headset_connecting">%1s connecting</string>
+    <string name="bt_headset_connected">%1s connected</string>
+    <string name="bt_headset_disconnecting">%1s disconnecting</string>
+    <string name="bt_headset_disconnected">%1s disconnected</string>
+    <string name="volume_level">Volume %1s</string>
+    <string name="settings_generic_theme_not_supported">Unsupported Theme</string>
+    <string name="settings_generic_theme_not_supported_desc">This theme does not support these options. Please choose a different theme if you wish to use them</string>
+    <string name="settings_lyrics">Lyrics</string>
+    <string name="settings_lyrics_desc">Show song lyrics on the AoD.\n<b>Note: These lyrics are provided by QQ and NetEase, and have limited song support. You may see some Chinese text with this option enabled.</b></string>
+    <string name="lyrics_loading">Loading lyrics…</string>
+    <string name="lyrics_music_only">This song is music only</string>
+    <string name="settings_music_use_small_music">Use Smaller Music Layout</string>
+    <string name="settings_music_use_small_music_desc">Use a smaller, more compact music layout similar to that seen on newer Pixels. The music info is displayed below the clock instead at the bottom of the screen.</string>
+    <string name="settings_general_hide_divider">Hide Divider</string>
+    <string name="settings_general_hide_divider_desc">Hide the horizontal divider between the clock, text and notifications</string>
+    <string name="settings_clock_show_bullet">Show bullet point dividers</string>
+    <string name="settings_clock_show_bullet_desc">Show a bullet point symbol • as a divider between the date and weather text</string>
+    <array name="settings_op_clock_style_options">
+        <item>Default</item>
+        <item>Digital 1</item>
+        <item>Digital 2</item>
+        <item>Text clock</item>
+        <item>Bold</item>
+        <item>Analog 1</item>
+        <item>Analog 2</item>
+        <item>Analog 3</item>
+        <item>Minimalism 1</item>
+        <item>Minimalism 2</item>
+    </array>
 
 </resources>

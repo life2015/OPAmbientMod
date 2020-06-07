@@ -10,6 +10,8 @@ import java.io.File
 
 
 object AppPref {
+    var moduleState by shared("MODULE_ENABLED", true)
+
     var aodMode by shared("AODMODE", "ALWAYS_ON") // or ALWAYS_ON
     var musicShowOnAod by shared("MUSICSHOWONAOD", true)
     var filpOffScreen by shared("FILPOFFSCREEN", true)
@@ -41,6 +43,15 @@ object AppPref {
     var showBullets by shared("KEY_SHOW_BULLETS", true)
     var useSystemMusic by shared("USE_SYSTEM_MUSIC", false)
     var usePixelMusicIcon by shared("USE_PIXEL_MUSIC_ICON", false)
+    var batteryEnableForceDoze by shared("ENABLE_FORCE_DOZE", false)
+    var batteryEnableBatterySaver by shared("ENABLE_BATTERY_SAVER", false)
+    var batteryLowerRefreshRate by shared("ENABLE_LOWER_REFRESH_RATE", false)
+    var batteryLowestBrightness by shared("ENABLE_LOWEST_BRIGHTNESS", false)
+    var weatherIconStyle by shared("WEATHER_ICON_STYLE", "google")
+    var onePlusClockStyle by shared("ONEPLUS_CLOCK_STYLE", 0)
+    var lyricsEnabled by shared("LYRICS_ENABLED", false)
+    var pixelSmallMusic by shared("PIXEL_SMALL_MUSIC", false)
+    var hideDivider by shared("HIDE_DIVIDER", false)
 
     //Static translations stored for when there isn't yet a context
     var translationConstantLightMode by shared("xposed_constant_light_mode_7pro", "System Enhancement - 7 Pro")

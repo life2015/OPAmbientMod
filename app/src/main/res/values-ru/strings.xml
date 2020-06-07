@@ -114,8 +114,6 @@
     <string name="settings_clock_alarm">Будильник</string>
     <string name="settings_clock_show_alarm">Показать следующий будильник</string>
     <string name="settings_clock_show_alarm_desc">Показывает следующий будильник рядом с отображением погоды. Отображает только будильники в течение следующих 24 часов (отображается во второй строке)</string>
-    <string name="settings_clock_show_alarm_emoji_desc">Показать будильник Emoji</string>
-    <string name="settings_clock_show_alarm_emoji">Показать будильник Emoji перед следующим будильником</string>
     <string name="settings_music_master_switch">Включить Отображение Музыки</string>
     <string name="settings_music_use_system_music">Системная Музыка</string>
     <string name="settings_music_use_system_music_desc">Использует системный музыкальный контроллер слушателя, который может быть более надежным</string>
@@ -124,7 +122,7 @@
     <string name="settings_music_offset">Сдвинуть музыку</string>
     <string name="settings_music_offset_desc">Переместите отображение музыки вверх, чтобы избежать наложения сканера отпечатка пальца на экране, для устройств, которые его имеют.</string>
     <string name="settings_lyrics_translation">Перевод текстов песен</string>
-    <string name="settings_lyrics_translation_desc">Перевести текст песен на китайский (текст доступен не во всех темах AoD)</string>
+    <string name="settings_lyrics_translation_desc">Перевести текст песен на китайский</string>
     <string name="settings_music_taichi_apps">Музыкальные приложения TaiChi</string>
     <string name="settings_music_taichi_apps_desc">Для лучшей совместимости рекомендуется добавлять музыкальные приложения в TaiChi. Нажмите здесь, чтобы просмотреть текущие добавленные приложения и добавить другие.</string>
     <string name="settings_weather_master_switch">Включить Погоду</string>
@@ -132,7 +130,7 @@
     <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nСегодняшний диапазон температур: %4s\n\nЧтобы изменить местоположение или единицу измерения, нажмите, чтобы запустить приложение Погода от OnePlus</string>
     <string name="settings_weather_current_condition_desc_off">Информация о погоде недоступна. Погодане будет отображена на AoD. Пожалуйста, убедитесь, что у вас установлено приложение Погода от OnePlus.</string>
     <string name="settings_weather_show_condition">Показать значок состояния погоды</string>
-    <string name="settings_weather_show_condition_desc">Показывать значок перед текстом погодных условий в виде смайликов (например, ☁️)</string>
+    <string name="settings_weather_show_condition_desc">Показывать значок перед текстом погодных условий</string>
     <string name="settings_weather_show_condition_text">Показать текст погодных условий</string>
     <string name="settings_weather_show_condition_text_desc">Показать погодные условия в виде текста (например, Облачно)</string>
     <string name="settings_weather_show_temperature">Показать температуру</string>
@@ -212,8 +210,6 @@
     <string name="xposed_constant_light_mode_7pro">Режим постоянного света - 7 Pro</string>
 
     <string name="settings_module_translators">Переводчики</string>
-
-    <string name="clock_its">Сейчас</string>
 
     <!-- Hour displayed in words on the typographic clock face. [CHAR LIMIT=12] -->
     <string-array name="type_clock_hours">
@@ -295,10 +291,76 @@
         <item>Пятьдесят Девять</item>
     </string-array>
 
+    <!-- 3.1 -->
+    <string name="switch_aod_enabled">AoD Включен</string>
+    <string name="settings_module_status_working_desc_disabled">Функционирование AoD отключено</string>
+    <string name="qs_aodmod_title">Always on Display</string>
+    <string name="bs_theme_name_oneplus">OnePlus</string>
+    <string name="bs_theme_name_pixel">Pixel</string>
+    <array name="settings_weather_icon_style_text">
+        <item>Google</item>
+        <item>OnePlus</item>
+        <item>Emoji</item>
+    </array>
+    <string name="settings_op_clock_style">Стиль Часов OnePlus</string>
+    <string name="settings_clock_style">Стиль</string>
+    <string name="headset_connected">Гарнитура подключена</string>
+    <string name="headset_disconnected">Гарнитура отключена</string>
+    <string name="bt_headset_connecting">Подключение %1s</string>
+    <string name="bt_headset_connected">%1s подключено</string>
+    <string name="bt_headset_disconnecting">Отключение %1s</string>
+    <string name="bt_headset_disconnected">%1s отключено</string>
+    <string name="volume_level">Громкость %1s</string>
+    <string name="settings_generic_theme_not_supported">Не поддерживается темой</string>
+    <string name="settings_generic_theme_not_supported_desc">Эта тема не поддерживает данную опцию. Пожалуйста, выберите другую тему, если вы хотите использовать эту опцию</string>
+    <string name="settings_lyrics">Текст песни</string>
+    <string name="settings_lyrics_desc">Показать текст песни на AoD.\n<b>Примечание. Эти тексты предоставлены QQ и NetEase и имеют ограниченную поддержку песен. Вы можете увидеть текст на китайском языке.</b></string>
+    <string name="lyrics_loading">Загрузка текстов песен…</string>
+    <string name="lyrics_music_only">В этой песне нет слов</string>
+    <string name="settings_music_use_small_music">Использовать меньший размер для музыки</string>
+    <string name="settings_music_use_small_music_desc">Использовать меньший, более компактный музыкальный макет, похожий на тот, который вы видели на новых Google Pixel. Информация о музыке отображается под часами, а не внизу экрана.</string>
+    <array name="settings_op_clock_style_options">
+        <item>По умолчанию</item>
+        <item>Цифровой 1</item>
+        <item>Цифровой 2</item>
+        <item>Надпись на часах</item>
+        <item>Полужирный</item>
+        <item>Аналаговый 1</item>
+        <item>Аналаговый 2</item>
+        <item>Аналаговый 3</item>
+        <item>Минималистичный 1</item>
+        <item>Минималистичный 2</item>
+    </array>
+
+    <string name="clock_its">Сейчас</string>
+
     <string name="charging_charging">Зарядка</string>
     <string name="charging_quick_charging">Быстрая Зарядка</string>
     <string name="charging_charged">Заряжено</string>
     <string name="charging_sleep_mode">Спящий Режим</string>
+
+    <!-- Battery Optimisation settings -->
+    <string name="settings_battery_optimisation_title">Оптимизация батареи</string>
+    <string name="settings_battery_optimisation_desc">Настройки, позволяющие увеличить время работы аккумулятора при использовании AoD</string>
+    <string name="settings_battery_force_doze">Принудительный Doze</string>
+    <string name="settings_battery_force_doze_desc">Принудительно включает режим Doze при отображении AoD.\N<b>Предупреждение. Это может вызвать проблемы с уведомлениями или срабатыванием сигналов тревоги, когда AoD отображается. Протестировано не полностью.</b></string>
+    <string name="settings_battery_enable_saver">Экономия батареи</string>
+    <string name="settings_battery_enable_saver_desc">Включает функцию энергосбережения системы, когда отображается AoD.\N<b>Предупреждение. Это может привести к неожиданному завершению работы приложений при выключенном экране.</b></string>
+    <string name="settings_lower_refresh_rate">Более низкая частота обновления экрана</string>
+    <string name="settings_lower_refresh_rate_desc">Уменьшает частоту обновления экрана до 60 Гц, когда AoD отображается на устройствах, которые поддерживают 90 Гц или более.</string>
+    <string name="settings_battery_lower_brightness">Минимальная яркость</string>
+    <string name="settings_battery_lower_brightness_desc">Всегда использует минимальную яркость, когда AoD включен, независимо от датчика освещенности.\N<b>Примечание. Это отменяет настройку автоматической яркости в общих настройках</b></string>
+
+    <!-- Weather icon style settings -->
+    <string name="settings_weather_icon_style">Стиль Иконки Погоды</string>
+    <string name="settings_weather_icon_style_desc">Выберите стиль значка погодных условий</string>
+    <string name="settings_clock_show_alarm_emoji_desc">Показать Значок Будильника</string>
+    <string name="settings_clock_show_alarm_emoji">Показать значок будильника до следующего времени будильника</string>
+
+    <string name="settings_general_hide_divider">Скрыть Разделитель</string>
+    <string name="settings_general_hide_divider_desc">Скрыть горизонтальный разделитель между часами, текстом и уведомлениями</string>
+    <string name="settings_clock_show_bullet">Показывать точечные делители</string>
+    <string name="settings_clock_show_bullet_desc">Показывать символы • в качестве разделителя между датой и погодой</string>
 
 
 </resources>

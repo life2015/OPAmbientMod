@@ -45,7 +45,7 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
     override fun onCreateView(): View {
         return context.constraintLayout {
 
-            val musicView = context.aodMusicView(this@PureMusicDream).apply {
+            val musicView = context.aodPureMusicView(this@PureMusicDream).apply {
                 id = mainMusicId
             }.lparams(width = wrapContent, height = wrapContent) {
                 startToStart = PARENT_ID
@@ -120,149 +120,147 @@ class PureMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
             .start()
 
     }
+}
 
-    fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
-        return verticalLayout {
-            textView {
-                id = Ids.tv_clock
-                textColor = Color.WHITE
-                textSize = 26f
-                letterSpacing = 0.1f
-                setGoogleSans()
-                text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date())
-                AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
-                    text = "  " + SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
-                })
-            }.lparams(wrapContent, wrapContent) {
-                bottomMargin = dip(14)
-                gravity = Gravity.CENTER_HORIZONTAL
-            }
-
-            val musicName = textView {
-                textColor = Color.WHITE
-                textSize = 18f
-                letterSpacing = 0.02f
-                setGoogleSans(style = "Medium")
-                text = ""
-                gravity = Gravity.CENTER_HORIZONTAL
-            }.lparams(wrapContent, wrapContent) {
-                bottomMargin = dip(8)
-                gravity = Gravity.CENTER_HORIZONTAL
-                horizontalMargin = dip(16)
-            }
-
-            val musicArtist = textView {
-                textColor = Color.WHITE
-                textSize = 16f
-                letterSpacing = 0.05f
-                setGoogleSans()
-                visibility = View.GONE
-                gravity = Gravity.CENTER_HORIZONTAL
-            }.lparams(wrapContent, wrapContent) {
-                bottomMargin = dip(12)
-                gravity = Gravity.CENTER_HORIZONTAL
-                horizontalMargin = dip(16)
-            }
-
-
-
-            val unReadNotification = textView {
-                textColor = Color.WHITE
-                textSize = 14f
-                letterSpacing = 0.05f
-                setGoogleSans()
-                gravity = Gravity.CENTER
-                visibility = View.GONE
-            }.lparams(wrapContent, wrapContent) {
-                bottomMargin = dip(8)
-                gravity = Gravity.CENTER_HORIZONTAL
-            }
-
-
-            val headSetStatusView = aodHeadSetView(lifecycleOwner).apply {
-                id = Ids.ly_headset_status
-                visibility = View.INVISIBLE
-            }.lparams(wrapContent, wrapContent) {
-                gravity = Gravity.CENTER_HORIZONTAL
-            }
-            addView(headSetStatusView)
-
-            // 使用WakeLock来保证Handler计时的准确以及避免休眠
-            val animWakeLock = context.getSystemService(PowerManager::class.java)
-                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:PureMusicViewAnim")
-
-            val headSetViewReset = Runnable {
-                TransitionManager.beginDelayedTransition(this)
-                findViewById<View>(Ids.ly_headset_status).visibility = View.GONE
-                if (animWakeLock.isHeld) animWakeLock.release()
-            }
-            HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
-                it?.let {
-                    // do Animation now
-                    removeCallbacks(headSetViewReset)
-                    if (animWakeLock.isHeld) {
-                        animWakeLock.release()
-                    }
-                    animWakeLock.acquire(10000L)
-
-                    val delay = when (it) {
-                        is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
-                        is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
-                        is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
-                        is HeadSetReceiver.ConnectionState.ZenModeChange -> 4000L
-                    }
-
-                    TransitionManager.beginDelayedTransition(this)
-                    findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
-
-                    postDelayed(headSetViewReset, delay)
-                }
+fun Context.aodPureMusicView(lifecycleOwner: LifecycleOwner): View {
+    return verticalLayout {
+        textView {
+            id = Ids.tv_clock
+            textColor = Color.WHITE
+            textSize = 26f
+            letterSpacing = 0.1f
+            setGoogleSans()
+            text = SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date())
+            AodClockTick.tickLiveData.observe(lifecycleOwner, Observer {
+                text = "  " + SimpleDateFormat(SmaliImports.timeFormat, Locale.ENGLISH).format(Date()) + "  " // 玄学空格？
             })
+        }.lparams(wrapContent, wrapContent) {
+            bottomMargin = dip(14)
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
 
-            if (AodMedia.aodMediaLiveData.value != null) {
-                AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
-                    if (it == null) {
-                        musicArtist.visibility = View.GONE
-                        musicName.text = ""
-                        LrcSync.stopSync()
-                        return@Observer
-                    }
+        val musicName = textView {
+            textColor = Color.WHITE
+            textSize = 18f
+            letterSpacing = 0.02f
+            setGoogleSans(style = "Medium")
+            text = ""
+            gravity = Gravity.CENTER_HORIZONTAL
+        }.lparams(wrapContent, wrapContent) {
+            bottomMargin = dip(8)
+            gravity = Gravity.CENTER_HORIZONTAL
+            horizontalMargin = dip(16)
+        }
 
-                    musicArtist.visibility = View.VISIBLE
-                    musicName.text = it.name
-                    musicArtist.text = it.artist
-                })
+        val musicArtist = textView {
+            textColor = Color.WHITE
+            textSize = 16f
+            letterSpacing = 0.05f
+            setGoogleSans()
+            visibility = View.GONE
+            gravity = Gravity.CENTER_HORIZONTAL
+        }.lparams(wrapContent, wrapContent) {
+            bottomMargin = dip(12)
+            gravity = Gravity.CENTER_HORIZONTAL
+            horizontalMargin = dip(16)
+        }
+
+
+
+        val unReadNotification = textView {
+            textColor = Color.WHITE
+            textSize = 14f
+            letterSpacing = 0.05f
+            setGoogleSans()
+            gravity = Gravity.CENTER
+            visibility = View.GONE
+        }.lparams(wrapContent, wrapContent) {
+            bottomMargin = dip(8)
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+
+
+        val headSetStatusView = aodHeadSetView(lifecycleOwner).apply {
+            id = Ids.ly_headset_status
+            visibility = View.INVISIBLE
+        }.lparams(wrapContent, wrapContent) {
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+        addView(headSetStatusView)
+
+        // 使用WakeLock来保证Handler计时的准确以及避免休眠
+        val animWakeLock = context.getSystemService(PowerManager::class.java)
+            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AODMOD:PureMusicViewAnim")
+
+        val headSetViewReset = Runnable {
+            TransitionManager.beginDelayedTransition(this)
+            findViewById<View>(Ids.ly_headset_status).visibility = View.GONE
+            if (animWakeLock.isHeld) animWakeLock.release()
+        }
+        HeadSetReceiver.headSetConnectLiveEvent.observeNewOnly(lifecycleOwner, Observer {
+            it?.let {
+                // do Animation now
+                removeCallbacks(headSetViewReset)
+                if (animWakeLock.isHeld) {
+                    animWakeLock.release()
+                }
+                animWakeLock.acquire(10000L)
+
+                val delay = when (it) {
+                    is HeadSetReceiver.ConnectionState.HeadSetConnection -> 4000L
+                    is HeadSetReceiver.ConnectionState.BlueToothConnection -> 8000L
+                    is HeadSetReceiver.ConnectionState.VolumeChange -> 2000L
+                    is HeadSetReceiver.ConnectionState.ZenModeChange -> 4000L
+                }
+
+                TransitionManager.beginDelayedTransition(this)
+                findViewById<View>(Ids.ly_headset_status).visibility = View.VISIBLE
+
+                postDelayed(headSetViewReset, delay)
+            }
+        })
+
+        AodMedia.aodMediaLiveData.observe(lifecycleOwner, Observer {
+            if (it == null) {
+                musicArtist.visibility = View.GONE
+                musicName.text = ""
+                LrcSync.stopSync()
+                return@Observer
             }
 
-            var currentId = 0
-            var currentNotificationData: NotificationData? = null
+            musicArtist.visibility = View.VISIBLE
+            musicName.text = it.name
+            musicArtist.text = it.artist
+        })
 
-            NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
-                it?.let { (sbn, status) ->
-                    if (currentId == 0){
-                        currentId = sbn.id
-                    } else if (status == "Removed" && currentId == sbn.id) {
-                        unReadNotification.text = ""
-                        unReadNotification.visibility = View.GONE
-                    }
+        var currentId = 0
+        var currentNotificationData: NotificationData? = null
 
-                    if (status == "Removed") return@let
-                    if (it.first.notification.getNotificationData().isOnGoing) return@let
+        NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
+            it?.let { (sbn, status) ->
+                if (currentId == 0){
+                    currentId = sbn.id
+                } else if (status == "Removed" && currentId == sbn.id) {
+                    unReadNotification.text = ""
+                    unReadNotification.visibility = View.GONE
+                }
 
-                    val notification = NotificationManager.notificationMap[sbn.key]?.notification ?: return@let
-                    currentNotificationData = notification.getNotificationData()
+                if (status == "Removed") return@let
+                if (it.first.notification.getNotificationData().isOnGoing) return@let
 
-                    notification.getNotificationData().let {
-                        unReadNotification.visibility = View.VISIBLE
-                        unReadNotification.text = "${it.appName} · ${it.title}\n${it.content}"
-                    }
+                val notification = NotificationManager.notificationMap[sbn.key]?.notification ?: return@let
+                currentNotificationData = notification.getNotificationData()
+
+                notification.getNotificationData().let {
+                    unReadNotification.visibility = View.VISIBLE
+                    unReadNotification.text = "${it.appName} · ${it.title}\n${it.content}"
+                }
 
 //                val icon = notification.smallIcon.loadDrawable(context)
 //                notificationImage.setImageDrawable(icon)
-                }
-            })
+            }
+        })
 
-        }
     }
 }
 

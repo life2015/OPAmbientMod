@@ -137,7 +137,7 @@
     <string name="settings_music_offset">Musikanzeige verschieben</string>
     <string name="settings_music_offset_desc">Verschiebt die Musikanzeige nach oben, um einen Konflikt mit dem Fingerabdrucksensorsymbol bei Geräten mit In-Display-Fingerabdrucksensor zu vermeiden.</string>
     <string name="settings_lyrics_translation">Liedtextübersetzung</string>
-    <string name="settings_lyrics_translation_desc">Übersetzt Liedtexte auf dem AOD ins Chinesische (Liedtexte sind nicht in allen AOD Layouts verfügbar)</string>
+    <string name="settings_lyrics_translation_desc">Übersetzt Liedtexte auf dem AOD ins Chinesische</string>
     <string name="settings_music_taichi_apps">TaiChi-Musikapps</string>
     <string name="settings_music_taichi_apps_desc">Es wird empfohlen, deine Musikapps für eine bessere Kompatibilität zu TaiChi hinzuzufügen. Tipper hier, um die zurzeit hinzugefügten Apps zu betrachten und mehr hinzuzufügen.</string>
     <string name="settings_weather_master_switch">Aktiviere Wetter</string>
@@ -145,7 +145,7 @@
     <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nHeutiger Temperaturbereich: %4s\n\nUm den Standort oder die Temperatureinheit zu ändern, tippe um die OnePlus Wetter-App zu öffnen</string>
     <string name="settings_weather_current_condition_desc_off">Wetterinformationen sind nicht verfügbar. Die Wetterfunktion auf dem AOD wird nicht funktionieren. Überprüfe bitte, dass du die OnePlus Wetter-App installiert und aktiviert hast</string>
     <string name="settings_weather_show_condition">Zeige Symbol zur Wetterlage</string>
-    <string name="settings_weather_show_condition_desc">Zeigt ein Symbol vor dem Text zur Wetterlage in Form eines Emojis (z. B. ☁️)</string>
+    <string name="settings_weather_show_condition_desc">Zeigt ein Symbol vor dem Text zur Wetterlage</string>
     <string name="settings_weather_show_condition_text">Zeige Text zur Wetterlage</string>
     <string name="settings_weather_show_condition_text_desc">Zeigt die Wetterlage als Text (z. B. Bewölkt)</string>
     <string name="settings_weather_show_temperature">Zeige Temperatur</string>

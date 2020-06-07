@@ -248,8 +248,6 @@
     <string name="settings_clock_alarm">闹钟显示</string>
     <string name="settings_clock_show_alarm">显示下一个闹钟</string>
     <string name="settings_clock_show_alarm_desc">将在天气之后换行显示24小时内的下一个闹钟</string>
-    <string name="settings_clock_show_alarm_emoji_desc">显示闹钟Emoji图标</string>
-    <string name="settings_clock_show_alarm_emoji">在下一个闹钟时间前显示闹钟Emoji图标</string>
     <string name="settings_music_master_switch">开启音乐显示</string>
     <string name="settings_music_use_system_music">系统音乐控制器</string>
     <string name="settings_music_use_system_music_desc">使用系统音乐控制器，可能更加稳定</string>
@@ -258,7 +256,7 @@
     <string name="settings_music_offset">音乐显示偏移</string>
     <string name="settings_music_offset_desc">将音乐显示上移，避免遮挡屏下指纹传感器（如果有的话）</string>
     <string name="settings_lyrics_translation">歌词翻译</string>
-    <string name="settings_lyrics_translation_desc">将屏幕上的歌词翻译为中文（并不是每一个主题都支持歌词显示）</string>
+    <string name="settings_lyrics_translation_desc">将屏幕上的歌词翻译为中文</string>
     <string name="settings_music_taichi_apps">太极音乐软件</string>
     <string name="settings_music_taichi_apps_desc">为了更好的兼容性，建议将音乐播放器添加进太极，点击查看已添加的软件并继续添加</string>
     <string name="settings_weather_master_switch">开启天气显示</string>
@@ -266,7 +264,7 @@
     <string name="settings_weather_current_condition_desc">%1s - %2s - %3s \n今日温度范围: %4s\n\n改变定位或单位，请点击打开一加天气APP</string>
     <string name="settings_weather_current_condition_desc_off">天气信息不可用。息屏显示不会显示天气。请查看是否安装并启用了一加天气</string>
     <string name="settings_weather_show_condition">显示天气状况图标</string>
-    <string name="settings_weather_show_condition_desc">在天气状况前显示Emoji图标（例如☁️）</string>
+    <string name="settings_weather_show_condition_desc">在天气状况前显示图</string>
     <string name="settings_weather_show_condition_text">显示天气状况文本</string>
     <string name="settings_weather_show_condition_text_desc">文字显示天气状况（例如：多云）</string>
     <string name="settings_weather_show_temperature">显示气温</string>
@@ -348,5 +346,76 @@
 
     <string name="xposed_constant_light_mode_7pro_ns">系统增强 - 7 Pro 不支持</string>
     <string name="xposed_constant_light_mode_7pro">常亮模式 - 7 Pro </string>
+
+    <!-- 3.1 -->
+    <string name="switch_aod_enabled">开启息屏显示</string>
+    <string name="settings_module_status_working_desc_disabled">息屏显示钩子已断开</string>
+    <string name="qs_aodmod_title">息屏常亮显示</string>
+    <string name="bs_theme_name_oneplus">OnePlus</string>
+    <string name="bs_theme_name_pixel">Pixel</string>
+    <array name="settings_weather_icon_style_text">
+        <item>Google</item>
+        <item>OnePlus</item>
+        <item>Emoji</item>
+    </array>
+    <string name="settings_op_clock_style">一加时钟风格</string>
+    <string name="settings_clock_style">风格</string>
+    <string name="headset_connected">耳麦已连接</string>
+    <string name="headset_disconnected">耳麦已断开连接</string>
+    <string name="bt_headset_connecting">%1s 正在连接</string>
+    <string name="bt_headset_connected">%1s 已连接</string>
+    <string name="bt_headset_disconnecting">%1s 正在断开连接</string>
+    <string name="bt_headset_disconnected">%1s 已断开连接</string>
+    <string name="volume_level">音量 %1s</string>
+    <string name="settings_generic_theme_not_supported">不支持的主题</string>
+    <string name="settings_generic_theme_not_supported_desc">当前主题不支持这些选项，如想使用请尝试其他主题</string>
+    <string name="settings_lyrics">歌词</string>
+    <string name="settings_lyrics_desc">在息屏显示中显示歌词\n<b>注意：歌词来源QQ音乐和网易云音乐，支持的歌曲数量有限。开启后歌词可能会出现中文字符。（KQ大佬原话，硬翻了）</b></string>
+    <string name="lyrics_loading">正在加载歌词…</string>
+    <string name="lyrics_music_only">纯音乐，请欣赏</string>
+    <string name="settings_music_use_small_music">使用更小的音乐布局</string>
+    <string name="settings_music_use_small_music_desc">使用更小更紧凑的类似新版Pixel的音乐布局，音乐信息会显示在时钟下方而不是屏幕底部</string>
+    <array name="settings_op_clock_style_options">
+        <item>默认时钟</item>
+        <item>数字时钟 1</item>
+        <item>数字时钟 2</item>
+        <item>文字时钟</item>
+        <item>加粗</item>
+        <item>模拟时钟 1</item>
+        <item>模拟时钟 2</item>
+        <item>模拟时钟 3</item>
+        <item>极简时钟 1</item>
+        <item>极简时钟 2</item>
+    </array>
+
+    <string name="clock_its">It\'s</string>
+
+    <string name="charging_charging"></string>
+    <string name="charging_quick_charging">快速充电中</string>
+    <string name="charging_charged">已充满</string>
+    <string name="charging_sleep_mode">睡眠模式</string>
+
+    <!-- Battery Optimisation settings -->
+    <string name="settings_battery_optimisation_title">电池优化</string>
+    <string name="settings_battery_optimisation_desc">系统微调以减少开启息屏显示时的电池消耗</string>
+    <string name="settings_battery_force_doze">强制打盹</string>
+    <string name="settings_battery_force_doze_desc">息屏显示显示时强制打盹\n<b>警告：未完全测试！可能会导致息屏显示时，通知提醒和闹铃功能出现问题！</b></string>
+    <string name="settings_battery_enable_saver">省电模式</string>
+    <string name="settings_battery_enable_saver_desc">息屏显示显示时打开系统的省电模式\n<b>警告：这可能会导致关闭屏幕时进程意外被杀！</b></string>
+    <string name="settings_lower_refresh_rate">降低屏幕刷新率</string>
+    <string name="settings_lower_refresh_rate_desc">在支持的设备上，息屏显示显示时降低刷新率到60Hz</string>
+    <string name="settings_battery_lower_brightness">最低亮度</string>
+    <string name="settings_battery_lower_brightness_desc">无视光线传感器，永远使用最低亮度显示息屏显示\n<b>注意：此选项会覆盖系统自动亮度设置！</b></string>
+
+    <!-- Weather icon style settings -->
+    <string name="settings_weather_icon_style">天气图标风格</string>
+    <string name="settings_weather_icon_style_desc">选取天气状况图标的风格</string>
+    <string name="settings_clock_show_alarm_emoji_desc">显示闹钟图标</string>
+    <string name="settings_clock_show_alarm_emoji">在下一个闹钟时间前显示闹钟图标</string>
+
+    <string name="settings_general_hide_divider">隐藏分隔符</string>
+    <string name="settings_general_hide_divider_desc">隐藏在时钟，文本，通知之间的水平分隔符</string>
+    <string name="settings_clock_show_bullet">显示重点分隔符"•"</string>
+    <string name="settings_clock_show_bullet_desc">在日期和天气文本之间，使用重点分隔符"•"</string>
 
 </resources>

@@ -5,11 +5,15 @@ import android.content.Intent
 import android.media.MediaMetadata
 import android.media.session.PlaybackState
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.R
 import com.retrox.aodmod.data.NowPlayingMediaData
+import com.retrox.aodmod.extensions.ResourceUtils
+import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.remote.lyric.model.CommonLyricProvider
 import com.retrox.aodmod.remote.lyric.model.SongEntity
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -32,7 +36,7 @@ object MediaControl : IXposedHookLoadPackage {
             mediaSessionClass,
             "setMetadata",
             MediaMetadata::class.java,
-            object : XC_MethodHook() {
+            ToggleableXC_MethodHook(object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     val mediaMetadata = param.args[0] as? MediaMetadata ?: return
 
@@ -62,13 +66,13 @@ object MediaControl : IXposedHookLoadPackage {
                     val intentPulsing = Intent("com.oneplus.aod.doze.pulse")
                     application.applicationContext.sendBroadcast(intentPulsing)
                 }
-            })
+            }))
 
         XposedHelpers.findAndHookMethod(
             mediaSessionClass,
             "setPlaybackState",
             "android.media.session.PlaybackState",
-            object : XC_MethodHook() {
+            ToggleableXC_MethodHook(object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     MainHook.logD(param.args[0].toString())
 
@@ -77,30 +81,30 @@ object MediaControl : IXposedHookLoadPackage {
                     intent.putExtra("mediaPlayBackState", param.args[0] as PlaybackState)
                     application.applicationContext.sendBroadcast(intent)
                 }
-            })
+            }))
 
 
         XposedHelpers.findAndHookMethod(
             mediaSessionClass,
             "setActive",
             Boolean::class.java,
-            object : XC_MethodHook() {
+            ToggleableXC_MethodHook(object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     val active = param.args[0] as Boolean
                     MainHook.logD("Media set Active Status: $active")
 
                 }
-            })
+            }))
 
         XposedHelpers.findAndHookMethod(
             mediaSessionClass,
             "release",
-            object : XC_MethodHook() {
+            ToggleableXC_MethodHook(object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     MainHook.logD("Media Session Release")
 
                 }
-            })
+            }))
 
     }
 
@@ -114,9 +118,10 @@ object MediaControl : IXposedHookLoadPackage {
 object LyricHelper {
 
     fun queryMusic2(artist: String, name: String) {
+        if(!XPref.getLyricsEnabled()) return
         val songEntity = SongEntity(name, artist)
         GlobalScope.launch(Dispatchers.Main + handler) {
-            val lyric = CommonLyricProvider.fetchLyric(song = songEntity) ?: "[00:00.000] 歌词获取错误，请尝试更换网络\n[00:10.000] "
+            val lyric = CommonLyricProvider.fetchLyric(song = songEntity) ?: "[00:00.000] ${ResourceUtils.getInstance().getString(R.string.lyrics_loading)}\n[00:10.000] "
 
             val application = AndroidAppHelper.currentApplication()
             val intent = Intent("com.retrox.aodmod.NEW_MEDIA_LRC")

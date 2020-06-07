@@ -150,19 +150,6 @@ fun Context.aodMusicView(lifecycleOwner: LifecycleOwner): View {
             topMargin = dip(12)
         }
 
-        post {
-            if (XPref.isSettings()) {
-                AodMedia.aodMediaLiveData.postValue(
-                    NowPlayingMediaData(
-                        "Song Name",
-                        "Artist",
-                        "Album"
-                    )
-                )
-                visibility = View.VISIBLE
-            }
-        }
-
     }
 
 }

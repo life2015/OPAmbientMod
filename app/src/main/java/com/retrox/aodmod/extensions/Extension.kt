@@ -7,16 +7,22 @@ import android.app.AlarmManager
 import android.app.AndroidAppHelper
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.media.AudioAttributes
 import android.os.Handler
 import android.os.PowerManager
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.TextUtils
+import android.text.style.DynamicDrawableSpan
+import android.text.style.ImageSpan
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -26,14 +32,16 @@ import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.reflect.TypeToken
 import com.retrox.aodmod.BuildConfig
 import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.app.App
-import com.retrox.aodmod.app.XposedUtils
 import com.retrox.aodmod.app.util.getSystemContext
 import com.retrox.aodmod.app.util.logD
+import com.retrox.aodmod.opimports.OpClockViewCtrl
+import com.retrox.aodmod.opimports.OpTextClock
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.pref.XPref.isSettings
 import com.retrox.aodmod.proxy.view.theme.ThemeClockPack
@@ -41,15 +49,29 @@ import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
 import de.robv.android.xposed.XposedHelpers
+import org.jetbrains.anko.dip
 import java.io.File
 import java.lang.reflect.InvocationTargetException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
-fun TextView.setGoogleSans(style: String = "Regular"): Boolean {
+fun TextView.setGoogleSans(style: String = "Regular", weight: Int? = null): Boolean {
     if (XPref.getFontWithSystem()) return false // 跟随系统字体
-    typeface = Typeface.createFromAsset(ResourceUtils.getInstance(context).assets, "fonts/GoogleSans-$style.ttf")
+    typeface = if(weight == null) {
+        Typeface.createFromAsset(
+            ResourceUtils.getInstance(context).assets,
+            "fonts/GoogleSans-$style.ttf"
+        )
+    }else{
+        Typeface.Builder(
+            ResourceUtils.getInstance(context).assets,
+            "fonts/GoogleSans-$style.ttf"
+        ).setWeight(weight).build()
+    }
+
     return true
 }
 
@@ -68,6 +90,62 @@ fun Context.checkPermission(callback: () -> Unit): Boolean {
     } else return true
 }
 
+fun String.unescapeXml(): String {
+    //We need to do this really safely as it's not really that important
+    return try{
+        unescapeXML(this) ?: this
+    }catch (e: Exception){
+        this
+    }
+}
+
+fun String.concatMusic(): String {
+    return TextUtils.ellipsize(this, TextPaint(), 115f, TextUtils.TruncateAt.END).toString()
+}
+
+private fun unescapeXML(xml: String): String? {
+    val xmlEntityRegex: Pattern = Pattern.compile("&(#?)([^;]+);")
+    //Unfortunately, Matcher requires a StringBuffer instead of a StringBuilder
+    val unescapedOutput = StringBuffer(xml.length)
+    val m: Matcher = xmlEntityRegex.matcher(xml)
+    var builtinEntities: Map<String?, String?>? = null
+    var entity: String?
+    var hashmark: String
+    var ent: String
+    var code: Int
+    while (m.find()) {
+        ent = m.group(2)
+        hashmark = m.group(1)
+        if (hashmark != null && hashmark.length > 0) {
+            code = ent.toInt()
+            entity = Character.toString(code.toChar())
+        } else {
+            //must be a non-numerical entity
+            if (builtinEntities == null) {
+                builtinEntities = buildBuiltinXMLEntityMap()
+            }
+            entity = builtinEntities!![ent]
+            if (entity == null) {
+                //not a known entity - ignore it
+                entity = "&$ent;"
+            }
+        }
+        m.appendReplacement(unescapedOutput, entity)
+    }
+    m.appendTail(unescapedOutput)
+    return unescapedOutput.toString()
+}
+
+private fun buildBuiltinXMLEntityMap(): Map<String?, String?>? {
+    val entities: HashMap<String?, String> = HashMap(10)
+    entities["lt"] = "<"
+    entities["gt"] = ">"
+    entities["amp"] = "&"
+    entities["apos"] = "'"
+    entities["quot"] = "\""
+    return entities
+}
+
 /**
  * 使用WakeLock来保证一些操作的正确执行
  */
@@ -79,10 +157,22 @@ fun Context.wakeLockWrap(tag: String, block: () -> Unit) {
     wakeLock.release()
 }
 
-fun TextView.setGradientTest(colorPack: ThemeClockPack = ThemeManager.getCurrentColorPack()) {
+fun SpannableStringBuilder.appendSpace(){
+    append(" ")
+}
+
+fun TextView.setGradientTest(colorPack: ThemeClockPack = ThemeManager.getCurrentColorPack(), overriddenSize: Boolean = false) {
     val shader = LinearGradient(
-        0f, 0f, width.toFloat() * 1.2f, height.toFloat() * 1.2f, Color.parseColor(colorPack.gradientStart),Color.parseColor(colorPack.gradientEnd),Shader.TileMode.CLAMP)
+        0f, 0f, if(overriddenSize) dip(275).toFloat() else width.toFloat() * 1.2f, if(overriddenSize) dip(50).toFloat() else height.toFloat() * 1.2f, Color.parseColor(colorPack.gradientStart),Color.parseColor(colorPack.gradientEnd),Shader.TileMode.CLAMP)
     paint.shader = shader
+//    Log.d("OPAodMod", "Debug Gradient -> text: $text width: $width height: $height")
+}
+
+fun OpTextClock.setGradientTest(colorPack: ThemeClockPack = ThemeManager.getCurrentColorPack()) {
+    val shader = LinearGradient(
+        0f, 0f, dip(275).toFloat(), dip(275).toFloat(), Color.parseColor(colorPack.gradientStart),Color.parseColor(colorPack.gradientEnd),Shader.TileMode.CLAMP)
+    mHourPaint.shader = shader
+    mMinPaint.shader = shader
 //    Log.d("OPAodMod", "Debug Gradient -> text: $text width: $width height: $height")
 }
 
@@ -93,13 +183,25 @@ fun isOP7Pro() = OP7DeviceModels.contains(android.os.Build.MODEL) || XPref.isAnd
 
 /**
  * Only for OP7Pro
+ * For some unknown reason, AudioAttributes refuses to import when targeting Android 28. We'll hack it with reflection instead, and wrap it for safety
  */
 @SuppressLint("MissingPermission")
 fun Vibrator.simpleTap() {
-    setVibratorEffect(1007)
-    val effect = VibrationEffect.createWaveform(longArrayOf(0, 11), intArrayOf(0,-1), -1)
-    val attr = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION).build()
-    vibrate(effect, attr)
+    try {
+        setVibratorEffect(1007)
+        val effect = VibrationEffect.createWaveform(longArrayOf(0, 11), intArrayOf(0, -1), -1)
+        val audioAttributes = Class.forName("android.media.AudioAttributes")
+        val audioAttributesBuilder = Class.forName("android.media.AudioAttributes\$Builder")
+        val builder = audioAttributes.getDeclaredMethod("Builder").invoke(null)
+        //13 = USAGE_ASSISTANCE_SONIFICATION
+        audioAttributesBuilder.getMethod("setUsage", Integer.TYPE).invoke(builder, 13)
+        val attr = audioAttributesBuilder.getMethod("build").invoke(builder)
+        val vibrateMethod =
+            this.javaClass.getMethod("vibrate", VibrationEffect::class.java, audioAttributes)
+        vibrateMethod.invoke(this, effect, attr)
+    }catch (e: java.lang.Exception){
+        //Do nothing
+    }
 }
 
 /**
@@ -159,33 +261,56 @@ fun resetPrefPermissions(context: Context?){
     }, 250)
 }
 
-fun generateAlarmText(context: Context): String {
+fun runAfter(seconds: Double, callback: () -> Unit){
+    Handler().postDelayed({
+        callback.invoke()
+    }, (seconds * 1000).toLong())
+}
+
+fun getApplicationContext(): Context {
+    return if(isSettings()){
+        App.application.applicationContext
+    }else{
+        AndroidAppHelper.currentApplication().applicationContext
+    }
+}
+
+fun generateAlarmText(context: Context, prefixNewLine : Boolean = true): SpannableStringBuilder {
     if (XPref.getShowAlarm()) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val nextAlarm = alarmManager.nextAlarmClock
-        val stringBuilder = StringBuilder()
+        val stringBuilder = SpannableStringBuilder()
         if(nextAlarm != null) {
             val nextAlarmTime = nextAlarm.triggerTime
             val currentTime = System.currentTimeMillis()
             if (nextAlarmTime - currentTime <= 86400000) {
-                if (XPref.getWeatherShowCity()) {
-                    if (XPref.getShowBullets()) {
-                        stringBuilder.append(" • ")
+                if(prefixNewLine) {
+                    if (XPref.getWeatherShowCity()) {
+                        if (XPref.getShowBullets()) {
+                            stringBuilder.append(" • ")
+                        }
+                    } else {
+                        stringBuilder.append("\n")
                     }
-                } else {
-                    stringBuilder.append("\n")
                 }
                 //Alarm is within next 24h
                 if (XPref.getShowAlarmEmoji()) {
-                    stringBuilder.append("⏰")
+                    stringBuilder.append("X", getAlarmSpan(context), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     stringBuilder.append(" ")
                 }
                 stringBuilder.append(SmaliImports.getFormattedTime(nextAlarmTime))
             }
         }
-        return stringBuilder.toString()
+        return stringBuilder
     }
-    return ""
+    return SpannableStringBuilder()
+}
+
+fun getAlarmSpan(context: Context): ImageSpan {
+    val icon = ResourceUtils.getInstance(context).getDrawable(com.retrox.aodmod.R.drawable.ic_alarm)
+    val theme = ThemeManager.getCurrentColorPack()
+    icon.setTint(Color.parseColor(theme.tintColor))
+    return ImageSpan(context, icon.toBitmap(16.toPx, 16.toPx), 2)
 }
 
 fun Number.toCNString(): String {
@@ -253,6 +378,12 @@ fun Snackbar.setGoogleSans() : Snackbar {
     view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).typeface = ResourcesCompat.getFont(context, com.retrox.aodmod.R.font.googlesans)
     return this
 }
+
+val Int.toPx: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+val Int.toDp: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 
 fun getAppString(@StringRes stringRes: Int): String {
     return if(isSettings()){

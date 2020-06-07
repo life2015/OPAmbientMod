@@ -1,13 +1,15 @@
 package com.retrox.aodmod.music
 
 import android.content.Context
+import android.content.Intent
 import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.PlaybackState
 import com.retrox.aodmod.data.NowPlayingMediaData
+import com.retrox.aodmod.hooks.LyricHelper
 import com.retrox.aodmod.state.AodMedia
 
-class MediaCallback(private val mediaController: MediaController, context: Context) : MediaController.Callback() {
+class MediaCallback(private val mediaController: MediaController, private val context: Context) : MediaController.Callback() {
 
     private var playingMediaData : NowPlayingMediaData? = null
     private var playingState: Int = PlaybackState.STATE_NONE
@@ -39,6 +41,11 @@ class MediaCallback(private val mediaController: MediaController, context: Conte
     private fun updateMusicPlaybackState(){
         if(playingState == PlaybackState.STATE_PLAYING) {
             AodMedia.aodMediaLiveData.postValue(playingMediaData)
+            playingMediaData?.let {
+                LyricHelper.queryMusic2(it.artist, it.name)
+                val intentPulsing = Intent("com.oneplus.aod.doze.pulse")
+                context.sendBroadcast(intentPulsing)
+            }
         }else{
             AodMedia.aodMediaLiveData.postValue(null)
         }

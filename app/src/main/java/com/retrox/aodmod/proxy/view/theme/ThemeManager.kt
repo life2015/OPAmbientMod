@@ -50,4 +50,84 @@ object ThemeManager {
         }
     }
 
+    /*
+        Does the theme have a clock at all
+     */
+    fun doesThemeSupportClock(theme: String): Boolean {
+        return when(theme){
+            "DVD" -> false
+            else -> true
+        }
+    }
+
+    /*
+        Does the theme have the date shown
+     */
+    fun doesThemeSupportDate(theme: String): Boolean {
+        return when(theme){
+            "DVD", "PureMusic" -> false
+            else -> true
+        }
+    }
+
+    /*
+        Does the theme have the today text, including the alarm, weather etc.
+     */
+    fun doesThemeSupportToday(theme: String) : Boolean {
+        return when(theme){
+            "DVD", "PureMusic", "FlatMusic", "Word" -> false
+            else -> true
+        }
+    }
+
+    /*
+        Does the theme have the today text, including the alarm, weather etc.
+     */
+    fun doesThemeSupportWeatherCity(theme: String) : Boolean {
+        return when(theme){
+            "Default", "Pixel", "Flat" -> false
+            else -> true
+        }
+    }
+
+    /*
+        Does the theme support displaying music at all
+     */
+    fun doesThemeSupportMusic(theme: String) : Boolean {
+        return when(theme){
+            "DVD", "Word" -> false
+            else -> true
+        }
+    }
+
+    /*
+        Does the theme show the music at the bottom of the screen
+     */
+    fun doesThemeSupportMusicBottom(theme: String) : Boolean {
+        return when(theme){
+            "DVD", "Word", "Flat", "PureMusic", "FlatMusic" -> false
+            else -> true
+        }
+    }
+
+    /*
+        Does the theme show the music icon
+     */
+    fun doesThemeSupportMusicIcon(theme: String) : Boolean {
+        return when(theme){
+            "DVD", "Word", "Flat", "PureMusic", "FlatMusic" -> false
+            else -> true
+        }
+    }
+
+    /*
+        Does the theme have the today text, including the alarm, weather etc.
+     */
+    fun doesThemeSupportLyrics(theme: String) : Boolean {
+        return when(theme){
+            "Flat", "FlatMusic", "PureMusic" -> true
+            else -> false
+        }
+    }
+
 }

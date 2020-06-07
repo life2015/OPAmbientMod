@@ -8,9 +8,9 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.children
-import com.retrox.aodmod.shared.global.GlobalCacheManager
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import org.jetbrains.anko.*
@@ -20,7 +20,7 @@ object NetEaseQHook : IXposedHookLoadPackage {
         if (lpparam.packageName != "com.netease.cloudmusic") return
 
         val clazz = XposedHelpers.findClass("android.app.Activity", lpparam.classLoader)
-        XposedHelpers.findAndHookMethod(clazz, "onResume", object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(clazz, "onResume", ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 val activity = param.thisObject as Activity
 
@@ -59,7 +59,7 @@ object NetEaseQHook : IXposedHookLoadPackage {
 //                statusBarBack.backgroundColor = Color.WHITE
 
             }
-        })
+        }))
 
 
 

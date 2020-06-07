@@ -24,6 +24,7 @@ class ThemePickerBottomSheetFragment : BottomSheetFragment() {
             AppPref.aodLayoutTheme = currentTheme
             ThemeManager.setThemePackSync(currentColour)
             resetPrefPermissions(context)
+            sActivity?.onLayoutChanged()
             true
         }
         cancelListener = {true}
@@ -33,9 +34,9 @@ class ThemePickerBottomSheetFragment : BottomSheetFragment() {
         }
     }
 
-    private val themeImages by lazy { arrayOf(imageview_theme_default, imageview_theme_flat, imageview_theme_dvd, imageview_theme_pure_music, imageview_theme_flat_music, imageview_theme_word) }
+    private val themeImages by lazy { arrayOf(imageview_theme_default, imageview_theme_flat, imageview_theme_dvd, imageview_theme_pixel, imageview_theme_pure_music, imageview_theme_flat_music, imageview_theme_word, imageview_theme_oneplus) }
 
-    private val themeNames = arrayOf("Default", "Flat", "DVD", "PureMusic", "FlatMusic", "Word")
+    private val themeNames = arrayOf("Default", "Flat", "DVD", "Pixel", "PureMusic", "FlatMusic", "Word", "OnePlus")
 
     private val circleViews by lazy { arrayOf(color_circle_1, color_circle_2, color_circle_3, color_circle_4, color_circle_5, color_circle_6, color_circle_7, color_circle_8, color_circle_9, color_circle_10, color_circle_11, color_circle_12)}
 

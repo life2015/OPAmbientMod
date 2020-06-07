@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="settings_weather_icon_style_values">
+        <item>google</item>
+        <item>oneplus</item>
+        <item>emoji</item>
+    </array>
+</resources>

@@ -103,7 +103,7 @@ object MainHook : IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
         val message = String.format(LOG_FORMAT, "[DEBUG]", tag, msg)
         SharedLogger.writeLog(message)
         XposedBridge.log(message)
-//        Log.d(tag, msg)
+        Log.d(tag, msg)
     }
 
 }

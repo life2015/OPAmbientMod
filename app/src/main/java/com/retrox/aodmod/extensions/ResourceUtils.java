@@ -21,8 +21,11 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.*;
+import androidx.core.content.res.ResourcesCompat;
+
 import android.view.View;
 import com.retrox.aodmod.MainHook;
 
@@ -79,6 +82,7 @@ public class ResourceUtils {
     @NonNull
     public final Drawable getDrawable(@DrawableRes int resId) {
         //noinspection deprecation
+        if(resId == 0) return null;
         return mContext.getDrawable(resId);
     }
 
@@ -89,8 +93,19 @@ public class ResourceUtils {
     }
 
     @NonNull
+    public final Typeface getFont(@FontRes int resId) {
+        //noinspection deprecation
+        return ResourcesCompat.getFont(mContext, resId);
+    }
+
+    @NonNull
     public final String getString(@StringRes int resId) {
         return mContext.getResources().getString(resId);
+    }
+
+    @NonNull
+    public final String[] getStringArray(@ArrayRes int resId) {
+        return mContext.getResources().getStringArray(resId);
     }
 
     @NonNull
