@@ -18,6 +18,9 @@ class ThemeClockPack(
         FileUtils.writeFileWithContent(fileName, jsonString)
     }
 
+    val isGradient : Boolean
+            get() = gradientStart != gradientEnd
+
     companion object obj : SharedFileReader<ThemeClockPack> {
         override fun readFromFile(): ThemeClockPack {
             return gson.fromJson(FileUtils.readFile(fileName), ThemeClockPack::class.java)

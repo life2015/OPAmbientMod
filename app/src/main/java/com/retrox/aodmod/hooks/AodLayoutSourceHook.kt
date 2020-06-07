@@ -11,8 +11,9 @@ import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.state.AodState
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import org.jetbrains.anko.*
@@ -30,7 +31,7 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
         val paramClass = XposedHelpers.findClass("com.oneplus.aod.NotificationData\$Entry", classLoader)
         MainHook.logD(paramClass.toGenericString()) // 检测内部类Hack
 
-        XposedHelpers.findAndHookMethod(singleNotificationView, "updateViewInternal",paramClass, object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(singleNotificationView, "updateViewInternal",paramClass, ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 super.afterHookedMethod(param)
 
@@ -107,14 +108,14 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
                 }
 
             }
-        })
+        }))
 
         XposedHelpers.findAndHookMethod(
             singleNotificationView,
             "setNewPosted",
             "android.service.notification.StatusBarNotification",
             Boolean::class.java,
-            object : XC_MethodHook() {
+            ToggleableXC_MethodHook(object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     val thisObj = param.thisObject
                     val newPostNoti = XposedHelpers.getObjectField(thisObj, "mNewPostedNotification")
@@ -123,10 +124,10 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
 
                     MainHook.logD("newPostNoti: $newPostNoti isUpdate: $isUpdate isTheFirst: $mIsTheFirstNotification")
                 }
-            }
+            })
         )
 
-        XposedHelpers.findAndHookMethod(singleNotificationView, "onAttachedToWindow", object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(singleNotificationView, "onAttachedToWindow", ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 super.afterHookedMethod(param)
                 val layout = param.thisObject as LinearLayout
@@ -160,7 +161,7 @@ object AodLayoutSourceHook : IXposedHookLoadPackage {
 
                 MainHook.logD("SingleLayout Hook AttachWindow")
             }
-        })
+        }))
     }
 
     fun View.getId(name: String) = this.context.resources.getIdentifier(name, "id", MainHook.PACKAGE_AOD)

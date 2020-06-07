@@ -51,8 +51,6 @@
     <string name="settings_clock_alarm">Alarma</string>
     <string name="settings_clock_show_alarm">Mostrar Proxima Alarma</string>
     <string name="settings_clock_show_alarm_desc">Muestra la proxima alarma luego del clima. Solo muestra alarmas en las proximas 24 horas (se muestra en la segunda linea).</string>
-    <string name="settings_clock_show_alarm_emoji_desc">Mostrar Emoji de alarma</string>
-    <string name="settings_clock_show_alarm_emoji">Muestra el emoji de un reloj antes de la proxima alarma.</string>
     <string name="settings_music_master_switch">Habilitar Musica</string>
     <string name="settings_music_use_system_music">Musica del Sistema</string>
     <string name="settings_music_use_system_music_desc">Usa el controlador de musica del sistema, el cual puede ser mas confiable y estable.</string>
@@ -61,7 +59,7 @@
     <string name="settings_music_offset">Offset Music</string>
     <string name="settings_music_offset_desc">Mueve la musica mas arriba para que no moleste al sensor de huellas en pantalla, en el caso de que tu dispositivo tenga uno.</string>
     <string name="settings_lyrics_translation">Traduccion de Letras</string>
-    <string name="settings_lyrics_translation_desc">Traduce las letras de las canciones a Chino (las letras no estan disponibles en todos los temas)(inutil si no lees chino)</string>
+    <string name="settings_lyrics_translation_desc">Traduce las letras de las canciones a Chino (las letras no estan disponibles en todos los temas)</string>
     <string name="settings_music_taichi_apps">TaiChi Music Apps</string>
     <string name="settings_music_taichi_apps_desc">Para mejor compatibilidad, se recomienda que agreges tus apps de musica a TaiChi. Haz click aqui para ver las apps que ya estan cargadas a TaiChi entre otras cosas.</string>
     <string name="settings_weather_master_switch">Habilitar Clima</string>
@@ -69,7 +67,7 @@
     <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nRango de Temperatura de Hoy: %4s\n\nPara cambiar la ciudad o la unidad de temperatura, haz click aqui para lanzar la aplicacion del Clima de OnePlus</string>
     <string name="settings_weather_current_condition_desc_off">La informacion del clima no esta disponible. La funcion del clima del AoD no se mostrara. Por favor revisa que tengas las aplicacion del Clima de OnePlus instalada y habilitada.</string>
     <string name="settings_weather_show_condition">Mostrar icono del Clima</string>
-    <string name="settings_weather_show_condition_desc">Muestra un icono antes del texto con la informacion del clima en forma de emoji (ej. ☁️).</string>
+    <string name="settings_weather_show_condition_desc">Muestra un icono antes del texto con la informacion del clima</string>
     <string name="settings_weather_show_condition_text">Mostrar texto del clima</string>
     <string name="settings_weather_show_condition_text_desc">Muestra el clima como texto (ej. Nublado).</string>
     <string name="settings_weather_show_temperature">Mostrar Temperatura</string>
@@ -232,9 +230,74 @@
         <item>Cincuenta y nueve</item>
     </string-array>
 
+    <!-- 3.1 -->
+    <string name="switch_aod_enabled">AoD Habilitado</string>
+    <string name="settings_module_status_working_desc_disabled">Coneccion de AoD Deshabilitada</string>
+    <string name="qs_aodmod_title">Always on Display</string>
+    <string name="bs_theme_name_oneplus">OnePlus</string>
+    <string name="bs_theme_name_pixel">Pixel</string>
+    <array name="settings_weather_icon_style_text">
+        <item>Google</item>
+        <item>OnePlus</item>
+        <item>Emoji</item>
+    </array>
+    <string name="settings_op_clock_style">Estilo reloj OnePlus</string>
+    <string name="settings_clock_style">Estilo</string>
+    <string name="headset_connected">Auriculares Conectados</string>
+    <string name="headset_disconnected">Auriculares Desconectados</string>
+    <string name="bt_headset_connecting">%1s conectando</string>
+    <string name="bt_headset_connected">%1s connectado</string>
+    <string name="bt_headset_disconnecting">%1s desconectando</string>
+    <string name="bt_headset_disconnected">%1s desconectado</string>
+    <string name="volume_level">Volumen %1s</string>
+    <string name="settings_generic_theme_not_supported">Tema no Soportado</string>
+    <string name="settings_generic_theme_not_supported_desc">Este tema no soporta estas opciones. Porfavor selecione tema para usarlas</string>
+    <string name="settings_lyrics">Letras</string>
+    <string name="settings_lyrics_desc">Muestra letras de canciones en el AoD.\n<b>Nota: Estas letras son provistas por QQ y NetEase, y tienen un soporte de caniones limitado. Podrias ver texto en chino con esta opcion habilitada.</b></string>
+    <string name="lyrics_loading">Cargando letra…</string>
+    <string name="lyrics_music_only">Esta cancion solo tiene musica</string>
+    <string name="settings_music_use_small_music">Usar un Music Layout mas pequeño</string>
+    <string name="settings_music_use_small_music_desc">Usar un music layout mas pequeño y compacto similar al de los nuevos Pixels. La informacion de la musica se muestra en el rejoj en lugar de en la parte de abajo.</string>
+    <array name="settings_op_clock_style_options">
+        <item>Predeterminado</item>
+        <item>Digital 1</item>
+        <item>Digital 2</item>
+        <item>Reloj de texto</item>
+        <item>Negrita</item>
+        <item>Analogico 1</item>
+        <item>Analogico 2</item>
+        <item>Analogico 3</item>
+        <item>Minimalista 1</item>
+        <item>Minimalista 2</item>
+    </array>
+
     <string name="charging_charging">Cargando</string>
-    <string name="charging_quick_charging">Carga Rápida</string>
     <string name="charging_charged">Cargado</string>
+    <string name="charging_quick_charging">Carga Rápida</string>
+    <string name="charging_sleep_mode">Sleep Mode</string>
+
+    <!-- Battery Optimisation settings -->
+    <string name="settings_battery_optimisation_title">Optimizacion de Bateria</string>
+    <string name="settings_battery_optimisation_desc">Tweak que hace que la bateria dure mas con el AoD activado</string>
+    <string name="settings_battery_force_doze">Forzar Doze</string>
+    <string name="settings_battery_force_doze_desc">Forzar doze cuando se esta mostrando el AoD.\n<b>Precaucion: Esto podria causar problemas con notificaciones y alarmas, y no esta del todo testeado</b></string>
+    <string name="settings_battery_enable_saver">Ahorrador de Bateria</string>
+    <string name="settings_battery_enable_saver_desc">Habilitar el modo ahorra de vateria del sistema cuando se muestra el AoD.\n<b>Precaucion: Esto podria causar el cierre inesperado de apps con la pantalla apagada</b></string>
+    <string name="settings_lower_refresh_rate">Reducir taza de refresco</string>
+    <string name="settings_lower_refresh_rate_desc">Reduce la taza de refresco a 60Hz cuando se esta mostrando el AoD en los dispositivos que lo soportan</string>
+    <string name="settings_battery_lower_brightness">Reducir el Brillo</string>
+    <string name="settings_battery_lower_brightness_desc">Siempre usar el brillo minimo cuando se muestra el AoD, sin importar el sensor de iluminacion.\n<b>Nota: Esto anula el brillo automatico en los ajustes generales</b></string>
+
+    <!-- Weather icon style settings -->
+    <string name="settings_weather_icon_style">Estilo del icono del clima</string>
+    <string name="settings_weather_icon_style_desc">selecciona el estilo del icono del clima</string>
+    <string name="settings_clock_show_alarm_emoji_desc">Mostrar icono de reloj</string>
+    <string name="settings_clock_show_alarm_emoji">Mostrar el icono de un reloj antes de la proxima alarma</string>
+
+    <string name="settings_general_hide_divider">Ocultar Dividor</string>
+    <string name="settings_general_hide_divider_desc">Oculta la divison horizontal entre el reloj, texto y notificaciosnes</string>
+    <string name="settings_clock_show_bullet">Mostrar division con puntos</string>
+    <string name="settings_clock_show_bullet_desc">Muestra un punto • como divisor entre la fecha y el texto del clima</string>
 
 
 </resources>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are not translatable and are required by the OnePlus Clock code -->
+    <color name="date_view_white">#ffffff</color>
+    <dimen name="date_view_font_base_line_y">18.0dp</dimen>
+    <dimen name="date_view_default_marginTop">7.0dp</dimen>
+    <dimen name="date_view_analog_marginTop">35.139984dp</dimen>
+    <dimen name="date_view_analog_mcl_marginTop">35.0dp</dimen>
+    <dimen name="date_view_font_size">17.0dp</dimen>
+    <dimen name="clock_view_default_font_base_line1_y">51.70999dp</dimen>
+    <dimen name="clock_view_default_font_base_line2_y">116.0dp</dimen>
+    <color name="clock_ten_digit_red">#eb0028</color>
+    <color name="clock_ten_digit_white">#ffffff</color>
+    <dimen name="clock_view_default_font_size">68.0dp</dimen>
+    <string name="abbrev_wday_month_day_no_year">EEEEMMMMd</string>
+    <string name="abbrev_wday_month_day_no_year_alarm">EEEMMMd</string>
+    <string name="clock_12hr_format">hm</string>
+    <string name="clock_24hr_format">Hm</string>
+    <bool name="aod_config_showAmpm">false</bool>
+    <dimen name="date_time_view_17801_additional_marginTop">189.0px</dimen>
+    <dimen name="date_time_view_17819_additional_marginTop">220.0px</dimen>
+    <dimen name="date_time_view_additional_marginTop">60.0dp</dimen>
+    <dimen name="date_time_view_analog_marginTop">91.849976dp</dimen>
+    <dimen name="date_time_view_default_marginTop">95.849976dp</dimen>
+    <dimen name="date_time_view_digital_marginTop">220.0px</dimen>
+    <dimen name="date_time_view_minimalism_marginTop">91.849976dp</dimen>
+    <dimen name="date_view_default_font_size">17.0dp</dimen>
+    <dimen name="date_view_font_base_line_x">0.0dp</dimen>
+    <dimen name="date_view_marginTop">0.0px</dimen>
+    <dimen name="op_aod_clock_analog_my_margin_top">106.0dp</dimen>
+    <dimen name="owner_info_default_marginTop">34.0dp</dimen>
+    <dimen name="owner_info_analog_marginTop">34.0dp</dimen>
+    <dimen name="op_aod_clock_analog_my_size">211.0dp</dimen>
+    <dimen name="op_aod_light_effect_my_width">290.0px</dimen>
+    <dimen name="clock_analog_size">155.0dp</dimen>
+    <string name="keyguard_widget_12_hours_format">h:mm</string>
+    <string name="keyguard_widget_24_hours_format">kk:mm</string>
+    <dimen name="clock_minimalism_size">175.0dp</dimen>
+    <dimen name="oneplus_contorl_margin_bottom1">23px</dimen>
+    <dimen name="aod_clock_typographic_font_line_space">5.0dp</dimen>
+    <dimen name="aod_clock_digital_font_size">85.0dp</dimen>
+    <dimen name="aod_clock_typographic_font_size">44.0dp</dimen>
+    <dimen name="aod_clock_digital_margin_top">186.0dp</dimen>
+    <dimen name="aod_clock_typographic_margin_top">175.0dp</dimen>
+    <dimen name="aod_clock_analog_min2_top">113.0dp</dimen>
+    <dimen name="aod_clock_digital2_margin_top">145.0dp</dimen>
+    <dimen name="aod_clock_typographic_margin_start_end">50.0dp</dimen>
+    <dimen name="main_view_horizontal_margin">36.0dp</dimen>
+    <color name="oneplus_contorl_text_color_primary_dark">#ffffffff</color>
+    <color name="op_aod_textclock_top">#e8e8e8</color>
+    <color name="op_aod_digitalclock_gradient_end">#525252</color>
+    <color name="op_aod_digitalclock_gradient_start">#bac0cf</color>
+    <string name="textclock_template">It\'s\n^1\n^2</string>
+    <dimen name="title_clock_padding">4.0dp</dimen>
+    <dimen name="widget_big_font_size">78.0dp</dimen>
+    <dimen name="oneplus_bottom_text_spacing_digital">-1.0dp</dimen>
+    <dimen name="aod_clock_min2_date_left">46.0dp</dimen>
+    <dimen name="aod_clock_analog_min2_date_size">13.0dp</dimen>
+    <dimen name="aod_clock_analog_numeral_size">176.25dp</dimen>
+    <dimen name="aod_clock_analog_min2_size">176.25dp</dimen>
+    <dimen name="op_owner_info_font_size">16.0dp</dimen>
+    <string name="system_ui_aod_date_pattern">eeeMMMd</string>
+    <style name="op_widget_big">
+        <item name="android:textSize">@dimen/widget_big_font_size</item>
+        <item name="android:paddingBottom">@dimen/oneplus_bottom_text_spacing_digital</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    <declare-styleable name="OpCustomTextClock">
+        <attr name="textClockStyle" format="integer"/>
+        <attr name="gradientStyle" format="integer"/>
+        <attr name="gradientStartColor" format="color"/>
+        <attr name="gradientEndColor" format="color"/>
+        <attr name="colorTop" format="color"/>
+        <attr name="colorBottom" format="color"/>
+        <attr name="textClockStringTemplate" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="OpOneRedStyleClock">
+        <attr name="specialColor" format="color"/>
+    </declare-styleable>
+</resources>

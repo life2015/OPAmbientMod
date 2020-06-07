@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.app.util.logD
 import com.retrox.aodmod.state.AodState
 
 class PowerReceiver : BroadcastReceiver() {
@@ -21,7 +22,7 @@ class PowerReceiver : BroadcastReceiver() {
             val powerData = PowerData(level, plugged, status, charged, charging, fastCharge)
             if (powerData != AodState.powerState.value) {
                 AodState.powerState.postValue(powerData)
-                MainHook.logD("电池信息：容量:$level 插入状态:$plugged Status:$status 充电完成:$charged 充电中:$charging Dash闪充:$fastCharge")
+                logD("电池信息：容量:$level 插入状态:$plugged Status:$status 充电完成:$charged 充电中:$charging Dash闪充:$fastCharge")
             }
         }
     }

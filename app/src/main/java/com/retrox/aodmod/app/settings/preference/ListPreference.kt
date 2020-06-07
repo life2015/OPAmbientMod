@@ -8,7 +8,7 @@ import androidx.preference.PreferenceViewHolder
 import com.retrox.aodmod.R
 import org.jetbrains.anko.singleLine
 
-class ListPreference : androidx.preference.ListPreference {
+open class ListPreference : androidx.preference.ListPreference {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
         context,

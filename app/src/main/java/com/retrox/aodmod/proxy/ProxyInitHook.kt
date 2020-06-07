@@ -3,8 +3,9 @@ package com.retrox.aodmod.proxy
 import android.os.Vibrator
 import android.util.Log
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import java.lang.reflect.InvocationTargetException
@@ -19,13 +20,13 @@ object ProxyInitHook : IXposedHookLoadPackage {
             "vibrate",
             "android.os.VibrationEffect",
             "android.media.AudioAttributes",
-            object : XC_MethodHook() {
+            ToggleableXC_MethodHook(object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     val vibrator = param.thisObject as Vibrator
                     vibrator.setVibratorEffect(10205)
                     MainHook.logD("Tim trigger Vibrate $param")
                 }
-            }
+            })
         )
 
     }

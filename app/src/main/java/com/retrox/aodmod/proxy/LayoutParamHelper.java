@@ -2,10 +2,14 @@ package com.retrox.aodmod.proxy;
 
 import android.os.Build;
 import android.view.WindowManager;
+
+import androidx.annotation.RequiresApi;
+
 import de.robv.android.xposed.XposedHelpers;
 
 public class LayoutParamHelper {
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     public static WindowManager.LayoutParams getAodViewLayoutParams() {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
         params.type = 2303;

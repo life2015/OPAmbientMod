@@ -2,16 +2,19 @@ package com.retrox.aodmod.app.settings
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
-import android.content.res.Configuration
+import android.app.Notification
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.os.UserHandle
+import android.service.notification.StatusBarNotification
 import android.text.format.DateUtils
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewOutlineProvider
+import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
@@ -21,25 +24,32 @@ import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.settings.fragments.*
 import com.retrox.aodmod.app.settings.fragments.bottomsheet.ThemePickerBottomSheetFragment
 import com.retrox.aodmod.app.util.isDarkTheme
+import com.retrox.aodmod.data.NowPlayingMediaData
 import com.retrox.aodmod.extensions.getTopY
 import com.retrox.aodmod.extensions.resetPrefPermissions
 import com.retrox.aodmod.fluidresize.FluidContentResizer
 import com.retrox.aodmod.pref.XPref
-import com.retrox.aodmod.pref.XPref.context
 import com.retrox.aodmod.proxy.view.aodMainView
 import com.retrox.aodmod.proxy.view.aodMusicView
 import com.retrox.aodmod.proxy.view.custom.dvd.dvdAodMainView
 import com.retrox.aodmod.proxy.view.custom.flat.flatAodMainView
+import com.retrox.aodmod.proxy.view.custom.music.aodPureMusicView
 import com.retrox.aodmod.proxy.view.custom.music.clockView
+import com.retrox.aodmod.proxy.view.custom.music.musicView
+import com.retrox.aodmod.proxy.view.custom.oneplus.aodMusicViewOnePlus
+import com.retrox.aodmod.proxy.view.custom.oneplus.aodOnePlusView
+import com.retrox.aodmod.proxy.view.custom.oneplus.aodWeatherView
+import com.retrox.aodmod.proxy.view.custom.pixel.aodPixelView
 import com.retrox.aodmod.proxy.view.custom.word.wordClockView
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
+import com.retrox.aodmod.receiver.PowerReceiver
 import com.retrox.aodmod.state.AodClockTick
+import com.retrox.aodmod.state.AodMedia
 import dev.chrisbanes.insetter.Insetter
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.dip
-import java.util.*
 
 
 class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedListener {
@@ -71,7 +81,6 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeManager.loadThemePackFromDisk()
-        currentPreviewHeight = getCurrentPreviewHeight()
         setContentView(R.layout.activity_settings)
         window.statusBarColor = Color.TRANSPARENT
         Insetter.setEdgeToEdgeSystemUiFlags(window.decorView, true)
@@ -124,6 +133,20 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
         button_theme.setOnClickListener {
             showThemeBottomSheet()
         }
+
+        val notification = Notification.Builder(this).apply {
+            setSmallIcon(R.drawable.ic_info)
+            setContentTitle("Title")
+            setContentText("Content")
+            setPriority(Notification.PRIORITY_MAX)
+        }.build()
+        val statusBarNotification = StatusBarNotification(packageName, packageName, 0, "tag", android.os.Process.myUid(), android.os.Process.myPid(), notification, UserHandle.getUserHandleForUid(android.os.Process.myUid()), "group", System.currentTimeMillis())
+        //NotificationManager.notificationStatusLiveData.postValue(statusBarNotification to "Posted")
+
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED)
+        val receiver = PowerReceiver()
+        //registerReceiver(receiver, intentFilter)
     }
 
     private fun moveToFragment(fragment: Fragment, title: CharSequence){
@@ -166,20 +189,89 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
         }, 500)
     }
 
+    private fun getPreviewAndHeight(currentTheme: String?, isMusicFragment: Boolean, isWeatherFragment: Boolean) : Pair<View, Int> {
+        return when{
+            isMusicFragment -> getPreviewAndHeightForMusic(currentTheme)
+            isWeatherFragment -> getPreviewAndHeightForWeather(currentTheme)
+            else -> getPreviewAndHeightForNormal(currentTheme)
+        }
+    }
+
+    private fun getPreviewAndHeightForWeather(currentTheme: String?) : Pair<View, Int> {
+        return when (currentTheme){
+            "OnePlus" -> Pair(aodWeatherView(this).apply {
+                (this as? LinearLayout)?.gravity = Gravity.CENTER
+            }, dip(150))
+            else -> getPreviewAndHeightForNormal(currentTheme)
+        }
+    }
+
+    private fun getPreviewAndHeightForMusic(currentTheme: String?) : Pair<View, Int> {
+        return when (currentTheme){
+            "Default" -> Pair(aodMusicView(this).apply {
+                (this as? LinearLayout)?.gravity = Gravity.CENTER
+            }, dip(150))
+            "PureMusic" -> Pair(aodPureMusicView(this).apply {
+                (this as? LinearLayout)?.gravity = Gravity.CENTER
+            }, dip(200))
+            "FlatMusic" -> Pair(musicView(this), dip(175))
+            "Pixel" -> {
+                if(AppPref.pixelSmallMusic) {
+                    Pair(aodPixelView(this).apply {
+                        (this as? LinearLayout)?.gravity = Gravity.CENTER
+                    }, dip(250))
+                }else{
+                    Pair(aodMusicView(this).apply {
+                        (this as? LinearLayout)?.gravity = Gravity.CENTER
+                    }, dip(150))
+                }
+            }
+            "OnePlus" -> Pair(aodMusicViewOnePlus(this, View(this)).apply {
+                (this as? LinearLayout)?.gravity = Gravity.CENTER
+            }, dip(150))
+            else -> getPreviewAndHeightForNormal(currentTheme)
+        }
+    }
+
+    private fun getPreviewAndHeightForNormal(currentTheme: String?) : Pair<View, Int>{
+        return when (currentTheme){
+            "Flat" -> Pair(flatAodMainView(this), dip(150))
+            "Default" -> Pair(aodMainView(this), dip(175))
+            "DVD" -> Pair(dvdAodMainView(this), dip(150))
+            "PureMusic" -> Pair(aodPureMusicView(this), dip(150))
+            "FlatMusic" -> Pair(clockView(this), dip(150))
+            "Word" -> Pair(wordClockView(this), dip(250))
+            "Pixel" -> Pair(aodPixelView(this), dip(190))
+            "OnePlus" -> Pair(aodOnePlusView(this), when(AppPref.onePlusClockStyle){
+                0 -> dip(275)
+                2 -> dip(250)
+                3 -> dip(250)
+                4 -> dip(300)
+                5 -> dip(325)
+                6 -> dip(310)
+                7 -> dip(310)
+                8, 9, 10 -> dip(325)
+                else -> dip(325)
+            })
+            else -> Pair(aodMainView(this), 150)
+        }
+    }
+
     override fun loadPreview(overriddenTheme: String?, updateHeight: Boolean, currentFragment: GenericPreferenceFragment?, disableAnimation: Boolean){
         val isMusicFragment = currentFragment ?: supportFragmentManager.findFragmentById(R.id.fragment_container) is SettingsMusicFragment
-        val currentTheme = overriddenTheme ?: if(isMusicFragment) "PureMusic" else XPref.getAodLayoutTheme()
-        val dream = when (currentTheme){
-            "Flat" -> flatAodMainView(this)
-            "Default" -> aodMainView(this)
-            "DVD" -> dvdAodMainView(this)
-            "PureMusic" -> aodMusicView(this)
-            "FlatMusic" -> clockView(this)
-            "Word" -> wordClockView(this)
-            else -> aodMainView(this)
+        val isWeatherFragment = currentFragment ?: supportFragmentManager.findFragmentById(R.id.fragment_container) is SettingsWeatherFragment
+        val currentTheme = overriddenTheme ?: XPref.getAodLayoutTheme()
+        val theme = getPreviewAndHeight(currentTheme, isMusicFragment, isWeatherFragment)
+        val dream = theme.first
+        dream.post {
+            if(isMusicFragment){
+                AodMedia.aodMediaLiveData.postValue(NowPlayingMediaData("Song Name", "Artist", "Album"))
+            }else{
+                AodMedia.aodMediaLiveData.postValue(null)
+            }
         }
 
-        currentPreviewHeight = getCurrentPreviewHeight(currentTheme)
+        currentPreviewHeight = theme.second
 
         AodClockTick.tickLiveData.postValue(0)
         if(!disableAnimation) {
@@ -258,18 +350,6 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
         }
     }
 
-    private fun getCurrentPreviewHeight(currentTheme: String? = null): Int {
-        return when (currentTheme ?: XPref.getAodLayoutTheme()){
-            "Flat" -> if(AppPref.forceShowWordClockOnFlat) dip(250) else dip(200)
-            "Default" -> dip(175)
-            "DVD" -> dip(150)
-            "PureMusic" -> dip(150)
-            "FlatMusic" -> dip(150)
-            "Word" -> dip(250)
-            else -> dip(150)
-        }
-    }
-
     override fun setToolbarElevationEnabled(enabled: Boolean){
         val color = if(enabled) ContextCompat.getColor(this, R.color.toolbar_color) else ContextCompat.getColor(this, R.color.toolbar_color_solid)
         toolbar.elevation = dip(4).toFloat()
@@ -324,8 +404,8 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
         }, 500)
     }
 
-    fun setMasterSwitchChecked(checked: Boolean) {
-        master_switch?.isChecked = checked
+    fun setMasterSwitchEnabled(enabled: Boolean) {
+        master_switch?.isEnabled = enabled
     }
 
     override fun onResume() {
@@ -345,6 +425,11 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
 
     private fun cancelMinuteTimer(){
         minuteHandler.removeCallbacks(minuteRunnable)
+    }
+
+    fun onLayoutChanged(){
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        (currentFragment as? GenericPreferenceFragment)?.onLayoutChanged(AppPref.aodLayoutTheme)
     }
 
     enum class AnimationState {

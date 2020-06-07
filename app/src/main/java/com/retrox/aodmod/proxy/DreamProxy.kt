@@ -12,16 +12,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.Color
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
-import android.os.PowerManager
+import android.os.*
+import android.provider.Settings
 import android.service.dreams.DreamService
+import android.util.Log
 import android.view.Display
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.annotation.RequiresApi
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.extensions.children
 import com.retrox.aodmod.extensions.isOP7Pro
@@ -31,10 +31,13 @@ import com.retrox.aodmod.proxy.sensor.DozeSensors
 import com.retrox.aodmod.proxy.sensor.FlipOffSensor
 import com.retrox.aodmod.proxy.sensor.LightSensor
 import com.retrox.aodmod.proxy.view.AodDefaultDream
+import com.retrox.aodmod.proxy.view.SharedIds
 import com.retrox.aodmod.proxy.view.custom.dvd.AodDVDDream
 import com.retrox.aodmod.proxy.view.custom.flat.AodFlatDream
 import com.retrox.aodmod.proxy.view.custom.music.ComplexMusicDream
 import com.retrox.aodmod.proxy.view.custom.music.PureMusicDream
+import com.retrox.aodmod.proxy.view.custom.oneplus.AodOnePlusDream
+import com.retrox.aodmod.proxy.view.custom.pixel.AodPixelDream
 import com.retrox.aodmod.proxy.view.custom.word.WordDream
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.receiver.ReceiverManager
@@ -48,11 +51,9 @@ import com.retrox.aodmod.service.notification.getNotificationData
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodState
 import de.robv.android.xposed.XposedHelpers
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.*
 import java.net.URL
+import kotlin.math.roundToInt
 
 
 class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface, LifecycleOwner, DreamProxyController {
@@ -108,6 +109,9 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     }
 
 
+    private var originalBatterySaverState = false
+    private var originalRefreshRateValue = 2
+
     override fun onCreate() {
         XposedHelpers.callMethod(dreamService, "setWindowless", true)
         MainHook.logD("DreamProxy -> OnCreate")
@@ -118,15 +122,29 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         LocalAlarmManager.initService(context)
         LocalAlarmTimeOutTicker.initService(context)
         dreamView.onCreate()
+        originalBatterySaverState = context.powerManager.isPowerSaveMode
     }
 
     override fun onAttachedToWindow() {
         MainHook.logD("DreamProxy -> onAttachedToWindow")
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onDreamingStarted() {
         AodState.dreamState.postValue(AodState.DreamState.ACTIVE)
         MainHook.logD("DreamProxy -> onDreamingStarted")
+
+        if(XPref.getBatteryEnableForceDoze()){
+            setForceDozeEnabled(true)
+        }
+
+        if(XPref.getBatteryLowerRefreshRate()){
+            setLowerRefreshRateEnabled(true)
+        }
+
+        if(XPref.getBatteryEnableBatterySaver()){
+            setBatterySaverEnabled(true)
+        }
 
         ThemeManager.loadThemePackFromDisk()
 
@@ -137,6 +155,8 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             "PureMusic" -> PureMusicDream(this)
             "FlatMusic" -> ComplexMusicDream(this)
             "Word" -> WordDream(this)
+            "Pixel" -> AodPixelDream(this)
+            "OnePlus" -> AodOnePlusDream(this)
             else -> AodDefaultDream(this)
         }
 
@@ -214,12 +234,14 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             })
         }
 
-        if (XPref.getAutoBrightnessEnabled() || isOP7Pro()) {  // 一加7Pro的距离传感器依赖于光感的响应，所以开着就可以用口袋了
+        if ((XPref.getAutoBrightnessEnabled() || isOP7Pro()) && !XPref.getBatteryLowestBrightness()) {  // 一加7Pro的距离传感器依赖于光感的响应，所以开着就可以用口袋了
             LightSensor.lightSensorLiveData.observe(this, Observer {
                 it?.let { (suggestAlpha, _) ->
                     MainHook.logD("Light Sensor Alpha: $suggestAlpha")
-                    if (XPref.getAutoBrightnessEnabled()) {
+                    Log.d("OPAodMod", "Light sensor alpha $suggestAlpha")
+                    if (XPref.getAutoBrightnessEnabled() && !XPref.getBatteryLowestBrightness()) {
                         aodMainLayout.alpha = suggestAlpha
+                        aodMainLayout.findViewById<View?>(SharedIds.filterView)?.alpha = 1 - suggestAlpha
                     }
 
 //                    val brightness = (suggestAlpha * 255).roundToInt()
@@ -227,6 +249,11 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
 //                    XposedHelpers.callMethod(dreamService, "setDozeScreenBrightness", brightness)
                 }
             })
+        }
+
+        if(XPref.getBatteryLowestBrightness()){
+            Log.d("OPAodMod", "Setting to lowest brightness")
+            aodMainLayout.findViewById<View?>(SharedIds.filterView)?.alpha = 0.9f
         }
 
         var lastScreenBurnUpdate = System.currentTimeMillis()
@@ -282,6 +309,11 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
             it?.let { (_, status) ->
                 if (status == "Removed") return@let
                 if (it.first.notification.getNotificationData().isOnGoing) return@let
+
+                if(XPref.getFilpOffMode() && AodState.screenState.value == Display.STATE_OFF){
+                    //Ignore as the device is in the pocket
+                    return@let
+                }
 
                 if (XPref.getAodAutoCloseBySeconds()) {
                     screenPulse {}
@@ -341,6 +373,18 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
     }
 
     override fun onDreamingStopped() {
+        if(XPref.getBatteryEnableForceDoze()){
+            setForceDozeEnabled(false)
+        }
+
+        if(XPref.getBatteryLowerRefreshRate()){
+            setLowerRefreshRateEnabled(false)
+        }
+
+        if(XPref.getBatteryEnableBatterySaver()){
+            setBatterySaverEnabled(originalBatterySaverState)
+        }
+
         try {
 //            context.unbindService(serviceConnection)
         } catch (e: Exception) {
@@ -388,6 +432,23 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         MainHook.logD("DreamProxy -> onSingleTap")
         AodState.singleTapLiveEvent.postValue("onSingleTap")
         dreamView.onSingleTap()
+    }
+
+    private fun setForceDozeEnabled(enabled: Boolean){
+        val shellCommand = if(enabled){
+            "dumpsys deviceidle force-idle deep"
+        }else{
+            "dumpsys deviceidle unforce"
+        }
+        Runtime.getRuntime().exec(shellCommand)
+    }
+
+    private fun setLowerRefreshRateEnabled(enabled: Boolean){
+        val value = if(enabled) 1 else originalRefreshRateValue
+        Settings.Global.putInt(context.contentResolver, "oneplus_screen_refresh_rate", value)
+    }
+    private fun setBatterySaverEnabled(enabled: Boolean){
+        context.powerManager.setPowerSaveModeEnabled(enabled)
     }
 
 

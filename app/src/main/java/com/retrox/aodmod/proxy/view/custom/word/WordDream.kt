@@ -20,6 +20,7 @@ import com.retrox.aodmod.extensions.toCNString
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.AbsDreamView
 import com.retrox.aodmod.proxy.DreamProxy
+import com.retrox.aodmod.proxy.view.SharedIds
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.state.AodClockTick
 import org.jetbrains.anko.*
@@ -132,6 +133,21 @@ fun Context.wordClockView(lifecycleOwner: LifecycleOwner): ConstraintLayout {
                         ColorStateList.valueOf(Color.parseColor(ThemeManager.getCurrentColorPack().tintColor))
                 }
             }
+        }
+
+        if(!XPref.isSettings()) {
+            val filterView = View(context).apply {
+                id = SharedIds.filterView
+                backgroundColor = Color.BLACK
+                alpha = 0f
+                layoutParams = ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                    ConstraintLayout.LayoutParams.MATCH_PARENT
+                )
+                elevation = 8f
+            }
+
+            addView(filterView)
         }
     }
 }

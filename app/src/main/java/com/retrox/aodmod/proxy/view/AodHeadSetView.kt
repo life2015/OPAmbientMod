@@ -52,9 +52,9 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner): FrameLayout {
                             )
                             when (connection) {
                                 HeadSetReceiver.Connection.DISCONNECTED -> headSetTextView.text =
-                                    "Headset Unplugged"
+                                    ResourceUtils.getInstance(context).getString(R.string.headset_disconnected)
                                 HeadSetReceiver.Connection.CONNECTED -> headSetTextView.text =
-                                    "Headset Plugged"
+                                    ResourceUtils.getInstance(context).getString(R.string.headset_connected)
                             }
                         } else if (it is HeadSetReceiver.ConnectionState.BlueToothConnection) {
                             val connection = it.connection
@@ -66,23 +66,23 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner): FrameLayout {
                             )
                             when (connection) {
                                 HeadSetReceiver.Connection.CONNECTING -> headSetTextView.text =
-                                    "$name Connecting"
+                                    ResourceUtils.getInstance(context).getString(R.string.bt_headset_connecting, name)
                                 HeadSetReceiver.Connection.CONNECTED -> headSetTextView.text =
-                                    "$name Connected"
+                                    ResourceUtils.getInstance(context).getString(R.string.bt_headset_connected, name)
                                 HeadSetReceiver.Connection.DISCONNECTING -> headSetTextView.text =
-                                    "$name Disconnecting"
+                                    ResourceUtils.getInstance(context).getString(R.string.bt_headset_disconnecting, name)
                                 HeadSetReceiver.Connection.DISCONNECTED -> headSetTextView.text =
-                                    "$name Disconnected"
+                                    ResourceUtils.getInstance(context).getString(R.string.bt_headset_disconnected, name)
                             }
                         } else if (it is HeadSetReceiver.ConnectionState.VolumeChange) {
                             val vol = it.volValue
-                            val percent = "${((vol / 30.toFloat()) * 100).toInt()}%"
+                            val percent = "${((vol / it.maxValue.toFloat()) * 100).toInt()}%"
                             if (vol == 0) {
                                 image.setImageDrawable(
                                     ResourceUtils.getInstance(this)
                                         .getDrawable(R.drawable.ic_volume_off)
                                 )
-                                headSetTextView.text = "Volume $percent"
+                                headSetTextView.text = ResourceUtils.getInstance(context).getString(R.string.volume_level, percent)
                             } else {
                                 if (vol < prevVol && prevVol != -1) {
                                     image.setImageDrawable(
@@ -95,7 +95,7 @@ fun Context.aodHeadSetView(lifecycleOwner: LifecycleOwner): FrameLayout {
                                             .getDrawable(R.drawable.ic_volume_up)
                                     )
                                 }
-                                headSetTextView.text = "Volume $percent"
+                                headSetTextView.text = ResourceUtils.getInstance(context).getString(R.string.volume_level, percent)
                                 prevVol = vol
                             }
 

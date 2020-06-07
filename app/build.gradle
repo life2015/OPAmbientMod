@@ -7,13 +7,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.retrox.aodmod"
-        minSdkVersion 27
+        minSdkVersion 28
         targetSdkVersion 27 //为了XSP不能上28 淦
-        versionCode 34
-        versionName "3.0.2b"
+        versionCode 33
+        versionName "3.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -1,10 +1,10 @@
 package com.retrox.aodmod.hooks
 
-import android.content.Context
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.state.AodState
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -15,7 +15,7 @@ object AodDurationHook : IXposedHookLoadPackage {
         val classLoader = lpparam.classLoader
 
         val dozeParametersClass = XposedHelpers.findClass("com.oneplus.doze.DozeParameters", classLoader)
-        XposedHelpers.findAndHookMethod(dozeParametersClass, "getPulseVisibleDuration", Int::class.java, object : XC_MethodHook(){
+        XposedHelpers.findAndHookMethod(dozeParametersClass, "getPulseVisibleDuration", Int::class.java, ToggleableXC_MethodHook(object : XC_MethodHook(){
             override fun beforeHookedMethod(param: MethodHookParam) {
                 super.beforeHookedMethod(param)
 
@@ -31,6 +31,6 @@ object AodDurationHook : IXposedHookLoadPackage {
 
                 MainHook.logD("AOD Duration mod: type:$arg dur:$result")
             }
-        })
+        }))
     }
 }

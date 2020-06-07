@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.retrox.aodmod.opimports.OpMinimalismClock android:id="@+id/minimalism_clock_view" android:layout_height="wrap_content" android:layout_width="match_parent" android:visibility="gone" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:androidprv="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@+id/minimalism_min" android:layout_centerInParent="true" android:layout_height="@dimen/clock_minimalism_size" android:layout_width="@dimen/clock_minimalism_size" android:src="@drawable/minimalism_min"/>
+    <ImageView android:id="@+id/minimalism_hour" android:layout_centerInParent="true" android:layout_height="@dimen/clock_minimalism_size" android:layout_width="@dimen/clock_minimalism_size" android:src="@drawable/minimalism_hour"/>
+    <ImageView android:id="@+id/minimalism_background" android:layout_centerInParent="true" android:layout_height="@dimen/clock_minimalism_size" android:layout_width="@dimen/clock_minimalism_size" android:src="@drawable/minimalism_background"/>
+</com.retrox.aodmod.opimports.OpMinimalismClock>

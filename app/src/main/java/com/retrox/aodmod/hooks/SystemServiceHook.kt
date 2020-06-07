@@ -1,7 +1,8 @@
 package com.retrox.aodmod.hooks
 
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
@@ -19,7 +20,7 @@ object SystemServiceHook : IXposedHookLoadPackage {
 
         val deviceKeyHandlerClass = XposedHelpers.findClass("com.android.server.policy.DeviceKeyHandler", lpparam.classLoader)
 
-        XposedHelpers.findAndHookMethod(deviceKeyHandlerClass, "processKeyEvent", object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(deviceKeyHandlerClass, "processKeyEvent", ToggleableXC_MethodHook(object : XC_MethodHook() {
             var backUpState = false
 
             override fun beforeHookedMethod(param: MethodHookParam) {
@@ -36,7 +37,7 @@ object SystemServiceHook : IXposedHookLoadPackage {
             override fun afterHookedMethod(param: MethodHookParam) {
                 XposedHelpers.setBooleanField(param.thisObject, "mSleeping", backUpState)
             }
-        })
+        }))
     }
 
     // return 0,0:0,0:0,0:0,0:0,0:0,0:0,0 or ""

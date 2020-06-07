@@ -12,6 +12,15 @@
         android:summary="@string/settings_weather_show_condition_desc"
         android:icon="@drawable/ic_settings_weather_condition" />
 
+    <com.retrox.aodmod.app.settings.preference.DropdownPreference
+        android:key="settings_weather_icon_style"
+        android:title="@string/settings_weather_icon_style"
+        android:summary="@string/settings_weather_icon_style_desc"
+        android:defaultValue="google"
+        android:entries="@array/settings_weather_icon_style_text"
+        android:entryValues="@array/settings_weather_icon_style_values"
+        android:icon="@drawable/ic_settings_clock_emoji" />
+
     <com.retrox.aodmod.app.settings.preference.SwitchPreference
         android:key="settings_weather_condition_text"
         android:title="@string/settings_weather_show_condition_text"
@@ -29,5 +38,11 @@
         android:title="@string/settings_weather_show_city"
         android:summary="@string/settings_weather_show_city_desc"
         android:icon="@drawable/ic_settings_weather_city" />
+
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:icon="@drawable/ic_info"
+        android:title="@string/settings_generic_theme_not_supported"
+        android:summary="@string/settings_generic_theme_not_supported_desc"
+        android:key="generic_theme_unsupported"/>
 
 </PreferenceScreen>

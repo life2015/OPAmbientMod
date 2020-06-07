@@ -11,6 +11,7 @@ import android.transition.TransitionManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.util.logD
 import com.retrox.aodmod.extensions.ResourceUtils
@@ -233,6 +234,21 @@ fun Context.aodMainView(lifecycleOwner: LifecycleOwner): View {
                     it.backgroundColor = Color.parseColor(pack.tintColor)
                 }
             }
+        }
+
+        if(!XPref.isSettings()) {
+            val filterView = View(context).apply {
+                id = SharedIds.filterView
+                backgroundColor = Color.BLACK
+                alpha = 0f
+                layoutParams = ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.MATCH_PARENT,
+                    ConstraintLayout.LayoutParams.MATCH_PARENT
+                )
+                elevation = 8f
+            }
+
+            addView(filterView)
         }
 
     }

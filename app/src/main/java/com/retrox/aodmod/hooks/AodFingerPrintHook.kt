@@ -3,8 +3,9 @@ package com.retrox.aodmod.hooks
 import android.view.View
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.state.AodState
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -16,7 +17,7 @@ object AodFingerPrintHook : IXposedHookLoadPackage {
         val fingerprintDialogViewClass = XposedHelpers.findClass("com.android.systemui.fingerprint.FingerprintDialogView", lpparam.classLoader)
 
         // 屏蔽息屏界面上的指纹指纹亮光
-        XposedHelpers.findAndHookMethod(fingerprintDialogViewClass, "updateIconVisibility", Boolean::class.java, object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(fingerprintDialogViewClass, "updateIconVisibility", Boolean::class.java, ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 val view = XposedHelpers.getObjectField(param.thisObject, "mIconNormal") as View
                 if (AodState.DreamState.ACTIVE == AodState.dreamState.value) {
@@ -28,6 +29,6 @@ object AodFingerPrintHook : IXposedHookLoadPackage {
                     }
                 }
             }
-        })
+        }))
     }
 }

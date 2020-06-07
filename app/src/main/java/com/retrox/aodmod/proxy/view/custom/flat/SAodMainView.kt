@@ -14,6 +14,7 @@ import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.view.Ids
+import com.retrox.aodmod.proxy.view.SharedIds
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.remote.lyric.LrcSync
 import org.jetbrains.anko.*
@@ -74,6 +75,21 @@ fun Context.flatAodMainView(lifecycleOwner: LifecycleOwner): View {
                         is ImageView -> it.imageTintList = ColorStateList.valueOf(Color.parseColor(ThemeManager.getCurrentColorPack().tintColor))
                     }
                 }
+            }
+
+            if(!XPref.isSettings()) {
+                val filterView = View(context).apply {
+                    id = SharedIds.filterView
+                    backgroundColor = Color.BLACK
+                    alpha = 0f
+                    layoutParams = ConstraintLayout.LayoutParams(
+                        ConstraintLayout.LayoutParams.MATCH_PARENT,
+                        ConstraintLayout.LayoutParams.MATCH_PARENT
+                    )
+                    elevation = 8f
+                }
+
+                addView(filterView)
             }
 
         }.lparams(width = matchParent, height = matchParent)

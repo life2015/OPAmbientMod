@@ -4,10 +4,8 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.retrox.aodmod.app.settings.BaseSettingsActivity
-import com.retrox.aodmod.app.settings.preference.ButtonsPreference
-import com.retrox.aodmod.app.settings.preference.ListPreference
-import com.retrox.aodmod.app.settings.preference.Preference
-import com.retrox.aodmod.app.settings.preference.SwitchPreference
+import com.retrox.aodmod.app.settings.SettingsActivity
+import com.retrox.aodmod.app.settings.preference.*
 import com.retrox.aodmod.extensions.getBottomY
 import com.retrox.aodmod.extensions.getToolbarHeight
 import com.retrox.aodmod.extensions.resetPrefPermissions
@@ -35,9 +33,26 @@ abstract class GenericPreferenceFragment : PreferenceFragmentCompat() {
         invocation.invoke(findPreference(key)!!)
     }
 
+    fun findDropdownPreference(key: String, invocation: (DropdownPreference) -> Unit){
+        invocation.invoke(findPreference(key)!!)
+    }
+
+    fun findPreferenceCategory(key: String, invocation: (PreferenceCategory) -> Unit){
+        invocation.invoke(findPreference(key)!!)
+    }
+
     fun SwitchPreference.listen(callback: (Boolean) -> Unit){
         setOnPreferenceChangeListener { _, newValue ->
             callback.invoke(newValue as Boolean)
+            sActivity?.loadPreview()
+            resetPrefPermissions(context)
+            true
+        }
+    }
+
+    fun DropdownPreference.listen(callback: (String) -> Unit){
+        setOnPreferenceChangeListener { _, newValue ->
+            callback.invoke(newValue as String)
             sActivity?.loadPreview()
             resetPrefPermissions(context)
             true
@@ -57,6 +72,7 @@ abstract class GenericPreferenceFragment : PreferenceFragmentCompat() {
             val extraPadding = when(this){
                 is SettingsMusicFragment -> dip(64)
                 is SettingsWeatherFragment -> dip(64)
+                is ModulePreferenceFragment -> dip(56)
                 else -> 0
             }
             val bottomPadding = if(this is SettingsClockAlignmentFragment) insets.stableInsetBottom else getToolbarHeight() + dip(16)
@@ -108,6 +124,14 @@ abstract class GenericPreferenceFragment : PreferenceFragmentCompat() {
 
     open fun isMasterSwitchChecked() : Boolean {
         return false
+    }
+
+    open fun onLayoutChanged(newLayout: String){
+        //Do nothing
+    }
+
+    fun setMasterSwitchEnabled(enabled: Boolean){
+        (activity as? SettingsActivity)?.setMasterSwitchEnabled(enabled)
     }
 
 }

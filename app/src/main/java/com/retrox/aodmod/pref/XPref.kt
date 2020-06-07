@@ -53,6 +53,8 @@ object XPref {
 
     fun isAndroidQ() = Build.VERSION.SDK_INT > Build.VERSION_CODES.P
 
+    fun getModuleState() = getPref().getBoolean("MODULE_ENABLED", true)
+
     fun getDisplayMode() = getPref().getString("AODMODE", "ALWAYS_ON") ?: ""
     fun getMusicAodEnabled() = getPref().getBoolean("MUSICSHOWONAOD",true)
     fun getFilpOffMode() = getPref().getBoolean("FILPOFFSCREEN", true)
@@ -84,6 +86,15 @@ object XPref {
     fun getShowBullets() = getPref().getBoolean("KEY_SHOW_BULLETS", true)
     fun getUseSystemMusic() = getPref().getBoolean("USE_SYSTEM_MUSIC", false)
     fun getUsePixelMusicIcon() = getPref().getBoolean("USE_PIXEL_MUSIC_ICON", false)
+    fun getBatteryEnableForceDoze() = getPref().getBoolean("ENABLE_FORCE_DOZE", false)
+    fun getBatteryEnableBatterySaver() = getPref().getBoolean("ENABLE_BATTERY_SAVER", false)
+    fun getBatteryLowerRefreshRate() = getPref().getBoolean("ENABLE_LOWER_REFRESH_RATE", false)
+    fun getBatteryLowestBrightness() = getPref().getBoolean("ENABLE_LOWEST_BRIGHTNESS", false)
+    fun getWeatherIconStyle() = getPref().getString("WEATHER_ICON_STYLE", "google")
+    fun getOnePlusClockStyle() = getPref().getInt("ONEPLUS_CLOCK_STYLE", 0)
+    fun getLyricsEnabled() = getPref().getBoolean("LYRICS_ENABLED", false)
+    fun getPixelSmallMusic() = getPref().getBoolean("PIXEL_SMALL_MUSIC", false)
+    fun getHideDivider() = getPref().getBoolean("HIDE_DIVIDER", false)
 
     //Static translations stored for when there isn't yet a context
     fun getTranslationConstantLightMode() = getPref().getString("xposed_constant_light_mode_7pro", "System Enhancement - 7 Pro")

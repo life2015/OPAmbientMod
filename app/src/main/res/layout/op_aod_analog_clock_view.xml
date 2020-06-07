@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.retrox.aodmod.opimports.OpAnalogClock android:id="@+id/analog_clock_view" android:layout_height="@dimen/clock_analog_size" android:layout_width="@dimen/clock_analog_size" android:visibility="gone" xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:adjustViewBounds="true" android:id="@+id/analog_background" android:layout_gravity="center" android:layout_height="match_parent" android:layout_width="match_parent"/>
+    <RelativeLayout android:id="@+id/analog_date_container" android:layoutDirection="ltr" android:layout_gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="match_parent">
+        <TextView android:id="@+id/analog_date_view" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/aod_clock_min2_date_left" android:layout_width="wrap_content" android:textColor="#fafafa" android:textSize="@dimen/aod_clock_analog_min2_date_size"/>
+    </RelativeLayout>
+    <View android:id="@+id/analog_hour" android:layout_height="match_parent" android:layout_width="match_parent"/>
+    <View android:id="@+id/analog_min" android:layout_height="match_parent" android:layout_width="match_parent"/>
+    <View android:id="@+id/analog_sec" android:layout_height="match_parent" android:layout_width="match_parent"/>
+    <View android:id="@+id/analog_dot" android:layout_height="match_parent" android:layout_width="match_parent"/>
+    <View android:id="@+id/analog_outer" android:layout_height="match_parent" android:layout_width="match_parent"/>
+</com.retrox.aodmod.opimports.OpAnalogClock>

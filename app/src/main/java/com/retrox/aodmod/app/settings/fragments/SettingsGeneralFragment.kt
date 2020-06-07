@@ -1,9 +1,12 @@
 package com.retrox.aodmod.app.settings.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.app.settings.SettingsBatteryOptimisationActivity
 import com.retrox.aodmod.app.settings.fragments.bottomsheet.MemoSettingBottomSheetFragment
+import com.retrox.aodmod.extensions.runAfter
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty
 
@@ -11,6 +14,10 @@ class SettingsGeneralFragment : GenericPreferenceFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings_general)
+        setupPreferences()
+    }
+
+    private fun setupPreferences(){
         findSwitchPreference("general_raise_detection"){
             it.isChecked = AppPref.aodPickCheck
             it.listen { value ->
@@ -33,6 +40,12 @@ class SettingsGeneralFragment : GenericPreferenceFragment() {
             it.isChecked = AppPref.autoBrightness
             it.listen { value ->
                 AppPref.autoBrightness = value
+            }
+        }
+        findPreference("general_battery_optimisation"){
+            it.setOnPreferenceClickListener {
+                startActivity(Intent(context, SettingsBatteryOptimisationActivity::class.java))
+                true
             }
         }
         findSwitchPreference("general_sensitive_notifications"){
@@ -65,11 +78,26 @@ class SettingsGeneralFragment : GenericPreferenceFragment() {
                 AppPref.forceEnglishWordClock = value
             }
         }
+        findSwitchPreference("general_hide_divider"){
+            it.isVisible = AppPref.aodLayoutTheme == "Default"
+            it.isChecked = AppPref.hideDivider
+            it.listen { value ->
+                AppPref.hideDivider = value
+            }
+        }
         findPreference("general_aod_memo"){
             it.setOnPreferenceClickListener {
                 MemoSettingBottomSheetFragment().show(childFragmentManager, "bs_aod_memo")
                 true
             }
+        }
+    }
+
+    override fun onLayoutChanged(newLayout: String) {
+        super.onLayoutChanged(newLayout)
+        setupPreferences()
+        runAfter(0.5){
+            checkNestedScroll()
         }
     }
 

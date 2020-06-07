@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
+import android.widget.Switch
 import androidx.core.content.ContextCompat
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.retrox.aodmod.R
@@ -15,6 +16,7 @@ import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.settings.fragments.GenericPreferenceFragment
 import com.retrox.aodmod.app.util.isDarkTheme
 import com.retrox.aodmod.app.view.NewMainActivity
+import com.retrox.aodmod.extensions.getToolbarHeight
 import dev.chrisbanes.insetter.Insetter
 import dev.chrisbanes.insetter.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.activity_module.*
@@ -41,9 +43,17 @@ class ModuleActivity : BaseSettingsActivity() {
                 this as FrameLayout.LayoutParams
                 topMargin = insets.stableInsetTop
             }
+            aod_switch.layoutParams.apply {
+                this as FrameLayout.LayoutParams
+                topMargin = getToolbarHeight() + insets.stableInsetTop
+            }
             fakeStatusBar.layoutParams.height = insets.stableInsetTop
         }
         saveStaticTranslations()
+    }
+
+    fun getAodSwitch(): Switch {
+        return aod_switch
     }
 
     override fun loadPreview(overriddenTheme: String?, updateHeight: Boolean, currentFragment: GenericPreferenceFragment?, disableAnimation: Boolean) {
@@ -55,6 +65,9 @@ class ModuleActivity : BaseSettingsActivity() {
         toolbar.elevation = dip(4).toFloat()
         toolbar.outlineProvider = ViewOutlineProvider.BACKGROUND
         toolbar.backgroundColor = color
+        aod_switch.elevation = dip(4).toFloat()
+        aod_switch.outlineProvider = ViewOutlineProvider.BACKGROUND
+        aod_switch.backgroundColor = color
         fakeStatusBar.backgroundColor = color
         fakeStatusBar.elevation = dip(4).toFloat()
     }

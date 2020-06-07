@@ -3,7 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.retrox.aodmod.app.settings.preference.PreferenceCategory
-        app:title="@string/settings_clock_general">
+        android:title="@string/settings_clock_style"
+        android:key="category_clock_style">
+
+        <com.retrox.aodmod.app.settings.preference.DropdownPreference
+            android:icon="@drawable/ic_oxygen"
+            android:key="oneplus_clock_style"
+            android:entries="@array/settings_op_clock_style_options"
+            android:entryValues="@array/settings_op_clock_style_options"
+            android:title="@string/settings_op_clock_style" />
+
+    </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+    <com.retrox.aodmod.app.settings.preference.PreferenceCategory
+        app:title="@string/settings_clock_general"
+        android:key="category_clock_general">
 
         <com.retrox.aodmod.app.settings.preference.SwitchPreference
             android:icon="@drawable/ic_settings_clock_24h"
@@ -28,10 +42,17 @@
             android:summary="@string/settings_clock_word_clock_flat_desc"
             android:title="@string/settings_clock_word_clock_flat" />
 
+        <com.retrox.aodmod.app.settings.preference.SwitchPreference
+            android:icon="@drawable/ic_settings_clock_bullet"
+            android:key="clock_show_bullets"
+            android:summary="@string/settings_clock_show_bullet_desc"
+            android:title="@string/settings_clock_show_bullet" />
+
     </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
 
     <com.retrox.aodmod.app.settings.preference.PreferenceCategory
-        app:title="@string/settings_clock_alarm">
+        app:title="@string/settings_clock_alarm"
+        android:key="category_clock_alarm">
 
         <com.retrox.aodmod.app.settings.preference.SwitchPreference
             android:icon="@drawable/ic_settings_clock_alarm"
@@ -48,7 +69,8 @@
     </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
 
     <com.retrox.aodmod.app.settings.preference.PreferenceCategory
-        app:title="@string/settings_clock_advanced">
+        app:title="@string/settings_clock_advanced"
+        android:key="category_clock_advanced">
 
         <com.retrox.aodmod.app.settings.preference.Preference
             android:key="clock_advanced_sync"
@@ -57,5 +79,11 @@
             android:summary="@string/settings_clock_advanced_clock_sync_desc"/>
 
     </com.retrox.aodmod.app.settings.preference.PreferenceCategory>
+
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:icon="@drawable/ic_info"
+        android:title="@string/settings_generic_theme_not_supported"
+        android:summary="@string/settings_generic_theme_not_supported_desc"
+        android:key="generic_theme_unsupported"/>
 
 </PreferenceScreen>

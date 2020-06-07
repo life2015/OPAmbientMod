@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_battery_force_doze"
+        android:title="@string/settings_battery_force_doze"
+        android:summary="@string/settings_battery_force_doze_desc"
+        android:icon="@drawable/ic_settings_battery_force_doze" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_battery_enable_saver"
+        android:title="@string/settings_battery_enable_saver"
+        android:summary="@string/settings_battery_enable_saver_desc"
+        android:icon="@drawable/ic_settings_general_battery_optimisation" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_lower_refresh_rate"
+        android:title="@string/settings_lower_refresh_rate"
+        android:summary="@string/settings_lower_refresh_rate_desc"
+        android:icon="@drawable/ic_settings_battery_refresh_rate" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_lower_brightness"
+        android:title="@string/settings_battery_lower_brightness"
+        android:summary="@string/settings_battery_lower_brightness_desc"
+        android:icon="@drawable/ic_settings_battery_brightness_lowest" />
+
+</PreferenceScreen>

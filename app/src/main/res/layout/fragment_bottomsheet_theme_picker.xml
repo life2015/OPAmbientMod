@@ -33,8 +33,8 @@
         android:text="@string/bs_theme_name_default"/>
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:background="@drawable/rounded_clip"
         android:outlineProvider="background"
         android:id="@+id/imageview_theme_default"
@@ -53,8 +53,8 @@
         android:text="@string/bs_theme_name_flat"/>
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:background="@drawable/rounded_clip"
         android:outlineProvider="background"
         android:id="@+id/imageview_theme_flat"
@@ -73,15 +73,35 @@
         android:text="@string/bs_theme_name_dvd"/>
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:background="@drawable/rounded_clip"
         android:outlineProvider="background"
         android:id="@+id/imageview_theme_dvd"
         app:layout_constraintStart_toEndOf="@id/imageview_theme_flat"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageview_theme_pixel"
         app:layout_constraintTop_toBottomOf="@id/title"
         android:src="@drawable/preview_dvd"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/imageview_theme_pixel"
+        app:layout_constraintEnd_toEndOf="@id/imageview_theme_pixel"
+        app:layout_constraintBottom_toTopOf="@id/imageview_theme_pixel"
+        android:paddingBottom="8dp"
+        android:text="@string/bs_theme_name_pixel"/>
+
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/rounded_clip"
+        android:outlineProvider="background"
+        android:id="@+id/imageview_theme_pixel"
+        app:layout_constraintStart_toEndOf="@id/imageview_theme_dvd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:src="@drawable/preview_pixel"/>
 
     <!-- 2nd row -->
 
@@ -95,8 +115,8 @@
         android:text="@string/bs_theme_name_pure_music"/>
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:background="@drawable/rounded_clip"
         android:outlineProvider="background"
         android:layout_marginTop="40dp"
@@ -116,8 +136,8 @@
         android:text="@string/bs_theme_name_flat_music"/>
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:background="@drawable/rounded_clip"
         android:outlineProvider="background"
         android:layout_marginTop="40dp"
@@ -137,16 +157,37 @@
         android:text="@string/bs_theme_name_word"/>
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:background="@drawable/rounded_clip"
         android:outlineProvider="background"
         android:layout_marginTop="40dp"
         android:id="@+id/imageview_theme_word"
         app:layout_constraintStart_toEndOf="@id/imageview_theme_flat_music"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageview_theme_oneplus"
         app:layout_constraintTop_toBottomOf="@id/imageview_theme_default"
         android:src="@drawable/preview_word"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/imageview_theme_word"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/imageview_theme_word"
+        android:paddingBottom="8dp"
+        android:text="@string/bs_theme_name_oneplus"/>
+
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/rounded_clip"
+        android:outlineProvider="background"
+        android:layout_marginTop="40dp"
+        android:id="@+id/imageview_theme_oneplus"
+        app:layout_constraintStart_toEndOf="@id/imageview_theme_word"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageview_theme_default"
+        android:src="@drawable/preview_oneplus"/>
 
     <ImageView
         android:layout_width="48dp"

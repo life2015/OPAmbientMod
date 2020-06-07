@@ -2,4 +2,7 @@
 <resources>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="bottom_sheet_corner_radius">16dp</dimen>
+    <dimen name="oneplus_widget_big_font_size">64.0dp</dimen>
+    <dimen name="oneplus_widget_big_font_size_mcl">59.0dp</dimen>
+    <dimen name="preference_no_icon_padding_start">72dp</dimen>
 </resources>

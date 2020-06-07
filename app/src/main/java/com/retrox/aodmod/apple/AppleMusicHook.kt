@@ -3,16 +3,13 @@ package com.retrox.aodmod.apple
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
-import android.view.View
-import android.view.ViewStub
 import android.view.WindowManager
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
-import org.jetbrains.anko.applyRecursively
-import org.jetbrains.anko.backgroundColor
 
 object AppleMusicHook : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
@@ -20,7 +17,7 @@ object AppleMusicHook : IXposedHookLoadPackage {
 
         val backup = "com.apple.android.music.library.activities.LibraryActivity"
         val clazz = XposedHelpers.findClass("android.app.Activity", lpparam.classLoader)
-        XposedHelpers.findAndHookMethod(clazz, "onCreate", Bundle::class.java, object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(clazz, "onCreate", Bundle::class.java, ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun afterHookedMethod(param: MethodHookParam) {
                 val activity = param.thisObject as Activity
 
@@ -39,7 +36,7 @@ object AppleMusicHook : IXposedHookLoadPackage {
 //                statusBarBack.backgroundColor = Color.WHITE
 
             }
-        })
+        }))
 
     }
 

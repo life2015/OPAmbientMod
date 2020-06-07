@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
 import android.os.PowerManager
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.transition.TransitionManager
 import android.view.Gravity
@@ -16,10 +17,7 @@ import android.widget.LinearLayout
 import com.retrox.aodmod.R
 import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.app.util.logD
-import com.retrox.aodmod.extensions.ResourceUtils
-import com.retrox.aodmod.extensions.generateAlarmText
-import com.retrox.aodmod.extensions.getNewAodNoteContent
-import com.retrox.aodmod.extensions.setGoogleSans
+import com.retrox.aodmod.extensions.*
 import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodHeadSetView
@@ -72,14 +70,25 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
             textColor = Color.WHITE
             textSize = 18f
             setGoogleSans()
-            fun generateDateBrief(weatherData: WeatherProvider.WeatherData?): String {
-                if (XPref.getAodShowWeather() && weatherData != null) { // 这里变更一下逻辑 没有天气就不显示了
-                    return SimpleDateFormat(
-                        SmaliImports.systemDateFormat,
-                        Locale.getDefault()
-                    ).format(Date()) + " ${SmaliImports.bulletSymbol} " + (weatherData.toBriefString())  + generateAlarmText(context)
-                } else {
-                    return SimpleDateFormat(SmaliImports.systemDateFormat, Locale.getDefault()).format(Date()) + generateAlarmText(context)
+            fun generateDateBrief(weatherData: WeatherProvider.WeatherData?): SpannableStringBuilder {
+                return SpannableStringBuilder().apply {
+                    append(SimpleDateFormat(SmaliImports.systemDateFormat, Locale.getDefault()).format(Date()))
+                    if(XPref.getAodShowWeather() && weatherData != null){
+                        SmaliImports.bulletSymbol.let {
+                            if(it.isNotEmpty()) {
+                                append(it)
+                            }else{
+                                appendSpace()
+                            }
+                        }
+                        append(weatherData.toBriefString())
+                        appendSpace()
+                    }
+                    if(XPref.getShowAlarm()){
+                        appendSpace()
+                        append(generateAlarmText(context, false))
+                        appendSpace()
+                    }
                 }
             }
 //            text = SimpleDateFormat("E MM. dd", Locale.ENGLISH).format(Date())

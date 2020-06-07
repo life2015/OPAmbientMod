@@ -2,8 +2,9 @@ package com.retrox.aodmod.hooks
 
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.state.AodState
+import com.retrox.aodmod.util.ToggleableXC_MethodHook
+import com.retrox.aodmod.util.XC_MethodHook
 import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -28,7 +29,7 @@ object DisplayStateHook : IXposedHookLoadPackage {
 //            }
 //        })
 
-        XposedHelpers.findAndHookMethod(displayViewManagerClass, "updateView", object : XC_MethodHook() {
+        XposedHelpers.findAndHookMethod(displayViewManagerClass, "updateView", ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
                 val state = XposedHelpers.getIntField(param.thisObject, "mState")
 //                AodState.setDisplayState(oldState)
@@ -38,7 +39,7 @@ object DisplayStateHook : IXposedHookLoadPackage {
                 MainHook.logD("DisplayStateHook: old State to new: ${AodState.getDisplayState()}")
                 // 检查息屏提示的状态 息屏提示动画用 避免重复动画
             }
-        })
+        }))
 
     }
 
