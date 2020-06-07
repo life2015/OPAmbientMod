@@ -127,8 +127,6 @@
     <string name="settings_clock_alarm">Wecker</string>
     <string name="settings_clock_show_alarm">Zeige den nächsten Wecker</string>
     <string name="settings_clock_show_alarm_desc">Zeigt den nächstem Alarm nach dem Wetter. Zeigt nur Wecker innherhalb der nächsten 24 Stunden (angezeigt auf einer zweiten Zeile)</string>
-    <string name="settings_clock_show_alarm_emoji_desc">Zeige Wecker-Emoji</string>
-    <string name="settings_clock_show_alarm_emoji">Zeigt ein Wecker-Emoji vor der nächsten Weckerzeit</string>
     <string name="settings_music_master_switch">Aktiviere Musikanzeige</string>
     <string name="settings_music_use_system_music">System-Musik</string>
     <string name="settings_music_use_system_music_desc">Benutzt die System-Musik-Steuerung als Quelle, welche zuverlässlicher sein könnte</string>
@@ -226,13 +224,73 @@
 
     <string name="settings_module_translators">Übersetzer</string>
 
-    <string name="clock_its">Es ist</string>
     <string name="no_record">Keine Aufzeichnung</string>
     <string name="operating_mode_not_detected">Betriebsmodus nicht erkannt</string>
+
+    <!-- 3.1 -->
+    <string name="switch_aod_enabled">AOD aktiviert</string>
+    <string name="settings_module_status_working_desc_disabled">AOD-Einbindung funktioniert nicht</string>
+    <string name="qs_aodmod_title">Always-On-Display</string>
+    <string name="bs_theme_name_oneplus">OnePlus</string>
+    <string name="bs_theme_name_pixel">Pixel</string>
+    <array name="settings_weather_icon_style_text">
+        <item>Google</item>
+        <item>OnePlus</item>
+        <item>Emoji</item>
+    </array>
+    <string name="settings_op_clock_style">OnePlus-Uhr-Stil</string>
+    <string name="settings_clock_style">Stil</string>
+    <string name="headset_connected">Kopfhörer verbunden</string>
+    <string name="headset_disconnected">Kopfhörer getrennt</string>
+    <string name="bt_headset_connecting">%1s verbindet</string>
+    <string name="bt_headset_connected">%1s verbunden</string>
+    <string name="bt_headset_disconnecting">%1s trennt</string>
+    <string name="bt_headset_disconnected">%1s getrennt</string>
+    <string name="volume_level">Lautstärke %1s</string>
+    <string name="settings_generic_theme_not_supported">Theme nicht unterstützt</string>
+    <string name="settings_generic_theme_not_supported_desc">Diese Theme unterstützt diese Optionen nicht. Bitte wähle ein anderes Theme, wenn du sie benutzen möchtest</string>
+    <string name="settings_lyrics">Liedtexte</string>
+    <string name="settings_lyrics_desc">Zeige Liedtexte auf dem AOD.\n<b>Hinweis: Die Liedtexte stammen von QQ und NetEase, und haben haben limitierte Liedunterstützung. Mit dieser Option könntest du einige chinesische Texte sehen.</b></string>
+    <string name="lyrics_loading">Lade Liedtext…</string>
+    <string name="lyrics_music_only">Dieses Lied ist nur Musik</string>
+    <string name="settings_music_use_small_music">Kleineres Musik-Layout benutzen</string>
+    <string name="settings_music_use_small_music_desc">Benutze ein kleinerer, kompakteres Musiklayout, ähnlich dem auf neuen Pixel-Geräten. Die Musikinfo wird unter der Uhr anstatt des unteren Bildschirmrands angezeigt.</string>
+    <array name="settings_op_clock_style_options">
+        <item>Standard</item>
+        <item>Digital 1</item>
+        <item>Digital 2</item>
+        <item>Worte</item>
+        <item>Fett</item>
+        <item>Analog 1</item>
+        <item>Analog 2</item>
+        <item>Analog 3</item>
+        <item>Minimalismus 1</item>
+        <item>Minimalismus 2</item>
+    </array>
+
+    <string name="clock_its">Es ist</string>
 
     <string name="charging_charging">Wird geladen</string>
     <string name="charging_quick_charging">Wird schnell geladen</string>
     <string name="charging_charged">Aufgeladen</string>
     <string name="charging_sleep_mode">Schlafmodus</string>
+
+    <!-- Battery Optimisation settings -->
+    <string name="settings_battery_optimisation_title">Batterieoptimierung</string>
+    <string name="settings_battery_optimisation_desc">Optimierungsoptionen, die die Batterie bei AOD-Nutzung länger halten lassen</string>
+    <string name="settings_battery_force_doze">Doze erzwingen</string>
+    <string name="settings_battery_force_doze_desc">Doze zwingend aktivieren, wenn das AOD angezeigt wird.\n<b>Warnung: Das könnte zu Probleme mit Benachrichtigungen oder Weckern führen, wenn das AOD angezeigt wird, und ist nicht komplett getestet</b></string>
+    <string name="settings_battery_enable_saver">Energiesparmodus</string>
+    <string name="settings_battery_enable_saver_desc">Aktiviere den Systemenergiesparmodus, wenn das AOD angezeigt wird.\n<b>Warnung: Das könnte dazu führen, dass Apps unerwartet beendet werden, wenn der Bildschirm aus ist</b></string>
+    <string name="settings_lower_refresh_rate">Niedrigere Aktualisierungsrate</string>
+    <string name="settings_lower_refresh_rate_desc">Setze die Bildschirmaktualisierungsrate auf 60Hz herunter, wenn das AOD angezeigt wird, auf Geräten, die es unterstützen</string>
+    <string name="settings_battery_lower_brightness">Geringste Helligkeit</string>
+    <string name="settings_battery_lower_brightness_desc">Immer die geringste Helligkeit verwenden, wenn das AOD sichtbar ist, unabhängig vom Lichtsensor.\n<b>Hinweis: Das überschreibt die automatische Helligkeitseinstellung in den allgemeinen Einstellungen</b></string>
+
+    <!-- Weather icon style settings -->
+    <string name="settings_weather_icon_style">Wetter-Icon-Stil</string>
+    <string name="settings_weather_icon_style_desc">Wähle den Stil des Icons zur Wetterlage</string>
+    <string name="settings_clock_show_alarm_emoji_desc">Wecker-Icon anzeigen</string>
+    <string name="settings_clock_show_alarm_emoji">Zeige ein Wetter-Icon vor der Zeit des nächsten Wecker</string>
 
 </resources>
