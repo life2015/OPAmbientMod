@@ -48,6 +48,8 @@ import com.retrox.aodmod.proxy.view.theme.ThemeClockPack
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
+import com.retrox.aodmod.view.VerticalImageSpan
+import dalvik.system.PathClassLoader
 import de.robv.android.xposed.XposedHelpers
 import org.jetbrains.anko.dip
 import java.io.File
@@ -275,7 +277,21 @@ fun getApplicationContext(): Context {
     }
 }
 
-fun generateAlarmText(context: Context, prefixNewLine : Boolean = true): SpannableStringBuilder {
+fun PackageManager.isPackageAvailable(packageName: String) : Boolean {
+    return try {
+        getApplicationInfo(packageName, 0)
+        true
+    }catch (e: PackageManager.NameNotFoundException){
+        false
+    }
+}
+
+fun Context.getSystemUiClassLoader(): PathClassLoader {
+    val applicationInfo = packageManager.getApplicationInfo("com.android.systemui", 0)
+    return PathClassLoader(applicationInfo.sourceDir, ClassLoader.getSystemClassLoader())
+}
+
+fun generateAlarmText(context: Context, prefixNewLine : Boolean = false): SpannableStringBuilder {
     if (XPref.getShowAlarm()) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val nextAlarm = alarmManager.nextAlarmClock
@@ -284,14 +300,12 @@ fun generateAlarmText(context: Context, prefixNewLine : Boolean = true): Spannab
             val nextAlarmTime = nextAlarm.triggerTime
             val currentTime = System.currentTimeMillis()
             if (nextAlarmTime - currentTime <= 86400000) {
-                if(prefixNewLine) {
-                    if (XPref.getWeatherShowCity()) {
-                        if (XPref.getShowBullets()) {
-                            stringBuilder.append(" • ")
-                        }
-                    } else {
-                        stringBuilder.append("\n")
+                if (XPref.getWeatherShowCity()) {
+                    if (XPref.getShowBullets()) {
+                        stringBuilder.append(" • ")
                     }
+                } else if(prefixNewLine) {
+                    stringBuilder.append("\n")
                 }
                 //Alarm is within next 24h
                 if (XPref.getShowAlarmEmoji()) {
@@ -306,11 +320,11 @@ fun generateAlarmText(context: Context, prefixNewLine : Boolean = true): Spannab
     return SpannableStringBuilder()
 }
 
-fun getAlarmSpan(context: Context): ImageSpan {
+fun getAlarmSpan(context: Context): VerticalImageSpan {
     val icon = ResourceUtils.getInstance(context).getDrawable(com.retrox.aodmod.R.drawable.ic_alarm)
     val theme = ThemeManager.getCurrentColorPack()
     icon.setTint(Color.parseColor(theme.tintColor))
-    return ImageSpan(context, icon.toBitmap(16.toPx, 16.toPx), 2)
+    return VerticalImageSpan(context, icon.toBitmap(16.toPx, 16.toPx), XPref.getAodLayoutTheme())
 }
 
 fun Number.toCNString(): String {

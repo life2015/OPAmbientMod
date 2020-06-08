@@ -54,15 +54,7 @@ public class LineHeightSpanStandard implements LineHeightSpan, ParcelableSpan {
 
     @Override
     public int getSpanTypeId() {
-        return getSpanTypeIdInternal();
-    }
-
-    /**
-     * @hide
-     */
-    @Override
-    public int getSpanTypeIdInternal() {
-        return TextUtils.LINE_HEIGHT_SPAN;
+        return 28;
     }
 
     @Override
@@ -72,14 +64,6 @@ public class LineHeightSpanStandard implements LineHeightSpan, ParcelableSpan {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        writeToParcelInternal(dest, flags);
-    }
-
-    /**
-     * @hide
-     */
-    @Override
-    public void writeToParcelInternal(@NonNull Parcel dest, int flags) {
         dest.writeInt(mHeight);
     }
 

@@ -1,10 +1,7 @@
 package com.retrox.aodmod.opimports
 
 import android.content.Context
-import android.content.om.IOverlayManager
 import android.graphics.Typeface
-import android.os.ServiceManager
-import android.os.SystemProperties
 import com.retrox.aodmod.extensions.getSystemUiClassLoader
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -24,7 +21,6 @@ object OPUtilsBridge {
         val checkIsSupportResolutionSwitch = opUtils!!.getDeclaredMethod("checkIsSupportResolutionSwitch", Context::class.java).setAccessibleR(true).invoke(null, context) as Boolean
         opUtils!!.getDeclaredField("mIsSupportResolutionSwitch").setAccessibleR(true).set(null, checkIsSupportResolutionSwitch)
         opUtils!!.getDeclaredMethod("loadMCLTypeface").setAccessibleR(true).invoke(null)
-        opUtils!!.getDeclaredField("mOverlayManager").setAccessibleR(true).set(null, IOverlayManager.Stub.asInterface(ServiceManager.getService("overlay")))
     }
 
     @JvmStatic
@@ -69,7 +65,19 @@ object OPUtilsBridge {
 
     @JvmStatic
     fun getDeviceTag(): String? {
-        return SystemProperties.get("ro.boot.project_name")
+        return getSystemProperty("ro.boot.project_name")
+    }
+
+    @JvmStatic
+    fun getSystemProperty(key: String): String? {
+        val systemProperties = Class.forName("android.os.SystemProperties")
+        return systemProperties.getMethod("get", String::class.java).invoke(null, key) as? String
+    }
+
+    @JvmStatic
+    fun getSystemBoolean(key: String, default: Boolean): Boolean {
+        val systemProperties = Class.forName("android.os.SystemProperties")
+        return systemProperties.getMethod("getBoolean", String::class.java, Boolean::class.java).invoke(null, key, default) as Boolean
     }
 
     @JvmStatic

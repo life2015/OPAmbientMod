@@ -5,10 +5,10 @@ import android.os.Parcelable
 
 data class NowPlayingMediaData (val name: String, val artist: String, val album: String, val app: String = ""): Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString()
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!
     ) {
     }
 

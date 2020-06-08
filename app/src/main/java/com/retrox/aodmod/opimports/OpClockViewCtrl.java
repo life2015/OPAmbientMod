@@ -188,7 +188,7 @@ public class OpClockViewCtrl {
     }
 
     public void updateDisplayTextDB() {
-        this.mDisplayText = Settings.Secure.getStringForUser(this.mContext.getContentResolver(), "aod_display_text", this.mUserId);
+        this.mDisplayText = Settings.Secure.getString(this.mContext.getContentResolver(), "aod_display_text");
         Log.d("ClockViewCtrl", "updateClock: updateDisplayTextDB = " + this.mDisplayText + ", user = " + this.mUserId);
     }
 

@@ -15,7 +15,6 @@ import android.icu.text.DisplayContext;
 import android.os.SystemClock;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
-import android.view.RemotableViewMethod;
 import android.view.View;
 import android.view.ViewDebug;
 import android.widget.LinearLayout;
@@ -25,8 +24,11 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.TypefaceCompat;
 
 import com.retrox.aodmod.R;
+import com.retrox.aodmod.extensions.ResourceUtils;
 import com.retrox.aodmod.pref.XPref;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -47,7 +49,7 @@ public class OpTextDate extends View {
     private CharSequence mFormat12;
     private CharSequence mFormat24;
     @ViewDebug.ExportedProperty
-    private boolean mHasSeconds;
+    private boolean mHasSeconds = false;
     private int mMarginTopAnalog;
     private int mMarginTopAnalogMcl;
     private int mMarginTopDefault;
@@ -91,7 +93,7 @@ public class OpTextDate extends View {
                 OpTextDate.this.getHandler().postAtTime(OpTextDate.this.mTicker, v0 + (1000L - v0 % 1000L));
             }
         };
-        TypedArray v2 = arg2.obtainStyledAttributes(arg3, android.R.styleable.TextClock, arg4, arg5);
+        TypedArray v2 = arg2.obtainStyledAttributes(arg3, R.styleable.TextClock, arg4, arg5);
         try {
             this.mFormat12 = v2.getText(0);
             this.mFormat24 = v2.getText(1);
@@ -130,7 +132,12 @@ public class OpTextDate extends View {
         }
 
         boolean v0_1 = this.mHasSeconds;
-        this.mHasSeconds = DateFormat.hasSeconds(this.mFormat);
+        try {
+            Method hasSeconds = DateFormat.class.getMethod("hasSeconds", CharSequence.class);
+            this.mHasSeconds = (boolean) hasSeconds.invoke(null, this.mFormat);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         if((arg4) && v0_1 != this.mHasSeconds) {
             if(v0_1) {
                 this.getHandler().removeCallbacks(this.mTicker);
@@ -203,7 +210,7 @@ public class OpTextDate extends View {
         this.chooseFormat(false);
         this.mDatePaint.setAntiAlias(true);
         this.mDatePaint.setLetterSpacing(Float.parseFloat("0.025"));
-        this.mDatePaint.setColor(this.getResources().getColor(R.color.date_view_white));
+        this.mDatePaint.setColor(ResourceUtils.getInstance(getContext()).getColor(R.color.date_view_white));
         this.mDatePaint.setTextAlign(Paint.Align.CENTER);
     }
 
@@ -244,17 +251,17 @@ public class OpTextDate extends View {
     }
 
     private void reloadDimen() {
-        this.mDateFontBaseLineY = this.getResources().getDimension(R.dimen.date_view_font_base_line_y);
-        this.mMarginTopDefault = this.getResources().getDimensionPixelSize(R.dimen.date_view_default_marginTop);
-        this.mMarginTopAnalog = this.getResources().getDimensionPixelSize(R.dimen.date_view_analog_marginTop);
-        this.mMarginTopAnalogMcl = OPUtilsBridge.convertDpToFixedPx(this.getResources().getDimension(R.dimen.date_view_analog_mcl_marginTop));
-        this.mTextSize = this.mClockStyle == 2 ? ((float)this.getResources().getDimensionPixelSize(R.dimen.op_owner_info_font_size)) : ((float)this.getResources().getDimensionPixelSize(R.dimen.date_view_font_size));
+        this.mDateFontBaseLineY = ResourceUtils.getInstance(getContext()).getDimension(R.dimen.date_view_font_base_line_y);
+        this.mMarginTopDefault = ResourceUtils.getInstance(getContext()).getDimensionPixelSize(R.dimen.date_view_default_marginTop);
+        this.mMarginTopAnalog = ResourceUtils.getInstance(getContext()).getDimensionPixelSize(R.dimen.date_view_analog_marginTop);
+        this.mMarginTopAnalogMcl = OPUtilsBridge.convertDpToFixedPx(ResourceUtils.getInstance(getContext()).getDimension(R.dimen.date_view_analog_mcl_marginTop));
+        this.mTextSize = this.mClockStyle == 2 ? ((float)ResourceUtils.getInstance(getContext()).getDimensionPixelSize(R.dimen.op_owner_info_font_size)) : ((float)ResourceUtils.getInstance(getContext()).getDimensionPixelSize(R.dimen.date_view_font_size));
         this.mDatePaint.setTextSize(this.mTextSize);
         this.resetTypeface();
     }
 
     private void resetTextSize() {
-        this.mTextSize = this.mClockStyle == 2 ? ((float)this.getResources().getDimensionPixelSize(R.dimen.op_owner_info_font_size)) : ((float)this.getResources().getDimensionPixelSize(R.dimen.date_view_font_size));
+        this.mTextSize = this.mClockStyle == 2 ? ((float)ResourceUtils.getInstance(getContext()).getDimensionPixelSize(R.dimen.op_owner_info_font_size)) : ((float)ResourceUtils.getInstance(getContext()).getDimensionPixelSize(R.dimen.date_view_font_size));
         this.mDatePaint.setTextSize(this.mTextSize);
     }
 
@@ -288,14 +295,12 @@ public class OpTextDate extends View {
         }
     }
 
-    @RemotableViewMethod
     public void setFormat12Hour(CharSequence arg1) {
         this.mFormat12 = arg1;
         this.chooseFormat();
         this.onTimeChanged();
     }
 
-    @RemotableViewMethod
     public void setFormat24Hour(CharSequence arg1) {
         this.mFormat24 = arg1;
         this.chooseFormat();
@@ -308,7 +313,6 @@ public class OpTextDate extends View {
         this.onTimeChanged();
     }
 
-    @RemotableViewMethod
     public void setTimeZone(String arg1) {
         this.mTimeZone = arg1;
         this.createTime(arg1);

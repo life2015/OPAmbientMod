@@ -113,7 +113,7 @@
     <string name="settings_clock_general">Главное</string>
     <string name="settings_clock_alarm">Будильник</string>
     <string name="settings_clock_show_alarm">Показать следующий будильник</string>
-    <string name="settings_clock_show_alarm_desc">Показывает следующий будильник рядом с отображением погоды. Отображает только будильники в течение следующих 24 часов (отображается во второй строке)</string>
+    <string name="settings_clock_show_alarm_desc">Показывает следующий будильник рядом с отображением погоды. Отображает только будильники в течение следующих 24 часов</string>
     <string name="settings_music_master_switch">Включить Отображение Музыки</string>
     <string name="settings_music_use_system_music">Системная Музыка</string>
     <string name="settings_music_use_system_music_desc">Использует системный музыкальный контроллер слушателя, который может быть более надежным</string>
@@ -136,7 +136,7 @@
     <string name="settings_weather_show_temperature">Показать температуру</string>
     <string name="settings_weather_show_temperature_desc">Показать текущую температуру (единицу измерения можно изменить в приложении Погода от OnePlus)</string>
     <string name="settings_weather_show_city">Показать город</string>
-    <string name="settings_weather_show_city_desc">Показать текущую погоду по городу из авто-местоположения (отображается во второй строке)</string>
+    <string name="settings_weather_show_city_desc">Показать текущую погоду по городу из авто-местоположения</string>
     <string name="settings_clock_advanced">Расширенные</string>
     <string name="settings_clock_advanced_clock_sync">Синхронизация времени</string>
     <string name="settings_clock_advanced_clock_sync_desc">Если часы на вашем AoD обновляются неправильно, вы можете изменить режим синхронизации здесь.</string>

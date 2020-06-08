@@ -134,15 +134,6 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
             showThemeBottomSheet()
         }
 
-        val notification = Notification.Builder(this).apply {
-            setSmallIcon(R.drawable.ic_info)
-            setContentTitle("Title")
-            setContentText("Content")
-            setPriority(Notification.PRIORITY_MAX)
-        }.build()
-        val statusBarNotification = StatusBarNotification(packageName, packageName, 0, "tag", android.os.Process.myUid(), android.os.Process.myPid(), notification, UserHandle.getUserHandleForUid(android.os.Process.myUid()), "group", System.currentTimeMillis())
-        //NotificationManager.notificationStatusLiveData.postValue(statusBarNotification to "Posted")
-
         val intentFilter = IntentFilter()
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED)
         val receiver = PowerReceiver()

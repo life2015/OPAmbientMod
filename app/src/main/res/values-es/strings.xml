@@ -50,7 +50,7 @@
     <string name="settings_clock_general">General</string>
     <string name="settings_clock_alarm">Alarma</string>
     <string name="settings_clock_show_alarm">Mostrar Proxima Alarma</string>
-    <string name="settings_clock_show_alarm_desc">Muestra la proxima alarma luego del clima. Solo muestra alarmas en las proximas 24 horas (se muestra en la segunda linea).</string>
+    <string name="settings_clock_show_alarm_desc">Muestra la proxima alarma luego del clima. Solo muestra alarmas en las proximas 24 horas.</string>
     <string name="settings_music_master_switch">Habilitar Musica</string>
     <string name="settings_music_use_system_music">Musica del Sistema</string>
     <string name="settings_music_use_system_music_desc">Usa el controlador de musica del sistema, el cual puede ser mas confiable y estable.</string>
@@ -73,7 +73,7 @@
     <string name="settings_weather_show_temperature">Mostrar Temperatura</string>
     <string name="settings_weather_show_temperature_desc">Muestra la temperatura actual (La unidad puede ser cambiada en la aplicacion del Clima de  OnePlus).</string>
     <string name="settings_weather_show_city">Mostrar Ciudad</string>
-    <string name="settings_weather_show_city_desc">Muestra la ciudad de la ubicaion automatica (en una segunda linea).</string>
+    <string name="settings_weather_show_city_desc">Muestra la ciudad de la ubicaion automatica.</string>
     <string name="settings_clock_advanced">Avancado</string>
     <string name="settings_clock_advanced_clock_sync">Sincronizacion de la hora</string>
     <string name="settings_clock_advanced_clock_sync_desc">Si la hora no se sincroniza correctamente en el AoD, puedes cambiar el modo de sincronizacion aqui.</string>

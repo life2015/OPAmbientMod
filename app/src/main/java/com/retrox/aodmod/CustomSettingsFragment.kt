@@ -252,7 +252,7 @@ class CustomSettingsFragment : PreferenceFragmentCompat() {
         preferenceKey: String,
         defaultValue: String
     ): String {
-        return sharedPreferences!!.getString(preferenceKey, defaultValue)
+        return sharedPreferences!!.getString(preferenceKey, defaultValue)!!
     }
 
     private fun getBooleanPreference(

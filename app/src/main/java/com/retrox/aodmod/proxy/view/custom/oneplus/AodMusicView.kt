@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.view.marginStart
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.util.logD
 import com.retrox.aodmod.data.NowPlayingMediaData
@@ -49,6 +50,7 @@ fun Context.aodMusicViewOnePlus(
     }
 
     return linearLayout {
+        setPadding(dip(16), 0, dip(16), 0)
         this@linearLayout.visibility = View.INVISIBLE
         orientation = LinearLayout.HORIZONTAL
         bottomPadding = 8.toPx

@@ -280,7 +280,7 @@ object WeatherProvider {
             return stringBuilder.toString()
         }
 
-        fun toBriefString(includeCity: Boolean = true): CharSequence {
+        fun toBriefString(addNewLine: Boolean = false): CharSequence {
             val iconProvider = BaseWeatherIconProvider.getWeatherIconProvider()
             val weatherText = if(iconProvider is EmojiWeatherIconProvider) iconProvider.getEmojiForCode(weatherCode) else "X"
             val stringBuilder = SpannableStringBuilder()
@@ -301,8 +301,9 @@ object WeatherProvider {
                 stringBuilder.append(temperatureUnit)
             }
             val isCityNameEnabled = XPref.getWeatherShowCity()
-            if (isCityNameEnabled && includeCity) {
-                stringBuilder.append("\n")
+            if (isCityNameEnabled) {
+                if(addNewLine) stringBuilder.append("\n")
+                else stringBuilder.append("  ")
                 stringBuilder.append(cityName)
             }
             return stringBuilder.trim { it <= ' ' }

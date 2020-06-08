@@ -11,6 +11,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.GridLayout;
 
 import com.retrox.aodmod.R;
+import com.retrox.aodmod.extensions.ResourceUtils;
 
 import java.util.Locale;
 
@@ -22,13 +23,13 @@ public class OpDateTimeView extends GridLayout {
 
         static void update(Context arg4, boolean arg5, int arg6) {
             Locale v0 = Locale.getDefault();
-            Resources v1 = arg4.getResources();
+            ResourceUtils v1 = ResourceUtils.getInstance(arg4);
             String v5 = v1.getString(arg5 ? R.string.abbrev_wday_month_day_no_year_alarm : R.string.abbrev_wday_month_day_no_year);
             String v2 = v1.getString(R.string.clock_12hr_format);
             String v1_1 = v1.getString(R.string.clock_24hr_format);
             Patterns.dateView = DateFormat.getBestDateTimePattern(v0, v5);
             Patterns.clockView12 = "hh:mm";
-            if(!arg4.getResources().getBoolean(R.bool.aod_config_showAmpm) && !v2.contains("a")) {
+            if(!v1.getResources().getBoolean(R.bool.aod_config_showAmpm) && !v2.contains("a")) {
                 Patterns.clockView12 = Patterns.clockView12.replaceAll("a", "").trim();
             }
 
@@ -70,7 +71,7 @@ public class OpDateTimeView extends GridLayout {
         int v2_1;
         super.onAttachedToWindow();
         Log.d("DateTimeView", "onAttachedToWindow");
-        Resources v0 = this.getResources();
+        ResourceUtils v0 = ResourceUtils.getInstance(getContext());
         ViewGroup.MarginLayoutParams v1 = (ViewGroup.MarginLayoutParams)this.getLayoutParams();
         int v2 = this.mClockStyle;
         if(v2 == 0) {

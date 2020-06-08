@@ -11,7 +11,7 @@ import kotlin.reflect.KProperty
 fun shared(key: String, default: String) = object : ReadWriteProperty<Any?, String> {
 
     override operator fun getValue(thisRef: Any?, property: KProperty<*>): String =
-        App.defaultSharedPreferences.getString(key, default)
+        App.defaultSharedPreferences.getString(key, default)!!
 
     override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
         App.defaultSharedPreferences.edit().putString(key, value).apply()
@@ -22,7 +22,7 @@ fun shared(key: String, default: String) = object : ReadWriteProperty<Any?, Stri
 fun shared(key: String, default: Set<String>) = object : ReadWriteProperty<Any?, Set<String>> {
 
     override operator fun getValue(thisRef: Any?, property: KProperty<*>): Set<String> =
-        App.defaultSharedPreferences.getStringSet(key, default)
+        App.defaultSharedPreferences.getStringSet(key, default)!!
 
     override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Set<String>) {
         App.defaultSharedPreferences.edit().putStringSet(key, value).apply()

@@ -1,8 +1,8 @@
 package com.retrox.aodmod.weather.icons
 
-import android.annotation.DrawableRes
 import android.content.Context
 import android.text.style.MetricAffectingSpan
+import androidx.annotation.DrawableRes
 import com.retrox.aodmod.pref.XPref
 
 abstract class BaseWeatherIconProvider {

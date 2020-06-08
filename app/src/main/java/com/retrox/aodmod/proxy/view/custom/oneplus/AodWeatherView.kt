@@ -78,7 +78,7 @@ fun Context.aodWeatherView(lifecycleOwner: LifecycleOwner): View {
                     weatherTopLine.text = topLineBuilder.toString()
                     val bottomLineBuilder = StringBuilder().apply {
                         if(XPref.getWeatherShowTemperature()){
-                            append("${it.temperatureLow}${it.temperatureUnit} / ${it.temperatureHigh}${it.temperatureUnit}")
+                            append("${it.temperatureHigh}° / ${it.temperatureLow}°")
                         }
                         if(XPref.getWeatherShowCity()){
                             append(" - ${it.cityName}")

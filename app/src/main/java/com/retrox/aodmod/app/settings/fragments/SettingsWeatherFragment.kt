@@ -10,6 +10,7 @@ import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.settings.SettingsActivity
 import com.retrox.aodmod.app.settings.preference.Preference
+import com.retrox.aodmod.extensions.isPackageAvailable
 import com.retrox.aodmod.extensions.resetPrefPermissions
 import com.retrox.aodmod.extensions.runAfter
 import com.retrox.aodmod.pref.XPref
@@ -50,7 +51,7 @@ class SettingsWeatherFragment : GenericPreferenceFragment() {
         }
         findSwitchPreference("settings_weather_city"){
             it.isChecked = AppPref.weatherShowCity
-            it.isVisible = isWeatherSupported && isWeatherCitySupported
+            it.isVisible = isWeatherSupported
             it.listen { value ->
                 AppPref.weatherShowCity = value
             }

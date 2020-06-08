@@ -3,7 +3,6 @@ package com.retrox.aodmod.opimports;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
-import android.os.SystemProperties;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -242,7 +241,7 @@ public class OpAnalogClock extends FrameLayout {
     }
 
     private boolean shouldShowSeconds() {
-        return this.mStyle == 0 || this.mStyle == 2 || this.mStyle == 4 || this.mStyle == 5 || this.mStyle == 6 ? SystemProperties.getBoolean("sys.aod.show.seconds", false) : false;
+        return this.mStyle == 0 || this.mStyle == 2 || this.mStyle == 4 || this.mStyle == 5 || this.mStyle == 6 ? OPUtilsBridge.getSystemBoolean("sys.aod.show.seconds", false) : false;
     }
 
     public void startSchedule() {
