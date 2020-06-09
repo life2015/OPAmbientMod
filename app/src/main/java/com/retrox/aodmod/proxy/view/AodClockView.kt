@@ -59,12 +59,12 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
                                 appendSpace()
                             }
                         }
-                        append(weatherData.toBriefString(false))
+                        append(weatherData.toBriefString(true))
                         appendSpace()
                     }
                     if(XPref.getShowAlarm()){
                         appendSpace()
-                        append(generateAlarmText(context, false))
+                        append(generateAlarmText(context, true))
                         appendSpace()
                     }
                 }

@@ -11,7 +11,6 @@ import android.graphics.Paint.FontMetrics;
 import android.graphics.Shader;
 import android.graphics.Shader.TileMode;
 import android.graphics.Typeface;
-import android.os.SystemProperties;
 import android.text.Annotation;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -94,7 +93,8 @@ public class OpCustomTextClock extends TextView {
 
     private void loadProperties() {
         if(this.mTextClockStyle == 0) {
-            String v1 = SystemProperties.get("sys.aod.gradient.color", "");
+            String v1 = OPUtilsBridge.getSystemProperty("sys.aod.gradient.color");
+            if(v1 == null) v1 = "";
             if(!TextUtils.isEmpty(v1)) {
                 String[] v1_1 = v1.trim().split(",");
                 if(v1_1 != null && v1_1.length > 1) {

@@ -310,7 +310,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
                 if (status == "Removed") return@let
                 if (it.first.notification.getNotificationData().isOnGoing) return@let
 
-                if(XPref.getFilpOffMode() && AodState.screenState.value == Display.STATE_OFF){
+                if((XPref.getFilpOffMode() && FlipOffSensor.flipSensorLiveData.value?.suggestState == FlipOffSensor.Flip_ON)){
                     //Ignore as the device is in the pocket
                     return@let
                 }
@@ -448,7 +448,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         Settings.Global.putInt(context.contentResolver, "oneplus_screen_refresh_rate", value)
     }
     private fun setBatterySaverEnabled(enabled: Boolean){
-        context.powerManager.setPowerSaveModeEnabled(enabled)
+        context.powerManager.javaClass.getMethod("setPowerSaveModeEnabled", Boolean::class.java).invoke(context.powerManager, enabled)
     }
 
 

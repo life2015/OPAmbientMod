@@ -12,7 +12,6 @@ import android.graphics.Typeface;
 import android.os.SystemClock;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
-import android.view.RemotableViewMethod;
 import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
@@ -25,6 +24,8 @@ import com.retrox.aodmod.pref.XPref;
 import com.retrox.aodmod.proxy.view.theme.ThemeClockPack;
 import com.retrox.aodmod.proxy.view.theme.ThemeManager;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -46,7 +47,7 @@ public class OpTextClock extends View {
     private CharSequence mFormat12;
     private CharSequence mFormat24;
     @ViewDebug.ExportedProperty
-    private boolean mHasSeconds;
+    private boolean mHasSeconds = false;
     public Paint mHourPaint;
     public Paint mMinPaint;
     private boolean mShowCurrentUserTime;
@@ -100,7 +101,12 @@ public class OpTextClock extends View {
         }
 
         boolean v0_1 = this.mHasSeconds;
-        this.mHasSeconds = DateFormat.hasSeconds(this.mFormat);
+        try {
+            Method hasSeconds = DateFormat.class.getMethod("hasSeconds", CharSequence.class);
+            this.mHasSeconds = (boolean) hasSeconds.invoke(null, this.mFormat);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createTime(String arg2) {
@@ -219,14 +225,12 @@ public class OpTextClock extends View {
         this.mClockStyle = arg1;
     }
 
-    @RemotableViewMethod
     public void setFormat12Hour(CharSequence arg1) {
         this.mFormat12 = arg1;
         this.chooseFormat();
         this.onTimeChanged();
     }
 
-    @RemotableViewMethod
     public void setFormat24Hour(CharSequence arg1) {
         this.mFormat24 = arg1;
         this.chooseFormat();
@@ -239,7 +243,6 @@ public class OpTextClock extends View {
         this.onTimeChanged();
     }
 
-    @RemotableViewMethod
     public void setTimeZone(String arg1) {
         this.mTimeZone = arg1;
         this.createTime(arg1);

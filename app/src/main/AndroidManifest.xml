@@ -33,9 +33,6 @@
         <activity
             android:name=".app.view.NewMainActivity"
             android:exported="true"/>
-        <activity
-            android:name=".app.FontActivity"
-            android:exported="true"/>
 
         <activity
             android:name=".app.settings.SettingsActivity"

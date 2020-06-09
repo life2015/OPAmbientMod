@@ -372,7 +372,7 @@
     <string name="settings_clock_general">General</string>
     <string name="settings_clock_alarm">Alarm</string>
     <string name="settings_clock_show_alarm">Show Next Alarm</string>
-    <string name="settings_clock_show_alarm_desc">Show the next alarm after the weather. Only shows alarms within the next 24h (shows on a second line)</string>
+    <string name="settings_clock_show_alarm_desc">Show the next alarm after the weather. Only shows alarms within the next 24h</string>
     <string name="settings_music_master_switch">Enable Music Display</string>
     <string name="settings_music_use_system_music">System Music</string>
     <string name="settings_music_use_system_music_desc">Use the system music controller listener, which may be more reliable</string>
@@ -395,7 +395,7 @@
     <string name="settings_weather_show_temperature">Show Temperature</string>
     <string name="settings_weather_show_temperature_desc">Show the current temperature (unit can be changed in the OnePlus Weather app)</string>
     <string name="settings_weather_show_city">Show City</string>
-    <string name="settings_weather_show_city_desc">Show the current weather city from the auto location (shows on a second line)</string>
+    <string name="settings_weather_show_city_desc">Show the current weather city from the auto location</string>
     <string name="settings_clock_advanced">Advanced</string>
     <string name="settings_clock_advanced_clock_sync">Clock Synchronization</string>
     <string name="settings_clock_advanced_clock_sync_desc">If the clock does not update correctly on your AoD, you can change the mode of sync here.</string>

@@ -81,12 +81,12 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
                                 appendSpace()
                             }
                         }
-                        append(weatherData.toBriefString())
+                        append(weatherData.toBriefString(true))
                         appendSpace()
                     }
                     if(XPref.getShowAlarm()){
                         appendSpace()
-                        append(generateAlarmText(context, false))
+                        append(generateAlarmText(context, true))
                         appendSpace()
                     }
                 }

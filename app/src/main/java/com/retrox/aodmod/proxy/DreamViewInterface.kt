@@ -93,7 +93,8 @@ abstract class AbsDreamView(private val dreamProxy: DreamProxy) : DreamProxyCont
     private var controllers: List<MediaController>? = null
     private val callbacks: HashMap<String, MediaCallback> = HashMap()
 
-    override fun onActiveSessionsChanged(list: MutableList<MediaController>) {
+    override fun onActiveSessionsChanged(list: MutableList<MediaController>?) {
+        if(list == null) return
         for (controller in list) {
             if (controller.packageName != null && callbacks.containsKey(controller.packageName)) {
                 callbacks[controller.packageName]?.let {

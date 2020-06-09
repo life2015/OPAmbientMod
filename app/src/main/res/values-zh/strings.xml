@@ -270,7 +270,7 @@
     <string name="settings_weather_show_temperature">显示气温</string>
     <string name="settings_weather_show_temperature_desc">显示当前温度（单位可以在一加天气APP内修改）</string>
     <string name="settings_weather_show_city">显示城市</string>
-    <string name="settings_weather_show_city_desc">换行显示当前天气的城市（来自自动定位）</string>
+    <string name="settings_weather_show_city_desc">换行显示当前天气的城市</string>
 
 
     <string name="settings_clock_advanced">高级设置 Advanced</string>

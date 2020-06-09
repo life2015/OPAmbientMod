@@ -48,10 +48,10 @@ object OP7DreamProxyHook : IXposedHookLoadPackage {
 
         MainHook.logD("DisplayMode: ${XPref.getDisplayMode()}")
         if (XPref.getDisplayMode() == "SYSTEM") {
-            SharedContentManager.setWorkMode(XPref.getTranslationConstantLightModeNS())
+            SharedContentManager.setWorkMode(XPref.getTranslationConstantLightModeNS()!!)
             return
         }
-        SharedContentManager.setWorkMode(XPref.getTranslationConstantLightMode())
+        SharedContentManager.setWorkMode(XPref.getTranslationConstantLightMode()!!)
 
 
         XposedHelpers.findAndHookConstructor(dozeServiceClass, ToggleableXC_MethodHook(object : XC_MethodHook() {

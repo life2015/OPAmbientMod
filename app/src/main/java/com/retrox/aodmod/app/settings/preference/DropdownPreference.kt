@@ -86,7 +86,7 @@ class DropdownPreference(
      */
     protected fun createAdapter(): ArrayAdapter<String> {
         return ArrayAdapter<String>(
-            mContext,
+            mContext!!,
             R.layout.list_item_spinner
         )
     }

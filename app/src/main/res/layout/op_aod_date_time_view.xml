@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<com.retrox.aodmod.opimports.OpDateTimeView android:id="@+id/date_time_view" android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:systemui="http://schemas.android.com/apk/res-auto">
+<com.retrox.aodmod.opimports.OpDateTimeView android:id="@+id/date_time_view"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:systemui="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:gravity="center" android:id="@+id/keyguard_clock_container" android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">
-        <com.retrox.aodmod.opimports.OpTextClock android:format12Hour="@string/keyguard_widget_12_hours_format" android:format24Hour="@string/keyguard_widget_24_hours_format" android:id="@+id/clock_view" android:layout_height="wrap_content" android:layout_width="wrap_content" android:singleLine="true" android:visibility="visible"/>
+        <com.retrox.aodmod.opimports.OpTextClock systemui:format12Hour="@string/keyguard_widget_12_hours_format" systemui:format24Hour="@string/keyguard_widget_24_hours_format" android:id="@+id/clock_view" android:layout_height="wrap_content" android:layout_width="wrap_content" android:singleLine="true" android:visibility="visible"/>
         <include layout="@layout/op_aod_analog_clock_view"/>
         <com.retrox.aodmod.opimports.OpCustomTextClock android:fontFamily="@font/oneplus_aod_font" android:id="@+id/custom_clock_view" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAlignment="5" android:visibility="gone" systemui:colorBottom="@color/oneplus_contorl_text_color_primary_dark" systemui:colorTop="@color/op_aod_textclock_top" systemui:gradientEndColor="@color/op_aod_digitalclock_gradient_end" systemui:gradientStartColor="@color/op_aod_digitalclock_gradient_start" systemui:gradientStyle="1" systemui:textClockStringTemplate="@string/textclock_template"/>
-        <com.retrox.aodmod.opimports.OpOneRedStyleClock android:elegantTextHeight="false" android:format12Hour="@string/keyguard_widget_12_hours_format" android:format24Hour="@string/keyguard_widget_24_hours_format" android:gravity="center_horizontal" android:id="@+id/red_clock_view" android:layout_height="wrap_content" android:layout_width="wrap_content" android:letterSpacing="0.02" android:paddingBottom="@dimen/title_clock_padding" android:singleLine="true" android:textColor="@color/clock_ten_digit_white" android:visibility="gone" style="@style/op_widget_big" systemui:specialColor="#eb0028"/>
+        <com.retrox.aodmod.opimports.OpOneRedStyleClock android:elegantTextHeight="false" systemui:format12Hour="@string/keyguard_widget_12_hours_format" systemui:format24Hour="@string/keyguard_widget_24_hours_format" android:gravity="center_horizontal" android:id="@+id/red_clock_view" android:layout_height="wrap_content" android:layout_width="wrap_content" android:letterSpacing="0.02" android:paddingBottom="@dimen/title_clock_padding" android:singleLine="true" android:textColor="@color/clock_ten_digit_white" android:visibility="gone" style="@style/op_widget_big" systemui:specialColor="#eb0028"/>
     </LinearLayout>
 </com.retrox.aodmod.opimports.OpDateTimeView>

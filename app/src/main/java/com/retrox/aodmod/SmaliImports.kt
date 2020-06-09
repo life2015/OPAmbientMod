@@ -10,7 +10,7 @@ import java.util.*
 object SmaliImports {
 
     val systemDateFormat: String
-        get() = getDateFormat()
+        get() = getDateFormat()!!
 
     val timeFormat: String
         get() = if (getIs24h()) {
