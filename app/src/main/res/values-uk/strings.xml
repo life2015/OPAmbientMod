@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OPAodMod</string>
+    <string name="active_state">Стан</string>
+    <string name="active_status_already">Активовано</string>
+    <string name="active_state_noalready">Не активовано</string>
+    <string name="active_status_need_active">Модуль не активовано. Натисніть, щоб активувати</string>
+    <string name="need_add_aod">Активний дисплей/SystemUI (для OnePlus 7 Pro) не додано в список винятків. Натисніть, щоб додати (потрібен модуль Tai Chi Magisk)</string>
+    <string name="motion_awake_opened">Відкрито</string>
+    <string name="pickup_enabled">Підніміть телефон, щоб показати</string>
+    <string name="please_enable_pick">Увімкніть опцію «Підніміть телефон, щоб показати»</string>
+    <string name="status_pick_up_not_enabled">pick up the phone to show is not open, please go to the system settings to
+        open the pick up to show
+    </string>
+    <string name="top_open_pick_up">Although the function of this module is not a pick up ambient display, but the system
+        settings of this option must be turned on, otherwise the function will not work
+    </string>
+    <string name="top_touch_to_see">7pro users strongly recommend opening the “touch screen to show” at the same time
+        for a better experience(6T can also try）
+    </string>
+    <string name="open_pick_up_display">enable pick up display</string>
+    <string name="tip_status_pick_up">Pick up display</string>
+    <string name="attention_work_status">
+        Pay attention to the number of times of the screen and the last time of the screen. If the number of times and time of the screen does not change with the screen open/close, the module does not work properly. If this is caused by a module update, try re-hooking the module and restarting the screen. Or check if the storage permission is granted, and the system raises the hand to open the screen.
+    </string>
+    <string name="touch_refresh">touch to refresh</string>
+    <string name="rehook">rehooking</string>
+    <string name="reboot_ambient">reboot ambient display</string>
+    <string name="work_status">Working Status</string>
+    <string name="aod_music_settings">Ambient Display Music Settings</string>
+    <string name="aod_custom_settings">Ambient Display Custom Settings</string>
+    <string name="clock_align_settings">Clock Alignment Setttings</string>
+    <string name="settings">Settings</string>
+    <string name="weather_service_ok">Weather Service works well</string>
+    <string name="weather_service_error">Weather Service ERROR</string>
+    <string name="weather_data">Weather Data</string>
+    <string name="storage_permission_granted">Storage permissions have been granted</string>
+    <string name="storage_permission_not_granted">Storage permissions are not granted. A lot of features will be wrong!</string>
+    <string name="check_permission_status">Check Permission Status</string>
+    <string name="permisssion_status">Permission Status</string>
+    <string name="display_style">Display Style</string>
+    <string name="music_lrc_support">PureMusic / FlatMusic mode has been tested to support lyrics display, other modes are not supported. Remember: not all themes support all the settings and features.</string>
+    <string name="other_custom_style_settings">Other custom style settings</string>
+    <string name="display_style_custom">Customize the Ambient Display style</string>
+    <string name="force_restart_not_7p">Force Restart Ambient Display, Root required (not 7Pro)</string>
+    <string name="force_restart_7p">Force Restart SystemUi and Ambient Display, Root required (7Pro)</string>
+    <string name="always_on_settings">Always on Settings</string>
+    <string name="ambient_memo">Ambient Display Memo</string>
+    <string name="ambient_will_display_memo">A Memo will be displayed when AOD is enabled</string>
+    <string name="enable_aod_memo">Enable AOD Memo</string>
+    <string name="disabel_aod_memo">Disable AOD Memo</string>
+    <string name="aod_memo_toast">Memo enabled: %1s</string>
+    <string name="input_memo_here">Input Memo Here</string>
+    <string name="save_memo">Save Memo</string>
+    <string name="aod_display_weather">Display Weather On AOD</string>
+    <string name="aod_weather_tip">Get system Weather APP data by CP, displayed on the screen information, and the data follow the system Weather App.</string>
+    <string name="enable_aod_weather">Enable Aod Weather</string>
+    <string name="disable_aod_weather">Disable Aod Weather</string>
+    <string name="flip_off_screen">Upside down mobile phone or in the pocket automatic screen off (7Pro slow response）</string>
+    <string name="auto_brightness_aod">Adjust brightness by lux sensor</string>
+    <string name="aod_font">Aod font follow System</string>
+    <string name="aod_music_settings_what">What is this function?</string>
+    <string name="nightmode_auto_close">DO NOT AOD when NightMode is on</string>
+    <string name="nightmode_auto_close_content">When this option is on, NightMode ON -> Aod OFF. When this option is off, NightMode has nothing to do with AOD</string>
+    <string name="nightmode_autoclose">NightMode AutoClose AOD</string>
+    <string name="nightmode_not_close">NightMode DO NOT CLOSE AOD</string>
+    <string name="nightmode_toast">NightMode AutoOFF: %1s</string>
+    <string name="force_word_on_flat" translatable="false">Force Word Clock on Flat theme</string>
+    <string name="use_word_clock" translatable="false">Use Word Clock</string>
+    <string name="not_use_word_flat" translatable="false">Not use Word Clock</string>
+    <string name="not_use_word_flat_toast">Word on Flat: %1s</string>
+    <string name="aod_weather_toast">Always on weather: %1s</string>
+    <string name="flip_off_screen_desc">Replace previous sleep mode. After the mobile phone is flipped or put into the pocket, the screen that is always on is automatically turned off, and the mobile phone can be restored by turning it back or taking out the pocket. Avoid unnecessary screen light. Tested on the Pro, recommended to be enabled</string>
+    <string name="clock_alignment_settings">Clock alignment settings</string>
+    <string name="what_is_clock_alignment_setting">What is the clock alignment setting</string>
+    <string name="what_is_clock_alignment_setting_desc">In the always-on mode, there is often a time mismatch, so you need to perform some operations to align the time, but different alignment schemes have different power consumption.\nHere you can choose your favorite alignment scheme.\n** Remarks: Only available in constant light mode</string>
+    <string name="rely_on_system_broadcast">Rely on system broadcast only</string>
+    <string name="rely_on_system_broadcast_desc">Just updating the time through the system\'s broadcast is suitable for broadcasting accurate OOS, but there will be a delay in HOS.\n** Note: the most power saving</string>
+    <string name="click_to_set_system_broadcast_mode">Click to set system broadcast mode</string>
+    <string name="mode_set">Mode set %1s</string>
+    <string name="use_alarm_manager">Use AlarmManager to wake up</string>
+    <string name="use_alarm_manager_desc">In addition to the system broadcast, the AlarmManager is used to wake up. This method will synchronize the time every one minute, but it will also affect the sleep state of the mobile phone.\n** Remarks: There is power consumption, and wake up will be suspended after turning off the screen (this state saves power), so it is recommended to turn off the button or turn off the screen when not in use</string>
+    <string name="click_to_set_alarm_manager">Click to set AlarmManager mode</string>
+    <string name="use_alarm_manager_timeout_mode">Use AlarmManager-TimeOut mode to wake up (default)</string>
+    <string name="use_alarm_manager_timeout_mode_desc">Use AlarmManager fixed time task to wake up and synchronize once a minute. After a period of self-test, the effect is good now</string>
+    <string name="click_to_set_alarm_manager_timeout">Click to set AlarmManager-TimeOut mode</string>
+    <string name="use_chore_mechanism">Use the Chore mechanism to wake up</string>
+    <string name="use_chore_mechanism_desc">Another way is to use an animated clock to wake up, which can achieve the most accurate time synchronization, but it will affect the power consumption of the phone, and it may also be inaccurate when the phone enters deep sleep.\n** Note: There is power consumption, and the wake-up will be suspended after the flip-off screen is turned off (this state saves power), so it is recommended to flip the screen or turn off the screen when not in use</string>
+    <string name="click_to_set_chore_mechanism">Click to set Chore mode</string>
+    <string name="always_on_hand_detection">Show when raised</string>
+    <string name="always_on_hand_detection_desc">Show the always on display when raised. Only tested on the 7 Pro. Not guaranteed to be the same as the system AoD when raised option.</string>
+    <string name="raise_hand_detection_on">Raise detection enabled</string>
+    <string name="raise_hand_detection_off">Raise detection disabled</string>
+    <string name="raise_hand_detection_toast">Raise hand detection: %1s</string>
+    <string name="lyrics_translation">Lyrics translation</string>
+    <string name="lyrics_translation_desc">Turn on Chinese translation for AOD screen lyrics (sometimes it is useless)</string>
+    <string name="translation_on">Turn on translation</string>
+    <string name="translation_off">Turn off translation</string>
+    <string name="translation_toast">Lyric translation: %1s</string>
+    <string name="flip_off_screen_enabled">Flip / pocket mode On</string>
+    <string name="flip_off_screen_disabled">Flip / pocket mode off</string>
+    <string name="flip_off_screen_toast">Flip phone over or put in pocket to turn off display: %1s</string>
+    <string name="auto_brightness_aod_desc">Adjust brightness using light sensor in AOD to save power</string>
+    <string name="auto_brightness_aod_enabled">Automatic brightness On</string>
+    <string name="auto_brightness_aod_disabled">Automatic brightness Off</string>
+    <string name="auto_brightness_aod_toast">Automatic brightness: %1s</string>
+    <string name="aod_show_sensitive_content">Show sensitive information on the AOD</string>
+    <string name="aod_show_sensitive_content_desc">When locked, some people don\'t like information being displayed on their screen, to avoid unnecessary embarrassment. With this enabled, only the title of sensitive notifications will be shown as a reminder</string>
+    <string name="aod_show_sensitive_content_enabled">All information displayed</string>
+    <string name="aod_show_sensitive_content_disabled">Block sensitive messages when locked</string>
+    <string name="aod_show_sensitive_content_toast">All content displayed when locked: %1s</string>
+    <string name="aod_font_desc">Use system font</string>
+    <string name="aod_font_enabled">Using system font on AOD</string>
+    <string name="aod_font_disabled">Using Google Sans on AOD</string>
+    <string name="aod_font_toast">Follow system font: %1s</string>
+    <string name="aod_offset_music">Offset music</string>
+    <string name="aod_offset_music_desc">On phones with an in-screen fingerprint sensor, the music display conflicts with the fingerprint sensor location. With this enabled, the music shifts up to avoid the sensor.</string>
+    <string name="aod_offset_music_enabled">Music offset enabled</string>
+    <string name="aod_offset_music_disabled">Music offset disabled</string>
+    <string name="aod_offset_music_toast">Music offset enabled: %1s</string>
+    <string name="aod_hide_after_hour">Turn off the screen after 1 hour</string>
+    <string name="aod_hide_after_hour_desc">For use if you want this</string>
+    <string name="aod_hide_after_hour_enabled">Screen will turn off after 10 minutes</string>
+    <string name="aod_hide_after_hour_disabled">Screen will not turn off after 10 minutes</string>
+    <string name="aod_hide_after_hour_toast">Auto screen off after 10m: %1s</string>
+    <string name="aod_hide_after_15_seconds">Automatically turn the screen off after 15 seconds of bright screen (not recommended - buggy)</string>
+    <string name="aod_hide_after_15_seconds_desc">Some people only need to check their notifications, so this function is provided, which is used in conjunction with the hand detection function. (The priority of this setting is higher than the setting of 10 minutes, and the effect will only appear in 10 minutes when the screen is not turned off in 15 seconds)</string>
+    <string name="aod_hide_after_15_seconds_enabled">Screen will turn off after 15 seconds</string>
+    <string name="aod_hide_after_15_seconds_disabled">Screen will not turn off after 15 seconds</string>
+    <string name="aod_hide_after_15_seconds_toast">Auto screen off after 15 seconds: %1s</string>
+    <string name="aod_force_english">Force Use English on Word Theme</string>
+    <string name="aod_force_english_desc">English on Word Clock</string>
+    <string name="aod_force_english_enabled">Force English ON</string>
+    <string name="aod_force_english_disabled">Force English OFF</string>
+    <string name="aod_force_english_toast">FORCE ENGLISH WORD CLOCK: %1s</string>
+    <string name="aod_mode_whats_this">What is this function？</string>
+    <string name="aod_mode_whats_this_desc">Here you can control the phone\'s AOD mode, which is set to either system enhanced mode or constant light mode</string>
+    <string name="aod_mode_system_enhancement">System Enhancement Mode</string>
+    <string name="aod_mode_system_enhancement_desc">The optimization is based on the original OnePlus screen, and the bottom of the screen shows the music being played by the system. The information screen notification interface has been optimized, which is more beautiful than before, and added a beating animation of the new notification.</string>
+    <string name="aod_mode_system_enhancement_click_to_use">Click to use system enhanced mode</string>
+    <string name="aod_mode_system_enhancement_7pro">7 Pro does not support system enhanced mode</string>
+    <string name="aod_mode_system_enhancement_enabled">The system enhanced mode is set successfully</string>
+    <string name="aod_mode_system_enhancement_features">I stole the screen from OnePlus and replaced it with a completely rewritten screen interface. Optimized the power consumption and anti-burn screen of the main interface, and optimized the notification display of the main interface.\nNew features:\n1. Support notification stay, the last notification received will be left on the main screen of the interest screen in the form of small print, more convenient to see and avoid missed notifications\n2. Comprehensive animation effects, the arrival of new notifications, and the change in the process of notification residency has a smooth animation display\n3. Music screen, the concert played by the system is displayed on the screen\n4. Sleep mode, enable sleep mode during sleep to avoid the trouble of constantly bright screen\n5. Low power consumption, although it is not close to the screen, but there is no background task in the whole, the screen is in a low power consumption state\nOther matters: This mode is still under development, and some bugs may be provided for free during testing!</string>
+    <string name="aod_use_this"><![CDATA[Always On Display Mode <- Use This]]></string>
+    <string name="aod_click_to_use">Click to use Always On Display</string>
+    <string name="aod_enabled_toast">Always On: The constant light mode is set successfully</string>
+    <string name="activity_custom_title">Theme colour</string>
+    <string name="custom_theme_click_to_use">%1s Click to use</string>
+    <string name="custom_theme_toast">Theme applied: %1s</string>
+    <string name="english_learn_weekdays">Weekdays</string>
+    <string name="english_learn_battery_status">Battery status</string>
+    <string name="english_learn_headphone_connection">Headphone connection</string>
+    <string name="english_learn_bluetooth_connection">Bluetooth connection</string>
+    <string name="english_learn_volume_related">Volume related</string>
+    <string name="main_activity_instructions">## Tips -> Tai Chi Magisk Operating Environment Requirements: \nRequires Tai Chi App-> 5.0.2 and above Tai Chi Magisk plug-in version 4.7.5 (see group for download) or above\nEdXposed will also work</string>
+    <string name="main_module_active">The module has been activated\nReinstall or upgrade the APP, it is recommended to check again and click the bottom to restart the display</string>
+    <string name="main_module_inactive">The module has not been activated. Please activate the module in Tai Chi Magisk</string>
+    <string name="main_aod_added">Actively show that APP has been added\nFor the first time, you need to click below to force restart</string>
+    <string name="main_aod_not_added">Active display APP is not added Click to add active display APP\nRequires Tai Chi · Magisk</string>
+    <string name="main_music_settings">AOD Music settings</string>
+    <string name="main_aod_mode">Set the AOD screen mode: System mode / Always on mode\nCurrent mode: %1s</string>
+    <string name="main_aod_settings">Custom settings for Always ON mode\nFlip the screen, hide sensitive information, etc.</string>
+    <string name="aod_music_settings_what_desc">This is a function of screen music reminder. The interface effect is similar to that of Google Pixel\'s Now Playing, but it is essentially showing that the system is playing. To use this function, you need to add the music app you use to the list of TaiChi apps.</string>
+    <string name="aod_music_supported">Which apps are supported？</string>
+    <string name="aod_music_supported_desc">Currently testing NetEase Cloud Music and QQ Music, RetroMusic [Translator note: Spotify, YouTube Music, Play Music work], but in theory there is no compatibility issue. Remember to add your own music app to TaiChi and kill and restart.</string>
+    <string name="aod_music_precautions">Precautions？</string>
+    <string name="aod_music_precautions_desc">NetEase Cloud Music needs to turn on the system lock screen mode in the music lock screen, and other software can not be used for the same reason.</string>
+    <string name="aod_music_enabled">Music enabled</string>
+    <string name="aod_music_disabled">Music disabled</string>
+    <string name="aod_music_toast">Music display enabled: %1s</string>
+    <string name="aod_music_add_qq">Click here to help you join NetEase Cloud and QQ Music~</string>
+    <string name="aod_music_enabled_apps">These are apps already in TaiChi</string>
+    <string name="aod_sleep_what">What is this for?</string>
+    <string name="aod_sleep_what_desc">When we use the constant light mode of the breathing screen, there are times when we don\'t want it to be always bright, such as when sleeping. When the sleep mode is turned on, the constant light mode will only last 5-10 seconds and then turn off the screen, and vice versa.</string>
+    <string name="aod_sleep_turn_on">Turn on sleep mode</string>
+    <string name="aod_sleep_enabled_toast">Sleep mode enabled</string>
+    <string name="aod_sleep_turn_off">Turn off sleep mode</string>
+    <string name="aod_sleep_disabled_toast">Sleep mode turned off</string>
+    <string name="test_settings">Test Settings</string>
+    <string name="dialog_invalid_system">System version is too low</string>
+    <string name="dialog_invalid_system_content">This module can only be used on the official Android P of OnePlus, other systems will roll over, this is a cliff-like dialog. Forcible use of bugs should be your own responsibility, without feedback.</string>
+    <string name="dialog_invalid_system_exit">Exit</string>
+    <string name="dialog_invalid_system_ignore">Ignore and run anyway</string>
+    <string name="tai_chi_not_installed_toast">TaiChi is not installed</string>
+    <string name="aod_in_list">Active display / SystemUI (OP7Pro) has been added</string>
+    <string name="taichi_out_of_date_toast">TaiChi is not installed or the version is lower than 4.3.4</string>
+    <string name="status_edxposed_warning">Note: If EdXposed works by itself, please ignore the above tips</string>
+    <string name="status_normal">normal %1s</string>
+    <string name="status_abnormal">abnormal %1s</string>
+    <string name="plugin_intervines_state">The number of times this plugin replaced the always on display is %1s\nLast screen off time: %2s</string>
+    <string name="plugin_intervines_error">The number of times the plug-in replaced the always on display is 0\nLast screen off time: %1s\nIf this is not just after restarting the phone, there may be a problem</string>
+    <string name="learn_a_little_english">Learn a little Chinese</string>
+    <string name="join_qq_group">Join QQ group</string>
+    <string name="join_backup_qq_group">Join backup QQ group</string>
+    <string name="join_telegram_group">Join Telegram Group EU/NA/IN</string>
+    <string name="return_to_old_settings">Return to the old settings interface (not recommended)</string>
+    <string name="button_donate">Like this mod? Donate to the developers</string>
+    <string name="title_toolbox">Toolbox</string>
+    <string name="weather_data_preview">Current weather data：%1s %2s %3s%4s\nToday\'s temperature range：%5s/%6s%7s</string>
+    <string name="weather_service_disabled">%1s\nWeather service is not enabled. You can enable it in the always on display settings</string>
+    <string name="weather_service_error_desc">Failed to get the weather data. Check whether the system weather app is available.\nWeather automatically disabled</string>
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="theme_set_toast">Theme set %1s</string>
+    <string name="qq_not_supported">QQ не встановлено, або версія не підтримується</string>
+    <string name="root_error_toast">An error occurred, root may not be granted</string>
+    <string name="pid_restart_toast">Query success: PID %1s has been restarted. Click the button to restart again</string>
+    <string name="no_pid_found">No PID found. Your phone may not be OnePlus. If it is, please contact the developer.</string>
+    <string name="custom_settings">Custom settings</string>
+    <string name="just_restarted">Щойно перезавантажено</string>
+    <string name="no_record">немає запису</string>
+    <string name="operating_mode_not_detected">Режим роботи не виявлено</string>
+
+    <!-- Custom Mod settings -->
+    <string name="custom_settings_title">Custom Settings</string>
+    <string name="custom_settings_info_title">What\'s this?</string>
+    <string name="custom_settings_info_desc">Custom Settings, fixes, mod and translation by Kieron Quinn / Quinny899 @ XDA. All options not guaranteed to work on all devices and configurations.</string>
+    <string name="custom_settings_general">General</string>
+    <string name="custom_settings_date_format">Date Format</string>
+    <string name="custom_settings_date_format_no_leading">%1s (no leading 0)</string>
+    <string name="custom_settings_24_h_clock">24 hour clock</string>
+    <string name="custom_settings_24_h_clock_desc">Use a 24 hour clock on the AoD</string>
+    <string name="custom_settings_show_am_pm">Show AM/PM</string>
+    <string name="custom_settings_show_am_pm_desc">Show AM/PM text when using 12 hour (looks pretty broken)</string>
+    <string name="custom_settings_show_bullets">Show Bullet Symbols</string>
+    <string name="custom_settings_show_bullets_desc">Show bullet point symbols • between the date and weather and weather city (if enabled) and alarm</string>
+    <string name="custom_settings_weather">Weather</string>
+    <string name="custom_settings_weather_condition">Show weather condition icon</string>
+    <string name="custom_settings_weather_condition_desc">Show an icon before the weather condition text in the form of an emoji (eg. ☁️)</string>
+    <string name="custom_settings_weather_condition_text">Show weather condition text</string>
+    <string name="custom_settings_weather_condition_text_desc">Show the weather condition as text (eg. Cloudy)</string>
+    <string name="custom_settings_temperature">Show temperature</string>
+    <string name="custom_settings_temperature_desc">Show the current temperature (unit can be changed in the OnePlus weather app)</string>
+    <string name="custom_settings_city">Show city</string>
+    <string name="custom_settings_city_desc">Show the current weather city from the auto location (shows on a second line)</string>
+    <string name="custom_settings_alarm">Alarm</string>
+    <string name="custom_settings_next_alarm">Show next alarm</string>
+    <string name="custom_settings_next_alarm_desc">Show the next alarm after the weather. Only shows alarms within the next 24h (shows on a second line)</string>
+    <string name="custom_settings_alarm_emoji">Show alarm emoji</string>
+    <string name="custom_settings_alarm_emoji_desc">Show alarm emoji before the next alarm time</string>
+    <string name="custom_settings_music">Music</string>
+    <string name="custom_settings_system_music">Use System Music</string>
+    <string name="custom_settings_system_music_desc">Use the system music controller listener, which may be more reliable when using TaiChi. Requires AOD music display to be enabled.</string>
+    <string name="custom_settings_pixel_music_icon">Use Pixel music icon</string>
+    <string name="custom_settings_pixel_music_icon_desc">Use the music icon from the Pixel always on display (animated, may be buggy)</string>
+
+    <!-- Hour displayed in words on the typographic clock face. [CHAR LIMIT=12] -->
+    <string-array name="type_clock_hours">
+        <item>Дванадцята</item>
+        <item>Перша</item>
+        <item>Друга</item>
+        <item>Третя</item>
+        <item>Четверта</item>
+        <item>П\'ята</item>
+        <item>Шоста</item>
+        <item>Сьома</item>
+        <item>Восьма</item>
+        <item>Дев\'ята</item>
+        <item>Десята</item>
+        <item>Одинадцята</item>
+    </string-array>
+
+    <!-- Minutes displayed in words on the typographic clock face. [CHAR LIMIT=20] -->
+    <string-array name="type_clock_minutes">
+        <item>O\u2019Clock</item>
+        <item>Нуль один</item>
+        <item>Нуль дві</item>
+        <item>Нуль три</item>
+        <item>Нуль чотири</item>
+        <item>Нуль п\'ять</item>
+        <item>Нуль шість</item>
+        <item>Нуль сім</item>
+        <item>Нуль вісім</item>
+        <item>Нуль дев\'ять</item>
+        <item>Десять</item>
+        <item>Одинадцять</item>
+        <item>Дванадцять</item>
+        <item>Thirteen</item>
+        <item>Fourteen</item>
+        <item>Fifteen</item>
+        <item>Sixteen</item>
+        <item>Seventeen</item>
+        <item>Eighteen</item>
+        <item>Nineteen</item>
+        <item>Twenty</item>
+        <item>Twenty One</item>
+        <item>Twenty Two</item>
+        <item>Twenty Three</item>
+        <item>Twenty Four</item>
+        <item>Twenty Five</item>
+        <item>Twenty Six</item>
+        <item>Twenty Seven</item>
+        <item>Twenty Eight</item>
+        <item>Twenty Nine</item>
+        <item>Thirty</item>
+        <item>Thirty One</item>
+        <item>Thirty Two</item>
+        <item>Thirty Three</item>
+        <item>Thirty Four</item>
+        <item>Thirty Five</item>
+        <item>Thirty Six</item>
+        <item>Thirty Seven</item>
+        <item>Thirty Eight</item>
+        <item>Thirty Nine</item>
+        <item>Forty</item>
+        <item>Forty One</item>
+        <item>Forty Two</item>
+        <item>Forty Three</item>
+        <item>Forty Four</item>
+        <item>Forty Five</item>
+        <item>Forty Six</item>
+        <item>Forty Seven</item>
+        <item>Forty Eight</item>
+        <item>Forty Nine</item>
+        <item>Fifty</item>
+        <item>Fifty One</item>
+        <item>Fifty Two</item>
+        <item>Fifty Three</item>
+        <item>Fifty Four</item>
+        <item>Fifty Five</item>
+        <item>Fifty Six</item>
+        <item>Fifty Seven</item>
+        <item>Fifty Eight</item>
+        <item>Fifty Nine</item>
+    </string-array>
+
+    <string name="sensitive_notification">Нове сповіщення</string>
+
+    <!-- New Settings UI -->
+    <string name="menu_nav_bar_settings_aod">Загальні</string>
+    <string name="menu_nav_bar_settings_clock">Годинник</string>
+    <string name="menu_nav_bar_settings_music">Музика</string>
+    <string name="menu_nav_bar_settings_weather">Погода</string>
+    <string name="menu_nav_bar_settings_theme">Тема</string>
+    <string name="bs_theme_picker_title">Вибір теми</string>
+
+    <string name="bs_theme_name_default">Типова</string>
+    <string name="bs_theme_name_flat">Плоска</string>
+    <string name="bs_theme_name_dvd">DVD</string>
+    <string name="bs_theme_name_pure_music">Музика</string>
+    <string name="bs_theme_name_flat_music">Плоска музика</string>
+    <string name="bs_theme_name_word">Текст</string>
+    <string name="settings_general_raise_detection">Raise detection</string>
+    <string name="settings_general_raise_detection_desc">Show the AoD only when the device is raised. Only tested on the 7 Pro, and is not guaranteed to work the same as the system option</string>
+    <string name="settings_general_aod_memo">Ambient Display Message</string>
+    <string name="settings_general_aod_memo_desc">Set the text that will be displayed below the clock on supported layouts</string>
+    <string name="settings_general_night_mode">Disable Ambient Display when Night Mode is enabled</string>
+    <string name="settings_general_night_mode_desc">Enable this to not show the AoD when the system Night Mode is enabled. Take notice of this setting, it\'s often the cause of incorrect issue reports!</string>
+    <string name="settings_general_force_english">Always use English on \'Word\' layout</string>
+    <string name="settings_general_force_english_desc">Enable this setting to always use English text on the \'Word\' theme, regardless of the device language</string>
+    <string name="settings_general_flip_mode">Flip / Pocket Mode</string>
+    <string name="settings_general_flip_mode_desc">Turn off the screen when device is flipped over or in your pocket. To save power, it\'s recommended to enable this.</string>
+    <string name="settings_general_auto_brightness">Auto Brightness</string>
+    <string name="settings_general_auto_brightness_desc">Automatically adjust the brightness of the AoD to save power</string>
+    <string name="settings_general_sensitive_notifications">Приховати важливі сповіщення</string>
+    <string name="settings_general_sensitive_notifications_desc">Приховувати конфіденційний вміст в сповіщеннях, такі як повідомлення, на екрані AoD</string>
+    <string name="settings_general_system_font">Шрифт Google Sans</string>
+    <string name="settings_general_system_font_desc">Використовувати шрифт Google Sans на екрані блокування. Вимкніть цю опцію, щоб використовувати системний шрифт.</string>
+    <string name="settings_general_ten_minutes">Вимикати через 10 хвилин</string>
+    <string name="settings_general_ten_minutes_desc">Ховати AoD і вимкнути екран після 10 хвилин неактивності</string>
+    <string name="settings_general_turn_off_after_fifteen_seconds">Turn off after 15 seconds</string>
+    <string name="settings_general_turn_off_after_fifteen_seconds_desc">Turn off the AoD after 15 seconds. This is best used with raise detection, for people who just want to check their notifications. Has a higher priority than the 10 minutes option.</string>
+    <string name="settings_general_aod_memo_input">Повідомлення</string>
+    <string name="settings_general_aod_memo_helper">Leave blank for no text to be displayed</string>
+    <string name="settings_clock_word_clock_flat">Світовий годинник</string>
+    <string name="settings_clock_word_clock_flat_desc">Use the Word Clock on the Flat Theme</string>
+    <string name="settings_clock_date_format">Формат дати</string>
+    <string name="settings_clock_24h">24-годинний формат</string>
+    <string name="settings_clock_24h_desc">Показувати час в 24-годинному форматі на AoD</string>
+    <string name="settings_clock_show_am_pm">Показувати AM/PM</string>
+    <string name="settings_clock_show_am_pm_desc">Показувати текст AM/PM, коли використовується 12-годинний формат (виглядає доволі погано)</string>
+    <string name="settings_clock_general">General</string>
+    <string name="settings_clock_alarm">Будильник</string>
+    <string name="settings_clock_show_alarm">Show Next Alarm</string>
+    <string name="settings_clock_show_alarm_desc">Show the next alarm after the weather. Only shows alarms within the next 24h</string>
+    <string name="settings_music_master_switch">Enable Music Display</string>
+    <string name="settings_music_use_system_music">System Music</string>
+    <string name="settings_music_use_system_music_desc">Use the system music controller listener, which may be more reliable</string>
+    <string name="settings_music_use_pixel_icon">Pixel Music Icon</string>
+    <string name="settings_music_use_pixel_icon_desc">Use the music icon from the Pixel always on display (animated, may be buggy)</string>
+    <string name="settings_music_offset">Offset Music</string>
+    <string name="settings_music_offset_desc">Move the music display up to avoid the in-display fingerprint sensor, for devices that have one.</string>
+    <string name="settings_lyrics_translation">Lyrics Translation</string>
+    <string name="settings_lyrics_translation_desc">Translate on-screen lyrics into Chinese</string>
+    <string name="settings_music_taichi_apps">TaiChi Music Apps</string>
+    <string name="settings_music_taichi_apps_desc">For better compatibility, it\'s recommended that you add your music apps to TaiChi. Tap here to view the currently added apps and add more.</string>
+    <string name="settings_weather_master_switch">Enable Weather</string>
+    <string name="settings_weather_current_condition">Current Weather Information:</string>
+    <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nToday\'s temperature range: %4s\n\nTo change the location or unit, tap to launch the OnePlus Weather app</string>
+    <string name="settings_weather_current_condition_desc_off">Weather information is not available. The weather functionality of the AoD will not work. Please check that you have the OnePlus Weather app installed and enabled</string>
+    <string name="settings_weather_show_condition">Show weather condition icon</string>
+    <string name="settings_weather_show_condition_desc">Show an icon before the weather condition text</string>
+    <string name="settings_weather_show_condition_text">Show weather condition text</string>
+    <string name="settings_weather_show_condition_text_desc">Show the weather condition as text (eg. Cloudy)</string>
+    <string name="settings_weather_show_temperature">Show Temperature</string>
+    <string name="settings_weather_show_temperature_desc">Show the current temperature (unit can be changed in the OnePlus Weather app)</string>
+    <string name="settings_weather_show_city">Show City</string>
+    <string name="settings_weather_show_city_desc">Show the current weather city from the auto location</string>
+    <string name="settings_clock_advanced">Advanced</string>
+    <string name="settings_clock_advanced_clock_sync">Clock Synchronization</string>
+    <string name="settings_clock_advanced_clock_sync_desc">If the clock does not update correctly on your AoD, you can change the mode of sync here.</string>
+    <string name="settings_clock_alignment_info">What does Clock Synchronization do?</string>
+    <string name="settings_clock_alignment_info_desc">These settings allow you to pick from four options to change the balance between clock accuracy on the always on display and power consumption. If you notice the clock on the AoD isn\'t updating as it should do, try changing to a different synchronization setting\n\nPlease note this is an <b>advanced option</b>, don\'t touch it if you don\'t understand what it does</string>
+    <string name="settings_clock_alignment_system_broadcast">System Broadcast Mode</string>
+    <string name="settings_clock_alignment_system_broadcast_desc">This option relies on just the system broadcast of time updates. It is fairly accurate, but does have problems, especially on HydrogenOS. This uses the least amount of power.</string>
+    <string name="settings_clock_alignment_alarmmanager">Alarm Manager Mode</string>
+    <string name="settings_clock_alignment_alarmmanager_desc">This option uses the android Alarm Manager system in addition to the system broadcast. This allows for more accurate updates every minute, at the expense of a higher power consumption. If you use this option, it\'s recommended to use one of the options to turn the screen off after some time.</string>
+    <string name="settings_clock_alignment_alarmmanager_timeout">Alarm Manager with Timeout Mode <b>(Default)</b></string>
+    <string name="settings_clock_alignment_alarmmanager_timeout_desc">This option uses the Alarm Manager, but uses a \'fixed time task\' to wake up and synchronize once a minute. This is the most balanced of the options.</string>
+    <string name="settings_clock_alignment_choreographer">Choreographer Mode</string>
+    <string name="settings_clock_alignment_choreographer_desc">This option uses an animated clock to wake up, which provides a very accurate time synchronization, at the expense of power. It may also be inaccurate when the phone enters deep sleep. If you use this option, it\'s recommended to use one of the options to turn the screen off after some time.</string>
+    <string name="settings_module_module_status">Стан модуля</string>
+    <string name="settings_module_options">Налаштування</string>
+    <string name="settings_module_settings">Налаштування OPAodMod</string>
+    <string name="settings_module_settings_desc">Змінення розташування елементів, теми, налаштування зовнішнього вигляду та роботи модуля</string>
+    <string name="settings_module_status_xposed">Стан Xposed</string>
+    <string name="settings_module_status_xposed_desc_not_installed">TaiChi або EdXposed не встановлено</string>
+    <string name="settings_module_status_xposed_desc_off_tai">Модуль не увімкнено в TaiChi</string>
+    <string name="settings_module_status_xposed_desc_off_ed">Модуль не увімкнено в EdXposed</string>
+    <string name="settings_module_status_xposed_desc_on_ed">Модуль увімкнено в EdXposed</string>
+    <string name="settings_module_status_xposed_desc_on_tai">Модуль увімкнено в TaiChi</string>
+
+    <string name="settings_module_required_setup">Необхідні налаштування</string>
+    <string name="settings_module_status_pick_up_display">Підніміть телефон, щоб показати</string>
+    <string name="settings_module_status_pick_up_display_desc_off">Щоб цей модуль працював належним чином, необхідно увімкнути опцію \"Підніміть телефон, щоб показати\". Натисніть, щоб перейти до налаштувань</string>
+    <string name="settings_module_status_pick_up_display_desc_on">Системну опцію \"Підніміть телефон, щоб показати\" увімкнено</string>
+
+    <string name="settings_module_status_storage_permission">Дозвіл на збереження даних</string>
+    <string name="settings_module_status_storage_permission_desc_off">Необхідно надати доступ до сховища, щоб модуль міг зберігати налаштування. Натисніть, щоб надати</string>
+    <string name="settings_module_status_storage_permission_desc_on">Дозвіл на збереження даних надано</string>
+
+    <string name="settings_module_status_working">Стан підключення</string>
+    <string name="settings_module_status_working_desc_off">Always-on-Display ще не підключений. Якщо проблема досі залишається, спробуйте виконати дії, описані в розділі \"Допомога\" нижче.\n\nНатисніть, для отримання інформації про налагодження</string>
+    <string name="settings_module_status_working_desc_on">Модуль працює належним чином. Натисніть, щоб переглянути інформацію про налагодження</string>
+    <string name="settings_module_status_working_desc_just_restarted">Ambient Display щойно перезавантажено. Попробуйте використати AoD зараз. Якщо це повідомлення не зникло, спробуйте виконати дії, описані в розділі \"Допомога\" нижче.\n\nНатисніть, для отримання інформації про налагодження</string>
+
+    <string name="settings_module_help">Допомога</string>
+    <string name="settings_module_troubleshooting">Пошук несправностей</string>
+    <string name="settings_module_troubleshooting_desc">Спробуйте виконати одну або декілька цих дій:\n- Переконайтеся, що модуль увімкнено в TaiChi або EdXposed\n- Переконайтеся, що ви виконали необхідні налаштування, які описані вище\n- Перезавантажте Ambient Display\n- Перезавантажте пристрій\n- Перезапустіть модуль (вимкніть і знову увімкніть його в TaiChi або EdXposed), а потім перезавантажте пристрій</string>
+    <string name="settings_module_troubleshooting_rehooking">Перепідключити</string>
+    <string name="settings_module_troubleshooting_restart_ambient">Перезавантажити Ambient Display</string>
+    <string name="settings_module_troubleshooting_restart_ambient_snackbar">Ambient Display перезавантажено</string>
+    <string name="settings_module_groups">Групи</string>
+    <string name="settings_module_groups_desc" formatted="false">При\'єднуйтеся до офіційного каналу в Telegram 🌍 або групи в QQ 🇨🇳</string>
+    <string name="settings_module_groups_telegram">Telegram</string>
+    <string name="settings_module_groups_qq">QQ</string>
+    <string name="settings_module_groups_qq_backup">QQ (Запасна)</string>
+
+    <string name="settings_module_about">Про застосунок</string>
+    <string name="settings_module_about_info">Версія OPAodMod %1s</string>
+    <string name="settings_module_about_info_desc">Створено RetroX та Kieron Quinn (Quinny898/Quinny899). Іконки створені Amadeo.</string>
+
+    <string name="settings_module_about_donate">Пожертвувати</string>
+    <string name="settings_module_about_donate_desc">Сподобався модуль? Ви можете підтримати основного розробника RetroX через AliPay, або Kieron Quinn (він займається підтримкою цього проєкту) через PayPal</string>
+    <string name="settings_module_about_donate_alipay">AliPay</string>
+    <string name="settings_module_about_donate_paypal">PayPal</string>
+    <string name="settings_module_about_donate_alipay_not_installed">AliPay не встановлено</string>
+
+    <string name="settings_module_menu_old_settings">Повернутися до старих налаштувань</string>
+    <string name="settings_module_menu_third_party_licences">Ліцензії третіх сторін</string>
+    <string name="menu_back">Назад</string>
+
+    <string name="bottom_sheet_debug_info">Інформація про налагодження</string>
+    <string name="bottom_sheet_debug_info_desc">Робочий режим: %1s\nСкільки разів мод заміняв системну заставку: %1s\nОстанній раз екран вимикався: %1s</string>
+
+    <string name="app_shortcut_settings">Налаштування</string>
+
+    <string name="xposed_constant_light_mode_7pro_ns">System Enhancement - 7 Pro is not supported</string>
+    <string name="xposed_constant_light_mode_7pro">Constant light mode - 7 Pro</string>
+
+    <string name="settings_module_translators">Перекладачі</string>
+    <string name="settings_module_translators_desc" translatable="false"><![CDATA[Lucayunxiao & RetroX 🇨🇳, Gregor Wünsch 🇩🇪, Igor Nechiporenko / jimmy123322 🇷🇺, Joaquin Benincasa (español)🇦🇷, Kieron Quinn 🇬🇧, Taras Korzhak 🇺🇦]]></string>
+
+    <!-- 3.1 -->
+    <string name="clock_its">Зараз</string>
+
+    <string name="charging_charging">Заряджання</string>
+    <string name="charging_quick_charging">Швидке заряджання</string>
+    <string name="charging_charged">Заряджено</string>
+    <string name="charging_sleep_mode">Режим сну</string>
+
+    <!-- Battery Optimisation settings -->
+    <string name="settings_battery_optimisation_title">Оптимізація акумулятора</string>
+    <string name="settings_battery_optimisation_desc">Налаштування, котрі дозволять збільшити час роботи акумулятора, коли увімкнено AoD</string>
+    <string name="settings_battery_force_doze">Force Doze</string>
+    <string name="settings_battery_force_doze_desc">Forcibly enable doze when the AoD is showing.\n<b>Warning: This might cause problems with notifications or alarms working when the AoD is showing, and is not fully tested</b></string>
+    <string name="settings_battery_enable_saver">Battery Saver</string>
+    <string name="settings_battery_enable_saver_desc">Enable the system battery saver when the AoD is showing.\n<b>Warning: This may cause apps to be killed unexpectedly when the screen is off</b></string>
+    <string name="settings_lower_refresh_rate">Lower Refresh Rate</string>
+    <string name="settings_lower_refresh_rate_desc">Lower the refresh rate to 60Hz when the AoD is showing on devices that support it</string>
+    <string name="settings_battery_lower_brightness">Lowest Brightness</string>
+    <string name="settings_battery_lower_brightness_desc">Always use the lowest brightness when the AoD is visible, regardless of the light sensor.\n<b>Note: This overrides the auto brightness setting in the General Settings</b></string>
+
+    <!-- Weather icon style settings -->
+    <string name="settings_weather_icon_style">Стиль іконки погоди</string>
+    <string name="settings_weather_icon_style_desc">Pick the style of the weather condition icon</string>
+    <string name="settings_clock_show_alarm_emoji_desc">Показувати іконку будильника</string>
+    <string name="settings_clock_show_alarm_emoji">Show alarm icon before the next alarm time</string>
+    <string name="switch_aod_enabled">AoD увімкнено</string>
+    <string name="settings_module_status_working_desc_disabled">AoD вимкнено</string>
+    <string name="qs_aodmod_title">Always on Display</string>
+    <string name="bs_theme_name_oneplus">OnePlus</string>
+    <string name="bs_theme_name_pixel">Pixel</string>
+    <array name="settings_weather_icon_style_text">
+        <item>Google</item>
+        <item>OnePlus</item>
+        <item>Emoji</item>
+    </array>
+    <string name="settings_op_clock_style">Стиль OnePlus</string>
+    <string name="settings_clock_style">Стиль</string>
+    <string name="headset_connected">Навушники під\'єднано</string>
+    <string name="headset_disconnected">Навушники від\'єднано</string>
+    <string name="bt_headset_connecting">%1s підключення</string>
+    <string name="bt_headset_connected">%1s підключено</string>
+    <string name="bt_headset_disconnecting">%1s відключення</string>
+    <string name="bt_headset_disconnected">%1s відключено</string>
+    <string name="volume_level">Гучність %1s</string>
+    <string name="settings_generic_theme_not_supported">Тема не підтримується</string>
+    <string name="settings_generic_theme_not_supported_desc">This theme does not support these options. Please choose a different theme if you wish to use them</string>
+    <string name="settings_lyrics">Слова</string>
+    <string name="settings_lyrics_desc">Show song lyrics on the AoD.\n<b>Note: These lyrics are provided by QQ and NetEase, and have limited song support. You may see some Chinese text with this option enabled.</b></string>
+    <string name="lyrics_loading">Loading lyrics…</string>
+    <string name="lyrics_music_only">This song is music only</string>
+    <string name="settings_music_use_small_music">Use Smaller Music Layout</string>
+    <string name="settings_music_use_small_music_desc">Use a smaller, more compact music layout similar to that seen on newer Pixels. The music info is displayed below the clock instead at the bottom of the screen.</string>
+    <string name="settings_general_hide_divider">Приховати розділювач</string>
+    <string name="settings_general_hide_divider_desc">Приховати горизонтальний розділювач між годинником, текстом та сповіщеннями</string>
+    <string name="settings_clock_show_bullet">Показувати точкові розділювачі</string>
+    <string name="settings_clock_show_bullet_desc">Показувати точки • в якості розділювача між датою та погодою</string>
+    <array name="settings_op_clock_style_options">
+        <item>Default</item>
+        <item>Digital 1</item>
+        <item>Digital 2</item>
+        <item>Text clock</item>
+        <item>Bold</item>
+        <item>Analog 1</item>
+        <item>Analog 2</item>
+        <item>Analog 3</item>
+        <item>Minimalism 1</item>
+        <item>Minimalism 2</item>
+    </array>
+
+</resources>
