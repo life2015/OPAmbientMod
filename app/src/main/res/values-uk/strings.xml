@@ -29,29 +29,29 @@
     <string name="work_status">Working Status</string>
     <string name="aod_music_settings">Ambient Display Music Settings</string>
     <string name="aod_custom_settings">Ambient Display Custom Settings</string>
-    <string name="clock_align_settings">Clock Alignment Setttings</string>
-    <string name="settings">Settings</string>
-    <string name="weather_service_ok">Weather Service works well</string>
-    <string name="weather_service_error">Weather Service ERROR</string>
-    <string name="weather_data">Weather Data</string>
-    <string name="storage_permission_granted">Storage permissions have been granted</string>
-    <string name="storage_permission_not_granted">Storage permissions are not granted. A lot of features will be wrong!</string>
-    <string name="check_permission_status">Check Permission Status</string>
-    <string name="permisssion_status">Permission Status</string>
-    <string name="display_style">Display Style</string>
-    <string name="music_lrc_support">PureMusic / FlatMusic mode has been tested to support lyrics display, other modes are not supported. Remember: not all themes support all the settings and features.</string>
-    <string name="other_custom_style_settings">Other custom style settings</string>
-    <string name="display_style_custom">Customize the Ambient Display style</string>
-    <string name="force_restart_not_7p">Force Restart Ambient Display, Root required (not 7Pro)</string>
-    <string name="force_restart_7p">Force Restart SystemUi and Ambient Display, Root required (7Pro)</string>
-    <string name="always_on_settings">Always on Settings</string>
-    <string name="ambient_memo">Ambient Display Memo</string>
-    <string name="ambient_will_display_memo">A Memo will be displayed when AOD is enabled</string>
-    <string name="enable_aod_memo">Enable AOD Memo</string>
-    <string name="disabel_aod_memo">Disable AOD Memo</string>
-    <string name="aod_memo_toast">Memo enabled: %1s</string>
-    <string name="input_memo_here">Input Memo Here</string>
-    <string name="save_memo">Save Memo</string>
+    <string name="clock_align_settings">Налаштування вирівнювання години</string>
+    <string name="settings">Налаштування</string>
+    <string name="weather_service_ok">Служба погоди працює справно</string>
+    <string name="weather_service_error">Служба погоди не працює (ПОМИЛКА)</string>
+    <string name="weather_data">Інформація про погоду</string>
+    <string name="storage_permission_granted">Дозвіл на сховище надано</string>
+    <string name="storage_permission_not_granted">Дозвіл на сховище не надано. Багато функцій будуть працювати не правильно!</string>
+    <string name="check_permission_status">Перевірити дозволи</string>
+    <string name="permisssion_status">Стан Дозволу</string>
+    <string name="display_style">Стиль відображення</string>
+    <string name="music_lrc_support">Теми «Музика» / «Плоска музика» були протестовані на відображення слів пісні, інші теми не підтримуються. Пам\'ятайте: не всі теми підтримують всі доступні налаштування і функції.</string>
+    <string name="other_custom_style_settings">Інші налаштування поточної теми</string>
+    <string name="display_style_custom">Змінити стиль Ambient Display</string>
+    <string name="force_restart_not_7p">Примусове перезавантаження Ambient Display, потрібен рут-доступ (НЕ ВИКОРИСТОВУВАТИ на OnePlus 7 Pro)</string>
+    <string name="force_restart_7p">Примусове перезавантаження SystemUi і Ambient Display, потрібен рут-доступ (ВИКОРИСТОВУВАТИ ЛИШЕ на OnePlus 7 Pro)</string>
+    <string name="always_on_settings">Налаштування Always On</string>
+    <string name="ambient_memo">Свій текст на Ambient Display</string>
+    <string name="ambient_will_display_memo">Текст буде показуватися на екрані, коли AOD увімкнено</string>
+    <string name="enable_aod_memo">Увімкнути свій текст на AOD</string>
+    <string name="disabel_aod_memo">Вимкнути свій текст на AOD</string>
+    <string name="aod_memo_toast">Показується текст: %1s</string>
+    <string name="input_memo_here">Введіть ваш текст тут</string>
+    <string name="save_memo">Зберегти текст</string>
     <string name="aod_display_weather">Display Weather On AOD</string>
     <string name="aod_weather_tip">Get system Weather APP data by CP, displayed on the screen information, and the data follow the system Weather App.</string>
     <string name="enable_aod_weather">Enable Aod Weather</string>
@@ -59,7 +59,7 @@
     <string name="flip_off_screen">Upside down mobile phone or in the pocket automatic screen off (7Pro slow response）</string>
     <string name="auto_brightness_aod">Adjust brightness by lux sensor</string>
     <string name="aod_font">Aod font follow System</string>
-    <string name="aod_music_settings_what">What is this function?</string>
+    <string name="aod_music_settings_what">Що це за функція?</string>
     <string name="nightmode_auto_close">DO NOT AOD when NightMode is on</string>
     <string name="nightmode_auto_close_content">When this option is on, NightMode ON -> Aod OFF. When this option is off, NightMode has nothing to do with AOD</string>
     <string name="nightmode_autoclose">NightMode AutoClose AOD</string>
@@ -275,53 +275,53 @@
         <item>Десять</item>
         <item>Одинадцять</item>
         <item>Дванадцять</item>
-        <item>Thirteen</item>
-        <item>Fourteen</item>
-        <item>Fifteen</item>
-        <item>Sixteen</item>
-        <item>Seventeen</item>
-        <item>Eighteen</item>
-        <item>Nineteen</item>
-        <item>Twenty</item>
-        <item>Twenty One</item>
-        <item>Twenty Two</item>
-        <item>Twenty Three</item>
-        <item>Twenty Four</item>
-        <item>Twenty Five</item>
-        <item>Twenty Six</item>
-        <item>Twenty Seven</item>
-        <item>Twenty Eight</item>
-        <item>Twenty Nine</item>
-        <item>Thirty</item>
-        <item>Thirty One</item>
-        <item>Thirty Two</item>
-        <item>Thirty Three</item>
-        <item>Thirty Four</item>
-        <item>Thirty Five</item>
-        <item>Thirty Six</item>
-        <item>Thirty Seven</item>
-        <item>Thirty Eight</item>
-        <item>Thirty Nine</item>
-        <item>Forty</item>
-        <item>Forty One</item>
-        <item>Forty Two</item>
-        <item>Forty Three</item>
-        <item>Forty Four</item>
-        <item>Forty Five</item>
-        <item>Forty Six</item>
-        <item>Forty Seven</item>
-        <item>Forty Eight</item>
-        <item>Forty Nine</item>
-        <item>Fifty</item>
-        <item>Fifty One</item>
-        <item>Fifty Two</item>
-        <item>Fifty Three</item>
-        <item>Fifty Four</item>
-        <item>Fifty Five</item>
-        <item>Fifty Six</item>
-        <item>Fifty Seven</item>
-        <item>Fifty Eight</item>
-        <item>Fifty Nine</item>
+        <item>Тринадцять</item>
+        <item>Чотирнадцять</item>
+        <item>П\'ятнадцять</item>
+        <item>Шістнадцять</item>
+        <item>Сімнадцять</item>
+        <item>Вісімнадцять</item>
+        <item>Дев\'ятнадцять</item>
+        <item>Двадцять</item>
+        <item>Двадцять один</item>
+        <item>Двадцять два</item>
+        <item>Двадцять три</item>
+        <item>Двадцять чотири</item>
+        <item>Двадцять п\'ять</item>
+        <item>Двадцять шість</item>
+        <item>Двадцять сім</item>
+        <item>Двадцять вісім</item>
+        <item>Двадцять дев\'ять</item>
+        <item>Тридцять</item>
+        <item>Тридцять один</item>
+        <item>Тридцять два</item>
+        <item>Тридцять три</item>
+        <item>Тридцять чотири</item>
+        <item>Тридцять п\'ять</item>
+        <item>Тридцять шість</item>
+        <item>Тридцять сім</item>
+        <item>Тридцять вісім</item>
+        <item>Тридцять дев\'ять</item>
+        <item>Сорок</item>
+        <item>Сорок один</item>
+        <item>Сорок два</item>
+        <item>Сорок три</item>
+        <item>Сорок чотири</item>
+        <item>Сорок п\'ять</item>
+        <item>Сорок шість</item>
+        <item>Сорок сім</item>
+        <item>Сорок вісім</item>
+        <item>Сорок дев\'ять</item>
+        <item>П\'ятдесят</item>
+        <item>П\'ятдесят один</item>
+        <item>П\'ятдесят два</item>
+        <item>П\'ятдесят три</item>
+        <item>П\'ятдесят чотири</item>
+        <item>П\'ятдесят п\'ять</item>
+        <item>П\'ятдесят шість</item>
+        <item>П\'ятдесят сім</item>
+        <item>П\'ятдесят вісім</item>
+        <item>П\'ятдесят дев\'ять</item>
     </string-array>
 
     <string name="sensitive_notification">Нове сповіщення</string>
@@ -355,7 +355,7 @@
     <string name="settings_general_sensitive_notifications">Приховати важливі сповіщення</string>
     <string name="settings_general_sensitive_notifications_desc">Приховувати конфіденційний вміст в сповіщеннях, такі як повідомлення, на екрані AoD</string>
     <string name="settings_general_system_font">Шрифт Google Sans</string>
-    <string name="settings_general_system_font_desc">Використовувати шрифт Google Sans на екрані блокування. Вимкніть цю опцію, щоб використовувати системний шрифт.</string>
+    <string name="settings_general_system_font_desc">Використовувати шрифт Google Sans на екрані блокування. Вимкніть цю опцію, щоб використовувати системний шрифт</string>
     <string name="settings_general_ten_minutes">Вимикати через 10 хвилин</string>
     <string name="settings_general_ten_minutes_desc">Ховати AoD і вимкнути екран після 10 хвилин неактивності</string>
     <string name="settings_general_turn_off_after_fifteen_seconds">Turn off after 15 seconds</string>
@@ -373,33 +373,33 @@
     <string name="settings_clock_alarm">Будильник</string>
     <string name="settings_clock_show_alarm">Show Next Alarm</string>
     <string name="settings_clock_show_alarm_desc">Show the next alarm after the weather. Only shows alarms within the next 24h</string>
-    <string name="settings_music_master_switch">Enable Music Display</string>
-    <string name="settings_music_use_system_music">System Music</string>
-    <string name="settings_music_use_system_music_desc">Use the system music controller listener, which may be more reliable</string>
-    <string name="settings_music_use_pixel_icon">Pixel Music Icon</string>
-    <string name="settings_music_use_pixel_icon_desc">Use the music icon from the Pixel always on display (animated, may be buggy)</string>
-    <string name="settings_music_offset">Offset Music</string>
-    <string name="settings_music_offset_desc">Move the music display up to avoid the in-display fingerprint sensor, for devices that have one.</string>
-    <string name="settings_lyrics_translation">Lyrics Translation</string>
-    <string name="settings_lyrics_translation_desc">Translate on-screen lyrics into Chinese</string>
+    <string name="settings_music_master_switch">Відображати музику</string>
+    <string name="settings_music_use_system_music">Системна музика</string>
+    <string name="settings_music_use_system_music_desc">Використовувати системний контролер слухача, який може бути більш надійним</string>
+    <string name="settings_music_use_pixel_icon">Іконка музики в стилі Pixel</string>
+    <string name="settings_music_use_pixel_icon_desc">Використовувати анімовану іконку музики з Pixel Always on Display (може підлагувати)</string>
+    <string name="settings_music_offset">Змістити музику</string>
+    <string name="settings_music_offset_desc">Посунути назву пісні трохи вище, щоб уникнути накладання тексту на сканер відбитку пальця (для пристроїв, котрі мають такий сканер).</string>
+    <string name="settings_lyrics_translation">Переклад слів пісні</string>
+    <string name="settings_lyrics_translation_desc">Перекладати слова пісні на китайську мову</string>
     <string name="settings_music_taichi_apps">TaiChi Music Apps</string>
     <string name="settings_music_taichi_apps_desc">For better compatibility, it\'s recommended that you add your music apps to TaiChi. Tap here to view the currently added apps and add more.</string>
-    <string name="settings_weather_master_switch">Enable Weather</string>
-    <string name="settings_weather_current_condition">Current Weather Information:</string>
-    <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nToday\'s temperature range: %4s\n\nTo change the location or unit, tap to launch the OnePlus Weather app</string>
-    <string name="settings_weather_current_condition_desc_off">Weather information is not available. The weather functionality of the AoD will not work. Please check that you have the OnePlus Weather app installed and enabled</string>
-    <string name="settings_weather_show_condition">Show weather condition icon</string>
-    <string name="settings_weather_show_condition_desc">Show an icon before the weather condition text</string>
-    <string name="settings_weather_show_condition_text">Show weather condition text</string>
-    <string name="settings_weather_show_condition_text_desc">Show the weather condition as text (eg. Cloudy)</string>
-    <string name="settings_weather_show_temperature">Show Temperature</string>
-    <string name="settings_weather_show_temperature_desc">Show the current temperature (unit can be changed in the OnePlus Weather app)</string>
-    <string name="settings_weather_show_city">Show City</string>
-    <string name="settings_weather_show_city_desc">Show the current weather city from the auto location</string>
-    <string name="settings_clock_advanced">Advanced</string>
-    <string name="settings_clock_advanced_clock_sync">Clock Synchronization</string>
+    <string name="settings_weather_master_switch">Показувати погоду</string>
+    <string name="settings_weather_current_condition">Поточна інформація про погоду:</string>
+    <string name="settings_weather_current_condition_desc">%1s - %2s - %3s\nСьогодні температура буде в межах: %4s\n\nНатисніть тут, щоб відкрити застосунок «Погода», звідки ви зможете змінити місцезнаходження чи одиниці виміру температури</string>
+    <string name="settings_weather_current_condition_desc_off">Інформація про погоду не доступна. Показ погоди на AoD не працюватиме. Будь ласка, перевірте, чи у вас встановлено та увімкнено оригінальний застосунок OnePlus «Погода»</string>
+    <string name="settings_weather_show_condition">Іконка погоди</string>
+    <string name="settings_weather_show_condition_desc">Показувати іконку перед текстом погоди</string>
+    <string name="settings_weather_show_condition_text">Текст погоди</string>
+    <string name="settings_weather_show_condition_text_desc">Показувати інформацію про погоду у вигляді тексту (наприклад, Хмарно)</string>
+    <string name="settings_weather_show_temperature">Температура</string>
+    <string name="settings_weather_show_temperature_desc">Показувати поточну температуру (одиниці виміру можна змінювати через застосунок OnePlus «Погода»)</string>
+    <string name="settings_weather_show_city">Місто</string>
+    <string name="settings_weather_show_city_desc">Показувати місто, яке визначатиметься автоматично (поточне місцерозташування)</string>
+    <string name="settings_clock_advanced">Розширені</string>
+    <string name="settings_clock_advanced_clock_sync">Синхронізація часу</string>
     <string name="settings_clock_advanced_clock_sync_desc">If the clock does not update correctly on your AoD, you can change the mode of sync here.</string>
-    <string name="settings_clock_alignment_info">What does Clock Synchronization do?</string>
+    <string name="settings_clock_alignment_info">Що робить ця функція?</string>
     <string name="settings_clock_alignment_info_desc">These settings allow you to pick from four options to change the balance between clock accuracy on the always on display and power consumption. If you notice the clock on the AoD isn\'t updating as it should do, try changing to a different synchronization setting\n\nPlease note this is an <b>advanced option</b>, don\'t touch it if you don\'t understand what it does</string>
     <string name="settings_clock_alignment_system_broadcast">System Broadcast Mode</string>
     <string name="settings_clock_alignment_system_broadcast_desc">This option relies on just the system broadcast of time updates. It is fairly accurate, but does have problems, especially on HydrogenOS. This uses the least amount of power.</string>
@@ -465,8 +465,8 @@
 
     <string name="app_shortcut_settings">Налаштування</string>
 
-    <string name="xposed_constant_light_mode_7pro_ns">System Enhancement - 7 Pro is not supported</string>
-    <string name="xposed_constant_light_mode_7pro">Constant light mode - 7 Pro</string>
+    <string name="xposed_constant_light_mode_7pro_ns">Поліпшений системний - 7 Pro не підтримується</string>
+    <string name="xposed_constant_light_mode_7pro">Режим постійного світла - 7 Pro</string>
 
     <string name="settings_module_translators">Перекладачі</string>
     <string name="settings_module_translators_desc" translatable="false"><![CDATA[Lucayunxiao & RetroX 🇨🇳, Gregor Wünsch 🇩🇪, Igor Nechiporenko / jimmy123322 🇷🇺, Joaquin Benincasa (español)🇦🇷, Kieron Quinn 🇬🇧, Taras Korzhak 🇺🇦]]></string>
@@ -493,9 +493,9 @@
 
     <!-- Weather icon style settings -->
     <string name="settings_weather_icon_style">Стиль іконки погоди</string>
-    <string name="settings_weather_icon_style_desc">Pick the style of the weather condition icon</string>
-    <string name="settings_clock_show_alarm_emoji_desc">Показувати іконку будильника</string>
-    <string name="settings_clock_show_alarm_emoji">Show alarm icon before the next alarm time</string>
+    <string name="settings_weather_icon_style_desc">Вибрати стиль іконки для прогнозу погоди</string>
+    <string name="settings_clock_show_alarm_emoji_desc">Іконка будильника</string>
+    <string name="settings_clock_show_alarm_emoji">Показувати іконку будильника перед часом наступного будильника</string>
     <string name="switch_aod_enabled">AoD увімкнено</string>
     <string name="settings_module_status_working_desc_disabled">AoD вимкнено</string>
     <string name="qs_aodmod_title">Always on Display</string>
@@ -504,9 +504,9 @@
     <array name="settings_weather_icon_style_text">
         <item>Google</item>
         <item>OnePlus</item>
-        <item>Emoji</item>
+        <item>Емодзі</item>
     </array>
-    <string name="settings_op_clock_style">Стиль OnePlus</string>
+    <string name="settings_op_clock_style">Стиль годинника</string>
     <string name="settings_clock_style">Стиль</string>
     <string name="headset_connected">Навушники під\'єднано</string>
     <string name="headset_disconnected">Навушники від\'єднано</string>
@@ -515,29 +515,29 @@
     <string name="bt_headset_disconnecting">%1s відключення</string>
     <string name="bt_headset_disconnected">%1s відключено</string>
     <string name="volume_level">Гучність %1s</string>
-    <string name="settings_generic_theme_not_supported">Тема не підтримується</string>
-    <string name="settings_generic_theme_not_supported_desc">This theme does not support these options. Please choose a different theme if you wish to use them</string>
-    <string name="settings_lyrics">Слова</string>
-    <string name="settings_lyrics_desc">Show song lyrics on the AoD.\n<b>Note: These lyrics are provided by QQ and NetEase, and have limited song support. You may see some Chinese text with this option enabled.</b></string>
-    <string name="lyrics_loading">Loading lyrics…</string>
-    <string name="lyrics_music_only">This song is music only</string>
-    <string name="settings_music_use_small_music">Use Smaller Music Layout</string>
-    <string name="settings_music_use_small_music_desc">Use a smaller, more compact music layout similar to that seen on newer Pixels. The music info is displayed below the clock instead at the bottom of the screen.</string>
+    <string name="settings_generic_theme_not_supported">Тема не має опцій</string>
+    <string name="settings_generic_theme_not_supported_desc">Ця тема не підтримує додаткові налаштування. Виберіть іншу тему, якщо хочете налаштувати відображення</string>
+    <string name="settings_lyrics">Слова пісні</string>
+    <string name="settings_lyrics_desc">Показувати слова пісні.\n<b>Примітка: слова пісень надаються QQ та NetEase і мають обмежену підтримку пісень. Може траплятися текст китайською мовою.</b></string>
+    <string name="lyrics_loading">Завантаження слів…</string>
+    <string name="lyrics_music_only">Ця пісня не має слів</string>
+    <string name="settings_music_use_small_music">Менший розмір для музики</string>
+    <string name="settings_music_use_small_music_desc">Використовувати менший, більш компактний макет для музики, схожий на той, який ви могли бачити на нових Google Pixel. Інформація про музику відображається під годиною, а не внизу екрану.</string>
     <string name="settings_general_hide_divider">Приховати розділювач</string>
     <string name="settings_general_hide_divider_desc">Приховати горизонтальний розділювач між годинником, текстом та сповіщеннями</string>
     <string name="settings_clock_show_bullet">Показувати точкові розділювачі</string>
     <string name="settings_clock_show_bullet_desc">Показувати точки • в якості розділювача між датою та погодою</string>
     <array name="settings_op_clock_style_options">
-        <item>Default</item>
-        <item>Digital 1</item>
-        <item>Digital 2</item>
-        <item>Text clock</item>
-        <item>Bold</item>
-        <item>Analog 1</item>
-        <item>Analog 2</item>
-        <item>Analog 3</item>
-        <item>Minimalism 1</item>
-        <item>Minimalism 2</item>
+        <item>Типовий</item>
+        <item>Цифровий 1</item>
+        <item>Цифровий 2</item>
+        <item>Текстовий</item>
+        <item>Аналоговий великий</item>
+        <item>Аналоговий 1</item>
+        <item>Аналоговий 2</item>
+        <item>Аналоговий 3</item>
+        <item>Мінімалістичний 1</item>
+        <item>Мінімалістичний 2</item>
     </array>
 
 </resources>
