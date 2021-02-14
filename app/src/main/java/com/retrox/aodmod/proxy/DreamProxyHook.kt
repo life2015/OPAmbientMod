@@ -15,11 +15,21 @@ import com.retrox.aodmod.pref.XPref
 import com.retrox.aodmod.shared.SharedContentManager
 import com.retrox.aodmod.util.ToggleableXC_MethodHook
 import com.retrox.aodmod.util.XC_MethodHook
+import java.lang.ref.WeakReference
 
 object DreamProxyHook : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName != MainHook.PACKAGE_AOD) return
         val classLoader = lpparam.classLoader
+
+        XposedHelpers.findAndHookMethod("com.android.systemui.SystemUIApplication", classLoader, "onCreate", object: XC_MethodHook(){
+            override fun afterHookedMethod(param: MethodHookParam) {
+                super.afterHookedMethod(param)
+                //Setup the context for XPref
+                XPref.context = WeakReference(param.thisObject as Context)
+            }
+        })
+
         var dreamProxy: DreamProxy? = null
         val dozeServiceClass = XposedHelpers.findClass("com.oneplus.doze.DozeService", classLoader)
 
@@ -57,6 +67,7 @@ object DreamProxyHook : IXposedHookLoadPackage {
 
         XposedHelpers.findAndHookMethod(dozeServiceClass, "onCreate", ToggleableXC_MethodHook(object : XC_MethodHook() {
             override fun beforeHookedMethod(param: MethodHookParam) {
+                //XPref.context = WeakReference(param.thisObject as Context)
                 dreamProxy?.onCreate()
                 param.result = null
             }

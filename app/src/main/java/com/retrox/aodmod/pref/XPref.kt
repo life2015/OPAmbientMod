@@ -3,13 +3,20 @@ package com.retrox.aodmod.pref
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
 import com.retrox.aodmod.BuildConfig
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.app.XposedUtils
 import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.util.getClassOrNull
 import com.retrox.aodmod.app.util.logD
 import com.retrox.aodmod.shared.FileUtils
+import com.retrox.aodmod.util.getSharedBoolPref
+import com.retrox.aodmod.util.getSharedIntPref
+import com.retrox.aodmod.util.getSharedStringPref
 import de.robv.android.xposed.XSharedPreferences
+import de.robv.android.xposed.XposedBridge
+import de.robv.android.xposed.XposedHelpers
 import java.io.File
 import java.lang.ref.WeakReference
 
@@ -19,31 +26,36 @@ object XPref {
 
     internal var context: WeakReference<Context?> = WeakReference(null)
 
-    private fun getPref(): SharedPreferences {
+    private fun getPref(): SharedPrefsImpl {
         if(getClassOrNull("de.robv.android.xposed.XSharedPreferences") != null) {
-            var preferences = xSharedPreferences.get()
-            if (preferences == null) {
-                preferences = XSharedPreferences(BuildConfig.APPLICATION_ID)
-                val result = preferences.makeWorldReadable()
-                logD("SELinux Pref Status: $result")
+            if(context.get() != null){
+                //Android R+ - scoped storage prevents use of the /sdcard/Android/aod files (this is a better impl than XSharedPref anyway)
+                return SharedPrefsImplRemote(context.get()!!)
+            }else {
+                var preferences = xSharedPreferences.get()
+                if (preferences == null) {
+                    preferences = XSharedPreferences(BuildConfig.APPLICATION_ID)
+                    val result = preferences.makeWorldReadable()
+                    logD("SELinux Pref Status: $result")
 
-                if (preferences.file == null) {
-                    logD("XPref get null, use external pref as XPref")
-                    // 从外置读取XSP
-                    val file = File(FileUtils.sharedDir, AppPref.externalPrefName)
-                    if (file.exists()) {
-                        preferences = XSharedPreferences(file)
+                    if (preferences.file == null) {
+                        logD("XPref get null, use external pref as XPref")
+                        // 从外置读取XSP
+                        val file = File(FileUtils.sharedDir, AppPref.externalPrefName)
+                        if (file.exists()) {
+                            preferences = XSharedPreferences(file)
+                        }
                     }
-                }
 
-                preferences.reload()
-                xSharedPreferences = WeakReference(preferences)
-            } else {
-                preferences.reload()
+                    preferences.reload()
+                    xSharedPreferences = WeakReference(preferences)
+                } else {
+                    preferences.reload()
+                }
+                return SharedPrefsImplNative(preferences)
             }
-            return preferences
         }else{
-            return context.get()?.getSharedPreferences("${BuildConfig.APPLICATION_ID}_preferences", Context.MODE_PRIVATE)!!
+            return SharedPrefsImplNative(context.get()?.getSharedPreferences("${BuildConfig.APPLICATION_ID}_preferences", Context.MODE_PRIVATE)!!)
         }
     }
 
@@ -100,5 +112,38 @@ object XPref {
     fun getTranslationConstantLightMode() = getPref().getString("xposed_constant_light_mode_7pro", "System Enhancement - 7 Pro")
     fun getTranslationConstantLightModeNS() = getPref().getString("xposed_constant_light_mode_7pro_ns", "System Enhancement - 7 Pro is not supported")
 
+    class SharedPrefsImplNative(private val sharedPreferences: SharedPreferences) : SharedPrefsImpl {
+        override fun getBoolean(key: String, defValue: Boolean): Boolean {
+            return sharedPreferences.getBoolean(key, defValue)
+        }
+
+        override fun getString(key: String, defValue: String): String {
+            return sharedPreferences.getString(key, defValue)
+        }
+
+        override fun getInt(key: String, defValue: Int): Int {
+            return sharedPreferences.getInt(key, defValue)
+        }
+    }
+
+    class SharedPrefsImplRemote(private val context: Context): SharedPrefsImpl {
+        override fun getBoolean(key: String, defValue: Boolean): Boolean {
+            return getSharedBoolPref(context, key, defValue)
+        }
+
+        override fun getString(key: String, defValue: String): String {
+            return getSharedStringPref(context, key, defValue) ?: defValue
+        }
+
+        override fun getInt(key: String, defValue: Int): Int {
+            return getSharedIntPref(context, key, defValue)
+        }
+    }
+
+    interface SharedPrefsImpl {
+        fun getBoolean(key: String, defValue: Boolean): Boolean
+        fun getString(key: String, defValue: String): String
+        fun getInt(key: String, defValue: Int): Int
+    }
 
 }

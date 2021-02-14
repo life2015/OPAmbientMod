@@ -113,6 +113,12 @@
             </intent-filter>
         </service>
 
+        <provider
+            android:name=".util.SharedPrefsProvider"
+            android:authorities="com.retrox.aodmod.provider.sharedprefs"
+            android:grantUriPermissions="true"
+            android:exported="true" />
+
 
     </application>
 

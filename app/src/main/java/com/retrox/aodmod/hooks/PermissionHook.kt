@@ -8,9 +8,10 @@ object PermissionHook : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName != "android") return
         val classLoader = lpparam.classLoader
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            PermissionGranterQ.initAndroid(classLoader)
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> PermissionGranterR.initAndroid(classLoader)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> PermissionGranterQ.initAndroid(classLoader)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> PermissionGranterP.initAndroid(classLoader)
         }
-
     }
 }

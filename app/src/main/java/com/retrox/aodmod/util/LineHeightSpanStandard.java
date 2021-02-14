@@ -58,6 +58,11 @@ public class LineHeightSpanStandard implements LineHeightSpan, ParcelableSpan {
     }
 
     @Override
+    public int getSpanTypeIdInternal() {
+        return 0;
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -79,5 +84,10 @@ public class LineHeightSpanStandard implements LineHeightSpan, ParcelableSpan {
         final float ratio = mHeight * 1.0f / originHeight;
         fm.descent = Math.round(fm.descent * ratio);
         fm.ascent = fm.descent - mHeight;
+    }
+
+    @Override
+    public void writeToParcelInternal(Parcel dest, int flags) {
+
     }
 }
