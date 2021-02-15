@@ -540,4 +540,12 @@
         <item>Minimalism 2</item>
     </array>
 
+    <!-- App picker -->
+    <string name="search">Search</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="show_system_apps">Show system apps</string>
+    <string name="sensitive_apps_title">Sensitive Apps</string>
+    <string name="settings_general_sensitive_notifications_pick">Sensitive Notification Apps</string>
+    <string name="settings_general_sensitive_notifications_pick_desc">Set which apps should have their content hidden as sensitive</string>
+
 </resources>

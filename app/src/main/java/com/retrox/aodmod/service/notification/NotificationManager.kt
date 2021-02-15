@@ -113,28 +113,7 @@ fun Notification.getNotificationData(): NotificationData {
     val packageName = extras.getString(NotificationManager.EXTRA_PACKAGE)
     val sensitive = packageName?.let inner@{
         if (!XPref.getAodShowSensitiveContent()) {
-            val sensitiveApps = listOf(
-                "com.android.phone",
-                "com.tencent.mm",
-                "com.tencent.tim",
-                "com.tencent.mobileqq",
-                "com.android.mms",
-                "com.oneplus.mms",
-                "com.google.android.apps.messaging",
-                "com.google.android.dialer",
-                "com.android.dialer",
-                "com.whatsapp",
-                "org.telegram.messenger",
-                "com.facebook.orca",
-                "com.instagram.android",
-                "com.facebook.katana",
-                "com.discord",
-                "com.snapchat.android",
-                "com.twitter.android",
-                "com.vkontakte.android",
-                "ru.sberbankmobile",
-                "ru.raiffeisennews"
-            )
+            val sensitiveApps = XPref.getSensitiveApps()
             return@inner (sensitiveApps.contains(it))
         } else return@inner false
     } ?: false

@@ -18,4 +18,7 @@
              information about time zone ids. -->
         <attr name="timeZone" format="string"/>
     </declare-styleable>
+    <declare-styleable name="AppTheme">
+        <attr name="searchBoxBackground" format="reference" />
+    </declare-styleable>
 </resources>

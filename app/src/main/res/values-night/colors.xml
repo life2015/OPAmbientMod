@@ -4,4 +4,5 @@
     <color name="toolbar_color_solid">#2D2D2D</color>
     <color name="navbar_color">#D92D2D2D</color>
     <color name="sheet_color">#2D2D2D</color>
+    <color name="search_box_background">#757575</color>
 </resources>

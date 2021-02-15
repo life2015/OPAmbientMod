@@ -49,6 +49,12 @@
         android:summary="@string/settings_general_sensitive_notifications_desc"
         android:icon="@drawable/ic_settings_general_sensitive_notifications"/>
 
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:key="general_sensitive_notifications_pick"
+        android:title="@string/settings_general_sensitive_notifications_pick"
+        android:summary="@string/settings_general_sensitive_notifications_pick_desc"
+        android:icon="@drawable/ic_settings_general_sensitive_apps"/>
+
     <com.retrox.aodmod.app.settings.preference.SwitchPreference
         android:key="general_system_font"
         android:title="@string/settings_general_system_font"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.settings.SettingsBatteryOptimisationActivity
+import com.retrox.aodmod.app.settings.SettingsSensitiveAppPickerActivity
 import com.retrox.aodmod.app.settings.fragments.bottomsheet.MemoSettingBottomSheetFragment
 import com.retrox.aodmod.extensions.runAfter
 import kotlin.reflect.KMutableProperty
@@ -52,6 +53,12 @@ class SettingsGeneralFragment : GenericPreferenceFragment() {
             it.isChecked = !AppPref.aodShowSensitiveContent
             it.listen { value ->
                 AppPref.aodShowSensitiveContent = !value
+            }
+        }
+        findPreference("general_sensitive_notifications_pick"){
+            it.setOnPreferenceClickListener {
+                startActivity(Intent(context, SettingsSensitiveAppPickerActivity::class.java))
+                true
             }
         }
         findSwitchPreference("general_system_font"){

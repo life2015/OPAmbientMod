@@ -52,6 +52,7 @@ object AppPref {
     var lyricsEnabled by shared("LYRICS_ENABLED", false)
     var pixelSmallMusic by shared("PIXEL_SMALL_MUSIC", false)
     var hideDivider by shared("HIDE_DIVIDER", false)
+    var sensitiveApps by shared("SENSITIVE_APPS", "")
 
     //Static translations stored for when there isn't yet a context
     var translationConstantLightMode by shared("xposed_constant_light_mode_7pro", "System Enhancement - 7 Pro")

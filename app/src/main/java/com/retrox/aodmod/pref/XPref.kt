@@ -78,7 +78,7 @@ object XPref {
     fun getAlarmTimeCorrection() = getPref().getBoolean("ALARMTIMECORRECTION", true)
     fun getAodShowWeather() = getPref().getBoolean("AODSHOWWEATHER", true)
     fun getAodShowNote() = getPref().getBoolean("AODSHOWNOTE", false)
-    fun getAodNoteContent() = getPref().getString("AODNOTECONTENT", "") ?: ""
+    fun getAodNoteContent() = getPref().getString("AODNOTECONTENT", " ") ?: ""
     fun getAodLayoutTheme() = getPref().getString("AODLAYOUTTHEME", "Flat") ?: "Flat"
     fun getAodAlarmMode() = getPref().getString("AODALARMMODE", "Alarm-TimeOutMode") ?: "Alarm-TimeOutMode"
     fun getAodPickCheckEnabled() = getPref().getBoolean("AODPICKCHECK", false)
@@ -107,6 +107,13 @@ object XPref {
     fun getLyricsEnabled() = getPref().getBoolean("LYRICS_ENABLED", false)
     fun getPixelSmallMusic() = getPref().getBoolean("PIXEL_SMALL_MUSIC", false)
     fun getHideDivider() = getPref().getBoolean("HIDE_DIVIDER", false)
+    fun getSensitiveApps() = getPref().getString("SENSITIVE_APPS", " ").run {
+        trim().run {
+            if(isEmpty()) emptyList()
+            else if(!contains(",")) listOf(this)
+            else split(",")
+        }
+    }
 
     //Static translations stored for when there isn't yet a context
     fun getTranslationConstantLightMode() = getPref().getString("xposed_constant_light_mode_7pro", "System Enhancement - 7 Pro")
