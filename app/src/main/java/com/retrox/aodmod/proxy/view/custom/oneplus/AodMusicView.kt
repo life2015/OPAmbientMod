@@ -11,10 +11,8 @@ import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
-import androidx.core.view.marginStart
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.util.logD
-import com.retrox.aodmod.data.NowPlayingMediaData
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.toPx
@@ -92,7 +90,11 @@ fun Context.aodMusicViewOnePlus(
                 it?.let {
                     weatherView.visibility = View.INVISIBLE
                     this@linearLayout.visibility = View.VISIBLE
-                    musicText.text = it.name
+                    if(it.overriddenFullString.isEmpty()) {
+                        musicText.text = it.name
+                    }else{
+                        musicText.text = it.getMusicString()
+                    }
                     if (!isAnimating && isPixelIconEnabled) {
                         if (mAnimatedIcon != null) {
                             imageIcon.setImageDrawable(mAnimatedIcon)
@@ -137,7 +139,11 @@ fun Context.aodMusicViewOnePlus(
                 it?.let {
                     weatherView.visibility = View.INVISIBLE
                     this@linearLayout.visibility = View.VISIBLE
-                    musicTextArtist.text = it.artist
+                    if(it.overriddenFullString.isEmpty()) {
+                        musicTextArtist.text = it.artist
+                    }else{
+                        musicTextArtist.text = ""
+                    }
                 }
             })
         }

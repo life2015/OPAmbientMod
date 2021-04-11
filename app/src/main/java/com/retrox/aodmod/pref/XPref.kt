@@ -98,6 +98,7 @@ object XPref {
     fun getShowBullets() = getPref().getBoolean("KEY_SHOW_BULLETS", true)
     fun getUseSystemMusic() = getPref().getBoolean("USE_SYSTEM_MUSIC", false)
     fun getUsePixelMusicIcon() = getPref().getBoolean("USE_PIXEL_MUSIC_ICON", false)
+    fun getAmbientMusic() = getPref().getBoolean("AMBIENT_MUSIC", false)
     fun getBatteryEnableForceDoze() = getPref().getBoolean("ENABLE_FORCE_DOZE", false)
     fun getBatteryEnableBatterySaver() = getPref().getBoolean("ENABLE_BATTERY_SAVER", false)
     fun getBatteryLowerRefreshRate() = getPref().getBoolean("ENABLE_LOWER_REFRESH_RATE", false)
@@ -125,7 +126,7 @@ object XPref {
         }
 
         override fun getString(key: String, defValue: String): String {
-            return sharedPreferences.getString(key, defValue)
+            return sharedPreferences.getString(key, defValue) ?: defValue
         }
 
         override fun getInt(key: String, defValue: Int): Int {

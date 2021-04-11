@@ -13,9 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.SmaliImports
@@ -185,7 +183,7 @@ class ComplexMusicDream(dreamProxy: DreamProxy) : AbsDreamView(dreamProxy) {
                 currentId = sbn.id // update current id
 
                 if (status == "Removed") return@let
-                if (it.first.notification.getNotificationData().isOnGoing) return@let
+                if (it.first.notification.getNotificationData().shouldBeSkipped) return@let
 
                 val notification = NotificationManager.notificationMap[sbn.key]?.notification ?: return@let
                 currentNotificationData = notification.getNotificationData()
@@ -370,7 +368,12 @@ fun Context.musicView(lifecycleOwner: LifecycleOwner) = verticalLayout {
 
         musicArtist.visibility = View.VISIBLE
         musicName.visibility = View.VISIBLE
-        musicName.text = it.name
-        musicArtist.text = it.artist
+        if(it.overriddenFullString.isEmpty()) {
+            musicName.text = it.name
+            musicArtist.text = it.artist
+        }else{
+            musicName.text = it.getMusicString()
+            musicArtist.text = ""
+        }
     })
 }

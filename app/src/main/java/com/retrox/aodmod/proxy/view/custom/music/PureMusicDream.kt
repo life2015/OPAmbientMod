@@ -12,7 +12,6 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.SmaliImports
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.extensions.setGradientTest
@@ -229,8 +228,13 @@ fun Context.aodPureMusicView(lifecycleOwner: LifecycleOwner): View {
             }
 
             musicArtist.visibility = View.VISIBLE
-            musicName.text = it.name
-            musicArtist.text = it.artist
+            if(it.overriddenFullString.isEmpty()){
+                musicName.text = it.name
+                musicArtist.text = it.artist
+            }else{
+                musicName.text = it.getMusicString()
+                musicArtist.text = ""
+            }
         })
 
         var currentId = 0
@@ -246,7 +250,7 @@ fun Context.aodPureMusicView(lifecycleOwner: LifecycleOwner): View {
                 }
 
                 if (status == "Removed") return@let
-                if (it.first.notification.getNotificationData().isOnGoing) return@let
+                if (it.first.notification.getNotificationData().shouldBeSkipped) return@let
 
                 val notification = NotificationManager.notificationMap[sbn.key]?.notification ?: return@let
                 currentNotificationData = notification.getNotificationData()

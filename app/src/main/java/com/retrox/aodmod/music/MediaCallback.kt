@@ -40,14 +40,14 @@ class MediaCallback(private val mediaController: MediaController, private val co
 
     private fun updateMusicPlaybackState(){
         if(playingState == PlaybackState.STATE_PLAYING) {
-            AodMedia.aodMediaLiveData.postValue(playingMediaData)
+            AodMedia.aodLocalNowPlayingLiveData.postValue(playingMediaData)
             playingMediaData?.let {
                 LyricHelper.queryMusic2(it.artist, it.name)
                 val intentPulsing = Intent("com.oneplus.aod.doze.pulse")
                 context.sendBroadcast(intentPulsing)
             }
         }else{
-            AodMedia.aodMediaLiveData.postValue(null)
+            AodMedia.aodLocalNowPlayingLiveData.postValue(null)
         }
     }
 

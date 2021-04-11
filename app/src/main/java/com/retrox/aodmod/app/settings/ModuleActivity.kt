@@ -77,8 +77,8 @@ class ModuleActivity : BaseSettingsActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
             R.id.menu_module_old_settings -> {
                 startActivity(Intent(this, NewMainActivity::class.java))
             }

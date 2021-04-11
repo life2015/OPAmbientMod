@@ -52,7 +52,7 @@ class HeadSetReceiver : BroadcastReceiver() {
                 else -> null
             } ?: return
             val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-            if(device.name != null) {
+            if(device?.name != null) {
                 headSetConnectLiveEvent.postValue(
                     ConnectionState.BlueToothConnection(
                         connection,
@@ -61,7 +61,7 @@ class HeadSetReceiver : BroadcastReceiver() {
                     )
                 )
             }
-            MainHook.logD("蓝牙连接状态变化 $prev $current ${device.name}")
+            MainHook.logD("蓝牙连接状态变化 $prev $current ${device?.name}")
         } else if (Intent.ACTION_HEADSET_PLUG == action) {
             if (intent.hasExtra("state")) {
                 val state = intent.getIntExtra("state", 0)

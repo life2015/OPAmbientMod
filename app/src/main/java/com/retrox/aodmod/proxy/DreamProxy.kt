@@ -308,7 +308,7 @@ class DreamProxy(override val dreamService: DreamService) : DreamProxyInterface,
         NotificationManager.notificationStatusLiveData.observeNewOnly(this, Observer {
             it?.let { (_, status) ->
                 if (status == "Removed") return@let
-                if (it.first.notification.getNotificationData().isOnGoing) return@let
+                if (it.first.notification.getNotificationData().shouldBeSkipped) return@let
 
                 if((XPref.getFilpOffMode() && FlipOffSensor.flipSensorLiveData.value?.suggestState == FlipOffSensor.Flip_ON)){
                     //Ignore as the device is in the pocket

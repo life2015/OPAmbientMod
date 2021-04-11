@@ -23,6 +23,7 @@ import com.retrox.aodmod.proxy.view.Ids
 import com.retrox.aodmod.proxy.view.aodHeadSetView
 import com.retrox.aodmod.proxy.view.custom.components.wordClock
 import com.retrox.aodmod.receiver.HeadSetReceiver
+import com.retrox.aodmod.service.notification.BubbleController
 import com.retrox.aodmod.service.notification.NotificationData
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.service.notification.getNotificationData
@@ -212,7 +213,7 @@ fun Context.flatStyleAodClock(lifecycleOwner: LifecycleOwner): View {
         NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
             it?.let {
                 if (it.second == NotificationManager.REMOVED) return@let
-                if (it.first.notification.getNotificationData().isOnGoing) return@let
+                if (it.first.notification.getNotificationData().shouldBeSkipped) return@let
 
 //                removeCallbacks(flatNotificationViewReset)
                 if (animWakeLock.isHeld) {
@@ -267,7 +268,7 @@ private fun Context.flatMusicInClock(lifecycleOwner: LifecycleOwner): View {
             }
             it?.let {
                 visibility = View.VISIBLE
-                musicText.text = "${it.name} - ${it.artist}"
+                musicText.text = it.getMusicString()
 //                musicText.stopScroll()
 //                musicText.startScroll()
             }
@@ -321,7 +322,7 @@ private fun Context.flatNotificationInClock(lifecycleOwner: LifecycleOwner): Vie
         NotificationManager.notificationStatusLiveData.observe(lifecycleOwner, Observer {
             it?.let { (sbn, status) ->
                 if (status == "Removed") return@let
-                if (it.first.notification.getNotificationData().isOnGoing) return@let
+                if (it.first.notification.getNotificationData().shouldBeSkipped) return@let
 
                 val notification = NotificationManager.notificationMap[sbn.key]?.notification ?: return@let
                 notification.getNotificationData().let {
@@ -353,12 +354,13 @@ private fun _LinearLayout.flatNotificationLayout(lifecycleOwner: LifecycleOwner)
 
         val refreshBlock = Runnable {
             val icons = NotificationManager.notificationMap.values.asSequence()
-                .map { it.notification }
-                .filter { it.extras.getInt(NotificationManager.EXTRA_IMPORTANTCE, 2) > 1 } // 过滤掉不重要通知
+                .map { Pair(it, it.notification) }
+                .filter { it.second.extras.getInt(NotificationManager.EXTRA_IMPORTANTCE, 2) > 1 &&
+                        !BubbleController.isBubbleNotificationSuppressedFromShade(it.first) } // 过滤掉不重要通知
 //                    .filter { it. }
                 .map {
                     try {
-                        it.smallIcon.loadDrawable(context)
+                        it.second.smallIcon.loadDrawable(context)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         return@map null

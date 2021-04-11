@@ -66,7 +66,7 @@ fun Context.aodNotification(lifecycleOwner: LifecycleOwner): View {
                 if (status == "Removed") return@let
 //                if (sbn.notification.flags and Notification.FLAG_ONGOING_EVENT != 0) return@Observer // 去掉OnGoing Notification
 
-                if (it.first.notification.getNotificationData().isOnGoing) return@let
+                if (it.first.notification.getNotificationData().shouldBeSkipped) return@let
 
                 val notification = NotificationManager.notificationMap[sbn.key]?.notification ?: return@let
                 notification.getNotificationData().let {

@@ -16,6 +16,7 @@ import com.retrox.aodmod.extensions.appendSpace
 import com.retrox.aodmod.extensions.generateAlarmText
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.service.notification.BubbleController
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.weather.WeatherProvider
@@ -106,12 +107,13 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
 
             val refreshBlock = {
                 val icons = NotificationManager.notificationMap.values.asSequence()
-                    .map { it.notification }
-                    .filter { it.extras.getInt(NotificationManager.EXTRA_IMPORTANTCE, 2) > 1 } // 过滤掉不重要通知
+                    .map { Pair(it, it.notification) }
+                    .filter { it.second.extras.getInt(NotificationManager.EXTRA_IMPORTANTCE, 2) > 1 &&
+                            !BubbleController.isBubbleNotificationSuppressedFromShade(it.first) } // 过滤掉不重要通知
 //                    .filter { it. }
                     .map {
                         try {
-                            it.smallIcon.loadDrawable(context)
+                            it.second.smallIcon.loadDrawable(context)
                         } catch (e: Exception) {
                             e.printStackTrace()
                             return@map null

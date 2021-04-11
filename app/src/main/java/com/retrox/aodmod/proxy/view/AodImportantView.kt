@@ -76,8 +76,8 @@ fun Context.importantMessageView(lifecycleOwner: LifecycleOwner): View {
 
 //                    MainHook.logD("package Name: ${sbn.packageName} isSensitive: $sensitive")
 
-                    val (appName, messageTitle, messageContent, onGoing) = realNotification.getNotificationData()
-                    if (onGoing) return@Observer
+                    val (appName, messageTitle, messageContent, isOnGoing) = realNotification.getNotificationData()
+                    if (isOnGoing) return@Observer
                     title.text = "$appName · $messageTitle"
                     content.text = messageContent
                 } else if (status == NotificationManager.REMOVED) {

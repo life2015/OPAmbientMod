@@ -199,7 +199,7 @@ fun Context.aodOnePlusView(lifecycleOwner: LifecycleOwner): View {
         NotificationManager.notificationStatusLiveData.observeNewOnly(lifecycleOwner, Observer {
             it?.let {
                 if (it.second == NotificationManager.REMOVED) return@let
-                if (it.first.notification.getNotificationData().isOnGoing) return@let
+                if (it.first.notification.getNotificationData().shouldBeSkipped) return@let
 
                 removeCallbacks(notificationAnimReset) // 尝试修复通知动画的状态问题
                 if (animWakeLock.isHeld) {

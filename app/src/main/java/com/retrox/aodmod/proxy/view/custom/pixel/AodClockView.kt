@@ -19,9 +19,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.retrox.aodmod.R
 import com.retrox.aodmod.SmaliImports
+import com.retrox.aodmod.app.util.isBubble
 import com.retrox.aodmod.app.util.logD
 import com.retrox.aodmod.extensions.*
 import com.retrox.aodmod.pref.XPref
+import com.retrox.aodmod.service.notification.BubbleController
 import com.retrox.aodmod.service.notification.NotificationManager
 import com.retrox.aodmod.state.AodClockTick
 import com.retrox.aodmod.state.AodMedia
@@ -162,7 +164,7 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
                 e.printStackTrace()
             }
             musicText.setCompoundDrawablesWithIntrinsicBounds(musicPlayerIcon, null, null, null)
-            musicText.text = "${it.artist.concatMusic()} - ${it.name.concatMusic()}"
+            musicText.text = it.getMusicString(true)
         })
         linearLayout {
             id = Ids.ll_icons
@@ -170,12 +172,13 @@ fun Context.aodClockView(lifecycleOwner: LifecycleOwner): View {
 
             val refreshBlock = {
                 val icons = NotificationManager.notificationMap.values.asSequence()
-                    .map { it.notification }
-                    .filter { it.extras.getInt(NotificationManager.EXTRA_IMPORTANTCE, 2) > 1 } // 过滤掉不重要通知
+                    .map { Pair(it, it.notification) }
+                    .filter { it.second.extras.getInt(NotificationManager.EXTRA_IMPORTANTCE, 2) > 1 &&
+                            !BubbleController.isBubbleNotificationSuppressedFromShade(it.first) } // 过滤掉不重要通知
 //                    .filter { it. }
                     .map {
                         try {
-                            it.smallIcon.loadDrawable(context)
+                            it.second.smallIcon.loadDrawable(context)
                         } catch (e: Exception) {
                             e.printStackTrace()
                             return@map null

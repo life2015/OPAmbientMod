@@ -18,7 +18,7 @@ class MediaMessageReceiver : BroadcastReceiver() {
                 val mediaMetadata = intent.getParcelableExtra<NowPlayingMediaData>("mediaMetaData")
                 AodState.mediaMetadata = mediaMetadata
                 if (mediaMetadata != AodMedia.aodMediaLiveData.value) {
-                    AodMedia.aodMediaLiveData.postValue(mediaMetadata)
+                    AodMedia.aodLocalNowPlayingLiveData.postValue(mediaMetadata)
                 }
                 MainHook.logD("received media meta broadCast: $mediaMetadata")
 //                LrcSync.clearLrcRows()
@@ -26,7 +26,7 @@ class MediaMessageReceiver : BroadcastReceiver() {
             "com.retrox.aodmod.NEW_PLAY_STATE" -> {
                 val mediaPlaybackState = intent.getParcelableExtra<PlaybackState>("mediaPlayBackState")
                 // todo 处理暂停的情况
-                when(mediaPlaybackState.state) {
+                when(mediaPlaybackState?.state) {
                     PlaybackState.STATE_PAUSED -> {
                         LrcSync.stopSync()
                     }
@@ -37,7 +37,7 @@ class MediaMessageReceiver : BroadcastReceiver() {
             }
             "com.retrox.aodmod.NEW_MEDIA_LRC" -> {
                 val rawLrc = intent.getStringExtra("mediaLyric")
-                LrcSync.applyRawLrc(rawLrc)
+                LrcSync.applyRawLrc(rawLrc!!)
             }
         }
     }

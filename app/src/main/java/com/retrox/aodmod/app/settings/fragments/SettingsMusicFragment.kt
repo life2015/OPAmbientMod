@@ -1,13 +1,19 @@
 package com.retrox.aodmod.app.settings.fragments
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.preference.forEach
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.XposedUtils
 import com.retrox.aodmod.app.pref.AppPref
+import com.retrox.aodmod.app.util.isAppInstalled
 import com.retrox.aodmod.app.util.logD
 import com.retrox.aodmod.extensions.resetPrefPermissions
 import com.retrox.aodmod.extensions.runAfter
+import com.retrox.aodmod.music.AmbientMusicPlugin
 import com.retrox.aodmod.proxy.view.theme.ThemeManager
 import com.retrox.aodmod.shared.global.GlobalKV
 
@@ -82,6 +88,21 @@ class SettingsMusicFragment : GenericPreferenceFragment() {
                 }
             }
         }
+        findSwitchPreference("settings_ambient_music"){
+            it.isChecked = AppPref.ambientMusic
+            it.listen { checked ->
+                AppPref.ambientMusic = checked
+            }
+        }
+        findPreference("settings_ambient_music_disabled"){
+            it.setOnPreferenceClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("http://kieronquinn.co.uk/redirect/AmbientMusicMod/github")
+                })
+                true
+            }
+        }
+        refreshAmbientMusicVisibility()
         setAllEnabled(AppPref.musicShowOnAod)
         findPreference("generic_theme_unsupported"){
             it.isVisible = !isBottomMusicSupported && !isLyricsSupported && !isMusicSupported && !isMusicIconSupported
@@ -89,12 +110,15 @@ class SettingsMusicFragment : GenericPreferenceFragment() {
         setMasterSwitchEnabled(isMusicSupported)
     }
 
-    fun setAllEnabled(enabled: Boolean){
+    private fun setAllEnabled(enabled: Boolean){
         preferenceScreen.forEach {
-            if(it.key == "settings_music_pixel_icon"){
-                it.isEnabled = AppPref.aodLayoutTheme != "Pixel" || !AppPref.pixelSmallMusic
-            }else {
-                it.isEnabled = enabled
+            when (it.key) {
+                "settings_music_pixel_icon" -> {
+                    it.isEnabled = AppPref.aodLayoutTheme != "Pixel" || !AppPref.pixelSmallMusic
+                }
+                else -> {
+                    it.isEnabled = enabled
+                }
             }
         }
     }
@@ -121,5 +145,22 @@ class SettingsMusicFragment : GenericPreferenceFragment() {
             checkNestedScroll()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        refreshAmbientMusicVisibility()
+    }
+
+    private fun refreshAmbientMusicVisibility(){
+        findSwitchPreference("settings_ambient_music"){
+            it.isVisible = isAmbientMusicInstalled
+        }
+        findPreference("settings_ambient_music_disabled"){
+            it.isVisible = !isAmbientMusicInstalled
+        }
+    }
+
+    private val isAmbientMusicInstalled
+        get() = AmbientMusicPlugin.AMBIENT_MUSIC_PACKAGES.all { requireContext().packageManager.isAppInstalled(it) }
 
 }

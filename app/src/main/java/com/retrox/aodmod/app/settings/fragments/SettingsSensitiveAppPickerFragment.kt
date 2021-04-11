@@ -14,6 +14,7 @@ import com.retrox.aodmod.R
 import com.retrox.aodmod.app.pref.AppPref
 import com.retrox.aodmod.app.settings.adapters.AppsAdapter
 import com.retrox.aodmod.app.settings.models.App
+import com.retrox.aodmod.app.util.isSystemApp
 import com.retrox.aodmod.pref.XPref
 import dev.chrisbanes.insetter.applySystemGestureInsetsToPadding
 import dev.chrisbanes.insetter.applySystemWindowInsetsToMargin

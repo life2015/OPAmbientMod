@@ -548,4 +548,9 @@
     <string name="settings_general_sensitive_notifications_pick">Sensitive Notification Apps</string>
     <string name="settings_general_sensitive_notifications_pick_desc">Set which apps should have their content hidden as sensitive</string>
 
+    <!-- Ambient Music Mod support -->
+    <string name="settings_ambient_music">Show Ambient / Now Playing tracks</string>
+    <string name="settings_ambient_music_desc_installed">Show tracks detected by Ambient Music, if local music is not already playing. Changes take effect after the next track is recognised or cleared.</string>
+    <string name="settings_ambient_music_desc_not_installed">Show tracks detected by Ambient Music, requires Ambient Music Mod. Tap to find out more</string>
+
 </resources>

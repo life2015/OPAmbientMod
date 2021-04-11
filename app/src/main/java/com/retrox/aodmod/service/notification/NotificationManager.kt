@@ -2,11 +2,13 @@ package com.retrox.aodmod.service.notification
 
 import android.app.AndroidAppHelper
 import android.app.Notification
+import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.retrox.aodmod.MainHook
+import com.retrox.aodmod.app.util.isBubble
 import com.retrox.aodmod.extensions.LiveEvent
 import com.retrox.aodmod.extensions.getApplicationContext
 import com.retrox.aodmod.pref.XPref
@@ -18,6 +20,7 @@ object NotificationManager {
 
     const val EXTRA_PACKAGE = "aodmod_extra_package"
     const val EXTRA_IMPORTANTCE = "aodmod_extra_importance"
+    const val EXTRA_IS_BUBBLE = "aodmod_extra_is_bubble"
 
     const val POSTED = "Posted"
     const val REMOVED = "Removed"
@@ -37,7 +40,8 @@ object NotificationManager {
         val ranking = getRanking(sbn, rankingMap)
 
         sbn.notification.extras.putInt(EXTRA_IMPORTANTCE, ranking.importance)
-        if (ranking.importance > 1) {
+        sbn.notification.extras.putBoolean(EXTRA_IS_BUBBLE, notification.isBubble)
+        if (ranking.importance > 1 && !notification.isBubble) {
             notificationStatusLiveData.postValue(sbn to "Posted")
         }
 
@@ -84,7 +88,7 @@ object NotificationManager {
             it.packageName == "com.tencent.qqmusic" || it.packageName == "com.netease.cloudmusic" || it.packageName == "code.name.monkey.retromusic" || it.packageName == "tv.danmaku.bili"
         }
         if (!musicActive && !musicNotification) {
-            AodMedia.aodMediaLiveData.postValue(null) // Media InActive 媒体不活跃
+            AodMedia.aodLocalNowPlayingLiveData.postValue(null) // Media InActive 媒体不活跃
         }
     }
 }
@@ -120,7 +124,7 @@ fun Notification.getNotificationData(): NotificationData {
 
     val realContent = if (sensitive) "Sensitive notification" else content
 
-    return NotificationData(appName, title, realContent, isOnGoing > 0)
+    return NotificationData(appName, title, realContent, isOnGoing > 0, isBubble)
 }
 
 fun MutableMap<String, StatusBarNotification>.putNotification(key: String, notification: StatusBarNotification){
@@ -140,4 +144,8 @@ fun MutableMap<String, StatusBarNotification>.putNotification(key: String, notif
 }
 
 
-data class NotificationData(val appName: String, val title: String, val content: String, val isOnGoing: Boolean)
+data class NotificationData(val appName: String, val title: String, val content: String, val isOnGoing: Boolean, val isBubble: Boolean) {
+
+    val shouldBeSkipped = isOnGoing
+
+}

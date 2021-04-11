@@ -8,15 +8,11 @@ import android.graphics.Color
 import android.graphics.drawable.Animatable2
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.view.Gravity
 import android.view.View
-import android.widget.LinearLayout
-import com.retrox.aodmod.MainHook
 import com.retrox.aodmod.R
 import com.retrox.aodmod.app.util.logD
-import com.retrox.aodmod.data.NowPlayingMediaData
 import com.retrox.aodmod.extensions.ResourceUtils
 import com.retrox.aodmod.extensions.setGoogleSans
 import com.retrox.aodmod.pref.XPref
@@ -85,7 +81,7 @@ fun Context.aodPixelMusicView(lifecycleOwner: LifecycleOwner): View {
 
             it?.let {
                 visibility = View.VISIBLE
-                musicText.text = "${it.name} - ${it.artist}"
+                musicText.text = it.getMusicString()
                 if(!isAnimating && isPixelIconEnabled) {
                     if (mAnimatedIcon != null) {
                         imageIcon.setImageDrawable(mAnimatedIcon)

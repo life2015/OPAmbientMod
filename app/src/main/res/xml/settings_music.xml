@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.retrox.aodmod.app.settings.preference.SwitchPreference
         android:key="settings_music_system_music"
@@ -30,6 +31,18 @@
         android:icon="@drawable/ic_settings_music_lyrics"
         android:title="@string/settings_lyrics"
         android:summary="@string/settings_lyrics_desc" />
+
+    <com.retrox.aodmod.app.settings.preference.SwitchPreference
+        android:key="settings_ambient_music"
+        android:icon="@drawable/ic_ambient_music"
+        android:title="@string/settings_ambient_music"
+        android:summary="@string/settings_ambient_music_desc_installed" />
+
+    <com.retrox.aodmod.app.settings.preference.Preference
+        android:key="settings_ambient_music_disabled"
+        android:icon="@drawable/ic_ambient_music"
+        android:title="@string/settings_ambient_music"
+        android:summary="@string/settings_ambient_music_desc_not_installed" />
 
     <com.retrox.aodmod.app.settings.preference.SwitchPreference
         android:key="settings_lyrics_translation"

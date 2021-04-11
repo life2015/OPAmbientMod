@@ -1,13 +1,19 @@
 package com.retrox.aodmod.app.util
 
 import android.app.AndroidAppHelper
+import android.app.Notification
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.retrox.aodmod.R
+import com.retrox.aodmod.app.XposedUtils
 import com.retrox.aodmod.app.state.AppState
 import com.retrox.aodmod.shared.SharedContentManager
 import de.robv.android.xposed.XposedHelpers
@@ -197,3 +203,18 @@ fun getSystemContext(): Context {
 
     return oContext as Context
 }
+
+val ApplicationInfo.isSystemApp: Boolean
+    get() = flags.and(ApplicationInfo.FLAG_SYSTEM) != 0
+
+val Notification.isBubble: Boolean
+    get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && flags.and(Notification.FLAG_BUBBLE) != 0
+
+fun PackageManager.isAppInstalled(packageName: String): Boolean {
+    return try {
+        getApplicationInfo(packageName, 0).enabled
+    }catch (e: PackageManager.NameNotFoundException){
+        false
+    }
+}
+

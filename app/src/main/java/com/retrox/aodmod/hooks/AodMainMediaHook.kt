@@ -77,7 +77,7 @@ object AodMainMediaHook : IXposedHookLoadPackage {
                         text = "$musicName - $artist"
                         AodMedia.aodMediaLiveData.observeForever {
                             it?.let {
-                                text = "${it.name} - ${it.artist}"
+                                text = it.getMusicString()
                             }
                         }
                         gravity = Gravity.CENTER_HORIZONTAL

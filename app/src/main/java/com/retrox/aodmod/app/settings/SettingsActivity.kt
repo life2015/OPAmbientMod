@@ -256,9 +256,9 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
         val dream = theme.first
         dream.post {
             if(isMusicFragment){
-                AodMedia.aodMediaLiveData.postValue(NowPlayingMediaData("Song Name", "Artist", "Album"))
+                AodMedia.aodLocalNowPlayingLiveData.postValue(NowPlayingMediaData("Song Name", "Artist", "Album"))
             }else{
-                AodMedia.aodMediaLiveData.postValue(null)
+                AodMedia.aodLocalNowPlayingLiveData.postValue(null)
             }
         }
 
@@ -302,7 +302,7 @@ class SettingsActivity : BaseSettingsActivity(), AppBarLayout.OnOffsetChangedLis
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
             android.R.id.home -> finish()
         }
